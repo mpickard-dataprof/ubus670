@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 1 Knowledge Check</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #C8102E; --dark: #111; --light: #f4f4f4; --success: #27ae60; --error: #c0392b; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); margin: 0; color: #333; }
+
+        /* Shared Nav */
+        .navbar { background: #fff; padding: 1rem 2rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .navbar .brand { font-weight: 800; color: var(--primary); text-decoration: none; }
+        .nav-links a { color: var(--dark); text-decoration: none; margin-left: 20px; font-weight: 600; font-size: 0.9rem; }
+        .nav-links a:hover { color: var(--primary); }
+
+        .quiz-container { background: white; width: 100%; max-width: 600px; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin: 40px auto; }
+        h1 { text-align: center; color: var(--dark); margin-bottom: 30px; }
+        
+        .question { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .question p { font-weight: 600; font-size: 1.1em; margin-bottom: 15px; }
+        
+        .options label { display: block; padding: 12px; border: 2px solid #eee; margin-bottom: 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .options label:hover { border-color: #ddd; background: #fafafa; }
+        .options input[type="radio"] { margin-right: 10px; }
+
+        /* Feedback Styles */
+        .feedback { display: none; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 0.9em; background: #f8f9fa; border-left: 4px solid #ccc; }
+        .feedback.show { display: block; }
+        
+        .btn-submit { display: block; width: 100%; background: var(--primary); color: white; border: none; padding: 15px; font-size: 1em; font-weight: 600; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: background 0.2s; }
+        .btn-submit:hover { background: #a00d25; }
+
+        .result-box { margin-top: 20px; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold; display: none; background: #2c3e50; color: white; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand">UBUS 670</a>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="lecture.html">Lecture</a>
+            <a href="lab.html">Lab</a>
+            <a href="quiz.html" style="color: var(--primary);">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="quiz-container">
+        <h1>Day 1 Knowledge Check</h1>
+        
+        <form id="quizForm">
+            <!-- Question 1 -->
+            <div class="question" id="q1">
+                <p>1. In the "Agentic Era" (2026), what is the primary role of the human?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="wrong"> Operator / Typist</label>
+                    <label><input type="radio" name="q1" value="correct"> Architect / Manager</label>
+                    <label><input type="radio" name="q1" value="wrong"> Data Entry Clerk</label>
+                </div>
+                <div class="feedback" id="f1">
+                    <strong>Feedback:</strong> As an Architect, you design the workflows rather than just executing the typing. The AI handles the execution.
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question" id="q2">
+                <p>2. Which is a characteristic of "Augmentation"?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="wrong"> The human is completely removed.</label>
+                    <label><input type="radio" name="q2" value="correct"> Goal is Efficiency (Human-in-the-loop).</label>
+                    <label><input type="radio" name="q2" value="wrong"> Goal is pure Scalability.</label>
+                </div>
+                <div class="feedback" id="f2">
+                    <strong>Feedback:</strong> Augmentation keeps the human in the loop to enhance quality and efficiency, whereas Automation removes the human for scalability.
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question" id="q3">
+                <p>3. What distinguishes a "Consultant" (useful agent) from an "Intern" (useless agent)?</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="correct"> Context, Constraints, and Clear Goals.</label>
+                    <label><input type="radio" name="q3" value="wrong"> Speed of response.</label>
+                    <label><input type="radio" name="q3" value="wrong"> Access to the internet.</label>
+                </div>
+                <div class="feedback" id="f3">
+                    <strong>Feedback:</strong> Just like a consultant needs a briefing to be effective, an AI agent needs rich context and strict constraints to deliver high-quality assets.
+                </div>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="checkQuiz()">Submit Answers</button>
+        </form>
+
+        <div id="result" class="result-box"></div>
+    </div>
+
+    <script>
+        function checkQuiz() {
+            let score = 0;
+            const form = document.forms['quizForm'];
+            
+            // Check Q1
+            if (form['q1'].value === 'correct') score++;
+            document.getElementById('f1').classList.add('show');
+
+            // Check Q2
+            if (form['q2'].value === 'correct') score++;
+            document.getElementById('f2').classList.add('show');
+
+            // Check Q3
+            if (form['q3'].value === 'correct') score++;
+            document.getElementById('f3').classList.add('show');
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `You scored ${score}/3. Review the feedback above to strengthen your understanding.`;
+        }
+    </script>
+</body>
+</html>

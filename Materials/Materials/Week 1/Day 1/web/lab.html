@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 1: The Prompt Architect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #C8102E; --dark: #111; --light: #f4f4f4; }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #333; margin: 0; background: #fff; }
+
+        /* Shared Nav */
+        .navbar { background: #fff; padding: 1rem 2rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .navbar .brand { font-weight: 800; color: var(--primary); text-decoration: none; }
+        .nav-links a { color: var(--dark); text-decoration: none; margin-left: 20px; font-weight: 600; font-size: 0.9rem; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Content */
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: var(--dark); font-weight: 800; border-bottom: 3px solid var(--primary); display: inline-block; padding-bottom: 5px; }
+        h2 { color: #444; margin-top: 40px; border-left: 4px solid var(--primary); padding-left: 15px; }
+        
+        /* Code Blocks */
+        pre { background: #282c34; color: #abb2bf; padding: 20px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas', monospace; font-size: 0.95rem; }
+        
+        /* Interactive Checkboxes */
+        .step { background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #eee; display: flex; align-items: flex-start; }
+        .step input[type="checkbox"] { margin-top: 5px; margin-right: 15px; transform: scale(1.2); cursor: pointer; }
+        .step label { cursor: pointer; width: 100%; }
+
+        /* Persona Constraint (Topic Expert) */
+        .highlight-box { background: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 5px; margin: 20px 0; color: #856404; }
+
+        .btn { display: inline-block; background: var(--primary); color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; margin-top: 40px; font-weight: 600; transition: background 0.2s; }
+        .btn:hover { background: #a00d25; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand">UBUS 670</a>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="lecture.html">Lecture</a>
+            <a href="lab.html" style="color: var(--primary);">Lab</a>
+            <a href="quiz.html">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Lab 1: The Prompt Architect</h1>
+        
+        <p><strong>Objective:</strong> Move from being a "user" to an "architect" by designing a structured prompt system for a business use case.</p>
+
+        <h2>Part 1: The "Lazy Intern" Problem</h2>
+        <p>First, simulate a bad output to establish a baseline.</p>
+        
+        <div class="step">
+            <input type="checkbox" id="s1">
+            <label for="s1"><strong>Action:</strong> Open your AI tool (Gemini/ChatGPT) and enter: <code>Write a marketing email for our new coffee machine.</code></label>
+        </div>
+        <div class="step">
+            <input type="checkbox" id="s2">
+            <label for="s2"><strong>Analysis:</strong> Note how generic the output is. Does it have a specific price? Does it know the audience?</label>
+        </div>
+
+        <h2>Part 2: The "Context-Rich" Architecture</h2>
+        <p>Now, act as the Architect. You must provide the "Digital Employee" with a briefing.</p>
+        
+        <div class="highlight-box">
+            <strong>Topic Tip:</strong> The quality of the output is directly proportional to the quality of the <strong>Context</strong> and <strong>Constraints</strong> you provide.
+        </div>
+
+        <div class="step">
+            <input type="checkbox" id="s3">
+            <label for="s3"><strong>Action:</strong> Copy the structure below. Fill in the bracketed data with creative details (e.g., invent a luxury brand).</label>
+        </div>
+
+        <pre>
+# ROLE
+You are a Senior Copywriter for "[Insert Brand Name]", a luxury coffee brand. 
+Your tone is [Insert Tone, e.g., "Sophisticated, Minimalist, Slightly Arrogant"].
+
+# CONTEXT
+We are launching the "[Product Name]".
+- Feature 1: [e.g., Silent grinding technology]
+- Feature 2: [e.g., Wifi-enabled temp control]
+- Price: $[Price]
+
+# TASK
+Write a launch email to our existing VIP customers.
+- Subject Line options: 3 variations.
+- Body: Focus on the primary feature. 
+- Call to Action: Pre-order now.
+
+# CONSTRAINTS
+- No exclamation marks.
+- Keep paragraphs under 2 sentences.
+- Use a "Storytelling" framework (Star-Chain-Hook).
+        </pre>
+
+        <h2>Part 3: Iteration</h2>
+        <p>Run the prompt. If the tone isn't right, <strong>do not rewrite the email yourself</strong>.</p>
+        
+        <div class="step">
+            <input type="checkbox" id="s4">
+            <label for="s4"><strong>Challenge:</strong> Rewrite the instructions in the <code># ROLE</code> section to change the persona (e.g., try "Excited Startup Founder") and run it again. Compare the results.</label>
+        </div>
+
+        <a href="quiz.html" class="btn">Proceed to Knowledge Check &rarr;</a>
+    </div>
+
+</body>
+</html>

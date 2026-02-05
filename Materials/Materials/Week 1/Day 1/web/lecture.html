@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>UBUS 670: Day 1 Lecture</title>
+
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+        <!-- UI/UX: Switch to White Theme for clarity -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/theme/white.min.css">
+
+		<!-- Syntax Highlight -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/highlight/github.min.css">
+        
+        <style>
+            .reveal { font-family: 'Inter', sans-serif; }
+            .reveal h1, .reveal h2, .reveal h3 { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: none; letter-spacing: -1px; }
+            .reveal h1 { color: #C8102E; } /* NIU Red */
+            .reveal section img { background:none; border:none; box-shadow:none; }
+            
+            /* Persistent Nav Overlay */
+            .global-nav { position: fixed; top: 20px; right: 20px; z-index: 1000; font-family: 'Inter', sans-serif; font-size: 14px; background: rgba(255,255,255,0.8); padding: 5px 10px; border-radius: 5px; backdrop-filter: blur(5px); }
+            .global-nav a { text-decoration: none; color: #333; margin-left: 10px; font-weight: 600; }
+            .global-nav a:hover { color: #C8102E; }
+        </style>
+	</head>
+	<body>
+        <!-- UI/UX: Persistent Nav -->
+        <div class="global-nav">
+            <a href="index.html">Dashboard</a>
+            <a href="lab.html">Lab</a>
+            <a href="quiz.html">Quiz</a>
+        </div>
+
+		<div class="reveal">
+			<div class="slides">
+                <section data-markdown>
+                    <textarea data-template>
+# AI Strategy & Agentic Leadership
+### Day 1: The Paradigm Shift
+<br>
+<small>UBUS 670 | Spring 2026</small>
+
+---
+
+## The Evolution
+
+| Era | 2023: The Prompt Era | 2026: The Agentic Era |
+|---|---|---|
+| **Role** | User / Operator | **Architect / Manager** |
+| **Action** | Typing into a chat box | Designing workflows |
+| **Mental Model** | "Smart Search Engine" | **"Digital Employee"** |
+| **Output** | Text Summaries | **Completed Decisions** |
+
+---
+
+## The "Digital Workforce" Mindset
+
+We are no longer using tools; we are **managing resources**.
+
+An "Agentic System" is software that can:
+1.  **Plan:** Break down complex goals.
+2.  **Use Tools:** Search web, query DBs, email.
+3.  **Persist:** It loops until the job is done.
+
+---
+
+## The Decision Framework
+<!-- Topic Expert: Added concrete decision aid -->
+
+When to use which model?
+
+| Task Type | Recommended Model | Why? |
+|---|---|---|
+| **Data Entry / Classification** | **Gemini Flash** | Fast, Cheap, High Volume. |
+| **Strategy / Reasoning** | **Gemini Pro** | Large Context, Nuanced. |
+| **Coding / Architecture** | **Gemini Ultra / o1** | Highest reasoning capability. |
+
+---
+
+## Augmentation vs. Automation
+
+> **Augmentation** (Human-in-the-loop)
+> AI drafts the email; Human reviews and sends.
+> *Goal: Efficiency.*
+
+> **Automation** (Human-on-the-loop)
+> AI identifies fraud and triggers an alert.
+> *Goal: Scalability.*
+
+---
+
+## The Core Analogy
+
+### Intern vs. Consultant
+
+*   **The Unprepared Intern:**
+    *   *Input:* "Write a Q3 report."
+    *   *Result:* Generic template.
+*   **The Briefed Consultant:**
+    *   *Input:* "Using these 3 CSVs, write a report focusing on our 15% growth in Asia."
+    *   *Result:* **Actionable Asset.**
+
+---
+
+## Multimodal Reasoning
+
+Text is only **20%** of corporate data.
+
+*   **Operations:** Spot defects in a video stream.
+*   **Marketing:** Reverse-engineer competitor branding from images.
+*   **Finance:** Ingest 10 years of physical ledger scans.
+
+---
+
+## Governance: The Audit
+
+1.  **Explainability:** Can the AI show its work?
+2.  **Grounding:** Is it anchored in provided facts?
+3.  **Drift:** Is the agent deviating from the goal?
+
+---
+
+# Questions?
+
+[Proceed to Lab &rarr;](lab.html)
+
+                    </textarea>
+                </section>
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/notes/notes.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/markdown/markdown.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/highlight/highlight.min.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
