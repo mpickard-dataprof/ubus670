@@ -1,0 +1,38 @@
+## LAB FEEDBACK
+
+### Part 1: Setting up Gemini
+#### 1. Setting Up Gemini
+- Students do not have Google Workspace at NIU (remove references to it)
+- remove the "accept any terms of service" step
+- remove the tip about multiple gemini models available. Perhaps replace it with something like "No need to upgrade if it prompts, the free version is sufficient for this class"
+
+#### 2. Explore the Interface
+- Add a box about selecting the model (lower right-corning of the "Input box").
+- there is not "Response actions"
+- Please go to gemini.google.com and explore the interface to improve this section in general and make it up-to-date and aligned with the latest version of the interface.
+
+
+### Part 2: Three Beacon Business Tasks
+
+#### 3. Task A: Summarization
+- this section is great.  A nice easy hands-on intro to using Gemini for a real-world Tasks
+
+#### 4. Task B: Question & Answer
+ - this sectino is great too.  Reinforces what was taught about context / session.
+
+ #### 5. Task C: Drafting
+- again great.
+
+### Part 3: The Hallucination Hunt
+####  6. Trigger a Hallucination
+- I'm not sure this is going to work.  Models like gemini-pro today are really good at recognizing when they don't have the requested information (especially about a fictional company).  Yet, I want my students to experience a model hallucinating.  Are there other ideas? Brainstorm and iterate.  We may just stick with this, if we can't find something better.
+
+### Part 4: Lab Reflection
+- this refelection section is fine.
+
+#### GENERAL QUESTION
+- how can I collect student responses? so I can grade them or at least verify they did the work?
+- same with the quiz (but I don't plan to grade them), can we add more quesitons to each quiz so if they retake they get a different set of questions.  It's okay to have some variants of existing questions.  Let's shoot for 20 questions per day (make a note of this for future days)
+
+
+

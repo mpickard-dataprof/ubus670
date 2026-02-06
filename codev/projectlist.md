@@ -112,15 +112,16 @@ projects:
   - id: "0001"
     title: "UBUS 670 Course Materials"
     summary: "Complete course materials for 9-day MBA AI for Business Leaders course"
-    status: planned
+    status: implementing
     priority: high
     files:
       spec: codev/specs/0001-course-materials.md
       plan: codev/plans/0001-course-materials.md
+      lessons: codev/lessons/0001-course-materials.md
       review: null
     dependencies: []
     tags: [course, mba, ai]
-    notes: "Days 7-9 need dual versions: Plan A (ADK Visual Builder) + Plan B (MindStudio backup)"
+    notes: "Day 1 complete (2026-02-06). Days 7-9 need dual versions: Plan A (ADK Visual Builder) + Plan B (MindStudio backup)"
 ```
 
 ## Next Available Number

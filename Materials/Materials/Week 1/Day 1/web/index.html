@@ -3,100 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UBUS 670: Day 1 Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>UBUS 670: Day 1 - What is Generative AI?</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
     <style>
-        :root {
-            --primary: #C8102E; /* NIU Redish */
-            --dark: #111;
-            --light: #f4f4f4;
-            --text: #333;
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #f5f5f5;
+            margin: 0;
         }
-        body { font-family: 'Inter', sans-serif; background: var(--light); margin: 0; color: var(--text); }
-        
-        /* Navigation */
-        .navbar { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .navbar .brand { font-weight: 800; color: var(--primary); font-size: 1.2rem; text-decoration: none; }
-        .nav-links a { color: var(--dark); text-decoration: none; margin-left: 20px; font-weight: 500; font-size: 0.9rem; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--primary); }
 
-        /* Hero */
-        .hero { background: white; padding: 4rem 2rem; text-align: center; border-bottom: 1px solid #eee; }
-        .hero h1 { margin: 0; font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; }
-        .hero p { color: #666; margin-top: 10px; font-size: 1.1rem; }
-        .date { display: inline-block; background: #eee; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin-top: 15px; font-weight: 600; }
+        /* ============================================
+           NAVIGATION WITH BREADCRUMB
+           ============================================ */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
 
-        /* Objectives (Edu Expert) */
-        .objectives { max-width: 800px; margin: -30px auto 40px; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); }
-        .objectives h3 { margin-top: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #999; }
-        .objectives ul { padding-left: 20px; margin-bottom: 0; }
-        .objectives li { margin-bottom: 8px; }
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
 
-        /* Grid */
-        .grid { max-width: 1000px; margin: 0 auto 4rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 0 20px; }
-        .card { background: white; border-radius: 12px; padding: 2rem; text-decoration: none; color: inherit; transition: all 0.3s ease; border: 1px solid transparent; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: #eee; }
-        .card .icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
-        .card h2 { font-size: 1.2rem; margin: 0 0 0.5rem; }
-        .card p { font-size: 0.9rem; color: #666; line-height: 1.5; margin: 0; }
-        .card .cta { margin-top: 15px; display: inline-block; font-size: 0.8rem; font-weight: 600; color: var(--primary); }
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
+            color: white;
+            padding: 70px 40px;
+        }
+        .hero-content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 0 15px;
+            letter-spacing: -1px;
+        }
+        .hero .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin: 0 0 20px;
+        }
+        .hero .meta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .hero .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-        footer { text-align: center; padding: 2rem; color: #999; font-size: 0.8rem; }
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .main-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* ============================================
+           OBJECTIVES BOX
+           ============================================ */
+        .objectives {
+            background: white;
+            padding: 35px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-left: 6px solid #1D428A;
+            margin: -40px 0 40px;
+            position: relative;
+        }
+        .objectives h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin: 0 0 20px;
+        }
+        .objectives ul {
+            margin: 0;
+            padding-left: 25px;
+        }
+        .objectives li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .objectives li strong {
+            color: #C8102E;
+        }
+
+        /* ============================================
+           CASE STUDY BANNER
+           ============================================ */
+        .case-study {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white;
+            padding: 35px 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .case-study .icon {
+            font-size: 3.5rem;
+            flex-shrink: 0;
+        }
+        .case-study h3 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 8px;
+            font-size: 1.4rem;
+        }
+        .case-study p {
+            margin: 0;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           MODULE CARDS
+           ============================================ */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+        @media (max-width: 900px) {
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+        .module-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            border-color: #e0e0e0;
+        }
+
+        .module-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .module-card .time {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #666;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 12px;
+        }
+
+        .module-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            margin: 0 0 10px;
+            color: #222;
+        }
+
+        .module-card p {
+            color: #666;
+            line-height: 1.6;
+            margin: 0 0 20px;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .module-card .cta {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #C8102E;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .module-card .cta::after {
+            content: '→';
+            transition: transform 0.2s;
+        }
+        .module-card:hover .cta::after {
+            transform: translateX(5px);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="index.html" class="brand">UBUS 670</a>
-        <div class="nav-links">
-            <a href="index.html" style="color: var(--primary);">Dashboard</a>
-            <a href="lecture.html">Lecture</a>
-            <a href="lab.html">Lab</a>
-            <a href="quiz.html">Quiz</a>
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">›</span>
+            <a href="../../index.html">Week 1</a>
+            <span class="separator">›</span>
+            <span class="current">Day 1</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill active">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="quiz.html" class="nav-pill">Quiz</a>
         </div>
     </nav>
 
-    <div class="hero">
-        <h1>AI Strategy & Agentic Leadership</h1>
-        <p>Day 1: From Operator to Architect</p>
-        <span class="date">Tuesday, January 27, 2026</span>
-    </div>
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>What is Generative AI?</h1>
+            <p class="subtitle">Day 1: Understanding the Technology Behind the Hype</p>
+            <div class="meta">
+                <span class="meta-item">📅 Monday, March 9, 2026</span>
+                <span class="meta-item">⏱️ 4 hours</span>
+                <span class="meta-item">🛠️ Google Gemini Chat</span>
+            </div>
+        </div>
+    </header>
 
-    <!-- Educational Expert: Added Objectives -->
-    <div class="objectives">
-        <h3>Today's Learning Objectives</h3>
-        <ul>
-            <li><strong>Define</strong> the shift from the "Prompt Era" to the "Agentic Era."</li>
-            <li><strong>Differentiate</strong> between Augmentation (Efficiency) and Automation (Scalability).</li>
-            <li><strong>Apply</strong> the "Context-Constraints-Goal" framework to architect effective AI prompts.</li>
-        </ul>
-    </div>
+    <main class="main-content">
 
-    <div class="grid">
-        <a href="lecture.html" class="card">
-            <span class="icon">🎤</span>
-            <h2>Lecture Slides</h2>
-            <p>Interactive presentation covering the "Intern vs. Consultant" model and the AI Economic Matrix.</p>
-            <span class="cta">Start Lecture &rarr;</span>
-        </a>
+        <!-- Learning Objectives -->
+        <section class="objectives">
+            <h2>Today's Learning Objectives</h2>
+            <ul>
+                <li><strong>Explain</strong> how Large Language Models (LLMs) work at a conceptual level</li>
+                <li><strong>Define</strong> key vocabulary: tokens, context windows, temperature, hallucinations</li>
+                <li><strong>Identify</strong> hallucination risks and basic mitigation strategies</li>
+                <li><strong>Navigate</strong> Google Gemini Chat to complete business tasks</li>
+            </ul>
+        </section>
 
-        <a href="lab.html" class="card">
-            <span class="icon">🧪</span>
-            <h2>Lab: Prompt Architecture</h2>
-            <p>Hands-on exercise: Move beyond simple prompting by designing robust context constraints.</p>
-            <span class="cta">Start Lab &rarr;</span>
-        </a>
+        <!-- Case Study Banner -->
+        <section class="case-study">
+            <span class="icon">🏪</span>
+            <div>
+                <h3>Meet Beacon Retail Group</h3>
+                <p>Today you join the AI Strategy Task Force at Beacon Retail Group, a regional retail chain facing challenges in HR, Marketing, and Finance. Your mission: evaluate where AI can create real business value.</p>
+            </div>
+        </section>
 
-        <a href="quiz.html" class="card">
-            <span class="icon">⚡</span>
-            <h2>Knowledge Check</h2>
-            <p>Test your understanding of today's core concepts with immediate feedback.</p>
-            <span class="cta">Take Quiz &rarr;</span>
-        </a>
-    </div>
+        <!-- Module Cards -->
+        <section class="module-grid">
 
+            <a href="lecture.html" class="module-card">
+                <span class="icon">🎤</span>
+                <span class="time">~60 minutes</span>
+                <h3>Lecture: AI Foundations</h3>
+                <p>Interactive presentation covering how LLMs work, tokens, context windows, temperature, hallucinations, and an introduction to Google Gemini.</p>
+                <span class="cta">Start Lecture</span>
+            </a>
+
+            <a href="lab.html" class="module-card">
+                <span class="icon">🧪</span>
+                <span class="time">~90-120 minutes</span>
+                <h3>Lab: Exploring Gemini</h3>
+                <p>Hands-on exercise: Set up Gemini, complete three Beacon business tasks (summarization, Q&A, drafting), and document a hallucination.</p>
+                <span class="cta">Start Lab</span>
+            </a>
+
+            <a href="quiz.html" class="module-card">
+                <span class="icon">✓</span>
+                <span class="time">~15 minutes</span>
+                <h3>Knowledge Check</h3>
+                <p>Test your understanding of today's core concepts with immediate feedback on each question.</p>
+                <span class="cta">Take Quiz</span>
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
     <footer>
-        &copy; 2026 Northern Illinois University - UBUS 670
+        <p>&copy; 2026 Northern Illinois University — UBUS 670: AI for Business Leaders</p>
     </footer>
 
 </body>

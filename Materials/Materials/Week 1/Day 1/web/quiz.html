@@ -3,120 +3,886 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 1 Knowledge Check</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Day 1 Quiz: Knowledge Check</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
     <style>
-        :root { --primary: #C8102E; --dark: #111; --light: #f4f4f4; --success: #27ae60; --error: #c0392b; }
-        body { font-family: 'Inter', sans-serif; background: var(--light); margin: 0; color: #333; }
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+            background: #fafafa;
+        }
 
-        /* Shared Nav */
-        .navbar { background: #fff; padding: 1rem 2rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .navbar .brand { font-weight: 800; color: var(--primary); text-decoration: none; }
-        .nav-links a { color: var(--dark); text-decoration: none; margin-left: 20px; font-weight: 600; font-size: 0.9rem; }
-        .nav-links a:hover { color: var(--primary); }
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
 
-        .quiz-container { background: white; width: 100%; max-width: 600px; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin: 40px auto; }
-        h1 { text-align: center; color: var(--dark); margin-bottom: 30px; }
-        
-        .question { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        .question p { font-weight: 600; font-size: 1.1em; margin-bottom: 15px; }
-        
-        .options label { display: block; padding: 12px; border: 2px solid #eee; margin-bottom: 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .options label:hover { border-color: #ddd; background: #fafafa; }
-        .options input[type="radio"] { margin-right: 10px; }
+        /* Navigation with Breadcrumb */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
 
-        /* Feedback Styles */
-        .feedback { display: none; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 0.9em; background: #f8f9fa; border-left: 4px solid #ccc; }
-        .feedback.show { display: block; }
-        
-        .btn-submit { display: block; width: 100%; background: var(--primary); color: white; border: none; padding: 15px; font-size: 1em; font-weight: 600; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: background 0.2s; }
-        .btn-submit:hover { background: #a00d25; }
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
 
-        .result-box { margin-top: 20px; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold; display: none; background: #2c3e50; color: white; }
+        /* Quiz header */
+        .quiz-header {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white;
+            padding: 50px 40px;
+            margin: -40px -30px 40px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+        }
+        .quiz-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px;
+            font-size: 2.2rem;
+        }
+        .quiz-header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Question card */
+        .question-card {
+            background: white;
+            padding: 30px 35px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 5px solid #C8102E;
+        }
+        .question-card.answered-correct {
+            border-left-color: #43B02A;
+            background: #f8fff8;
+        }
+        .question-card.answered-wrong {
+            border-left-color: #E35205;
+            background: #fff8f5;
+        }
+
+        .question-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        /* Answer options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option:hover:not(.disabled) {
+            background: #f0f0f0;
+            border-color: #ccc;
+        }
+        .option.selected {
+            border-color: #C8102E;
+            background: rgba(200, 16, 46, 0.05);
+        }
+        .option.correct {
+            border-color: #43B02A;
+            background: rgba(67, 176, 42, 0.1);
+        }
+        .option.incorrect {
+            border-color: #E35205;
+            background: rgba(227, 82, 5, 0.1);
+        }
+        .option.disabled {
+            cursor: default;
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        .option-marker {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .option.selected .option-marker {
+            border-color: #C8102E;
+            background: #C8102E;
+            color: white;
+        }
+        .option.correct .option-marker {
+            border-color: #43B02A;
+            background: #43B02A;
+            color: white;
+        }
+        .option.incorrect .option-marker {
+            border-color: #E35205;
+            background: #E35205;
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback.correct {
+            background: rgba(67, 176, 42, 0.1);
+            border-left: 4px solid #43B02A;
+        }
+        .feedback.incorrect {
+            background: rgba(227, 82, 5, 0.1);
+            border-left: 4px solid #E35205;
+        }
+        .feedback-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .feedback.correct .feedback-header { color: #43B02A; }
+        .feedback.incorrect .feedback-header { color: #E35205; }
+
+        /* Submit button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 30px;
+            background: #C8102E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 15px;
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: #a00d24;
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Results */
+        .results {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .results.show {
+            display: block;
+        }
+        .results h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+        }
+        .score {
+            font-size: 4rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #C8102E;
+            margin: 20px 0;
+        }
+        .score-label {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .retry-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #1D428A;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+        .retry-btn:hover {
+            background: #152d5e;
+        }
+
+        /* Progress indicator */
+        .quiz-progress {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+        }
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+        .dot.current { background: #C8102E; }
+        .dot.correct { background: #43B02A; }
+        .dot.incorrect { background: #E35205; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="index.html" class="brand">UBUS 670</a>
-        <div class="nav-links">
-            <a href="index.html">Dashboard</a>
-            <a href="lecture.html">Lecture</a>
-            <a href="lab.html">Lab</a>
-            <a href="quiz.html" style="color: var(--primary);">Quiz</a>
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">›</span>
+            <a href="../../index.html">Week 1</a>
+            <span class="separator">›</span>
+            <span class="current">Day 1</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="quiz.html" class="nav-pill active">Quiz</a>
         </div>
     </nav>
 
     <div class="quiz-container">
-        <h1>Day 1 Knowledge Check</h1>
-        
-        <form id="quizForm">
-            <!-- Question 1 -->
-            <div class="question" id="q1">
-                <p>1. In the "Agentic Era" (2026), what is the primary role of the human?</p>
-                <div class="options">
-                    <label><input type="radio" name="q1" value="wrong"> Operator / Typist</label>
-                    <label><input type="radio" name="q1" value="correct"> Architect / Manager</label>
-                    <label><input type="radio" name="q1" value="wrong"> Data Entry Clerk</label>
-                </div>
-                <div class="feedback" id="f1">
-                    <strong>Feedback:</strong> As an Architect, you design the workflows rather than just executing the typing. The AI handles the execution.
-                </div>
+
+        <!-- Quiz Header -->
+        <div class="quiz-header">
+            <h1>Day 1: Knowledge Check</h1>
+            <p>Test your understanding of generative AI fundamentals</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="quiz-progress">
+            <span id="progress-label">Question 1 of 10</span>
+            <div class="progress-dots" id="progress-dots">
+                <!-- Dots generated dynamically -->
             </div>
+        </div>
 
-            <!-- Question 2 -->
-            <div class="question" id="q2">
-                <p>2. Which is a characteristic of "Augmentation"?</p>
-                <div class="options">
-                    <label><input type="radio" name="q2" value="wrong"> The human is completely removed.</label>
-                    <label><input type="radio" name="q2" value="correct"> Goal is Efficiency (Human-in-the-loop).</label>
-                    <label><input type="radio" name="q2" value="wrong"> Goal is pure Scalability.</label>
-                </div>
-                <div class="feedback" id="f2">
-                    <strong>Feedback:</strong> Augmentation keeps the human in the loop to enhance quality and efficiency, whereas Automation removes the human for scalability.
-                </div>
-            </div>
+        <!-- Questions Container (dynamically generated) -->
+        <div id="questions-container">
+            <!-- Questions will be generated by JavaScript -->
+        </div>
 
-            <!-- Question 3 -->
-            <div class="question" id="q3">
-                <p>3. What distinguishes a "Consultant" (useful agent) from an "Intern" (useless agent)?</p>
-                <div class="options">
-                    <label><input type="radio" name="q3" value="correct"> Context, Constraints, and Clear Goals.</label>
-                    <label><input type="radio" name="q3" value="wrong"> Speed of response.</label>
-                    <label><input type="radio" name="q3" value="wrong"> Access to the internet.</label>
-                </div>
-                <div class="feedback" id="f3">
-                    <strong>Feedback:</strong> Just like a consultant needs a briefing to be effective, an AI agent needs rich context and strict constraints to deliver high-quality assets.
-                </div>
-            </div>
+        <!-- Results -->
+        <div class="results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="final-score">0/10</div>
+            <p class="score-label">Questions Correct</p>
+            <p id="results-message"></p>
+            <button class="retry-btn" onclick="location.reload()">Try Again (New Questions)</button>
+            <a href="index.html" class="retry-btn" style="margin-left: 10px; background: #43B02A;">Back to Dashboard</a>
+        </div>
 
-            <button type="button" class="btn-submit" onclick="checkQuiz()">Submit Answers</button>
-        </form>
-
-        <div id="result" class="result-box"></div>
     </div>
 
     <script>
-        function checkQuiz() {
-            let score = 0;
-            const form = document.forms['quizForm'];
-            
-            // Check Q1
-            if (form['q1'].value === 'correct') score++;
-            document.getElementById('f1').classList.add('show');
+        // Configuration
+        const QUESTIONS_PER_QUIZ = 10;
 
-            // Check Q2
-            if (form['q2'].value === 'correct') score++;
-            document.getElementById('f2').classList.add('show');
+        // Question Bank - organized by topic with variants
+        const questionBank = [
+            // TOPIC 1: TOKENS (2 variants)
+            {
+                topic: "tokens",
+                question: "What is a 'token' in the context of Large Language Models?",
+                options: [
+                    "A security credential used to authenticate API requests",
+                    "A complete sentence that the model processes at once",
+                    "A chunk of text (roughly 4 characters or 0.75 words) that the model processes",
+                    "A unit of payment for AI services"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Tokens are chunks of text—roughly 4 characters or 0.75 words—that LLMs process. Understanding tokens is crucial because you pay per token and context windows are measured in tokens.",
+                    incorrect: "Not quite. Tokens are chunks of text—roughly 4 characters or 0.75 words—that LLMs process. They're not security credentials, complete sentences, or payment units."
+                }
+            },
+            {
+                topic: "tokens",
+                question: "A 300-word business email would be approximately how many tokens?",
+                options: [
+                    "About 75 tokens",
+                    "About 300 tokens (same as word count)",
+                    "About 400 tokens",
+                    "About 1,200 tokens"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! 300 words ÷ 0.75 ≈ 400 tokens. The rule of thumb is 1 token ≈ 0.75 words, so token count is typically higher than word count.",
+                    incorrect: "Not quite. The rule is 1 token ≈ 0.75 words. So 300 words ÷ 0.75 ≈ 400 tokens. Token count is usually higher than word count."
+                }
+            },
 
-            // Check Q3
-            if (form['q3'].value === 'correct') score++;
-            document.getElementById('f3').classList.add('show');
+            // TOPIC 2: CONTEXT WINDOW (2 variants)
+            {
+                topic: "context",
+                question: "What is the 'context window' of an LLM?",
+                options: [
+                    "The graphical user interface where you type prompts",
+                    "The total amount of text the model can 'see' at once—including your prompt, documents, and its own response",
+                    "The model's permanent memory that persists between conversations",
+                    "A setting that determines how formal the AI's responses are"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The context window is the AI's 'working memory'—everything it can see at once, including your prompt, any documents, conversation history, and its own response in progress.",
+                    incorrect: "Not quite. The context window is the total text the model can 'see' at once. It's NOT a UI element, permanent memory, or formality setting."
+                }
+            },
+            {
+                topic: "context",
+                question: "Why does it matter that Gemini 1.5 Pro has a 2 million token context window?",
+                options: [
+                    "It can process about 20 novels worth of text in a single conversation",
+                    "It remembers your conversations for 2 million days",
+                    "It costs 2 million dollars to use",
+                    "It can generate 2 million words per response"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! A larger context window means the AI can 'see' more information at once—about 20 novels worth. This is useful for analyzing long documents.",
+                    incorrect: "Not quite. A 2 million token context window means the AI can process about 20 novels worth of text at once. It doesn't relate to memory duration, cost, or output length."
+                }
+            },
 
-            const resultDiv = document.getElementById('result');
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `You scored ${score}/3. Review the feedback above to strengthen your understanding.`;
+            // TOPIC 3: HALLUCINATIONS (2 variants)
+            {
+                topic: "hallucinations",
+                question: "What is a 'hallucination' in the context of AI?",
+                options: [
+                    "When the AI generates images or videos",
+                    "When the AI refuses to answer a question",
+                    "When the AI is uncertain and asks for clarification",
+                    "When the AI generates confident-sounding but factually incorrect or made-up information"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! A hallucination is when the AI generates plausible-sounding but factually incorrect or completely fabricated information—and often states it with confidence.",
+                    incorrect: "Not quite. A hallucination is when the AI generates confident-sounding but factually incorrect or made-up information. Hallucinations are dangerous because the AI sounds confident while being wrong."
+                }
+            },
+            {
+                topic: "hallucinations",
+                question: "A law firm used AI to write a legal brief, and the AI cited 6 court cases that didn't exist. This is an example of:",
+                options: [
+                    "A context window overflow",
+                    "An AI hallucination (source fabrication)",
+                    "A temperature setting error",
+                    "A tokenization problem"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! This is a real case from 2023. The AI hallucinated (fabricated) citations that looked legitimate but were completely invented. This is why verification is essential.",
+                    incorrect: "Not quite. This is a classic example of AI hallucination—specifically 'source fabrication' where the AI invents citations. This really happened to a New York law firm in 2023."
+                }
+            },
+
+            // TOPIC 4: TEMPERATURE (2 variants)
+            {
+                topic: "temperature",
+                question: "What does 'temperature' control in an LLM?",
+                options: [
+                    "How 'creative' vs. 'predictable' the output is—higher temperature means more variety",
+                    "How fast the model generates responses",
+                    "The maximum length of the response",
+                    "How emotional or friendly the AI's tone is"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Temperature controls randomness in token selection. Low temperature (0-0.3) makes output predictable. High temperature (0.7-1.0) increases variety. Use low for facts, high for creativity.",
+                    incorrect: "Not quite. Temperature controls how 'creative' vs. 'predictable' the output is. It doesn't control speed, length, or tone. Low = focused; high = varied."
+                }
+            },
+            {
+                topic: "temperature",
+                question: "You need to extract financial data from a report accurately. What temperature setting should you use?",
+                options: [
+                    "High temperature (0.8-1.0) for thorough analysis",
+                    "Medium temperature (0.5) for balanced results",
+                    "Low temperature (0.0-0.3) for predictable, focused output",
+                    "Temperature doesn't affect accuracy"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! For factual, accuracy-critical tasks like data extraction, use low temperature (0.0-0.3). This makes the AI choose the most likely (usually most accurate) responses.",
+                    incorrect: "Not quite. For accuracy-critical tasks, use LOW temperature. Higher temperature increases creativity but also increases the risk of errors and hallucinations."
+                }
+            },
+
+            // TOPIC 5: MEMORY/PERSISTENCE (2 variants)
+            {
+                topic: "memory",
+                question: "You start a new conversation in Gemini and ask about a document you shared yesterday. The AI doesn't know about it. Why?",
+                options: [
+                    "There's a bug in Gemini that causes memory loss",
+                    "The document was too long for the AI to remember",
+                    "Each new conversation starts with an empty context window—the AI has no memory between conversations",
+                    "You need to enable 'memory mode' in settings"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Each new conversation starts with an empty context window. The AI has NO persistent memory between conversations—this is by design.",
+                    incorrect: "Not quite. It's not a bug—LLMs have no memory between conversations. Each new conversation starts fresh. If you need the AI to know something, include it in the current chat."
+                }
+            },
+            {
+                topic: "memory",
+                question: "Which statement about LLM memory is TRUE?",
+                options: [
+                    "LLMs remember everything you've ever told them",
+                    "LLMs only remember information within the current conversation's context window",
+                    "LLMs store user data in a database for future reference",
+                    "LLMs have better memory than humans for long conversations"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! LLMs only 'remember' what's in the current context window. They have no persistent memory between sessions and don't store your conversations.",
+                    incorrect: "Not quite. LLMs only know what's in the current context window. They don't have persistent memory or databases of past conversations."
+                }
+            },
+
+            // TOPIC 6: HALLUCINATION MITIGATION (2 variants)
+            {
+                topic: "mitigation",
+                question: "Which is the BEST way to reduce AI hallucinations when asking about your company's data?",
+                options: [
+                    "Use a higher temperature setting so the AI thinks more creatively",
+                    "Provide the actual source documents in your prompt so the AI can reference them directly",
+                    "Ask the AI to be more confident in its answers",
+                    "Use a larger context window model"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Providing source documents 'grounds' the AI in your specific facts, dramatically reducing hallucinations. The AI can reference what you provided rather than guessing.",
+                    incorrect: "Not quite. The best approach is to provide source documents directly. Higher temperature increases hallucination risk. Asking for confidence doesn't help. Larger context helps but doesn't prevent hallucinations alone."
+                }
+            },
+            {
+                topic: "mitigation",
+                question: "Your AI assistant confidently stated a fact you're unsure about. What should you do?",
+                options: [
+                    "Trust it—AI is usually accurate",
+                    "Ask the AI to confirm it's correct",
+                    "Verify the information from an independent source before using it",
+                    "Regenerate the response until it gives a different answer"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Always verify important AI-generated information from independent sources. AI confidence doesn't indicate accuracy—it can be confidently wrong.",
+                    incorrect: "Not quite. AI can be confidently wrong (hallucinate). Always verify important information from independent sources. Asking AI to confirm itself doesn't help."
+                }
+            },
+
+            // TOPIC 7: TYPES OF AI (2 variants)
+            {
+                topic: "types",
+                question: "What makes Generative AI different from traditional software and machine learning?",
+                options: [
+                    "It follows explicit rules written by programmers",
+                    "It finds patterns in historical data to classify things",
+                    "It creates NEW content (text, images, code) that didn't exist before",
+                    "It runs faster than other types of software"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Generative AI creates novel content—text, images, code—rather than following rules (traditional) or classifying based on patterns (ML). It generates, not just processes.",
+                    incorrect: "Not quite. Generative AI is unique because it CREATES new content. Traditional software follows rules; ML finds patterns for classification. Gen AI produces novel outputs."
+                }
+            },
+            {
+                topic: "types",
+                question: "A spam filter that learns from millions of emails is an example of:",
+                options: [
+                    "Traditional rule-based software",
+                    "Machine Learning (pattern finding)",
+                    "Generative AI",
+                    "Context engineering"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! A spam filter that learns from examples is Machine Learning—it finds patterns in data to classify emails. It doesn't generate new content like Generative AI.",
+                    incorrect: "Not quite. A spam filter learning from emails is Machine Learning (pattern finding for classification). Generative AI would create new emails, not classify existing ones."
+                }
+            },
+
+            // TOPIC 8: EMBEDDINGS (2 variants)
+            {
+                topic: "embeddings",
+                question: "What are 'embeddings' in the context of LLMs?",
+                options: [
+                    "Files embedded in your prompt",
+                    "Numerical representations (vectors) of words that capture meaning",
+                    "Hidden messages in AI responses",
+                    "Links to external websites"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Embeddings convert words into lists of numbers (vectors) that capture semantic meaning. Similar words have similar embeddings, enabling the AI to understand relationships.",
+                    incorrect: "Not quite. Embeddings are numerical representations (vectors) of words that capture meaning. They allow AI to understand that 'king' and 'queen' are related concepts."
+                }
+            },
+            {
+                topic: "embeddings",
+                question: "Why is it useful that 'complaint' and 'unhappy customer' have similar embeddings?",
+                options: [
+                    "It makes responses faster",
+                    "It allows the AI to understand they're semantically related concepts",
+                    "It reduces token count",
+                    "It prevents hallucinations"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Similar embeddings mean the AI understands these are related concepts, even though the words are different. This enables semantic understanding, not just keyword matching.",
+                    incorrect: "Not quite. Similar embeddings help AI understand semantic relationships—that 'complaint' and 'unhappy customer' mean similar things, enabling deeper understanding."
+                }
+            },
+
+            // TOPIC 9: HOW LLMS WORK (2 variants)
+            {
+                topic: "howllm",
+                question: "How does an LLM generate text?",
+                options: [
+                    "By searching a database of pre-written responses",
+                    "By predicting the most likely next token, one at a time",
+                    "By copying and pasting from its training data",
+                    "By following a decision tree of rules"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! LLMs generate text by predicting the most likely next token based on all previous tokens, then repeating this process thousands of times to build a response.",
+                    incorrect: "Not quite. LLMs work by predicting the most likely next token, one at a time. They don't search databases, copy text directly, or follow rule trees."
+                }
+            },
+            {
+                topic: "howllm",
+                question: "An LLM predicts that after 'The quarterly sales report shows that revenue' the next word is most likely:",
+                options: [
+                    "Whatever word is in its database",
+                    "A random word",
+                    "The word with the highest probability based on training patterns",
+                    "The word the user wants"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! LLMs pick the next token based on probability—what's most likely to come next given patterns in training data. Temperature affects how strictly it follows these probabilities.",
+                    incorrect: "Not quite. LLMs predict the next token based on probability distributions learned during training—choosing words that are likely to follow the given context."
+                }
+            },
+
+            // TOPIC 10: PRACTICAL APPLICATION (2 variants)
+            {
+                topic: "practical",
+                question: "You want AI to help draft a customer service email. What's the BEST approach?",
+                options: [
+                    "Just ask 'Write an email' and let AI figure out the details",
+                    "Provide context: customer's issue, tone desired, any specific policies to follow",
+                    "Write the email yourself and ask AI to add fancy words",
+                    "Send multiple single-word prompts"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Providing clear context—the situation, desired tone, constraints—helps AI generate more relevant, useful output. Context engineering is key to good results.",
+                    incorrect: "Not quite. The best approach is to provide context: what the customer's issue is, what tone you want, any policies to follow. More context = better results."
+                }
+            },
+            {
+                topic: "practical",
+                question: "Beacon Retail receives 850 customer emails per week. Using AI to help respond could:",
+                options: [
+                    "Completely replace human customer service",
+                    "Help draft responses faster while humans review and send",
+                    "Guarantee 100% accurate responses",
+                    "Eliminate the need to understand customer issues"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! AI is best used to assist humans—drafting responses that humans review and send. It shouldn't completely replace human judgment or be trusted without verification.",
+                    incorrect: "Not quite. AI is best as an assistant—helping draft responses that humans then review. It shouldn't replace human judgment entirely or be trusted blindly."
+                }
+            }
+        ];
+
+        // Quiz state
+        let selectedQuestions = [];
+        let answered = 0;
+        let correct = 0;
+
+        // Initialize quiz
+        function initQuiz() {
+            // Select one question from each topic
+            const topics = [...new Set(questionBank.map(q => q.topic))];
+            selectedQuestions = [];
+
+            topics.forEach(topic => {
+                const topicQuestions = questionBank.filter(q => q.topic === topic);
+                const randomQ = topicQuestions[Math.floor(Math.random() * topicQuestions.length)];
+                selectedQuestions.push({...randomQ});
+            });
+
+            // Shuffle the selected questions
+            selectedQuestions = shuffleArray(selectedQuestions);
+
+            // Generate HTML for questions
+            const container = document.getElementById('questions-container');
+            container.innerHTML = selectedQuestions.map((q, index) => generateQuestionHTML(q, index + 1)).join('');
+
+            // Generate progress dots
+            const dotsContainer = document.getElementById('progress-dots');
+            dotsContainer.innerHTML = selectedQuestions.map((_, i) =>
+                `<span class="dot ${i === 0 ? 'current' : ''}"></span>`
+            ).join('');
+
+            // Add event listeners
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
         }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function generateQuestionHTML(q, num) {
+            // Shuffle options while tracking correct answer
+            const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, wasIndex: i }));
+            const shuffledOptions = shuffleArray(optionsWithIndex);
+            const newCorrectIndex = shuffledOptions.findIndex(o => o.wasIndex === q.correct);
+
+            // Store the new correct index
+            selectedQuestions[num - 1].correctShuffled = newCorrectIndex;
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const optionsHTML = shuffledOptions.map((opt, i) => `
+                <label class="option">
+                    <input type="radio" name="q${num}" value="${i}">
+                    <span class="option-marker">${letters[i]}</span>
+                    <span class="option-text">${opt.text}</span>
+                </label>
+            `).join('');
+
+            return `
+                <div class="question-card" data-question="${num}" data-correct="${newCorrectIndex}">
+                    <div class="question-number">Question ${num}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">${optionsHTML}</div>
+                    <div class="feedback">
+                        <div class="feedback-header"></div>
+                        <div class="feedback-text"></div>
+                    </div>
+                    <button class="submit-btn" disabled onclick="checkAnswer(${num})">Check Answer</button>
+                </div>
+            `;
+        }
+
+        function handleOptionClick(e) {
+            const option = e.currentTarget;
+            const questionCard = option.closest('.question-card');
+
+            if (questionCard.classList.contains('answered-correct') ||
+                questionCard.classList.contains('answered-wrong')) {
+                return;
+            }
+
+            questionCard.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            option.querySelector('input').checked = true;
+            questionCard.querySelector('.submit-btn').disabled = false;
+        }
+
+        function checkAnswer(questionNum) {
+            const card = document.querySelector(`[data-question="${questionNum}"]`);
+            const correctAnswer = parseInt(card.dataset.correct);
+            const selectedOption = card.querySelector('input:checked');
+            const questionData = selectedQuestions[questionNum - 1];
+
+            if (!selectedOption) return;
+
+            const selected = parseInt(selectedOption.value);
+            const isCorrect = selected === correctAnswer;
+
+            // Disable further interaction
+            card.querySelectorAll('.option').forEach((o, i) => {
+                o.classList.add('disabled');
+                if (parseInt(o.querySelector('input').value) === correctAnswer) {
+                    o.classList.add('correct');
+                }
+                if (parseInt(o.querySelector('input').value) === selected && !isCorrect) {
+                    o.classList.add('incorrect');
+                }
+            });
+            card.querySelector('.submit-btn').disabled = true;
+            card.querySelector('.submit-btn').textContent = isCorrect ? '✓ Correct' : '✗ Incorrect';
+
+            // Show feedback
+            const feedbackDiv = card.querySelector('.feedback');
+            feedbackDiv.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+            feedbackDiv.querySelector('.feedback-header').textContent = isCorrect ? '✓ Correct!' : '✗ Not quite right';
+            feedbackDiv.querySelector('.feedback-text').textContent = questionData.feedback[isCorrect ? 'correct' : 'incorrect'];
+
+            // Update card styling
+            card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+            // Update progress
+            answered++;
+            if (isCorrect) correct++;
+            updateProgress();
+
+            // Check if quiz complete
+            if (answered === selectedQuestions.length) {
+                setTimeout(showResults, 1000);
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('progress-label').textContent =
+                `Question ${Math.min(answered + 1, selectedQuestions.length)} of ${selectedQuestions.length}`;
+
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                dot.classList.remove('current', 'correct', 'incorrect');
+                const card = document.querySelector(`[data-question="${i + 1}"]`);
+                if (card.classList.contains('answered-correct')) {
+                    dot.classList.add('correct');
+                } else if (card.classList.contains('answered-wrong')) {
+                    dot.classList.add('incorrect');
+                } else if (i === answered) {
+                    dot.classList.add('current');
+                }
+            });
+        }
+
+        function showResults() {
+            document.getElementById('questions-container').style.display = 'none';
+            document.querySelector('.quiz-progress').style.display = 'none';
+
+            const results = document.getElementById('results');
+            results.classList.add('show');
+            document.getElementById('final-score').textContent = `${correct}/${selectedQuestions.length}`;
+
+            let message = '';
+            const percentage = (correct / selectedQuestions.length) * 100;
+            if (percentage === 100) {
+                message = "Perfect score! You've mastered today's concepts. You're ready for prompt engineering tomorrow.";
+            } else if (percentage >= 80) {
+                message = "Great job! You have a solid understanding of the fundamentals. Review any questions you missed before Day 2.";
+            } else if (percentage >= 60) {
+                message = "Good effort! Consider reviewing the lecture for concepts you missed. These foundations are important for the rest of the course.";
+            } else {
+                message = "You might want to review today's lecture before moving on. Understanding these fundamentals will help you succeed in the labs ahead.";
+            }
+            document.getElementById('results-message').textContent = message;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initQuiz);
     </script>
+
 </body>
 </html>

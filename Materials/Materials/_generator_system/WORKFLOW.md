@@ -9,6 +9,7 @@ We use a **Generator-Critic** model where the "Generator" (Gemini) creates conte
 1.  **UI/UX Designer:** Ensures usability, accessibility, and brand alignment.
 2.  **Educational Expert:** Ensures pedagogical rigor, active learning, and formative assessment.
 3.  **Topic Expert:** Ensures technical accuracy and depth.
+4.  **Accuracy & Audience:** Ensures tool instructions match current interfaces and content is appropriate for non-tech-savvy MBA students.
 
 ---
 
