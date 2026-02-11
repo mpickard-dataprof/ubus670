@@ -682,12 +682,12 @@ Keep the tone professional but friendly.</div>
         <!-- SUBMISSION -->
         <section class="lab-section">
             <h2>Part 5: Submit Your Work</h2>
-            <p>Before completing the lab, compile your responses for submission. This allows your instructor to verify your work and provide feedback.</p>
+            <p>Compile your responses and upload them to the LMS (Learning Management System, e.g., Blackboard) as a PDF.</p>
 
             <div class="task">
                 <div class="task-header">
                     <span class="task-number">8</span>
-                    <h3 class="task-title">Compile Your Responses</h3>
+                    <h3 class="task-title">Generate and Upload Your Lab Report</h3>
                 </div>
 
                 <div class="step">
@@ -697,29 +697,29 @@ Keep the tone professional but friendly.</div>
 
                 <div class="step">
                     <input type="checkbox" id="step8-2">
-                    <label for="step8-2">Click the "Generate Summary" button below to compile all your responses.</label>
+                    <label for="step8-2">Click <strong>"Download as PDF"</strong> below to generate your lab report.</label>
                 </div>
 
-                <button id="generate-summary-btn" class="btn-primary" style="margin: 20px 0;" onclick="generateSummary()">📋 Generate Summary</button>
+                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="downloadPDF()">Download as PDF</button>
 
-                <div id="summary-output" style="display: none;">
-                    <div class="reflection-area" style="background: #f0f8ff; border-color: #1D428A;">
-                        <label style="color: #1D428A;">Your Lab Summary (copy this text and submit via your LMS or email to your instructor):</label>
-                        <textarea id="summary-text" readonly style="min-height: 300px; font-family: 'Fira Code', monospace; font-size: 0.85em; background: white;"></textarea>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button class="btn-primary" onclick="copySummary()">📋 Copy to Clipboard</button>
-                        <button class="btn-primary" style="background: #1D428A;" onclick="downloadSummary()">💾 Download as Text File</button>
-                    </div>
+                <div class="step">
+                    <input type="checkbox" id="step8-3">
+                    <label for="step8-3">Open the downloaded PDF and verify your responses look correct.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step8-4">
+                    <label for="step8-4">Log in to your LMS and upload the PDF to the <strong>Day 1 Lab</strong> assignment.</label>
                 </div>
 
                 <div class="tip-box" style="margin-top: 20px;">
-                    <strong>💡 Submission options:</strong>
-                    <ul style="margin-bottom: 0;">
-                        <li><strong>Option 1:</strong> Copy and paste into your LMS assignment</li>
-                        <li><strong>Option 2:</strong> Download the text file and upload it</li>
-                        <li><strong>Option 3:</strong> Email to your instructor (check syllabus for details)</li>
-                    </ul>
+                    <strong>How to upload:</strong>
+                    <ol style="margin-bottom: 0; font-size: 0.9em;">
+                        <li>Go to your LMS (e.g., Blackboard) and find the UBUS 670 course</li>
+                        <li>Navigate to <strong>Assignments</strong> &rarr; <strong>Day 1 Lab: Exploring Gemini</strong></li>
+                        <li>Click <strong>Upload File</strong> and select the PDF you just downloaded</li>
+                        <li>Click <strong>Submit</strong></li>
+                    </ol>
                 </div>
             </div>
         </section>
@@ -729,7 +729,7 @@ Keep the tone professional but friendly.</div>
             <h2>Lab Complete!</h2>
             <p>Congratulations on completing your first AI lab. Before moving on:</p>
             <ul style="text-align: left; max-width: 500px; margin: 20px auto;">
-                <li>✅ Submit your lab summary (see above)</li>
+                <li>Verify your PDF was uploaded to the LMS</li>
                 <li>Save any chat transcripts you want to keep for your portfolio</li>
                 <li>Note any questions for class discussion</li>
             </ul>
@@ -781,71 +781,62 @@ Keep the tone professional but friendly.</div>
         // Initialize progress
         updateProgress();
 
-        // Generate summary of all responses
-        function generateSummary() {
-            const textareas = document.querySelectorAll('.reflection-area textarea:not(#summary-text)');
+        // Download lab report as PDF
+        function downloadPDF() {
+            const textareas = document.querySelectorAll('.reflection-area textarea');
             const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
             const totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
 
-            let summary = `UBUS 670 - Day 1 Lab: Exploring Gemini with Beacon
-============================================
-Student Name: [Enter your name]
-Date: ${new Date().toLocaleDateString()}
-Progress: ${checkboxes.length}/${totalCheckboxes} steps completed
-
-`;
-
             const reflectionLabels = [
-                'Task A - Summarization Reflection',
-                'Task B - Q&A Reflection',
-                'Task C - Drafting Reflection',
+                'Task A: Summarization Reflection',
+                'Task B: Q&A Reflection',
+                'Task C: Drafting Reflection',
                 'Hallucination Documentation',
-                'Final Reflection 1 - What surprised you',
-                'Final Reflection 2 - AI opportunity for Beacon',
-                'Final Reflection 3 - Concerns about AI'
+                'Final Reflection 1: What Surprised You',
+                'Final Reflection 2: AI Opportunity for Beacon',
+                'Final Reflection 3: Concerns About AI'
             ];
 
+            let sections = '';
             textareas.forEach((textarea, index) => {
                 const label = reflectionLabels[index] || `Response ${index + 1}`;
                 const response = textarea.value.trim() || '[No response provided]';
-                summary += `${label}:
-${'-'.repeat(40)}
-${response}
-
-`;
+                sections += `
+                    <div style="margin-bottom: 24px; page-break-inside: avoid;">
+                        <h3 style="font-family: Montserrat, sans-serif; font-size: 13px; color: #1D428A; margin: 0 0 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px;">${label}</h3>
+                        <p style="font-family: Georgia, serif; font-size: 12px; line-height: 1.6; color: #333; white-space: pre-wrap; margin: 0;">${response.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+                    </div>`;
             });
 
-            summary += `
-============================================
-Submitted: ${new Date().toLocaleString()}
-`;
+            const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>UBUS 670 - Day 1 Lab Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    @media print { body { margin: 0; } @page { margin: 0.75in; } }
+    body { font-family: Georgia, serif; max-width: 700px; margin: 0 auto; padding: 40px; color: #333; }
+</style></head><body>
+<div style="border-bottom: 3px solid #C8102E; padding-bottom: 15px; margin-bottom: 25px;">
+    <h1 style="font-family: Montserrat, sans-serif; font-size: 20px; color: #C8102E; margin: 0;">UBUS 670: AI for Business Leaders</h1>
+    <h2 style="font-family: Montserrat, sans-serif; font-size: 16px; color: #333; margin: 8px 0 0;">Day 1 Lab: Exploring Gemini with Beacon</h2>
+    <p style="font-size: 12px; color: #666; margin: 10px 0 0;">
+        Student Name: _____________________________ &nbsp;&nbsp; Date: ${new Date().toLocaleDateString()} &nbsp;&nbsp; Progress: ${checkboxes.length}/${totalCheckboxes} steps
+    </p>
+</div>
+${sections}
+<div style="border-top: 2px solid #e0e0e0; padding-top: 12px; margin-top: 30px; text-align: center;">
+    <p style="font-size: 11px; color: #888;">Generated: ${new Date().toLocaleString()} | UBUS 670 - Northern Illinois University</p>
+</div>
+</body></html>`;
 
-            document.getElementById('summary-text').value = summary;
-            document.getElementById('summary-output').style.display = 'block';
-            document.getElementById('generate-summary-btn').textContent = '✅ Summary Generated';
-        }
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(html);
+            printWindow.document.close();
+            printWindow.onload = function() {
+                printWindow.print();
+            };
 
-        // Copy summary to clipboard
-        function copySummary() {
-            const summaryText = document.getElementById('summary-text');
-            summaryText.select();
-            navigator.clipboard.writeText(summaryText.value).then(() => {
-                alert('Summary copied to clipboard!');
-            });
-        }
-
-        // Download summary as text file
-        function downloadSummary() {
-            const summaryText = document.getElementById('summary-text').value;
-            const blob = new Blob([summaryText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `UBUS670_Day1_Lab_${new Date().toISOString().slice(0,10)}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            document.getElementById('download-pdf-btn').textContent = 'PDF Generated - Print/Save';
         }
     </script>
 

@@ -49,13 +49,17 @@ After each day is approved, append an entry below:
 
 **Patterns to apply to future days:**
 - Always include custom SVG/CSS diagrams for technical concepts (not just emoji)
+- SVG quality bar: large text (12-14px labels, 9-10px subtitles), rounded rect nodes (120x52px min), drop shadows, curved arrows with markers, generous viewBox (360x340+). See Day 2 iteration cycle as gold standard.
 - Use `.left-content h2` with `font-size: 1.8em; font-weight: 700` for headers
 - Add spacing before lists: `p + ul, p + ol { margin-top: 1.2em; }`
 - Test AI exercises with current models before publishing
 - Include model selector guidance in tool setup instructions
+- Lab submission: PDF download + LMS upload (not copy/paste)
+- Include "Compare with Classmates" boxes in labs to highlight AI non-determinism
 
 **Content or approach to avoid:**
 - Generic stock imagery or decorative-only graphics
+- Tiny SVG text (never below 9px) or small circle nodes — use large rounded rects
 - Assuming any specific AI behavior (hallucinations, refusals)—always provide fallbacks
 - Referencing Google Workspace for NIU students
 - Pre-selected quiz answers (must be interactive)

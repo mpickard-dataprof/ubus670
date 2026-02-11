@@ -693,13 +693,36 @@
                             <p style="margin-top: 25px;">Think of it as an extremely well-read assistant who writes new content based on patterns learned from billions of documents.</p>
                         </div>
                         <div class="visual-box" style="text-align: center; padding: 30px;">
-                            <div class="flow-diagram" style="flex-direction: column; gap: 20px;">
-                                <div class="flow-box">Your Input</div>
-                                <div class="flow-arrow">↓</div>
-                                <div class="flow-box highlight">Pattern Matching<br><span style="font-size: 0.7em; font-weight: normal;">from training data</span></div>
-                                <div class="flow-arrow">↓</div>
-                                <div class="flow-box">NEW Output</div>
-                            </div>
+                            <svg viewBox="0 0 240 310" style="width: 100%; max-width: 240px; margin: 0 auto; display: block;">
+                                <defs>
+                                    <marker id="mentalModelArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                                        <path d="M 0 1 L 9 5 L 0 9 z" fill="#ccc"/>
+                                    </marker>
+                                    <filter id="mentalModelShadow" x="-8%" y="-8%" width="116%" height="120%">
+                                        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+                                    </filter>
+                                </defs>
+                                <!-- Arrow 1: Input to Pattern Matching -->
+                                <path d="M 120 67 Q 120 90, 120 103" fill="none" stroke="#ccc" stroke-width="2.5" marker-end="url(#mentalModelArrow)"/>
+                                <!-- Arrow 2: Pattern Matching to Output -->
+                                <path d="M 120 173 Q 120 196, 120 209" fill="none" stroke="#ccc" stroke-width="2.5" marker-end="url(#mentalModelArrow)"/>
+                                <!-- Node 1: Your Input -->
+                                <g filter="url(#mentalModelShadow)">
+                                    <rect x="45" y="15" width="150" height="52" rx="10" fill="#1D428A"/>
+                                    <text x="120" y="46" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-size="14" font-weight="700">Your Input</text>
+                                </g>
+                                <!-- Node 2: Pattern Matching (Highlighted) -->
+                                <g filter="url(#mentalModelShadow)">
+                                    <rect x="30" y="103" width="180" height="70" rx="10" fill="#C8102E"/>
+                                    <text x="120" y="133" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-size="14" font-weight="700">Pattern Matching</text>
+                                    <text x="120" y="155" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Montserrat, sans-serif" font-size="10" font-weight="400">from training data</text>
+                                </g>
+                                <!-- Node 3: NEW Output -->
+                                <g filter="url(#mentalModelShadow)">
+                                    <rect x="45" y="209" width="150" height="52" rx="10" fill="#43B02A"/>
+                                    <text x="120" y="240" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-size="14" font-weight="700">NEW Output</text>
+                                </g>
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -768,18 +791,53 @@
                             <p style="font-size: 0.8em;">How responses are generated token-by-token</p>
                         </div>
                     </div>
-                    <div class="flow-diagram" style="margin-top: 30px; background: #f8f9fa; border-radius: 12px; padding: 20px;">
-                        <div class="flow-box">Text Input</div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-box">Tokenize</div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-box">Embed</div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-box highlight">Transformer<br>(Attention)</div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-box">Predict</div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-box">Output</div>
+                    <div style="margin-top: 30px; background: #f8f9fa; border-radius: 12px; padding: 20px;">
+                        <svg viewBox="0 0 820 100" style="width: 100%; max-width: 100%; height: auto;">
+                            <defs>
+                                <filter id="pipelineShadow">
+                                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+                                </filter>
+                                <marker id="pipelineArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#666"/>
+                                </marker>
+                            </defs>
+                            <!-- Text Input (Navy) -->
+                            <g filter="url(#pipelineShadow)">
+                                <rect x="10" y="30" width="110" height="50" rx="10" fill="#1D428A"/>
+                                <text x="65" y="60" text-anchor="middle" fill="white" font-size="13" font-weight="600" font-family="Montserrat, sans-serif">Text Input</text>
+                            </g>
+                            <path d="M 125 55 L 145 55" stroke="#666" stroke-width="2" marker-end="url(#pipelineArrow)" fill="none"/>
+                            <!-- Tokenize (Blue) -->
+                            <g filter="url(#pipelineShadow)">
+                                <rect x="150" y="30" width="100" height="50" rx="10" fill="#00A9E0"/>
+                                <text x="200" y="60" text-anchor="middle" fill="white" font-size="13" font-weight="600" font-family="Montserrat, sans-serif">Tokenize</text>
+                            </g>
+                            <path d="M 255 55 L 275 55" stroke="#666" stroke-width="2" marker-end="url(#pipelineArrow)" fill="none"/>
+                            <!-- Embed (Blue) -->
+                            <g filter="url(#pipelineShadow)">
+                                <rect x="280" y="30" width="90" height="50" rx="10" fill="#00A9E0"/>
+                                <text x="325" y="60" text-anchor="middle" fill="white" font-size="13" font-weight="600" font-family="Montserrat, sans-serif">Embed</text>
+                            </g>
+                            <path d="M 375 55 L 395 55" stroke="#666" stroke-width="2" marker-end="url(#pipelineArrow)" fill="none"/>
+                            <!-- Transformer (Red, larger/highlighted) -->
+                            <g filter="url(#pipelineShadow)">
+                                <rect x="400" y="20" width="130" height="70" rx="10" fill="#C8102E"/>
+                                <text x="465" y="52" text-anchor="middle" fill="white" font-size="14" font-weight="700" font-family="Montserrat, sans-serif">Transformer</text>
+                                <text x="465" y="70" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-family="Montserrat, sans-serif">(Attention)</text>
+                            </g>
+                            <path d="M 535 55 L 555 55" stroke="#666" stroke-width="2" marker-end="url(#pipelineArrow)" fill="none"/>
+                            <!-- Predict (Blue) -->
+                            <g filter="url(#pipelineShadow)">
+                                <rect x="560" y="30" width="90" height="50" rx="10" fill="#00A9E0"/>
+                                <text x="605" y="60" text-anchor="middle" fill="white" font-size="13" font-weight="600" font-family="Montserrat, sans-serif">Predict</text>
+                            </g>
+                            <path d="M 655 55 L 675 55" stroke="#666" stroke-width="2" marker-end="url(#pipelineArrow)" fill="none"/>
+                            <!-- Output (Green) -->
+                            <g filter="url(#pipelineShadow)">
+                                <rect x="680" y="30" width="90" height="50" rx="10" fill="#43B02A"/>
+                                <text x="725" y="60" text-anchor="middle" fill="white" font-size="13" font-weight="600" font-family="Montserrat, sans-serif">Output</text>
+                            </g>
+                        </svg>
                     </div>
                 </div>
             </section>
@@ -898,63 +956,89 @@
 
                     <!-- Translation flow diagram -->
                     <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 16px; padding: 30px; position: relative;">
-                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
-                            <!-- Input text -->
-                            <div style="text-align: center; min-width: 140px;">
-                                <p style="font-size: 0.75em; color: #666; margin: 0 0 8px;">English Input</p>
-                                <div style="background: #1D428A; color: white; padding: 15px 20px; border-radius: 10px; font-weight: 600;">
-                                    "I see a unicorn"
-                                </div>
-                            </div>
+                        <svg viewBox="0 0 820 180" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto; display: block;">
+                            <defs>
+                                <filter id="translationShadow">
+                                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+                                </filter>
+                                <marker id="translationArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#C8102E"/>
+                                </marker>
+                            </defs>
 
-                            <div style="font-size: 1.5em; color: #C8102E;">→</div>
+                            <!-- English Input Node -->
+                            <g filter="url(#translationShadow)">
+                                <rect x="10" y="55" width="140" height="70" rx="10" fill="#1D428A"/>
+                                <text x="80" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="600">"I see a unicorn"</text>
+                            </g>
+                            <text x="80" y="45" text-anchor="middle" fill="#666" font-size="11">English Input</text>
 
-                            <!-- Embedding matrices -->
-                            <div style="text-align: center;">
-                                <p style="font-size: 0.75em; color: #666; margin: 0 0 8px;">Word Embeddings</p>
-                                <div style="display: flex; gap: 8px;">
-                                    <div style="background: white; border: 2px solid #00A9E0; border-radius: 6px; padding: 8px 4px; font-family: monospace; font-size: 0.6em; line-height: 1.3;">
-                                        <div>[0.8]</div><div>[0.2]</div><div>[0.9]</div><div>[...]</div>
-                                    </div>
-                                    <div style="background: white; border: 2px solid #00A9E0; border-radius: 6px; padding: 8px 4px; font-family: monospace; font-size: 0.6em; line-height: 1.3;">
-                                        <div>[0.3]</div><div>[0.7]</div><div>[0.1]</div><div>[...]</div>
-                                    </div>
-                                    <div style="background: white; border: 2px solid #00A9E0; border-radius: 6px; padding: 8px 4px; font-family: monospace; font-size: 0.6em; line-height: 1.3;">
-                                        <div>[0.1]</div><div>[0.4]</div><div>[0.8]</div><div>[...]</div>
-                                    </div>
-                                    <div style="background: white; border: 2px solid #00A9E0; border-radius: 6px; padding: 8px 4px; font-family: monospace; font-size: 0.6em; line-height: 1.3;">
-                                        <div>[0.9]</div><div>[0.1]</div><div>[0.5]</div><div>[...]</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; gap: 8px; justify-content: center; margin-top: 4px;">
-                                    <span style="font-size: 0.65em; color: #888; width: 28px;">I</span>
-                                    <span style="font-size: 0.65em; color: #888; width: 28px;">see</span>
-                                    <span style="font-size: 0.65em; color: #888; width: 28px;">a</span>
-                                    <span style="font-size: 0.65em; color: #888; width: 28px;">uni...</span>
-                                </div>
-                            </div>
+                            <!-- Arrow 1 -->
+                            <path d="M 160 90 L 190 90" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#translationArrow)"/>
 
-                            <div style="font-size: 1.5em; color: #C8102E;">→</div>
+                            <!-- Word Embeddings -->
+                            <text x="305" y="45" text-anchor="middle" fill="#666" font-size="11">Word Embeddings</text>
+                            <g filter="url(#translationShadow)">
+                                <!-- I -->
+                                <rect x="210" y="55" width="35" height="70" rx="5" fill="white" stroke="#00A9E0" stroke-width="2"/>
+                                <text x="227.5" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.8</text>
+                                <text x="227.5" y="84" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.2</text>
+                                <text x="227.5" y="96" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.9</text>
+                                <text x="227.5" y="108" text-anchor="middle" font-family="monospace" font-size="9" fill="#666">...</text>
+                                <text x="227.5" y="145" text-anchor="middle" font-size="10" fill="#888">I</text>
 
-                            <!-- Transformer processing -->
-                            <div style="text-align: center;">
-                                <p style="font-size: 0.75em; color: #666; margin: 0 0 8px;">Transformer</p>
-                                <div style="background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%); color: white; padding: 20px; border-radius: 12px; position: relative;">
-                                    <div style="font-size: 0.9em; font-weight: 600;">PROCESS</div>
-                                    <div style="font-size: 0.7em; opacity: 0.9;">Attention + FFN</div>
-                                </div>
-                            </div>
+                                <!-- see -->
+                                <rect x="255" y="55" width="35" height="70" rx="5" fill="white" stroke="#00A9E0" stroke-width="2"/>
+                                <text x="272.5" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.3</text>
+                                <text x="272.5" y="84" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.7</text>
+                                <text x="272.5" y="96" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.1</text>
+                                <text x="272.5" y="108" text-anchor="middle" font-family="monospace" font-size="9" fill="#666">...</text>
+                                <text x="272.5" y="145" text-anchor="middle" font-size="10" fill="#888">see</text>
 
-                            <div style="font-size: 1.5em; color: #C8102E;">→</div>
+                                <!-- a -->
+                                <rect x="300" y="55" width="35" height="70" rx="5" fill="white" stroke="#00A9E0" stroke-width="2"/>
+                                <text x="317.5" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.1</text>
+                                <text x="317.5" y="84" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.4</text>
+                                <text x="317.5" y="96" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.8</text>
+                                <text x="317.5" y="108" text-anchor="middle" font-family="monospace" font-size="9" fill="#666">...</text>
+                                <text x="317.5" y="145" text-anchor="middle" font-size="10" fill="#888">a</text>
 
-                            <!-- Output text -->
-                            <div style="text-align: center; min-width: 160px;">
-                                <p style="font-size: 0.75em; color: #666; margin: 0 0 8px;">German Output</p>
-                                <div style="background: #43B02A; color: white; padding: 15px 20px; border-radius: 10px; font-weight: 600;">
-                                    "Ich sehe ein Einhorn"
-                                </div>
-                            </div>
-                        </div>
+                                <!-- unicorn -->
+                                <rect x="345" y="55" width="35" height="70" rx="5" fill="white" stroke="#00A9E0" stroke-width="2"/>
+                                <text x="362.5" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.9</text>
+                                <text x="362.5" y="84" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.1</text>
+                                <text x="362.5" y="96" text-anchor="middle" font-family="monospace" font-size="9" fill="#333">0.5</text>
+                                <text x="362.5" y="108" text-anchor="middle" font-family="monospace" font-size="9" fill="#666">...</text>
+                                <text x="362.5" y="145" text-anchor="middle" font-size="10" fill="#888">unicorn</text>
+                            </g>
+
+                            <!-- Arrow 2 -->
+                            <path d="M 390 90 L 430 90" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#translationArrow)"/>
+
+                            <!-- Transformer Node -->
+                            <text x="510" y="45" text-anchor="middle" fill="#666" font-size="11">Transformer</text>
+                            <g filter="url(#translationShadow)">
+                                <rect x="440" y="55" width="140" height="70" rx="10" fill="url(#translationTransformerGrad)"/>
+                                <defs>
+                                    <linearGradient id="translationTransformerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#C8102E;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#a00d24;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <text x="510" y="87" text-anchor="middle" fill="white" font-size="13" font-weight="600">PROCESS</text>
+                                <text x="510" y="105" text-anchor="middle" fill="white" font-size="10" opacity="0.9">Attention + FFN</text>
+                            </g>
+
+                            <!-- Arrow 3 -->
+                            <path d="M 590 90 L 630 90" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#translationArrow)"/>
+
+                            <!-- German Output Node -->
+                            <text x="720" y="45" text-anchor="middle" fill="#666" font-size="11">German Output</text>
+                            <g filter="url(#translationShadow)">
+                                <rect x="640" y="55" width="160" height="70" rx="10" fill="#43B02A"/>
+                                <text x="720" y="95" text-anchor="middle" fill="white" font-size="12" font-weight="600">"Ich sehe ein Einhorn"</text>
+                            </g>
+                        </svg>
                     </div>
 
                     <div class="callout key-insight" style="margin-top: 25px;">
@@ -970,84 +1054,96 @@
                     <p style="margin-bottom: 25px;">The transformer architecture processes all words simultaneously:</p>
 
                     <div style="background: #1a1a1a; border-radius: 16px; padding: 35px; color: white;">
-                        <div style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
-                            <!-- Input words -->
-                            <div style="text-align: center;">
-                                <p style="font-size: 0.8em; color: #888; margin: 0 0 12px;">Input Words</p>
-                                <div style="display: flex; flex-direction: column; gap: 8px;">
-                                    <div style="background: #2a5298; padding: 10px 20px; border-radius: 8px; font-weight: 500;">The</div>
-                                    <div style="background: #2a5298; padding: 10px 20px; border-radius: 8px; font-weight: 500;">customer</div>
-                                    <div style="background: #2a5298; padding: 10px 20px; border-radius: 8px; font-weight: 500;">wants</div>
-                                    <div style="background: #2a5298; padding: 10px 20px; border-radius: 8px; font-weight: 500;">a</div>
-                                    <div style="background: #2a5298; padding: 10px 20px; border-radius: 8px; font-weight: 500;">refund</div>
-                                </div>
-                            </div>
+                        <svg viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto; display: block;">
+                            <defs>
+                                <filter id="darkShadow">
+                                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3" flood-color="#000"/>
+                                </filter>
+                                <marker id="transformerArrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#00A9E0"/>
+                                </marker>
+                                <linearGradient id="attentionGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#C8102E;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#ff6b6b;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#C8102E;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
 
-                            <div style="font-size: 2em; color: #00A9E0;">→</div>
+                            <!-- Input Words -->
+                            <text x="70" y="35" text-anchor="middle" fill="#aaa" font-size="11">Input Words</text>
+                            <g filter="url(#darkShadow)">
+                                <rect x="20" y="50" width="100" height="160" rx="10" fill="#2a5298"/>
+                                <text x="70" y="75" text-anchor="middle" fill="white" font-size="12" font-weight="500">The</text>
+                                <text x="70" y="105" text-anchor="middle" fill="white" font-size="12" font-weight="500">customer</text>
+                                <text x="70" y="135" text-anchor="middle" fill="white" font-size="12" font-weight="500">wants</text>
+                                <text x="70" y="165" text-anchor="middle" fill="white" font-size="12" font-weight="500">a</text>
+                                <text x="70" y="195" text-anchor="middle" fill="white" font-size="12" font-weight="500">refund</text>
+                            </g>
 
-                            <!-- Embedding matrices -->
-                            <div style="text-align: center;">
-                                <p style="font-size: 0.8em; color: #888; margin: 0 0 12px;">Embeddings</p>
-                                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; background: rgba(0,169,224,0.2); padding: 15px; border-radius: 8px; border: 2px solid #00A9E0;">
-                                    <div style="display: flex; flex-direction: column; gap: 3px;">
-                                        <div style="background: #00A9E0; width: 12px; height: 12px; border-radius: 2px;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 8px; border-radius: 2px; opacity: 0.7;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 15px; border-radius: 2px;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 6px; border-radius: 2px; opacity: 0.5;"></div>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; gap: 3px;">
-                                        <div style="background: #00A9E0; width: 12px; height: 15px; border-radius: 2px;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 10px; border-radius: 2px; opacity: 0.8;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 8px; border-radius: 2px; opacity: 0.6;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 14px; border-radius: 2px;"></div>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; gap: 3px;">
-                                        <div style="background: #00A9E0; width: 12px; height: 6px; border-radius: 2px; opacity: 0.5;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 12px; border-radius: 2px;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 10px; border-radius: 2px; opacity: 0.7;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 8px; border-radius: 2px; opacity: 0.6;"></div>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; gap: 3px;">
-                                        <div style="background: #00A9E0; width: 12px; height: 10px; border-radius: 2px; opacity: 0.7;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 5px; border-radius: 2px; opacity: 0.4;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 14px; border-radius: 2px;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 11px; border-radius: 2px; opacity: 0.8;"></div>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; gap: 3px;">
-                                        <div style="background: #00A9E0; width: 12px; height: 14px; border-radius: 2px;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 12px; border-radius: 2px;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 7px; border-radius: 2px; opacity: 0.5;"></div>
-                                        <div style="background: #00A9E0; width: 12px; height: 9px; border-radius: 2px; opacity: 0.7;"></div>
-                                    </div>
-                                </div>
-                                <p style="font-size: 0.7em; color: #666; margin-top: 8px;">Each column = one word's numbers</p>
-                            </div>
+                            <!-- Arrow 1 -->
+                            <path d="M 130 130 L 170 130" stroke="#00A9E0" stroke-width="3" fill="none" marker-end="url(#transformerArrow2)"/>
 
-                            <div style="font-size: 2em; color: #00A9E0;">→</div>
+                            <!-- Embeddings -->
+                            <text x="280" y="35" text-anchor="middle" fill="#aaa" font-size="11">Embeddings</text>
+                            <g filter="url(#darkShadow)">
+                                <rect x="185" y="70" width="190" height="120" rx="8" fill="rgba(0,169,224,0.15)" stroke="#00A9E0" stroke-width="2"/>
 
-                            <!-- Attention cloud -->
-                            <div style="text-align: center;">
-                                <p style="font-size: 0.8em; color: #888; margin: 0 0 12px;">Self-Attention</p>
-                                <div style="background: linear-gradient(135deg, #C8102E 0%, #ff6b6b 50%, #C8102E 100%); width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(200,16,46,0.4);">
-                                    <div style="text-align: center;">
-                                        <div style="font-size: 0.9em; font-weight: 600;">CONNECT</div>
-                                        <div style="font-size: 0.7em; opacity: 0.9;">all words</div>
-                                    </div>
-                                </div>
-                                <p style="font-size: 0.7em; color: #666; margin-top: 8px;">Words "look at" each other</p>
-                            </div>
+                                <!-- Column 1 -->
+                                <rect x="205" y="90" width="22" height="15" rx="2" fill="#00A9E0"/>
+                                <rect x="205" y="108" width="22" height="10" rx="2" fill="#00A9E0" opacity="0.7"/>
+                                <rect x="205" y="121" width="22" height="18" rx="2" fill="#00A9E0"/>
+                                <rect x="205" y="142" width="22" height="8" rx="2" fill="#00A9E0" opacity="0.5"/>
 
-                            <div style="font-size: 2em; color: #00A9E0;">→</div>
+                                <!-- Column 2 -->
+                                <rect x="235" y="90" width="22" height="18" rx="2" fill="#00A9E0"/>
+                                <rect x="235" y="111" width="22" height="12" rx="2" fill="#00A9E0" opacity="0.8"/>
+                                <rect x="235" y="126" width="22" height="10" rx="2" fill="#00A9E0" opacity="0.6"/>
+                                <rect x="235" y="139" width="22" height="17" rx="2" fill="#00A9E0"/>
+
+                                <!-- Column 3 -->
+                                <rect x="265" y="90" width="22" height="8" rx="2" fill="#00A9E0" opacity="0.5"/>
+                                <rect x="265" y="101" width="22" height="15" rx="2" fill="#00A9E0"/>
+                                <rect x="265" y="119" width="22" height="12" rx="2" fill="#00A9E0" opacity="0.7"/>
+                                <rect x="265" y="134" width="22" height="10" rx="2" fill="#00A9E0" opacity="0.6"/>
+
+                                <!-- Column 4 -->
+                                <rect x="295" y="90" width="22" height="12" rx="2" fill="#00A9E0" opacity="0.7"/>
+                                <rect x="295" y="105" width="22" height="6" rx="2" fill="#00A9E0" opacity="0.4"/>
+                                <rect x="295" y="114" width="22" height="17" rx="2" fill="#00A9E0"/>
+                                <rect x="295" y="134" width="22" height="13" rx="2" fill="#00A9E0" opacity="0.8"/>
+
+                                <!-- Column 5 -->
+                                <rect x="325" y="90" width="22" height="17" rx="2" fill="#00A9E0"/>
+                                <rect x="325" y="110" width="22" height="15" rx="2" fill="#00A9E0"/>
+                                <rect x="325" y="128" width="22" height="9" rx="2" fill="#00A9E0" opacity="0.5"/>
+                                <rect x="325" y="140" width="22" height="11" rx="2" fill="#00A9E0" opacity="0.7"/>
+                            </g>
+                            <text x="280" y="210" text-anchor="middle" fill="#888" font-size="9">Each column = one word's numbers</text>
+
+                            <!-- Arrow 2 -->
+                            <path d="M 385 130 L 425 130" stroke="#00A9E0" stroke-width="3" fill="none" marker-end="url(#transformerArrow2)"/>
+
+                            <!-- Self-Attention Circle -->
+                            <text x="505" y="35" text-anchor="middle" fill="#aaa" font-size="11">Self-Attention</text>
+                            <g filter="url(#darkShadow)">
+                                <circle cx="505" cy="125" r="60" fill="url(#attentionGrad)"/>
+                                <text x="505" y="120" text-anchor="middle" fill="white" font-size="13" font-weight="600">CONNECT</text>
+                                <text x="505" y="138" text-anchor="middle" fill="white" font-size="10" opacity="0.9">all words</text>
+                            </g>
+                            <text x="505" y="210" text-anchor="middle" fill="#888" font-size="9">Words "look at" each other</text>
+
+                            <!-- Arrow 3 -->
+                            <path d="M 575 130 L 615 130" stroke="#00A9E0" stroke-width="3" fill="none" marker-end="url(#transformerArrow2)"/>
 
                             <!-- Output -->
-                            <div style="text-align: center;">
-                                <p style="font-size: 0.8em; color: #888; margin: 0 0 12px;">Output</p>
-                                <div style="background: #43B02A; padding: 20px; border-radius: 12px;">
-                                    <div style="font-size: 0.9em; font-weight: 600;">Understanding:</div>
-                                    <div style="font-size: 0.8em; margin-top: 8px;">"Customer is<br>requesting money back"</div>
-                                </div>
-                            </div>
-                        </div>
+                            <text x="715" y="35" text-anchor="middle" fill="#aaa" font-size="11">Output</text>
+                            <g filter="url(#darkShadow)">
+                                <rect x="625" y="80" width="180" height="100" rx="12" fill="#43B02A"/>
+                                <text x="715" y="110" text-anchor="middle" fill="white" font-size="13" font-weight="600">Understanding:</text>
+                                <text x="715" y="135" text-anchor="middle" fill="white" font-size="11">"Customer is</text>
+                                <text x="715" y="155" text-anchor="middle" fill="white" font-size="11">requesting money back"</text>
+                            </g>
+                        </svg>
                     </div>
                 </div>
             </section>
@@ -1248,28 +1344,44 @@
                             </div>
                         </div>
                         <div class="visual-box" style="text-align: center; padding: 25px;">
-                            <!-- Context window as a container being filled -->
-                            <div style="width: 200px; margin: 0 auto; position: relative;">
-                                <div style="border: 3px solid #1D428A; border-radius: 12px; overflow: hidden; background: white;">
-                                    <div style="background: #C8102E; color: white; padding: 12px 15px; text-align: left; font-size: 0.8em;">
-                                        <strong>System Prompt</strong>
-                                        <div style="font-size: 0.85em; opacity: 0.9; margin-top: 4px;">Your instructions...</div>
-                                    </div>
-                                    <div style="background: #f0f7ff; padding: 12px 15px; text-align: left; font-size: 0.8em; border-top: 1px solid #e0e0e0;">
-                                        <strong>Documents</strong>
-                                        <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Uploaded files...</div>
-                                    </div>
-                                    <div style="background: #f8f8f8; padding: 12px 15px; text-align: left; font-size: 0.8em; border-top: 1px solid #e0e0e0;">
-                                        <strong>Conversation</strong>
-                                        <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Back and forth...</div>
-                                    </div>
-                                    <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d0ebf5 100%); padding: 12px 15px; text-align: left; font-size: 0.8em; border-top: 2px solid #00A9E0;">
-                                        <strong style="color: #1D428A;">Current Response</strong>
-                                        <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Being generated...</div>
-                                    </div>
-                                </div>
-                                <div style="margin-top: 10px; font-size: 0.75em; color: #888;">Limited capacity (128K - 2M tokens)</div>
-                            </div>
+                            <svg width="260" height="340" viewBox="0 0 260 340" style="max-width: 260px; margin: 0 auto;">
+                                <defs>
+                                    <filter id="contextShadow">
+                                        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+                                    </filter>
+                                </defs>
+
+                                <!-- Outer container border -->
+                                <g filter="url(#contextShadow)">
+                                    <rect x="15" y="15" width="230" height="275" rx="10" fill="white" stroke="#1D428A" stroke-width="3"/>
+
+                                    <!-- Empty space at top to suggest capacity -->
+                                    <rect x="25" y="25" width="210" height="15" rx="5" fill="#f5f5f5" opacity="0.3"/>
+
+                                    <!-- System Prompt section -->
+                                    <rect x="25" y="50" width="210" height="55" rx="8" fill="#C8102E"/>
+                                    <text x="35" y="71" fill="white" font-size="13" font-weight="700">System Prompt</text>
+                                    <text x="35" y="88" fill="white" font-size="10" opacity="0.9">Your instructions...</text>
+
+                                    <!-- Documents section -->
+                                    <rect x="25" y="109" width="210" height="55" rx="8" fill="#00A9E0"/>
+                                    <text x="35" y="130" fill="white" font-size="13" font-weight="700">Documents</text>
+                                    <text x="35" y="147" fill="white" font-size="10" opacity="0.9">Uploaded files...</text>
+
+                                    <!-- Conversation section -->
+                                    <rect x="25" y="168" width="210" height="55" rx="8" fill="#1D428A" opacity="0.7"/>
+                                    <text x="35" y="189" fill="white" font-size="13" font-weight="700">Conversation</text>
+                                    <text x="35" y="206" fill="white" font-size="10" opacity="0.9">Back and forth...</text>
+
+                                    <!-- Current Response section (highlighted) -->
+                                    <rect x="25" y="227" width="210" height="55" rx="8" fill="#43B02A" stroke="#43B02A" stroke-width="2"/>
+                                    <text x="35" y="248" fill="white" font-size="13" font-weight="700">Current Response</text>
+                                    <text x="35" y="265" fill="white" font-size="10" opacity="0.9">Being generated...</text>
+                                </g>
+
+                                <!-- Caption -->
+                                <text x="130" y="310" text-anchor="middle" fill="#888" font-size="10">Limited capacity (128K – 2M tokens)</text>
+                            </svg>
                         </div>
                     </div>
                 </div>
