@@ -121,12 +121,25 @@ projects:
       review: null
     dependencies: []
     tags: [course, mba, ai]
-    notes: "Day 1 complete (2026-02-06). Days 7-9 need dual versions: Plan A (ADK Visual Builder) + Plan B (MindStudio backup)"
+    notes: "Day 1 complete (2026-02-06). Day 2 complete (2026-02-10). Day 3 prototype generated, undergoing rework (see Spec 0002). Days 7-9 need dual versions: Plan A (ADK Visual Builder) + Plan B (MindStudio backup)"
+
+  - id: "0002"
+    title: "Day 3 Context Engineering — Major Rework"
+    summary: "Rework Day 3 lecture, lab, and quiz based on instructor feedback: restructure slides, add Gemini Gems lab, fix RAG diagram, rework fine-tuning section"
+    status: conceived
+    priority: high
+    files:
+      spec: codev/specs/0002-day3-rework.md
+      plan: codev/plans/0002-day3-rework.md
+      review: null
+    dependencies: ["0001"]
+    tags: [course, day3, rework]
+    notes: "Instructor feedback received 2026-02-11. Major changes: remove AI-ready docs focus, add structured formats, Gemini Gems, three-way context comparison, colleague fine-tuning story. Execute in fresh session."
 ```
 
 ## Next Available Number
 
-**0002** - Reserve this number for your next project
+**0003** - Reserve this number for your next project
 
 ---
 

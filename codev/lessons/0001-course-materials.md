@@ -66,3 +66,41 @@ After each day is approved, append an entry below:
 - Overly technical jargon without explanation for MBA audience
 
 ---
+
+### Day 2: Prompt Engineering
+**Approved:** 2026-02-10
+
+**What worked well:**
+- RCTFC framework with visual flow diagram (SVG) resonated as a teaching structure
+- Prompting techniques comparison (zero-shot vs. few-shot vs. chain-of-thought) with side-by-side examples
+- 20-question quiz bank with 2 variants per topic and 70%+ passing threshold works well
+- Iteration cycle SVG diagram became the "gold standard" for future SVG quality
+- Dedicated tool setup section in lab (with ChatGPT fallback) removes friction
+- "Compare with Classmates" boxes in labs highlight AI non-determinism effectively
+
+**What required significant revision:**
+- Breadcrumb navigation needed full path (UBUS 670 › Week 1 › Day 2 › Lecture)
+- All 7 SVG diagrams across Day 1 and Day 2 needed upgrade to new quality standard (large text, drop shadows, rounded rects, curved arrows)
+- Technical terms ("system prompt", "meta-prompt", "non-deterministic") needed inline definitions at first use
+- Accuracy metrics needed disclaimers ("illustrative, actual accuracy varies")
+- RCTFC framework needed industry context note (CO-STAR, RTF alternatives exist)
+- Lab needed dedicated tool setup section before tasks begin
+
+**Patterns to apply to future days:**
+- SVG quality bar (established in Day 2, codified): 12-14px labels, 9-10px subtitles (never below 9px), rounded rect nodes (rx="10", 120x52px min), drop shadows via `<filter><feDropShadow>`, curved arrows with `<marker>` arrowheads, NIU brand colors, generous viewBox (360x340+)
+- Define all technical terms inline at first use with callout/tip boxes
+- Include dedicated "Tool Setup" section in every lab before tasks begin
+- Provide alternative tool fallback (e.g., ChatGPT if Gemini unavailable)
+- Add disclaimers to illustrative metrics and examples
+- Note industry alternatives when teaching a specific framework
+- Full breadcrumb path in all navigation: UBUS 670 › Week X › Day Y › [Component]
+- Quiz passing threshold (70%+) with tiered result messages
+
+**Content or approach to avoid:**
+- Assuming students know technical jargon (always define at first use)
+- Presenting teaching frameworks as "the only way" without noting alternatives
+- Undisclaimed accuracy/performance metrics (students may treat as gospel)
+- Starting labs without tool setup verification
+- CSS-only diagrams for technical concepts (always use SVG for quality control)
+
+---
