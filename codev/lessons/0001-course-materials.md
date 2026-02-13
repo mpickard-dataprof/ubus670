@@ -112,10 +112,14 @@ After each day is approved, append an entry below:
 **What worked well:**
 - Structured formats (Markdown, JSON, XML) framing is more current than "AI-ready documents"
 - Gemini Gems provide a concrete, hands-on way to teach persistent context
-- Three-way comparison (no context / upload / Gem) clearly demonstrates why context engineering matters
-- "Accidental Fine-Tuner" colleague story makes behavioral config vs fine-tuning memorable
+- Three-way comparison (no context / upload / Gem) clearly demonstrates why context engineering matters — experiential learning > lecturing about it
+- "Accidental Fine-Tuner" colleague story makes behavioral config vs fine-tuning memorable — story-driven teaching creates emotional hooks and "aha moments"
 - Citation testing section teaches source verification as a business skill
 - 22-topic quiz bank with random 20-question selection per attempt adds variety
+- Before/after examples (plain text vacation policy → Markdown) are more powerful than abstract explanations
+- Reframing "structure as optimization, not necessity" shifts from fear/workaround to empowerment
+- Gem sharing between classmates adds social dimension + reinforces non-determinism teaching
+- Addressing the fine-tuning misconception explicitly (Custom GPTs ≠ fine-tuning) corrects a widespread false belief — always surface and correct misconceptions, don't just teach the "right" thing
 
 **What required significant revision from original prototype:**
 - "AI-ready documents" concept was outdated for 2026 (modern models handle messy docs)
@@ -124,6 +128,7 @@ After each day is approved, append an entry below:
 - Fine-tuning was over-emphasized as a primary technique (2026 consensus is RAG-first)
 - ChatGPT backup plan removed per instructor directive (focus on Gemini ecosystem)
 - Data Privacy Assessment removed to make room for Gem creation and citation testing
+- Original prototype had too much theory, not enough experiential learning — rework shifted to doing > hearing
 
 **Patterns to apply to future days:**
 - Always research current AI model versions before writing content (don't assume from spec)
@@ -131,6 +136,11 @@ After each day is approved, append an entry below:
 - Include `[AI-GENERATED IMAGE]` placeholders with detailed prompts for instructor to generate
 - When a concept is "outdated," reframe rather than remove entirely (structure still helps, just isn't required)
 - Quiz: having more topics than questions per attempt (22 > 20) ensures variety across retakes
+- **Story-driven teaching** breaks up dense content and creates memorable moments — use narrative format for misconception correction (Accidental Fine-Tuner pattern)
+- **Three-way comparisons** as reusable experiment format — students experience the problem firsthand rather than being told about it
+- **Scenario-based > theory-based** — Beacon HR/policy challenges make abstract concepts concrete for MBA students with no work experience
+- **Gem sharing as social learning** — peer comparison reinforces non-determinism and collaborative learning
+- Position tools as "democratized" (no-code RAG, behavioral configuration) — empowers non-technical audience
 
 **Content or approach to avoid:**
 - Presenting any AI capability as "can't do X" — models improve rapidly
@@ -138,6 +148,7 @@ After each day is approved, append an entry below:
 - "AI-readiness" scores/rubrics — too much focus on a diminishing concern
 - Fine-tuning as a recommended business approach (RAG-first for most cases)
 - Providing alternative tool fallback for labs (focus on one ecosystem per instructor preference)
+- Teaching the "right" thing without surfacing the misconception first — students learn more when they discover their assumption was wrong
 
 ---
 

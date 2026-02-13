@@ -139,7 +139,7 @@ projects:
   - id: "0003"
     title: "AI Image Generation for Course Materials"
     summary: "Establish image generation workflow using Nano Banana (Gemini 2.5 Flash Image) API to replace placeholder graphics with warm illustration-style images across all days"
-    status: conceived
+    status: implementing
     priority: medium
     files:
       spec: codev/specs/0003-image-generation.md
@@ -147,12 +147,39 @@ projects:
       review: null
     dependencies: []
     tags: [course, images, tooling]
-    notes: "Nano Banana (gemini-2.5-flash-image) via google-genai SDK. Warm illustration style. Priority targets: Day 3 open-book exam analogy, organized/messy desk, accidental fine-tuner comic."
+    notes: "Day 3 images complete (4/4). Tool established (_tools/generate_image.py). Two integration modes discovered: Mode A (text-free) and Mode B (hybrid HTML+AI). Remaining days need images as content is created."
+```
+
+  - id: "0004"
+    title: "Day 4 Multimodal AI — Major Rework"
+    summary: "Rework Day 4 from narrow receipt extraction to broad multimodal AI with marketing campaign scenario, image generation exercises, and real multimodal uploads"
+    status: conceived
+    priority: high
+    files:
+      spec: codev/specs/0004-day4-rework.md
+      plan: null
+      review: null
+    dependencies: ["0001", "0002"]
+    tags: [course, day4, rework, multimodal]
+    notes: "Instructor feedback received 2026-02-12. Major changes: replace receipt focus with marketing campaign scenario, add image generation (Nano Banana), real image/audio/video uploads, broaden to 5+ real-world use cases. Depends on Day 3 finalization for Quick Recap slide."
+
+  - id: "0005"
+    title: "Day 5 — Google AI Studio"
+    summary: "Day 5 materials: model parameters (temperature, top-p, top-k), system prompts, token economics, and email triage lab for Beacon"
+    status: conceived
+    priority: high
+    files:
+      spec: codev/specs/0005-day5-ai-studio.md
+      plan: codev/plans/0005-day5-ai-studio.md
+      review: null
+    dependencies: ["0001", "0004"]
+    tags: [course, day5, ai-studio, parameters]
+    notes: "New content (no prior prototype). Bridges from Day 4 multimodal AI to Day 5 configuration. Email triage lab produces system that Day 6 will red-team. Date: Wed March 18, 2026."
 ```
 
 ## Next Available Number
 
-**0004** - Reserve this number for your next project
+**0006** - Reserve this number for your next project
 
 ---
 
