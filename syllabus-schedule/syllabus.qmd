@@ -1,0 +1,222 @@
+---
+title: "UBUS 670 -- Spring 2026" 
+subtitle: "Artificial Intelligence for Business" 
+#author: "Matt Pickard" 
+format: 
+  html: 
+    theme: [zephyr, custom.scss] 
+    self-contained: true 
+    filters: 
+      - linknewpage.lua 
+editor: 
+  render-on-save: true 
+---
+
+### Course Information
+
+| Section | Day/Time            | Location |
+|---------|---------------------|----------|
+| 1       | MWF 8:30 AM - 12:30 PM | BH 331   |
+
+### Instructor Information
+
+|                     |                                              |
+|---------------------|----------------------------------------------|
+| **Name**            | Matt Pickard                                 |
+| **Email**           | [mpickard\@niu.edu](mailto:mpickard@niu.edu) |
+| **Office Location** | BH 345P                                      |
+| **Office Hours**    | TTh 11:00 - 12:00, MWF 12:45 - 2:00          |
+|                     | and by appointment                           |
+
+
+## COURSE DESCRIPTION
+
+This course, "AI for Business Leaders," is an intensive, hands-on journey designed for MBA candidates. It will equip you with the essential skills to evaluate, direct, and govern AI initiatives within a business context. We'll focus on practical, business-focused applications, using a no-code/low-code approach to make AI accessible regardless of your technical background. Through a course-long case study, you'll act as a strategic advisor, tackling real-world business challenges in marketing, finance, and HR. The goal is not to make you a programmer, but to cultivate you into an "AI-aware" business leader who can confidently assess the value of AI, craft effective strategies for its use, and understand the critical governance and risks involved.
+
+## COURSE OBJECTIVES
+
+Upon successful completion of this course, students will be able to:
+
+1.  **Evaluate** and assess when and where AI can create genuine business value.
+2.  **Direct** AI systems by crafting effective prompts and providing necessary context for them to perform business tasks.
+3.  **Govern** AI initiatives by identifying, evaluating, and mitigating risks such as hallucinations, bias, and prompt injection.
+4.  **Lead** the design and communication of AI initiatives within an organization.
+5.  Explain the conceptual foundations of Large Language Models (LLMs), including concepts like tokens and context windows, and their business implications.
+6.  Build and deploy AI-powered solutions for common business problems using a progression of no-code/low-code tools (e.g., Google Gemini, Opal, AI Studio).
+7.  Apply multimodal AI to extract structured data from unstructured sources like documents and images.
+8.  Design, build, and test multi-agent AI systems to solve complex business problems like talent acquisition.
+9.  Critically evaluate the performance and fairness of AI systems and communicate their capabilities and limitations to business stakeholders.
+
+## REQUIRED BOOKS
+
+See course website under Syllabus and Course Information \>\> Books.
+
+## REQUIRED SUBSCRIPTIONS
+
+See course website under Syllabus and Course Information \>\> Software.
+
+## REQUIRED SOFTWARE
+
+See course website under Syllabus and Course Information \>\> Software.
+
+## COURSE RESOURCES
+
+### BLACKBOARD
+
+This is a Blackboard enhanced class. If you have never used Blackboard, please refer to the [Help for Students Using Blackboard](https://www.niu.edu/blackboard/students/index.shtml) webpage. Even if you have used it before, you may learn some tricks to help you navigate Blackboard better. Please inform the instructor if you discover course content mistakes on the Blackboard course site.
+
+All announcements, changes, and due dates will be posted on Blackboard. It is the student’s responsibility to check for communications and changes to the course on Blackboard.
+
+If you are having technical problems with Blackboard, you can contact free technical support through one of the following ways:
+
+-   Phone: 815-753-8100
+-   Email: [ServiceDesk\@niu.edu](mailto:ServiceDesk@niu.edu)
+
+### PIAZZA
+
+[Piazza](https://piazza.com/) is a question-and-answering platform. It allows you as a student to ask a question that can be answered by me or anyone in the class. When an answer is correct, I will endorse it. But I will often wait to see who responds, so please be a team player and help your classmates. It also allows me to answer each question once. You can find Piazza support [here](https://support.piazza.com/support/solutions/folders/48000404468). But, in general, I think you will find Piazza to be intuitive and easy to use.
+
+After your textbook and Google, Piazza should be your next stop to get answers to your questions. **If you email me a question, I will ask you to post it to Piazza**.
+
+### ASKING GOOD QUESTIONS ON PIAZZA
+
+Not all questions are equal. Asking good questions is a skill that will help you in your career. One of the objectives of Piazza is to learn to ask good questions. Here are some tips for asking good questions on Piazza:
+
+1.  Provide specific details about your problem. This means the following: a. Provide the HW and problem number (don’t leave it ambiguous, please). b. Copy and paste the text of the problem in your post.
+2.  Include a screenshot. A picture is worth a thousand words. Use Google if you don’t know how to [create a screenshot](https://support.microsoft.com/en-us/windows/use-snipping-tool-to-capture-screenshots-00246869-1843-655f-f220-97299b865f6b).
+3.  Include brief comments on what you’ve already tried or otherwise let us into your thought process.
+
+Remember, providing more details makes it easier for us to answer your question, meaning it decreases the turnaround time for your answer. In addition, it’s been my experience that when I start writing out a detailed, well-thought-out question, I often answer my own question and then I don’t have to wait for someone to get back to me.
+
+## GRADE WEIGHTS
+
+Your final course grade will be weighted according to the following categories:
+
+| Assessment                       | Points |
+|:---------------------------------|:-------|
+| Quizzes                          | 10%    |
+| Labs                             | 20%    |
+| Capstone Project                 | 20%    |
+| Final Exam                       | 25%    |
+| Book Report                      | 25%    |
+
+::: callout-note
+I do NOT calculate students grades during the semester. Please do NOT ask me to calculate your grade.
+:::
+
+**NOTE:** Creating a spreadsheet to perform "what-if analysis" with your course grade is a great Excel exercise and is something that you should have the skillset to do at this point in your education. You will need to use weighted averages. All submissions are categorized into one of the assessment categories below.
+
+## LETTER GRADE CUTOFFS
+
+The final course grades are awarded based on the following breakdown:
+
+| Grade | Percentage |
+|:------|:-----------|
+| A     | \>= 92     |
+| A-    | \>= 90     |
+| B+    | \>= 88     |
+| B     | \>= 82     |
+| B-    | \>= 80     |
+| C+    | \>= 78     |
+| C     | \>= 70     |
+| D     | \>= 60     |
+| F     | \< 60      |
+
+::: callout-note
+I will NOT round up grades to the nearest letter grade at the end of the semester. **Please do not ask!**
+:::
+
+## BOOK REPORT
+In this course's signature writing assignment, you will read Rewiring Your Mind for AI: How to Think, Work, and Thrive in the Age of Intelligence by David A. Wood, Ph.D., and produce a reflective book report (1,500–2,000 words) focused on how you will apply generative AI in your personal life and as a manager or leader. This is not a traditional book summary — your report should articulate specific mindset shifts that resonated with you, concrete plans for integrating AI into your daily work, and a thoughtful leadership strategy for guiding others through AI adoption. Critically, you will use Google Gemini as a collaborative writing partner throughout the entire process, from brainstorming your initial reactions to iteratively drafting and refining your final report. You will also write a short process reflection (400–600 words) on what it was like to think and write alongside AI, connecting that hands-on experience to the book's core themes. This assignment is designed to give you both the conceptual framework and the practical, firsthand experience of human-AI collaboration — so that by the time you submit, you won't just have read about the new AI mindset, you'll have lived it.
+
+## LABS
+
+## EXAMS
+
+You will only have one exam--the final exam--in this course.  It will be comprehensive. It will be administered online through Blackboard.
+
+## COURSE POLICIES
+
+**How to Succeed in the Course:** This course is extremely time-intensive! Ask questions often and early to make the best use of your time. I expect students to ask questions. Use Piazza! To derive the maximum benefit from the class discussion and in-class assignments, students are expected to have read the relevant materials prior to class.
+
+Active learning is emphasized in this course. This means that you the student are primarily responsible for your learning. It also means that the instructor will not “spoon-feed” you the material. To succeed in this course, you must put the time and effort in. You must attend class regularly, read, be curious, and contribute fully to class discussions and the group project.
+
+My approach follows Benjamin Franklin's wisdom: “Tell me and I forget. Teach me and I remember. Involve me and I learn.” I involve you by assigning lots of practice--the majority of which you can expect to complete outside of class. USE YOUR RESOURCES: the textbook, Google, YouTube, Piazza, office hours, and your peers. Successful student reserve significant blocks of time to work on the homework and projects in this class. Please do not expect to be successful, if you start the homework or projects the night before they are due.
+
+**Technology Use in Class**: The use of earbuds or headphones is prohibited in class during lectures and other instruction. Please be present and focused in class. Please use your laptops to further your learning of the course subject. Increasingly I see a trend of distraction and inattentiveness in the classroom.
+
+**Access to the Instructor for Help:** I will be available on class days to respond to questions on Piazza and during office hours. If you post a question on Piazza on Friday afternoon, do not expect a response from me until the next class day (for example, Tuesday). In short, I will devote class days (in class, during office hours, and on Piazza) to helping you. Please plan accordingly. Please follow [these guidelines](https://www.niu.edu/academic-support/student-guides/using-office-hours-effectively.shtml) to make effective use of office hours. I will not schedule special office hours if you have not attended class regularly.
+
+**Professionalism is a Baseline Expectation:** The instructor reserves the right to reduce your final grade up to 5% for unprofessional behavior you display in association with this class. Professionalism is a baseline expectation! Examples of professionalism or lack of professionalism are as follows:
+
+*Professionalism*:
+
+-   Proactively learning the material and going above and beyond assignment requirements.
+-   Participating actively in class.
+-   Maintaining a positive, learning attitude.
+-   Attending office hours for help.
+
+*Lack of Professionalism*:
+
+-   Complaining or displaying a negative learning attitude.
+-   Turning in sloppy work (including assignments, but especially exams).
+-   Not following assignment submission instructions.
+
+**Late Submissions:** Late submissions will receive at most 50% of the possible points if they are submitted within 7 days of the due date. If they are submitted more than 7 days late, they will receive 0%. All assignments, unless otherwise noted, are due at 11:59 PM on the date specified. In cases of emergency, you may submit **sufficient documentation** (doctor's note, funeral information, etc.) to the instructor and request an extension. **Only one extension per student per semester will be given.**
+
+**Make-up Exams:** Make-up exams will be allowed only for documented emergencies or documented extreme circumstances (e.g. severe or prolonged illness, death in the family, family crisis, etc.). Email the instructor documentation along with your make-up exam request and explanation. Please have the documentation available when you make the request. I will not consider requests without proper documentation.
+
+**Exam Retakes:** There will be no exam retakes.
+
+**Grade Appeals:** All grade appeals must be done in person within one week from when the exam or assignment is returned to you. Any appeal must include good reasoning, a solid argument, and support for your position. You must demonstrate an understanding of the problem at hand. Always feel free to point out mistakes I’ve made in grading (specifically, assigning or tallying points).
+
+**End of Semester Grade Changes (like rounding up):** I will not round grades up to the next letter grade at the end of the semester. It is your responsibility to submit grade appeals within the one-week deadline. Please do not ask to submit incomplete or unsubmitted assignments at the end of the semester when you begin to panic about your grade. If you discover a mistake in how your grade was recorded in Blackboard, please notify me ASAP.
+
+**Communication:** I will use the course website, Piazza, and the NIU email system to communicate with you. Please make sure you have a valid email address in Blackboard and Piazza. If you have questions of a personal nature (like grades or illness), please email me directly (not through the course website) at [mpickard\@niu.edu](mailto:mpickard@niu.edu). If you miss class, you are responsible for determining what you missed.
+
+**Office Hours:** My office hours are your time. Take advantage of them. Attendance during office hours will have a positive effect on your performance in class. If others are waiting, I will limit your office hours visit to 15 minutes. If a group gathers outside my office, we will move office hours to the conference room and turn it into a lab help session. NIU has provided excellent [guidance for using office hours effectively](https://www.niu.edu/academic-support/student-guides/using-office-hours-effectively.shtml), please refer to that link.
+
+You are expected to come prepared for office hours. That means that you have read the assigned reading, you have attempted the problem, and you have specific thoughtful questions. Unless office hours have been turned into a lab session, it is not acceptable to “hang out” in office hours and work on your homework. Of course, if you have personal things you want to discuss or you just want to chat about life, I welcome that! However, I will give students with questions about homework and the class priority.
+
+**Discussion and Peer Study:** Studying or discussing course assignments and materials with other class members is highly encouraged. However, your exams and other submissions must be your own work. The principle is that you learn the material. You are mature enough to know when you cross the line into cheating yourself of the learning experience.
+
+**Academic Integrity:** Academic integrity is expected from all students enrolled in this course. Cheating is expressly forbidden. Cheating includes copying from the homework, quizzes, exams or files of other students, use of unauthorized material during exams, allowing others to complete Graded HW or quizzes for you, and any other form of academic dishonesty. Please review the [NIU Student Code of Conduct](https://niu.edu/conduct/_pdf/niu-scc-final.pdf). I will refer incidents of cheating to the appropriate NIU authorities. **Cheating will result in an “F” for the entire course.**
+
+Code of Conduct aside, I encourage you to live the higher law. Apply the BELIEF tests! The principal reason are here at NIU should be to increase your education, thinking abilities, and contributions to society. Do not cheat yourself out of the thrill of conquering intellectual challenges. You know when you are short-circuiting your learning process. Avoid that behavior.
+
+And just to cover my butt, here’s the official legal jargon. Students are considered to have cheated if they copy the work of another during an examination or turn in a paper or an assignment written, in whole or in part, by someone else. Students are guilty of plagiarism, intentional or not, if they copy material from books, magazines, or other sources without identifying and acknowledging those sources or if they paraphrase ideas from such sources without acknowledging them. Students guilty of, or assisting others in, either cheating or plagiarism on an assignment, quiz, or examination may receive a grade of F for the course involved and may be suspended or dismissed from the university.
+
+**Access to Education:** Per the University’s policy in the [Student Handbook 3.17](https://www.niu.edu/law/_pdf/student-handbook.pdf), reasonable accommodate for religious observances of individual students regarding class attendance, the scheduling of examinations, and work environments, will be made. See policy (3.17) for more details. For information on assistive technology available for student use and additional information on services available through the [Disability Resource Center](https://www.niu.edu/disability/index.shtml), 815-753-1303, [drc\@niu.edu](mailto:drc@niu.edu).
+
+Qualified students with disabilities needing appropriate academic adjustments should privately contact the instructor as soon as possible, preferably in the **first week of class** to ensure your needs are met in a timely manner.
+
+**Attendance:** I take attendance with group reading assessments, otherwise, I do not officially “take” attendance. But I do notice when people are absent a lot. Class time is where you are going to get your questions answered.
+
+**Copyright:** All materials in this course fall under copyright laws and should not be downloaded, distributed, or used by students for any purposes outside of this course.
+
+**Courtesy:** Please come to class and focus on what is going on, rather than being distracted by a cell phone, text messaging, or surfing the web. Be respectful both in class and online (e.g., Piazza). Encourage a safe environment for learning by your words and deeds. Otherwise, I have no choice but to publicly take you down in a headlock and give you a good old-fashioned [noogy](https://www.urbandictionary.com/define.php?term=noogy).
+
+If I perceive an abundance of unrelated web surfing or distractions during a lecture, I will ask the class to close their laptops.
+
+**Video Conference Policy:** Most laptops and computers have a built-in webcam. Unless bandwidth constraints prevent it, I expect your video to be turned on during Zoom and video conferencing class sessions. I like to see your faces and the engagement it creates.
+
+**Privacy and the Learning Management System (LMS) Tracking Notice:** The LMS we use automatically records all students’ activities, including your first and last access to the course, the pages you have accessed, the number of discussion messages you have read and sent, discussion text, quiz and Graded HW activity and posted discussion topics. This data may be accessed by the instructor or by university consultants.
+
+**Title IX: The Equal Opportunity in Education Act of 2002:** Title IX: The Equal Opportunity in Education Act of 2002 (known as Title IX) states that “No person in the United States shall, on the basis of sex, be excluded from participation in, be denied the benefits of, or be subjected to discrimination under any educational program or activity receiving federal financial assistance.” As a member of the NIU faculty, I take this responsibility seriously.
+
+More information about the NIU’s Title IX policy, procedure, and coordinator, please see [this page](https://www.niu.edu/aaec/titleIX/index.shtml).
+
+## INSTRUCTOR AND COURSE EVALUATION
+
+You will be provided with an official course evaluation at the end of the semester. This evaluation is anonymous, and the results will not be shared with the instructor until after grades are submitted; so, please provide detailed constructive feedback. There’s no risk to you for doing so. Regardless, I would greatly appreciate constructive feedback throughout the course.
+
+## SYLLABUS REVISIONS
+
+This syllabus is a declaration of the rules and policies in this class and every attempt is made to provide an accurate overview of the course and its requirements to help you set your expectations about this class. However, certain circumstances may make it necessary for the syllabus to be modified during the semester for your benefit. The changes may depend, in part, on course progress and our needs. Change(s) to the syllabus will be announced as early as possible so that you can adjust your schedule. The department will also be notified of any change.
+
+I maintain a separate course schedule that will almost certainly change!
+
+I will make these promises though:
+
+-   I will never add an assignment to the course that did not initially appear on the syllabus or schedule.
+-   I will never move a due date up in time--only push them back in time.

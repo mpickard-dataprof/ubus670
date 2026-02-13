@@ -1,0 +1,48 @@
+---
+title: "sandbox"
+format: html
+---
+
+## Next class weekday function
+
+```{r}
+library(clock)
+library(tidyverse)
+
+monday <- clock_weekdays$monday
+
+### NOTE: Need to finish this function
+nextdayofweek <- function(date, monday) {
+  time_point_shift(first)
+}
+```
+
+
+## Class Date Function
+
+```{r}
+library(lubridate)
+library(clock)
+
+first_semester_day <- as.Date(mdy("January 16, 2024"))
+monday <- weekday(clock_weekdays$monday)
+first_class_day <-  time_point_shift(first_semester_day, monday, which = "next")
+last_day <- mdy("May 2, 2024")
+
+clock_weekdays$monday
+
+holidays <- c(
+  mdy("")
+)
+
+week <- dweeks(1)
+first_day + week
+
+
+holidays <- c(
+  interval(mdy("March 10, 2024"), mdy("March 17, 2024")),
+  interval(mdy("January 16, 2024"))
+)
+
+first_day %within% holidays
+```

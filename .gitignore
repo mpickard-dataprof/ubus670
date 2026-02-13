@@ -22,3 +22,10 @@ build/
 
 # Logs
 *.log
+
+# Agent and Tool metadata
+.agent-farm/
+.builders/
+.claude/
+.gemini/
+

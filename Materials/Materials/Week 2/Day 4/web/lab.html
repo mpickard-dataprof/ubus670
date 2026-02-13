@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 4 Lab: Beacon's Spring Marketing Campaign</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        .lab-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Navigation with Breadcrumb */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* Lab header */
+        .lab-header {
+            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
+            color: white;
+            padding: 60px 40px;
+            margin: -40px -30px 40px;
+            text-align: center;
+        }
+        .lab-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px;
+            font-size: 2.2rem;
+        }
+        .lab-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Compare with classmates box */
+        .compare-box {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4ff 100%);
+            border: 2px solid #00A9E0;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+        }
+        .compare-box h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1D428A;
+            margin: 0 0 10px;
+            font-size: 1rem;
+        }
+        .compare-box p {
+            font-size: 0.9em;
+            margin: 0 0 12px;
+            line-height: 1.6;
+        }
+
+        /* Time estimate */
+        .time-estimate {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Objectives box */
+        .objectives-box {
+            background: white;
+            border-left: 5px solid #C8102E;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .objectives-box h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        /* Section styling */
+        .lab-section {
+            background: white;
+            padding: 30px 35px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .lab-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            border-bottom: 3px solid #C8102E;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* Task styling */
+        .task {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .task-number {
+            background: #C8102E;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .task-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Checkbox steps */
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .step:last-child {
+            border-bottom: none;
+        }
+        .step input[type="checkbox"] {
+            margin-top: 5px;
+            transform: scale(1.3);
+            cursor: pointer;
+            accent-color: #C8102E;
+        }
+        .step label {
+            cursor: pointer;
+            flex: 1;
+        }
+        .step.completed label {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        /* Prompt boxes */
+        .prompt-box {
+            background: #1a1a1a;
+            color: #f8f8f8;
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            position: relative;
+        }
+        .prompt-box::before {
+            content: 'PROMPT';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #C8102E;
+            color: white;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .copy-btn:hover {
+            background: #555;
+        }
+
+        /* Tip boxes */
+        .tip-box {
+            background: rgba(0, 169, 224, 0.1);
+            border-left: 4px solid #00A9E0;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .tip-box strong {
+            color: #00A9E0;
+        }
+
+        /* Warning boxes */
+        .warning-box {
+            background: rgba(227, 82, 5, 0.1);
+            border-left: 4px solid #E35205;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning-box strong {
+            color: #E35205;
+        }
+
+        /* Brand guide card */
+        .brand-card {
+            background: linear-gradient(135deg, #f8f8f8, #fff);
+            border: 2px solid #C8102E;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+        .brand-card h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: #C8102E;
+            margin: 0 0 12px;
+        }
+        .color-swatches {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        /* Reflection/answer areas */
+        .reflection-area {
+            background: #fff;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .reflection-area label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .reflection-area textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        /* Progress tracker */
+        .progress-tracker {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            z-index: 100;
+        }
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #C8102E;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* CTA button */
+        .btn-primary {
+            display: inline-block;
+            background: #C8102E;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-primary:hover {
+            background: #a00d24;
+            text-decoration: none;
+        }
+
+        /* Image prompt guide */
+        .prompt-guide {
+            background: linear-gradient(135deg, rgba(29,66,138,0.05), rgba(0,169,224,0.05));
+            border: 2px solid #1D428A;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+        .prompt-guide h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1D428A;
+            margin: 0 0 12px;
+        }
+    </style>
+
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&#8250;</span>
+            <a href="../../index.html">Week 2</a>
+            <span class="separator">&#8250;</span>
+            <a href="index.html">Day 4</a>
+            <span class="separator">&#8250;</span>
+            <span class="current">Lab</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill active">Lab</a>
+            <a href="quiz.html" class="nav-pill">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="lab-container">
+
+        <!-- Lab Header -->
+        <div class="lab-header">
+            <h1>Beacon's Spring Marketing Campaign</h1>
+            <p>Using Multimodal AI to Analyze, Create, and Strategize</p>
+            <span class="time-estimate">Estimated time: 90&ndash;120 minutes</span>
+        </div>
+
+        <!-- Learning Objectives -->
+        <div class="objectives-box">
+            <h2>Lab Objectives</h2>
+            <p>By completing this lab, you will:</p>
+            <ul>
+                <li>Use multimodal AI to <strong>analyze images</strong> and extract structured competitive intelligence</li>
+                <li>Upload audio to AI and <strong>extract marketing insights</strong> from customer feedback</li>
+                <li>Write effective prompts to <strong>generate marketing visuals</strong> with AI image generation</li>
+                <li><strong>Iterate</strong> on image generation prompts to improve results (minimum 3 iterations)</li>
+                <li>Combine multimodal insights into a <strong>structured campaign brief</strong></li>
+            </ul>
+        </div>
+
+        <!-- TOOL SETUP -->
+        <section class="lab-section">
+            <h2>Tool Setup</h2>
+            <p><strong>What you need:</strong> A web browser, a free Google account, and a smartphone camera (for the test image).</p>
+
+            <div class="tip-box">
+                <strong>Reminder: What is Multimodal AI?</strong> You learned in the lecture that multimodal AI can process text, images, audio, and video. In this lab, you'll use ALL of these capabilities to build a marketing campaign for Beacon Retail Group.
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">0</span>
+                    <h3 class="task-title">Verify Your Gemini Setup</h3>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-1">
+                    <label for="step0-1">Open <strong>gemini.google.com</strong> and sign in with your Google account (personal Gmail works fine).</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-2">
+                    <label for="step0-2">Look for the image upload icon (paperclip or plus icon near the text box). This confirms multimodal capabilities are available.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-3">
+                    <label for="step0-3"><strong>Test image upload:</strong> Take a photo of your desk, notebook, or any nearby object with your phone. Transfer it to your computer and upload it to Gemini with the prompt: <em>"Describe what you see in this image in detail."</em></label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-4">
+                    <label for="step0-4">Verify Gemini responded with a description of your image. If it works, you're ready to go!</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>You do NOT need a paid subscription.</strong> The free tier of Google Gemini supports image uploads, audio uploads, and image generation. All lab exercises work with the free tier.
+                </div>
+                <div class="warning-box">
+                    <strong>Rate limits:</strong> Free accounts have usage limits. If you see "Too many requests," wait a few minutes and try again. This is normal and temporary.
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 1: COMPETITIVE VISUAL ANALYSIS -->
+        <section class="lab-section">
+            <h2>Part 1: Competitive Visual Analysis</h2>
+            <p style="margin-bottom: 10px;"><strong>Time estimate: 25 minutes</strong></p>
+            <p><strong>Scenario:</strong> Beacon's marketing team needs to understand how competitors are positioning their spring campaigns. You'll use AI to analyze competitor marketing images and extract structured competitive intelligence.</p>
+
+            <div class="tip-box">
+                <strong>What is Competitive Visual Analysis?</strong> Instead of manually studying competitor ads, you upload their marketing images to AI and ask it to identify patterns: target audience, color choices, messaging themes, and positioning. This turns hours of subjective analysis into structured, comparable data in minutes.
+            </div>
+
+            <!-- Task 1 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">1</span>
+                    <h3 class="task-title">Analyze a Competitor Ad</h3>
+                </div>
+                <p>Find a real retail marketing image to analyze. You can use:</p>
+                <ul style="font-size: 0.9em;">
+                    <li>A screenshot of a retail ad from Instagram, Facebook, or a retailer's website</li>
+                    <li>A photo of an in-store promotional display (take one with your phone)</li>
+                    <li>A marketing image from a competitor's email newsletter</li>
+                </ul>
+
+                <div class="step">
+                    <input type="checkbox" id="step1-1">
+                    <label for="step1-1">Find and save a retail marketing image (screenshot or photo).</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step1-2">
+                    <label for="step1-2">Start a <strong>new chat</strong> in Gemini. Upload the image and use this prompt:</label>
+                </div>
+
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Analyze this marketing image for competitive intelligence. Identify and present as a structured table:
+
+1. **Target Audience**: Who is this ad trying to reach? (age, lifestyle, income level)
+2. **Color Palette**: What are the dominant colors and what mood do they create?
+3. **Key Messaging**: What is the primary message or call-to-action?
+4. **Product Positioning**: How are products positioned (luxury, value, trendy, classic)?
+5. **Emotional Appeal**: What emotions does this ad try to evoke?
+6. **Design Strengths**: What makes this ad visually effective?
+7. **Weaknesses/Opportunities**: What could Beacon do better?</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step1-3">
+                    <label for="step1-3">Review the AI's analysis. Save or copy the structured output &mdash; you'll use it in Part 4.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step1-4">
+                    <label for="step1-4">Repeat with a second competitor image for comparison. Look for patterns across both analyses.</label>
+                </div>
+            </div>
+
+            <!-- Task 2 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">2</span>
+                    <h3 class="task-title">Compare Prompt Quality: Vague vs. Detailed</h3>
+                </div>
+                <p>Using the <strong>same image</strong> from Task 1, test how prompt quality affects the analysis.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-1">
+                    <label for="step2-1">Start a <strong>new chat</strong>. Upload the same image with this vague prompt:</label>
+                </div>
+
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>What do you see in this image?</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-2">
+                    <label for="step2-2">Compare the vague prompt output with the detailed prompt output from Task 1. What's different?</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Reflection: How did the prompt quality change the output?</label>
+                    <textarea placeholder="The detailed prompt gave me... while the vague prompt..."></textarea>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Day 2 Callback:</strong> This is prompt engineering applied to images! The same principles (specificity, structure, clear format) that worked for text prompts work for multimodal prompts too.
+                </div>
+            </div>
+
+            <div class="compare-box">
+                <h4>Compare with Classmates</h4>
+                <p>Did your classmates get the same analysis for similar images? How did different prompt wording change the output? Compare your structured competitive intelligence tables.</p>
+            </div>
+        </section>
+
+        <!-- PART 2: CUSTOMER VOICE INSIGHTS -->
+        <section class="lab-section">
+            <h2>Part 2: Customer Voice Insights</h2>
+            <p style="margin-bottom: 10px;"><strong>Time estimate: 20 minutes</strong></p>
+            <p><strong>Scenario:</strong> Beacon conducted customer interviews about their shopping experience. You'll analyze the feedback to extract marketing insights.</p>
+
+            <!-- Task 3 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">3</span>
+                    <h3 class="task-title">Analyze Customer Feedback</h3>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Audio Upload Option:</strong> If you have a short audio recording (a voicemail, a voice memo, or a podcast clip), upload it to Gemini to practice audio analysis. If not, use the text transcript below as a simulation.
+                </div>
+
+                <p><strong>Option A: Upload Audio</strong> &mdash; Record a 1-2 minute voice memo reading the customer feedback below (or use any short audio clip). Upload it to Gemini.</p>
+                <p><strong>Option B: Text Simulation</strong> &mdash; If audio upload isn't available, copy the transcript below into Gemini and ask it to analyze as if it were audio feedback.</p>
+
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>[SIMULATED CUSTOMER FEEDBACK TRANSCRIPT]
+
+Customer 1 (Female, enthusiastic): "I absolutely love Beacon's quality. The spring jackets last year were amazing — I still wear mine. But honestly? The prices have gone up a lot. I used to shop there every month, now it's more like every few months. I wish they had more affordable basics."
+
+Customer 2 (Male, neutral): "The store layout is nice, clean, well-organized. I find what I need quickly. The staff is friendly. But I noticed they don't have much of an online presence compared to competitors. I do a lot of shopping online now and their website feels outdated."
+
+Customer 3 (Female, frustrated): "I tried to return something last week and it was such a hassle. The return policy is confusing. I love the products though — especially the accessories line. The scarves and bags are really unique. I just wish the customer service matched the product quality."</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-1">
+                    <label for="step3-1">Upload the audio file OR paste the transcript into a <strong>new Gemini chat</strong> with this prompt:</label>
+                </div>
+
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Analyze this customer feedback for marketing insights. Create a structured table with these columns:
+
+| Theme | Sentiment (Positive/Negative/Neutral) | Key Quote | Marketing Action |
+
+Also provide:
+1. **Top 3 strengths** Beacon should highlight in marketing
+2. **Top 3 pain points** that represent opportunities
+3. **Recommended messaging tone** based on customer language</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-2">
+                    <label for="step3-2">Review the structured output. Does the AI's sentiment analysis match your own reading?</label>
+                </div>
+            </div>
+
+            <!-- Task 4 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">4</span>
+                    <h3 class="task-title">Structured Marketing Insights</h3>
+                </div>
+                <p>Take the AI's analysis and refine it into a format ready for the campaign brief.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-1">
+                    <label for="step4-1">Ask Gemini to reformat the insights into a Markdown document using this prompt:</label>
+                </div>
+
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Take the customer insights above and create a structured Markdown marketing brief section with:
+
+## Customer Voice Summary
+### Strengths to Highlight
+- (bullet points with supporting quotes)
+
+### Opportunities to Address
+- (bullet points with supporting quotes)
+
+### Recommended Messaging
+- Tone: (based on customer language)
+- Key phrases to use: (from customer quotes)
+- Key phrases to avoid: (things that trigger negative sentiment)</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-2">
+                    <label for="step4-2">Save this output &mdash; you'll incorporate it into the campaign brief in Part 4.</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Day 3 Callback:</strong> You're using structured formats (Markdown) from Day 3 to organize multimodal insights. Context engineering + multimodal AI = powerful combination.
+                </div>
+            </div>
+
+            <!-- Task 4b: Video Analysis -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">4b</span>
+                    <h3 class="task-title">Analyze a Short Video with Gemini</h3>
+                </div>
+                <p>Multimodal AI also works with <strong>video</strong>. Let's try analyzing a short YouTube clip to complete the modality trifecta: images, audio, and video.</p>
+
+                <div class="tip-box">
+                    <strong>Free tier note:</strong> Gemini's free tier supports YouTube videos up to 5 minutes. We'll use a short clip that fits well within this limit.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4b-1">
+                    <label for="step4b-1">Find a short YouTube video (under 3 minutes) of a retail store walkthrough, product unboxing, or competitor commercial. Alternatively, use this example:</label>
+                </div>
+
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Watch this video and analyze it from a retail marketing perspective. Identify:
+1. What products or brands are featured?
+2. What is the overall visual aesthetic (colors, lighting, mood)?
+3. What marketing techniques are used (signage, layout, displays)?
+4. What's one thing Beacon could learn from this for their spring campaign?
+
+[Paste your YouTube URL here]</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4b-2">
+                    <label for="step4b-2">Paste a YouTube URL into Gemini along with the analysis prompt above.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4b-3">
+                    <label for="step4b-3">Review Gemini's video analysis. Note: AI analyzes video by sampling key frames and combining visual + audio information.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Video Analysis Reflection: What did Gemini notice that you might have missed? What did it get wrong?</label>
+                    <textarea placeholder="Gemini noticed... It missed..."></textarea>
+                </div>
+            </div>
+
+            <div class="compare-box">
+                <h4>Compare with Classmates</h4>
+                <p>Did Gemini catch the same sentiment cues you noticed? Share your structured insights tables. Did classmates who analyzed different videos get different types of insights?</p>
+            </div>
+        </section>
+
+        <!-- PART 3: GENERATE MARKETING VISUALS -->
+        <section class="lab-section">
+            <h2>Part 3: Generate Marketing Visuals</h2>
+            <p style="margin-bottom: 10px;"><strong>Time estimate: 30 minutes</strong></p>
+            <p><strong>Scenario:</strong> Now it's time to create. You'll use AI image generation (called <strong>Nano Banana</strong> in Gemini) to produce marketing visuals for Beacon's spring campaign.</p>
+
+            <div class="tip-box">
+                <strong>Free tier limit:</strong> ~100 images per day with the standard model. If you hit a rate limit, wait a few minutes and try again. You have plenty of quota for this lab.
+            </div>
+
+            <div class="brand-card">
+                <h4>Beacon Brand Quick Reference</h4>
+                <p style="font-size: 0.9em; margin: 0 0 10px;">Use these guidelines when writing your image generation prompts:</p>
+                <div class="color-swatches">
+                    <div class="swatch" style="background: #C8102E;" title="Beacon Red"></div>
+                    <div class="swatch" style="background: #1D428A;" title="Navy"></div>
+                    <div class="swatch" style="background: white; border: 2px solid #ccc;" title="White"></div>
+                    <div class="swatch" style="background: #f5f0eb;" title="Warm Cream"></div>
+                </div>
+                <ul style="font-size: 0.85em; margin: 8px 0 0; padding-left: 20px;">
+                    <li><strong>Colors:</strong> Red (#C8102E), navy, white, warm neutrals</li>
+                    <li><strong>Tone:</strong> Approachable, quality-focused, modern but not trendy</li>
+                    <li><strong>Target:</strong> Young professionals, 25-40, value quality over price</li>
+                    <li><strong>Style:</strong> Clean, airy, aspirational lifestyle, natural lighting</li>
+                </ul>
+            </div>
+
+            <div class="prompt-guide">
+                <h4>Image Prompt Writing Guide</h4>
+                <p style="font-size: 0.9em; margin: 0 0 8px;">An effective image generation prompt includes:</p>
+                <ol style="font-size: 0.85em; margin: 0; padding-left: 20px;">
+                    <li><strong>Subject:</strong> What is the main focus? (product display, lifestyle scene, etc.)</li>
+                    <li><strong>Style:</strong> What visual style? (professional photography, illustration, flat design)</li>
+                    <li><strong>Composition:</strong> How is it framed? (close-up, wide shot, flat lay)</li>
+                    <li><strong>Mood/Lighting:</strong> What feeling? (warm, bright, dramatic, soft)</li>
+                    <li><strong>Brand elements:</strong> Colors, tone, audience signals</li>
+                    <li><strong>What to avoid:</strong> Text (AI struggles with text in images), specific faces, trademarked items</li>
+                </ol>
+            </div>
+
+            <!-- Task 5 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">5</span>
+                    <h3 class="task-title">Write Your First Image Prompt</h3>
+                </div>
+                <p>Create a spring marketing image for Beacon. Start with the prompt guide above and the brand reference card.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-1">
+                    <label for="step5-1">In Gemini, type a prompt to generate a spring marketing image for Beacon. Here's a starting point you can customize:</label>
+                </div>
+
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate an image: Professional spring marketing photo for a retail store called Beacon. Show a bright, airy store interior with seasonal products on modern white shelving. Warm natural lighting, pastel accent colors mixed with red brand accents. Clean, aspirational lifestyle feel. Professional marketing photography style.</div>
+
+                <div class="tip-box" style="margin-top: 10px;">
+                    <strong>Tip:</strong> The "Generate an image:" prefix is optional &mdash; you can simply describe the image you want, and Gemini will figure out that you want an image. The prefix can help clarify your intent.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-2">
+                    <label for="step5-2">Review the generated image. What worked? What didn't?</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>V1 Assessment: What's good and what needs improvement?</label>
+                    <textarea placeholder="What I liked: ... What needs fixing: ..."></textarea>
+                </div>
+            </div>
+
+            <!-- Task 6 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">6</span>
+                    <h3 class="task-title">Iterate and Refine (3 Rounds Minimum)</h3>
+                </div>
+                <p>The key skill: <strong>prompt iteration</strong>. Refine your prompt based on what you learned from V1.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-1">
+                    <label for="step6-1"><strong>V2:</strong> Based on your V1 assessment, write a more specific prompt. Add details about what you want to change.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>V2 Prompt (write your refined prompt here):</label>
+                    <textarea placeholder="Generate an image: [your refined prompt...]"></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-2">
+                    <label for="step6-2"><strong>V3:</strong> One more refinement. Focus on the details that make the image feel "on-brand" for Beacon.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>V3 Prompt (your most refined version):</label>
+                    <textarea placeholder="Generate an image: [your most refined prompt...]"></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-3">
+                    <label for="step6-3">Document your iteration journey: What changed between V1, V2, and V3? What patterns did you notice about effective image prompts?</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Pro tip:</strong> The best image prompts are specific about <em>style</em> (professional photography vs. illustration), <em>composition</em> (wide shot vs. close-up), and <em>mood</em> (warm vs. cool, bright vs. dramatic). Vague prompts produce generic results.
+                </div>
+            </div>
+
+            <!-- Task 7 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">7</span>
+                    <h3 class="task-title">Generate a Campaign Suite (3 Images)</h3>
+                </div>
+                <p>Generate three different marketing images for Beacon's spring campaign. Each needs a <strong>different prompt</strong> tailored to the channel:</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step7-1">
+                    <label for="step7-1"><strong>Image 1: Email Newsletter Hero</strong> &mdash; Wide format (16:9), eye-catching, "Spring Collection" theme, drives clicks</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Email Hero Prompt:</label>
+                    <textarea placeholder="Generate an image: [wide format email banner...]"></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step7-2">
+                    <label for="step7-2"><strong>Image 2: Social Media Post</strong> &mdash; Square format (1:1), bold and scroll-stopping, works on Instagram/Facebook</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Social Media Prompt:</label>
+                    <textarea placeholder="Generate an image: [square social media post...]"></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step7-3">
+                    <label for="step7-3"><strong>Image 3: In-Store Display Concept</strong> &mdash; Shows a physical display mockup, seasonal merchandising, aspirational</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>In-Store Display Prompt:</label>
+                    <textarea placeholder="Generate an image: [in-store display concept...]"></textarea>
+                </div>
+
+                <div class="warning-box">
+                    <strong>About text in images:</strong> AI image generators often struggle with readable text. If you need text on your marketing image (like "Spring Collection"), plan to add it later using a design tool. Focus your prompt on the visual elements instead.
+                </div>
+            </div>
+
+            <div class="compare-box">
+                <h4>Compare with Classmates</h4>
+                <p>Share your generated images. Which prompts produced the best results? What patterns do you notice in effective image prompts? Did anyone discover a technique that consistently improved results?</p>
+            </div>
+        </section>
+
+        <!-- PART 4: CAMPAIGN BRIEF & REFLECTION -->
+        <section class="lab-section">
+            <h2>Part 4: Campaign Brief &amp; Reflection</h2>
+            <p style="margin-bottom: 10px;"><strong>Time estimate: 25 minutes</strong></p>
+            <p><strong>Scenario:</strong> Combine everything into a structured campaign brief &mdash; the deliverable your marketing director would review.</p>
+
+            <!-- Task 8 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">8</span>
+                    <h3 class="task-title">Build the Campaign Brief</h3>
+                </div>
+                <p>Use Gemini to help you combine all your multimodal insights into a structured Markdown brief.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step8-1">
+                    <label for="step8-1">Start a <strong>new chat</strong> in Gemini. Paste your competitive analysis (Part 1) and customer insights (Part 2), then use this prompt:</label>
+                </div>
+
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Using the competitive analysis and customer insights I've provided, create a structured marketing campaign brief in Markdown format:
+
+# Beacon Spring 2026 Marketing Campaign Brief
+
+## Executive Summary
+(2-3 sentences summarizing the campaign direction)
+
+## Competitive Landscape
+(Key findings from competitive visual analysis)
+
+## Customer Voice Insights
+(Key findings from customer feedback analysis)
+
+## Visual Direction
+(Describe the visual style for the campaign based on your generated images)
+- Email hero: (describe your best email banner concept)
+- Social media: (describe your best social post concept)
+- In-store: (describe your best display concept)
+
+## Recommended Messaging
+- Primary message:
+- Supporting messages:
+- Tone and voice:
+
+## Next Steps
+(3-5 action items to move the campaign forward)</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step8-2">
+                    <label for="step8-2">Review and refine the brief. Add details about your generated images and prompts.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step8-3">
+                    <label for="step8-3">Include your best image generation prompts in the brief (so a designer could reproduce or refine them).</label>
+                </div>
+            </div>
+
+            <!-- Task 9 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">9</span>
+                    <h3 class="task-title">ROI Quick Calculation</h3>
+                </div>
+                <p>Calculate the business case for AI-powered marketing at Beacon.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step9-1">
+                    <label for="step9-1">Use these numbers to calculate ROI:</label>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <p style="font-weight: 600; margin: 0 0 10px; font-family: 'Montserrat', sans-serif;">Beacon's Current Marketing Process:</p>
+                    <ul style="font-size: 0.9em; margin: 0;">
+                        <li><strong>Current cost:</strong> $5,000 per campaign for a designer to create 10 final images over 2 weeks</li>
+                        <li><strong>AI-assisted cost:</strong> AI generates 50 concept variations in 2 hours. Designer polishes the best 10 for $1,500 in 3 days.</li>
+                    </ul>
+                </div>
+
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Calculate the ROI for Beacon's AI-powered marketing:
+
+**Current process:** $5,000/campaign, 10 images, 2 weeks
+**AI-assisted:** $1,500 designer polish + AI costs (~$0 on free tier), 50 concepts in 2 hours, best 10 polished in 3 days
+
+Calculate:
+1. Cost savings per campaign ($ and %)
+2. Time savings (days)
+3. Annual savings (assume 12 campaigns/year)
+4. Additional value: more concepts explored (50 vs 10)
+
+Present as a simple table.</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step9-2">
+                    <label for="step9-2">Does the ROI calculation match the lecture estimates? Add any caveats or assumptions.</label>
+                </div>
+            </div>
+
+            <!-- Task 10 -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">10</span>
+                    <h3 class="task-title">Reflection &amp; Submission</h3>
+                </div>
+
+                <div class="reflection-area">
+                    <label>1. What surprised you about multimodal AI capabilities?</label>
+                    <textarea placeholder="I was surprised that..."></textarea>
+                </div>
+                <div class="reflection-area">
+                    <label>2. What limitations did you encounter?</label>
+                    <textarea placeholder="AI struggled with..."></textarea>
+                </div>
+                <div class="reflection-area">
+                    <label>3. How could YOUR industry or career use multimodal AI?</label>
+                    <textarea placeholder="In [my field], multimodal AI could..."></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step10-1">
+                    <label for="step10-1">Review your campaign brief, reflections, and image prompts.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step10-2">
+                    <label for="step10-2">Click the button below to generate your submission PDF.</label>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn-primary" onclick="generatePDF()">Download Lab Summary (PDF)</button>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step10-3">
+                    <label for="step10-3">Upload your PDF to the course LMS (Blackboard) under <strong>Day 4 Lab Submission</strong>.</label>
+                </div>
+            </div>
+
+            <div class="compare-box">
+                <h4>Compare with Classmates</h4>
+                <p>Share your campaign briefs. Whose visual concepts are strongest? What made the difference? How did different approaches to the same assignment produce different results?</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+        <strong>Lab Progress</strong>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+        </div>
+        <span id="progress-text" style="font-size: 0.8em; color: #666;">0 / 0 steps</span>
+    </div>
+
+    <script>
+        // Copy prompt to clipboard
+        function copyPrompt(btn) {
+            const box = btn.parentElement;
+            const text = box.textContent.replace('Copy', '').trim();
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+            });
+        }
+
+        // Progress tracking
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.step input[type="checkbox"]');
+            const checked = document.querySelectorAll('.step input[type="checkbox"]:checked');
+            const percentage = checkboxes.length > 0 ? (checked.length / checkboxes.length) * 100 : 0;
+
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `${checked.length} / ${checkboxes.length} steps`;
+
+            // Toggle completed class
+            checkboxes.forEach(cb => {
+                const step = cb.closest('.step');
+                if (cb.checked) {
+                    step.classList.add('completed');
+                } else {
+                    step.classList.remove('completed');
+                }
+            });
+        }
+
+        // Add event listeners to all checkboxes
+        document.querySelectorAll('.step input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', updateProgress);
+        });
+
+        // Initialize progress
+        updateProgress();
+
+        // PDF generation using jsPDF
+        function generatePDF() {
+            var jspdf = window.jspdf;
+            if (!jspdf) {
+                alert('PDF library is loading. Please try again in a moment.');
+                return;
+            }
+            var doc = new jspdf.jsPDF();
+            var y = 20;
+            var pageWidth = doc.internal.pageSize.getWidth();
+            var margin = 20;
+            var maxWidth = pageWidth - margin * 2;
+
+            // Title
+            doc.setFontSize(18);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(200, 16, 46); // NIU Red
+            doc.text('UBUS 670 - Day 4 Lab', margin, y);
+            y += 8;
+            doc.setFontSize(14);
+            doc.setTextColor(29, 66, 138); // NIU Navy
+            doc.text("Beacon's Spring Marketing Campaign", margin, y);
+            y += 10;
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(100);
+            doc.text('Student Submission | ' + new Date().toLocaleDateString(), margin, y);
+            y += 5;
+            doc.setDrawColor(200);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 10;
+
+            // Collect reflections
+            var reflections = document.querySelectorAll('.reflection-area textarea');
+            doc.setFontSize(11);
+            reflections.forEach(function(textarea, index) {
+                var labelEl = textarea.previousElementSibling;
+                var label = labelEl ? labelEl.textContent : 'Response ' + (index + 1);
+                var value = textarea.value || '[No response entered]';
+
+                // Check page break
+                if (y > 260) {
+                    doc.addPage();
+                    y = 20;
+                }
+
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(29, 66, 138);
+                var labelLines = doc.splitTextToSize(label, maxWidth);
+                doc.text(labelLines, margin, y);
+                y += labelLines.length * 5 + 3;
+
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(50);
+                var valueLines = doc.splitTextToSize(value, maxWidth);
+                doc.text(valueLines, margin, y);
+                y += valueLines.length * 5 + 8;
+            });
+
+            // Progress
+            if (y > 270) { doc.addPage(); y = 20; }
+            doc.setDrawColor(200);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 8;
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(67, 176, 42); // NIU Green
+            doc.text('Progress: ' + document.getElementById('progress-text').textContent, margin, y);
+
+            doc.save('Day4_Lab_Submission.pdf');
+            alert('PDF downloaded! Upload this file to the course LMS.');
+        }
+    </script>
+
+</body>
+</html>

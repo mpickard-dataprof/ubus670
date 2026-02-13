@@ -1,0 +1,38 @@
+/*-- scss:defaults --*/
+$web-font-path:         "https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" !default;
+$h2-font-size:          1.6rem !default;
+$headings-font-weight:  500 !default;
+
+/*-- scss:variables --*/
+$niu-red:               rgba(200, 16, 46, 0.8);
+$niu-gray:              rgba(165, 167, 168);
+
+/*-- scss:rules --*/
+$font-family-san-serif: "Roboto Condensed, Light";
+
+h1, h2, h3, h4, h5, h6 {
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, .1);
+  color: $niu-red;
+}
+
+.table {
+    width: auto;
+}
+.table > :not(caption) > * > * {
+    padding: .2rem .3rem;
+}
+
+thead {
+    background-color: $niu-gray;
+    color: white;
+    border-bottom: 1 px solid black;
+
+}
+
+// li ul --> because ul is nested inside of li. ul has other li nodes in it, but the 
+// bottom margin was being applied to the ul margin after all the li nodes were closed.
+main li ul {
+    margin-bottom: 0em;
+}
+
+
