@@ -153,11 +153,11 @@ projects:
   - id: "0004"
     title: "Day 4 Multimodal AI — Major Rework"
     summary: "Rework Day 4 from narrow receipt extraction to broad multimodal AI with marketing campaign scenario, image generation exercises, and real multimodal uploads"
-    status: conceived
+    status: planned
     priority: high
     files:
       spec: codev/specs/0004-day4-rework.md
-      plan: null
+      plan: codev/plans/0004-day4-rework.md
       review: null
     dependencies: ["0001", "0002"]
     tags: [course, day4, rework, multimodal]
@@ -166,7 +166,7 @@ projects:
   - id: "0005"
     title: "Day 5 — Google AI Studio"
     summary: "Day 5 materials: model parameters (temperature, top-p, top-k), system prompts, token economics, and email triage lab for Beacon"
-    status: conceived
+    status: planned
     priority: high
     files:
       spec: codev/specs/0005-day5-ai-studio.md
