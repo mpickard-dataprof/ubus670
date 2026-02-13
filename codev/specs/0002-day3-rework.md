@@ -2,7 +2,7 @@
 
 **Spec ID:** 0002
 **Title:** Day 3 (Context Engineering) — Rework Based on Instructor Feedback
-**Status:** Draft
+**Status:** Approved
 **Author:** Claude (Architect)
 **Created:** 2026-02-11
 **Parent Spec:** 0001 (UBUS 670 Course Materials)

@@ -126,7 +126,7 @@ projects:
   - id: "0002"
     title: "Day 3 Context Engineering — Major Rework"
     summary: "Rework Day 3 lecture, lab, and quiz based on instructor feedback: restructure slides, add Gemini Gems lab, fix RAG diagram, rework fine-tuning section"
-    status: conceived
+    status: implementing
     priority: high
     files:
       spec: codev/specs/0002-day3-rework.md
