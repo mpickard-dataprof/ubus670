@@ -140,3 +140,39 @@ After each day is approved, append an entry below:
 - Providing alternative tool fallback for labs (focus on one ecosystem per instructor preference)
 
 ---
+
+### AI Image Generation (Spec 0003)
+**First iteration:** 2026-02-12
+
+**What worked well:**
+- Nano Banana (`gemini-2.5-flash-image`) via `google-genai` SDK generates warm illustration-style images reliably
+- WebP conversion (q85) produces 60-100KB files from 1.2-1.5MB PNGs — massive savings, no visible quality loss
+- Headless Chrome screenshots (`google-chrome --headless --screenshot`) enable visual review without manual browser checks
+- Style prefix in prompts produces consistent warm illustration style across generations
+- "No text, no labels, no words" instruction in prompts effectively prevents baked-in text
+
+**What required significant revision:**
+- First attempt was a pretty illustration with no "teaching power" — looked nice but didn't teach. Instructor feedback: images must serve as teaching aids, not just decoration
+- Second attempt tried full-image text (headers, bullets, speech bubbles baked into the image). AI-generated text had consistent misspellings ("proparety", "halluications") — a fundamental limitation of current image generators
+- HTML layout needed 4 iterations to get vertical compaction right — content overflowed the slide viewport initially
+
+**Key discovery: Two integration modes:**
+1. **Mode A (Text-Free):** Pure illustration, no text in image. Best for emotional/metaphor slides where HTML context is sufficient
+2. **Mode B (Hybrid):** AI character illustrations + HTML text overlays. Best for teaching infographics where text must be precise and readable
+
+**Patterns to apply to future images:**
+- Always ask: "Does this image teach, or just decorate?" If it doesn't teach, it needs more (Mode B) or shouldn't be an image at all
+- Generate character illustrations text-free at 3:4 aspect ratio for hybrid panel layouts
+- Speech bubbles as CSS overlays (`position: absolute; top: -2px; right: 8px;`) create the illusion of coming from the character's head — no image regeneration needed
+- Use colored panel borders to encode meaning (red = bad/before, green = good/after)
+- Bold bullets (`font-size: 0.92em; font-weight: 600`) for classroom readability
+- Always take a screenshot to verify the slide fits within 1920x1080 before presenting
+- Text-free images (Mode A) are still valuable — not every image needs to be an infographic. Hero banners, metaphor illustrations, and mood-setting images work great without text
+
+**Content or approach to avoid:**
+- Never rely on AI-generated text within images — it will have misspellings
+- Don't generate full-slide infographics as single images; use hybrid approach instead
+- Don't assume initial layout will fit — always screenshot-verify on 1920x1080
+- Avoid "pretty but purposeless" images — every image must have educational intent
+
+---

@@ -143,16 +143,74 @@ No photorealism. No text labels unless specifically requested.
 Diverse professional characters with simple features.
 ```
 
-### 3.3 What Generated Images Are For vs. SVGs
+### 3.3 Two Integration Modes
 
-| Use Generated Images | Use SVG Diagrams |
-|---------------------|-----------------|
+AI-generated images serve two distinct roles. Choose the right mode based on what the slide needs:
+
+#### Mode A: Text-Free Illustration (Image Only)
+
+Use when the image evokes a feeling, sets a mood, or illustrates a metaphor where the surrounding HTML provides all necessary context.
+
+**Characteristics:**
+- Single image, no text baked in
+- Full-width or hero-style placement
+- HTML caption/labels below or beside the image
+- Simple `<img>` integration
+
+**Best for:**
+- Hero/banner images for section openers
+- Emotional or conceptual slides (the "aha" moment)
+- Metaphor illustrations where surrounding text explains the concept
+- Spot illustrations that add warmth to text-heavy slides
+
+**Example prompt approach:**
+```
+[Scene description]. IMPORTANT: Do NOT include any text, labels,
+captions, or words anywhere in the image. Pure illustration only.
+```
+
+#### Mode B: Hybrid Infographic (AI Illustrations + HTML Text)
+
+Use when the image needs to **teach** — when text labels, speech bubbles, headers, or bullet points are essential to the educational message.
+
+**Characteristics:**
+- AI-generated character/scene illustrations (text-free)
+- All text rendered as HTML/CSS (guaranteed crisp, readable, spelled correctly)
+- Speech bubbles, headers, bullets, and labels as HTML overlays
+- Flexbox panel layouts for side-by-side comparisons
+
+**Best for:**
+- Comparison infographics (before/after, old/new, good/bad)
+- Concept explanations with labeled diagrams
+- Any slide where text within the image is essential to understanding
+- Teaching aids that need "teaching power" — not just decoration
+
+**Why hybrid over full-image text:** AI image generators (including Nano Banana) are unreliable with text — misspellings, garbled words, and inconsistent font rendering are common. The hybrid approach guarantees perfect text every time while keeping the warmth of illustrated characters.
+
+**Key CSS patterns for hybrid infographics:**
+- Flexbox panels: `display: flex; align-items: stretch;` for equal-height side-by-side panels
+- Speech bubble overlay: Position the bubble `absolute` inside a `relative` container that wraps the image, anchored to top-right near the character's head
+- Panel borders: Use colored borders (red for "before"/bad, green for "after"/good) to visually encode meaning
+- Vertical compaction: Keep panels tight — `padding: 14px 18px`, `margin: 2px 0 8px` on image containers
+- Bold bullets: `font-size: 0.92em; font-weight: 600` for classroom readability
+
+**Aspect ratios for hybrid character illustrations:** Use `3:4` (portrait) for characters that will be placed inside panel layouts, not `16:9`.
+
+### 3.4 What Generated Images Are For vs. SVGs
+
+| Use Generated Images (Mode A or B) | Use SVG Diagrams |
+|-------------------------------------|-----------------|
 | Analogies and metaphors (open book, desk, filing cabinet) | Technical architecture (RAG pipeline, flow diagrams) |
 | Storytelling (comic panels, storyboards) | Comparison tables and matrices |
 | Emotional/conceptual slides (the "aha" moment) | Data visualization (charts, hierarchies) |
 | Hero/banner images for sections | Step-by-step processes with precise labels |
+| Teaching infographics with labeled comparisons (Mode B) | Precise data or measurements |
 
-**Rule of thumb:** If the image needs exact text labels or precise data, use SVG. If it needs to evoke a feeling or illustrate a metaphor, use a generated image.
+**Decision framework:**
+1. Does the image need exact, readable text? → **Mode B** (hybrid) or **SVG**
+2. Does the image evoke a feeling or illustrate a metaphor? → **Mode A** (text-free)
+3. Does the image need precise data, measurements, or technical labels? → **SVG**
+4. Is it a comparison/teaching aid with characters + explanatory text? → **Mode B** (hybrid)
 
 ---
 
@@ -162,11 +220,14 @@ Diverse professional characters with simple features.
 
 Every generated image goes through:
 
-1. **Generate** — Run the script with a detailed prompt
-2. **Architect Review** — View the image (Read tool), check against style guide
-3. **Iterate** — If quality is insufficient, adjust prompt and regenerate (max 3 attempts)
-4. **Human Review** — Present final image to instructor for approval before integration
-5. **Integrate** — Add `<img>` tag to HTML, remove placeholder comment
+1. **Choose mode** — Mode A (text-free) or Mode B (hybrid)? See Section 3.3 decision framework.
+2. **Generate** — Run `generate_image.py` with detailed prompt. For Mode B, generate character illustrations separately (text-free, 3:4 aspect ratio).
+3. **Optimize** — Convert PNG → WebP (q85) using Pillow. Verify under 500KB.
+4. **Architect Review** — View the image (Read tool), check against style guide.
+5. **Integrate** — Build HTML. For Mode B, construct the infographic layout with HTML text overlays.
+6. **Screenshot verify** — Take headless Chrome screenshot (`google-chrome --headless --screenshot`) to verify the slide fits within 1920x1080 and all elements are readable.
+7. **Iterate** — If layout or quality needs work, adjust and re-screenshot. For image quality issues, regenerate (max 3 attempts).
+8. **Human Review** — Present final slide screenshot to instructor for approval.
 
 ### 4.2 File Conventions
 
@@ -179,34 +240,67 @@ Materials/Materials/Week X/Day Y/web/images/
 └── slide-22d-neural-network-reveal.png
 ```
 
-**Naming:** `slide-{number}-{short-description}.{ext}`
-**Format:** PNG (default) or WebP (for size optimization)
-**Resolution:** 1024x1024 minimum; 16:9 aspect ratio for slides, 1:1 for spot illustrations
-**Max file size:** 500KB per image (optimize with quality settings if needed)
+**Naming:** `slide-{number}-{short-description}.{ext}` or `{descriptive-name}.{ext}` for hybrid character illustrations
+**Format:** WebP (preferred, ~90% smaller than PNG at equivalent quality). Generate as PNG, convert with Pillow `img.save(path, 'WEBP', quality=85)`.
+**Resolution:** API generates 1024+ px. Use `16:9` for full-width slides, `3:4` for character illustrations in hybrid panels, `1:1` for spot illustrations.
+**Max file size:** 500KB per image (WebP at q85 typically produces 60-100KB)
 
 ### 4.3 HTML Integration
 
-```html
-<!-- Before (placeholder) -->
-<!-- IMAGE PROMPT: Description... -->
-<div class="visual-box" style="text-align: center; padding: 30px;">
-    <p style="color: #888;">[AI-Generated Image: Description]</p>
-</div>
+#### Mode A: Text-Free Image
 
-<!-- After (integrated) -->
+```html
+<!-- IMAGE PROMPT: [Full prompt for reproducibility] -->
 <div style="text-align: center; margin: 20px 0;">
-    <img src="images/slide-19-open-book-exam.png"
-         alt="Illustration: Student taking an open-book exam with reference materials,
-              compared to a student taking a closed-book exam from memory only"
+    <img src="images/descriptive-name.webp"
+         alt="[Descriptive alt text explaining what the illustration depicts and what concept it represents]"
          style="max-width: 80%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
 </div>
 ```
 
-**Requirements:**
+#### Mode B: Hybrid Infographic (reference implementation — Day 3 Slide 19)
+
+```html
+<!-- HYBRID INFOGRAPHIC: AI-generated illustrations + HTML text -->
+<div style="display: flex; align-items: stretch; gap: 0; max-width: 98%;">
+    <!-- Panel with colored border -->
+    <div style="flex: 1; border: 3px solid #C8102E; border-radius: 14px; background: #fff8f8;
+                padding: 14px 18px 12px; display: flex; flex-direction: column;">
+        <!-- Header -->
+        <div style="font-family: 'Montserrat', sans-serif;">
+            <span style="font-size: 1.15em; font-weight: 800; color: #C8102E;">TITLE</span>
+            <span style="font-size: 0.8em; color: #666; margin-left: 6px;">(Subtitle)</span>
+        </div>
+        <!-- Character illustration with overlapping speech bubble -->
+        <div style="position: relative; text-align: center; margin: 2px 0 8px;">
+            <img src="images/character.webp" alt="..." style="max-height: 210px; border-radius: 10px;">
+            <div style="position: absolute; top: -2px; right: 8px; background: #e8f4fd;
+                        border: 2px solid #b8d8ec; border-radius: 12px; padding: 6px 12px;
+                        font-size: 0.78em; font-style: italic; max-width: 55%; z-index: 1;">
+                "Speech bubble text — HTML, always readable"
+            </div>
+        </div>
+        <!-- Bold bullet points -->
+        <ul style="font-size: 0.92em; font-weight: 600; line-height: 1.75;">
+            <li>Key point one</li>
+        </ul>
+    </div>
+    <!-- Arrow between panels -->
+    <div style="display: flex; align-items: center; padding: 0 4px; min-width: 44px;">
+        <div style="width: 32px; height: 32px; background: #888;
+                    clip-path: polygon(0 10%, 60% 10%, 60% 0%, 100% 50%, 60% 100%, 60% 90%, 0 90%);
+                    opacity: 0.55;"></div>
+    </div>
+    <!-- Second panel (same structure, green border) -->
+</div>
+```
+
+**Requirements (both modes):**
 - Always include descriptive `alt` text (accessibility)
-- Use `max-width: 80%` with `border-radius: 12px` for consistent presentation
-- Add subtle `box-shadow` to lift image off the white slide background
-- Keep the `<!-- IMAGE PROMPT -->` comment above the `<img>` for prompt reproducibility
+- Use `border-radius: 12px` for consistent presentation
+- Keep `<!-- IMAGE PROMPT -->` comments for reproducibility
+- Always take a headless screenshot to verify layout fits within 1920x1080 viewport
+- Bullet text in hybrid infographics: minimum `font-size: 0.92em; font-weight: 600`
 
 ### 4.4 Content Policy Guardrails
 
