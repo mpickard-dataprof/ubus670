@@ -134,12 +134,25 @@ projects:
       review: null
     dependencies: ["0001"]
     tags: [course, day3, rework]
-    notes: "Instructor feedback received 2026-02-11. Major changes: remove AI-ready docs focus, add structured formats, Gemini Gems, three-way context comparison, colleague fine-tuning story. Execute in fresh session."
+    notes: "Instructor feedback received 2026-02-11. Major changes: remove AI-ready docs focus, add structured formats, Gemini Gems, three-way context comparison, colleague fine-tuning story. Implementation committed 2026-02-11."
+
+  - id: "0003"
+    title: "AI Image Generation for Course Materials"
+    summary: "Establish image generation workflow using Nano Banana (Gemini 2.5 Flash Image) API to replace placeholder graphics with warm illustration-style images across all days"
+    status: conceived
+    priority: medium
+    files:
+      spec: codev/specs/0003-image-generation.md
+      plan: null
+      review: null
+    dependencies: []
+    tags: [course, images, tooling]
+    notes: "Nano Banana (gemini-2.5-flash-image) via google-genai SDK. Warm illustration style. Priority targets: Day 3 open-book exam analogy, organized/messy desk, accidental fine-tuner comic."
 ```
 
 ## Next Available Number
 
-**0003** - Reserve this number for your next project
+**0004** - Reserve this number for your next project
 
 ---
 

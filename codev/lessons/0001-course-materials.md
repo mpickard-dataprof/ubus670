@@ -104,3 +104,39 @@ After each day is approved, append an entry below:
 - CSS-only diagrams for technical concepts (always use SVG for quality control)
 
 ---
+
+### Day 3: Context Engineering (Rework)
+**Rework completed:** 2026-02-11
+**Spec:** 0002
+
+**What worked well:**
+- Structured formats (Markdown, JSON, XML) framing is more current than "AI-ready documents"
+- Gemini Gems provide a concrete, hands-on way to teach persistent context
+- Three-way comparison (no context / upload / Gem) clearly demonstrates why context engineering matters
+- "Accidental Fine-Tuner" colleague story makes behavioral config vs fine-tuning memorable
+- Citation testing section teaches source verification as a business skill
+- 22-topic quiz bank with random 20-question selection per attempt adds variety
+
+**What required significant revision from original prototype:**
+- "AI-ready documents" concept was outdated for 2026 (modern models handle messy docs)
+- Gemini version wrong (used Gemini 3 in spec, corrected to Gemini 2.5 in implementation)
+- RAG diagram was cut off at the edge (viewBox too narrow)
+- Fine-tuning was over-emphasized as a primary technique (2026 consensus is RAG-first)
+- ChatGPT backup plan removed per instructor directive (focus on Gemini ecosystem)
+- Data Privacy Assessment removed to make room for Gem creation and citation testing
+
+**Patterns to apply to future days:**
+- Always research current AI model versions before writing content (don't assume from spec)
+- Verify Gemini Gems UI path is current before class (UI may change)
+- Include `[AI-GENERATED IMAGE]` placeholders with detailed prompts for instructor to generate
+- When a concept is "outdated," reframe rather than remove entirely (structure still helps, just isn't required)
+- Quiz: having more topics than questions per attempt (22 > 20) ensures variety across retakes
+
+**Content or approach to avoid:**
+- Presenting any AI capability as "can't do X" — models improve rapidly
+- ChatGPT references as primary tool (instructor prefers Gemini ecosystem)
+- "AI-readiness" scores/rubrics — too much focus on a diminishing concern
+- Fine-tuning as a recommended business approach (RAG-first for most cases)
+- Providing alternative tool fallback for labs (focus on one ecosystem per instructor preference)
+
+---
