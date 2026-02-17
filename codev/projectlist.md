@@ -121,12 +121,12 @@ projects:
       review: null
     dependencies: []
     tags: [course, mba, ai]
-    notes: "Day 1 complete (2026-02-06). Day 2 complete (2026-02-10). Day 3 prototype generated, undergoing rework (see Spec 0002). Days 7-9 need dual versions: Plan A (ADK Visual Builder) + Plan B (MindStudio backup)"
+    notes: "Day 1 complete (2026-02-06). Day 2 complete (2026-02-10). Day 3 complete/reworked (2026-02-11). Day 4 spec+plan written, not implemented. Day 5 spec+plan drafted. Days 6-9 not started. Days 7-9 need dual versions: Plan A (ADK Visual Builder) + Plan B (MindStudio backup)."
 
   - id: "0002"
     title: "Day 3 Context Engineering — Major Rework"
     summary: "Rework Day 3 lecture, lab, and quiz based on instructor feedback: restructure slides, add Gemini Gems lab, fix RAG diagram, rework fine-tuning section"
-    status: implementing
+    status: committed
     priority: high
     files:
       spec: codev/specs/0002-day3-rework.md
@@ -134,7 +134,7 @@ projects:
       review: null
     dependencies: ["0001"]
     tags: [course, day3, rework]
-    notes: "Instructor feedback received 2026-02-11. Major changes: remove AI-ready docs focus, add structured formats, Gemini Gems, three-way context comparison, colleague fine-tuning story. Implementation committed 2026-02-11."
+    notes: "Implementation committed 2026-02-11 (git b902d8a). Awaiting human mark as integrated. Major changes: structured formats, Gemini Gems, three-way context comparison, Accidental Fine-Tuner story."
 
   - id: "0003"
     title: "AI Image Generation for Course Materials"
@@ -147,8 +147,7 @@ projects:
       review: null
     dependencies: []
     tags: [course, images, tooling]
-    notes: "Day 3 images complete (4/4). Tool established (_tools/generate_image.py). Two integration modes discovered: Mode A (text-free) and Mode B (hybrid HTML+AI). Remaining days need images as content is created."
-```
+    notes: "Day 3 images complete (4/4). Tool established (_tools/generate_image.py). Two integration modes: Mode A (text-free) and Mode B (hybrid HTML+AI). Days 1-2 retroactive + Days 4-9 pending as content is created."
 
   - id: "0004"
     title: "Day 4 Multimodal AI — Major Rework"
@@ -161,7 +160,7 @@ projects:
       review: null
     dependencies: ["0001", "0002"]
     tags: [course, day4, rework, multimodal]
-    notes: "Instructor feedback received 2026-02-12. Major changes: replace receipt focus with marketing campaign scenario, add image generation (Nano Banana), real image/audio/video uploads, broaden to 5+ real-world use cases. Depends on Day 3 finalization for Quick Recap slide."
+    notes: "Spec+plan drafted 2026-02-12, awaiting human approval before implementation. Current Day 4 files have old receipt-extraction prototype with partial uncommitted edits from a session that hit rate limit."
 
   - id: "0005"
     title: "Day 5 — Google AI Studio"
@@ -174,7 +173,7 @@ projects:
       review: null
     dependencies: ["0001", "0004"]
     tags: [course, day5, ai-studio, parameters]
-    notes: "New content (no prior prototype). Bridges from Day 4 multimodal AI to Day 5 configuration. Email triage lab produces system that Day 6 will red-team. Date: Wed March 18, 2026."
+    notes: "Spec+plan drafted 2026-02-13, awaiting human review/approval. Email triage lab produces system that Day 6 will red-team. Date: Wed March 18, 2026."
 ```
 
 ## Next Available Number
