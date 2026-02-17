@@ -174,11 +174,24 @@ projects:
     dependencies: ["0001", "0004"]
     tags: [course, day5, ai-studio, parameters]
     notes: "Spec+plan drafted 2026-02-13, awaiting human review/approval. Email triage lab produces system that Day 6 will red-team. Date: Wed March 18, 2026."
+
+  - id: "0006"
+    title: "NotebookLM Integration — Visual & Educational Quality Agent"
+    summary: "Integrate NotebookLM as primary agent for improving slide visual and educational quality, replacing Nano Banana as the main visual improvement workflow"
+    status: conceived
+    priority: high
+    files:
+      spec: codev/specs/0006-notebooklm-integration.md
+      plan: null
+      review: null
+    dependencies: ["0001"]
+    tags: [course, visuals, notebooklm, tooling]
+    notes: "Spec drafted 2026-02-17. Includes html2md.py conversion tool for NotebookLM ingestion. Day 1 test run ready. Partially supersedes Spec 0003 (Nano Banana)."
 ```
 
 ## Next Available Number
 
-**0006** - Reserve this number for your next project
+**0007** - Reserve this number for your next project
 
 ---
 
