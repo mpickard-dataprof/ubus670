@@ -201,16 +201,23 @@ python3 Materials/_tools/extract_slides.py output.pdf \
   -o "Materials/Week X/Day Y/notebooklm/extracted/"
 ```
 
-**Step 4: Rebuild in Reveal.js HTML**
-- Claude Code uses NotebookLM's output as design reference
-- Adopts layout principles: full-screen, large headers, minimal text, semantic colors
-- Uses extracted illustrations as image assets
-- Maintains NIU light theme, breadcrumbs, nav, interactive elements (quizzes)
-- Verifies content accuracy (fix any NotebookLM hallucinations)
+**Step 4: Deploy as full-bleed image slides in Reveal.js**
+
+> **IMPORTANT (Lesson from Day 1):** Do NOT recreate NotebookLM content in HTML.
+> This duplicates text and loses visual quality. Use the slide PNGs directly.
+
+- Copy extracted PNGs to `web/images/slide-XX.png`
+- Copy source PDF to `web/day{N}-lecture.pdf` for student download
+- Each `<section>` uses `data-background-image` with `data-background-size="contain"`
+- Add speaker notes on every image slide (accessibility + presenter support)
+- Inject interactive HTML-only slides (quizzes) between image slides as needed
+- Add PDF download link to nav bar
+- Only RevealNotes plugin needed (remove Markdown, Highlight)
 
 **Step 5: Verify & approve**
-- Screenshot updated slides via headless Chrome
-- Compare before (our original) / reference (NotebookLM) / after (rebuilt)
+- Open in browser, check all images load and scale correctly
+- Test interactive quizzes
+- Verify nav links (Dashboard, Lab, Quiz, PDF)
 - Human approval
 
 ### 3.2 What to Look For in NotebookLM Output
@@ -275,26 +282,40 @@ python3 Materials/_tools/extract_slides.py output.pdf \
 | Convert lecture.html → markdown | Done | 38 slides, 16,563 chars |
 | Generate PDF of current slides | Done | 2.6MB, 38 pages via decktape |
 | Create context package | Done | PROJECT_BRIEF.md + INSTRUCTOR_FEEDBACK.md |
-| Upload to NotebookLM | Done | User uploaded markdown (not full package yet) |
-| NotebookLM generates Slide Deck | Done | 15 slides, dark blueprint theme, excellent quality |
-| Extract slide images | Done | 15 PNGs at 300 DPI, ~1.5MB each |
-| Rebuild in Reveal.js | **Pending** | Next step |
+| Upload to NotebookLM | Done | Multiple rounds: v1, v2 (Foundations), v3 (Business Leaders) |
+| NotebookLM generates Slide Decks | Done | v2: 21 slides, v3: 21 slides — both excellent quality |
+| Extract slide images | Done | v2 and v3 PNGs extracted |
+| Deploy as image slides in Reveal.js | **Done** | v3 chosen, full-bleed approach |
 
 ### 5.2 Key Findings
 
 1. NotebookLM produces **dramatically better** visual design than our current process
-2. It generates unique, consistent isometric illustrations — our main quality gap
-3. It condenses content effectively (38→15 slides) with sharper business framing
-4. It hallucinated some facts — content verification is mandatory
-5. **Decision: Keep NIU light theme** but adopt NotebookLM's layout principles and extract its illustrations
+2. It generates unique, consistent illustrations — our main quality gap
+3. Multiple NotebookLM runs produce different quality/focus: v3 (Business Leaders) had better educational flow
+4. It hallucinated some facts — content verification still needed
+5. **Critical lesson: Do NOT rebuild NotebookLM content in HTML.** First attempt recreated all text in Reveal.js, duplicating the NotebookLM wording. The correct approach is full-bleed slide images.
 
-### 5.3 Remaining for Day 1 Test
+### 5.3 Approach Pivot (2026-02-18)
 
-- [ ] Upload full context package (PDF + brief + feedback) for improved output
-- [ ] Rebuild Day 1 lecture in Reveal.js using NotebookLM illustrations + NIU theme
-- [ ] Compare before/after quality
-- [ ] Instructor review of rebuilt slides
-- [ ] Decision: proceed with Days 2-9 using this workflow?
+The initial plan tried to use NotebookLM illustrations as decorative elements within HTML text layouts. This was rejected because:
+- Text in the HTML slides duplicated the NotebookLM slide text
+- The NotebookLM visual design (layout, typography, illustrations) could not be faithfully recreated in HTML
+- The instructor liked the NotebookLM output as-is
+
+**Final approach:** Use NotebookLM slide PNGs as full-bleed Reveal.js backgrounds. Inject interactive HTML slides (quizzes) between image slides. Provide PDF download for students.
+
+### 5.4 Day 1 Final Output
+
+- 23 total slides: 21 NotebookLM v3 image slides + 2 interactive checkpoint quizzes
+- Source: v3 (Business Leaders) — all 21 slides used as-is
+- PDF download: `web/day1-lecture.pdf` (16MB, linked in nav bar)
+- lecture.html: 357 lines (down from 1,918 in original)
+
+### 5.5 Remaining
+
+- [ ] Instructor review of deployed slides
+- [x] Decision: proceed with Days 2-9 using this workflow? → **Yes, full-bleed image approach**
+- [ ] Apply same workflow to Day 2 and Day 3
 
 ---
 
