@@ -141,43 +141,76 @@ For best results, upload these alongside the converted lecture:
 
 ---
 
-## 3. NotebookLM Workflow
+## 3. NotebookLM Workflow (Refined After Day 1 Test Run)
 
-### 3.1 Per-Day Process
+### 3.1 Test Run Results (2026-02-17)
 
-For each day of content (one day per session, per existing rule):
+The Day 1 test run produced dramatically better slides — 15 slides with consistent isometric illustrations, full-screen layouts, and strong visual storytelling. Key findings:
 
-**Step 1: Convert**
+- NotebookLM generates high-quality AI illustrations (isometric, blueprint-style)
+- It condensed 38 slides → 15, with sharper business framing
+- It hallucinated some facts ("Gemini 3 Pro") — content verification still needed
+- Dark theme looks stunning but doesn't match NIU brand
+- **Decision:** Stay with NIU light theme, but adopt NotebookLM's layout quality and extract its illustrations
+
+### 3.2 Context Package (Upload to NotebookLM)
+
+For best results, upload these files as sources:
+
+| File | Purpose |
+|------|---------|
+| `notebooklm/PROJECT_BRIEF.md` | Audience, brand, goals, specific improvements needed |
+| `notebooklm/day{N}-slides-current.pdf` | Current slides so NotebookLM sees the visuals |
+| `notebooklm/INSTRUCTOR_FEEDBACK.md` | Known issues to address |
+| `notebooklm/lecture.md` | Full text content for analysis |
+| (Optional) Reference materials (PPTX, etc.) | Depth/quality examples from instructor |
+
+### 3.3 Per-Day Process
+
+**Step 1: Prepare context package**
 ```bash
+# Convert lecture to markdown
 python3 Materials/_tools/html2md.py \
-  "Materials/Week 1/Day 1/web/lecture.html" \
-  -o "Materials/Week 1/Day 1/notebooklm/lecture.md"
+  "Materials/Week X/Day Y/web/lecture.html" \
+  -o "Materials/Week X/Day Y/notebooklm/lecture.md"
+
+# Generate PDF of current slides
+npx decktape reveal \
+  "file://$(pwd)/Materials/Week X/Day Y/web/lecture.html" \
+  "Materials/Week X/Day Y/notebooklm/dayY-slides-current.pdf" \
+  --size 1920x1080 --chrome-arg=--no-sandbox
 ```
 
-**Step 2: Upload to NotebookLM**
-- Create a notebook for the day (or reuse the course notebook)
-- Upload the converted markdown as a source
-- Upload any additional context sources (style guide, syllabus, feedback)
+Also prepare `PROJECT_BRIEF.md` and `INSTRUCTOR_FEEDBACK.md` in the notebooklm/ directory.
 
-**Step 3: Generate Studio Outputs**
-- Generate **Slide Deck** (primary deliverable)
-- Generate **Mind Map** (structure validation)
-- Generate **Quiz** (compare with ours)
-- Optionally generate **Infographic** for key concepts
+**Step 2: Upload to NotebookLM & generate Slide Deck**
+- Create a notebook, upload all context files
+- Generate **Slide Deck** (primary)
+- Optionally generate Mind Map, Quiz, Infographic
 
-**Step 4: Review & Extract Improvements**
-- Compare NotebookLM's slide deck against our current slides
-- Identify: better layouts, visual ideas, content reordering, missing topics, clearer explanations
-- Document improvements in a structured format
+**Step 3: Export & extract illustrations**
+- Download NotebookLM output as .pptx (preferred) or export PDF
+- Extract slide images:
+```bash
+# From .pptx — extracts embedded illustrations:
+python3 Materials/_tools/extract_slides.py output.pptx \
+  -o "Materials/Week X/Day Y/notebooklm/extracted/"
 
-**Step 5: Apply Improvements**
-- Feed the improvement list to Claude Code
-- Claude Code edits the Reveal.js HTML to incorporate improvements
-- Maintain our existing CSS framework and NIU branding
+# From .pdf — renders full slides as PNGs:
+python3 Materials/_tools/extract_slides.py output.pdf \
+  -o "Materials/Week X/Day Y/notebooklm/extracted/"
+```
 
-**Step 6: Verify**
-- Screenshot updated slides
-- Compare before/after
+**Step 4: Rebuild in Reveal.js HTML**
+- Claude Code uses NotebookLM's output as design reference
+- Adopts layout principles: full-screen, large headers, minimal text, semantic colors
+- Uses extracted illustrations as image assets
+- Maintains NIU light theme, breadcrumbs, nav, interactive elements (quizzes)
+- Verifies content accuracy (fix any NotebookLM hallucinations)
+
+**Step 5: Verify & approve**
+- Screenshot updated slides via headless Chrome
+- Compare before (our original) / reference (NotebookLM) / after (rebuilt)
 - Human approval
 
 ### 3.2 What to Look For in NotebookLM Output
@@ -202,50 +235,66 @@ python3 Materials/_tools/html2md.py \
 
 ---
 
-## 4. Relationship to Nano Banana (Spec 0003)
+## 4. Toolchain
 
-### 4.1 What Changes
+### 4.1 Tools Summary
+
+| Tool | Location | Purpose | Status |
+|------|----------|---------|--------|
+| `html2md.py` | `Materials/_tools/html2md.py` | Convert Reveal.js HTML → Markdown | Built, tested |
+| `extract_slides.py` | `Materials/_tools/extract_slides.py` | Extract images from .pptx or render .pdf pages | Built, tested |
+| `generate_image.py` | `Materials/_tools/generate_image.py` | Nano Banana backup image generation | Existing (Spec 0003) |
+| Python venv | `Materials/_tools/.venv/` | python-pptx dependency for extraction | Configured |
+
+### 4.2 Dependencies
+
+- `pdftoppm` (poppler-utils) — renders PDF pages as PNG images
+- `npx decktape` — generates PDF from Reveal.js HTML
+- `python-pptx` — extracts embedded images from .pptx (installed in venv)
+- `google-chrome` — headless browser for decktape
+
+### 4.3 Relationship to Nano Banana (Spec 0003)
 
 | Before (Spec 0003) | After (Spec 0006) |
 |--------------------|-------------------|
 | Nano Banana is the primary visual agent | NotebookLM is the primary visual/quality agent |
-| Individual image generation per slide | Whole-deck visual improvement |
-| Manual prompt engineering per image | NotebookLM auto-generates visual layout |
-| `generate_image.py` as the main tool | `html2md.py` as the main tool |
+| Individual image generation per slide | Whole-deck visual improvement + illustration extraction |
+| Manual prompt engineering per image | NotebookLM auto-generates visual design |
+| `generate_image.py` as the main tool | `html2md.py` + `extract_slides.py` as the main tools |
 
-### 4.2 What Stays
-
-- `generate_image.py` remains available for cases where we need a specific custom illustration
-- The style guide principles (warm, professional, NIU colors) still apply
-- Human-in-the-loop review is still required
-- One day per session rule still applies
+`generate_image.py` remains available as backup for custom illustrations NotebookLM doesn't cover.
 
 ---
 
-## 5. Test Run: Day 1
+## 5. Test Run: Day 1 (Completed)
 
-### 5.1 Plan
+### 5.1 Results
 
-1. Convert Day 1 `lecture.html` → markdown using `html2md.py`
-2. User uploads to NotebookLM and generates a Slide Deck
-3. User shares NotebookLM output (screenshots, export, or description)
-4. We compare and identify improvements
-5. Apply improvements to `lecture.html`
+| Step | Status | Notes |
+|------|--------|-------|
+| Convert lecture.html → markdown | Done | 38 slides, 16,563 chars |
+| Generate PDF of current slides | Done | 2.6MB, 38 pages via decktape |
+| Create context package | Done | PROJECT_BRIEF.md + INSTRUCTOR_FEEDBACK.md |
+| Upload to NotebookLM | Done | User uploaded markdown (not full package yet) |
+| NotebookLM generates Slide Deck | Done | 15 slides, dark blueprint theme, excellent quality |
+| Extract slide images | Done | 15 PNGs at 300 DPI, ~1.5MB each |
+| Rebuild in Reveal.js | **Pending** | Next step |
 
-### 5.2 Success Criteria for Test Run
+### 5.2 Key Findings
 
-- [ ] Conversion tool produces clean, readable markdown from Day 1 lecture
-- [ ] NotebookLM accepts the markdown and generates a slide deck
-- [ ] At least 3 actionable improvements identified from NotebookLM output
-- [ ] Improvements successfully applied to Reveal.js HTML
-- [ ] Instructor approves the improved slides
+1. NotebookLM produces **dramatically better** visual design than our current process
+2. It generates unique, consistent isometric illustrations — our main quality gap
+3. It condenses content effectively (38→15 slides) with sharper business framing
+4. It hallucinated some facts — content verification is mandatory
+5. **Decision: Keep NIU light theme** but adopt NotebookLM's layout principles and extract its illustrations
 
-### 5.3 Decision Point
+### 5.3 Remaining for Day 1 Test
 
-After the Day 1 test run, decide:
-- Is this workflow worth continuing for Days 2-9?
-- What adjustments are needed to the conversion or review process?
-- Should we use NotebookLM's Quiz output to supplement our quizzes?
+- [ ] Upload full context package (PDF + brief + feedback) for improved output
+- [ ] Rebuild Day 1 lecture in Reveal.js using NotebookLM illustrations + NIU theme
+- [ ] Compare before/after quality
+- [ ] Instructor review of rebuilt slides
+- [ ] Decision: proceed with Days 2-9 using this workflow?
 
 ---
 
