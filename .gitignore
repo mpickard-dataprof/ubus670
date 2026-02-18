@@ -27,6 +27,8 @@ build/
 .agent-farm/
 .builders/
 .claude/
+.consult/
 .gemini/
+codev/.update-hashes.json
 
 Materials/_tools/.venv/
