@@ -259,6 +259,73 @@
             background: #555;
         }
 
+        /* Data/context boxes */
+        .data-box {
+            background: #f0f4f8;
+            color: #333;
+            padding: 30px 25px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            position: relative;
+            border: 1px solid #d0d8e0;
+            overflow: visible;
+        }
+        .data-box::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #1D428A;
+            color: white;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        .data-box .copy-btn {
+            background: #1D428A;
+        }
+        .data-box .copy-btn:hover {
+            background: #2a5aaa;
+        }
+        .data-box .data-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1D428A;
+            margin: 0 0 12px;
+        }
+        .data-box table {
+            display: block;
+            overflow-x: auto;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            margin: 10px 0;
+            font-family: 'Fira Code', 'Consolas', monospace;
+        }
+        .data-box th, .data-box td {
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid #d0d8e0;
+            white-space: nowrap;
+        }
+        .data-box th {
+            background: #e0e8f0;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .data-box .dict-term {
+            font-weight: 600;
+            color: #1D428A;
+        }
+
         /* Tip boxes */
         .tip-box {
             background: rgba(0, 169, 224, 0.1);
@@ -508,42 +575,181 @@ Constraints: Keep it under 400 words. Do not require prior retail experience. Em
                 <div class="prompt-box">
                     <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Summarize this data.</div>
 
+                <p style="font-size: 0.9em; margin-top: 15px;">Imagine a Beacon analyst pasted this data into an AI tool along with the bad prompt above. Here's the data they had:</p>
+
+                <div class="data-box" data-label="DATA">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+                    <div class="data-title">Beacon Q3 Store Performance Summary</div>
+                    <table>
+                        <tr><th>Store ID</th><th>Location</th><th>Q3 Revenue</th><th>Foot Traffic</th><th>Return Rate</th><th>Avg Transaction</th><th>Staff</th></tr>
+                        <tr><td>BRG-001</td><td>Rockford, IL</td><td>$1,240,000</td><td>45,200</td><td>6.2%</td><td>$47.30</td><td>28</td></tr>
+                        <tr><td>BRG-005</td><td>DeKalb, IL</td><td>$680,000</td><td>22,100</td><td>4.8%</td><td>$38.90</td><td>15</td></tr>
+                        <tr><td>BRG-008</td><td>Peoria, IL</td><td>$920,000</td><td>33,400</td><td>5.1%</td><td>$44.10</td><td>22</td></tr>
+                        <tr><td>BRG-012</td><td>Naperville, IL</td><td>$1,810,000</td><td>61,300</td><td>5.5%</td><td>$52.60</td><td>35</td></tr>
+                        <tr><td>BRG-015</td><td>Janesville, WI</td><td>$540,000</td><td>18,700</td><td>11.3%</td><td>$36.20</td><td>12</td></tr>
+                        <tr><td>BRG-018</td><td>Davenport, IA</td><td>$760,000</td><td>28,900</td><td>5.9%</td><td>$41.50</td><td>18</td></tr>
+                        <tr><td>BRG-021</td><td>Bloomington, IL</td><td>$890,000</td><td>31,200</td><td>4.3%</td><td>$45.80</td><td>20</td></tr>
+                        <tr><td>BRG-024</td><td>Schaumburg, IL</td><td>$1,560,000</td><td>52,800</td><td>7.8%</td><td>$49.70</td><td>32</td></tr>
+                    </table>
+                    <pre class="copy-text" style="display:none">Beacon Q3 Store Performance Summary
+
+Store ID  | Location         | Q3 Revenue  | Foot Traffic | Return Rate | Avg Transaction | Staff
+BRG-001   | Rockford, IL     | $1,240,000  | 45,200       | 6.2%        | $47.30          | 28
+BRG-005   | DeKalb, IL       | $680,000    | 22,100       | 4.8%        | $38.90          | 15
+BRG-008   | Peoria, IL       | $920,000    | 33,400       | 5.1%        | $44.10          | 22
+BRG-012   | Naperville, IL   | $1,810,000  | 61,300       | 5.5%        | $52.60          | 35
+BRG-015   | Janesville, WI   | $540,000    | 18,700       | 11.3%       | $36.20          | 12
+BRG-018   | Davenport, IA    | $760,000    | 28,900       | 5.9%        | $41.50          | 18
+BRG-021   | Bloomington, IL  | $890,000    | 31,200       | 4.3%        | $45.80          | 20
+BRG-024   | Schaumburg, IL   | $1,560,000  | 52,800       | 7.8%        | $49.70          | 32</pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Your challenge:</strong> Rewrite the prompt so it tells the AI <em>what to look for</em> in this data and <em>how to present</em> the findings. Think: who's the audience? What patterns matter?
+                </div>
+
                 <div class="step">
                     <input type="checkbox" id="step2-1">
-                    <label for="step2-1">Test Bad Prompt A in Gemini. Then rewrite it as a complete RCTFC prompt for a Beacon scenario (e.g., summarizing last quarter's sales data for the board). Test your rewrite.</label>
+                    <label for="step2-1">Test Bad Prompt A in Gemini (paste both the prompt and the data). Then rewrite it as a complete RCTFC prompt that includes this data and tells the AI exactly what analysis you need. Test your rewrite.</label>
                 </div>
 
                 <div class="reflection-area">
                     <label>Your RCTFC rewrite of Prompt A:</label>
-                    <textarea placeholder="Write your complete RCTFC version here. Include all five components: Role, Context, Task, Format, Constraints..."></textarea>
+                    <textarea placeholder="Write your complete RCTFC version here. Include the data above and all five RCTFC components: Role, Context, Task, Format, Constraints..."></textarea>
                 </div>
 
                 <h4 style="margin-top: 25px; color: #C8102E;">Bad Prompt B</h4>
                 <div class="prompt-box">
                     <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Write a professional email about the meeting.</div>
 
+                <p style="font-size: 0.9em; margin-top: 15px;">Here are the meeting notes this person had when they wrote that prompt:</p>
+
+                <div class="data-box" data-label="MEETING NOTES">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+                    <div class="data-title">Beacon Q4 Planning Meeting</div>
+                    <p style="margin: 0 0 5px; font-size: 0.85rem;"><strong>Date:</strong> September 15, 2025 &nbsp;&bull;&nbsp; <strong>Location:</strong> Conference Room B, Rockford HQ</p>
+                    <p style="margin: 0 0 10px; font-size: 0.85rem;"><strong>Attendees:</strong> Sarah Chen (VP Operations, chair), Mike Torres (Marketing Director), Lisa Patel (HR Manager), David Kim (IT Director), Rachel Adams (Regional Manager &mdash; North)</p>
+                    <p style="margin: 10px 0 5px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem;">Key Discussion Points:</p>
+                    <ol style="margin: 0 0 10px; padding-left: 20px; font-size: 0.85rem;">
+                        <li><strong>Holiday Staffing Gap:</strong> Only 180 of 350 seasonal positions filled with 6 weeks until fall rush. HR proposing referral bonus ($200/hire) and job fairs at 3 community colleges.</li>
+                        <li><strong>Marketing Budget Shift:</strong> Reallocating 25% of Q4 print budget ($45,000) to digital ads targeting seasonal applicants and holiday shoppers.</li>
+                        <li><strong>Janesville Store Issues:</strong> BRG-015 return rate hit 11.3% in Q3 &mdash; nearly double the company average (5.7%). Suspected cause: unclear product quality messaging.</li>
+                        <li><strong>POS Rollout Delay:</strong> BeaconPOS v2.0 upgrade pushed from Oct 1 to Nov 1 due to inventory module integration issues. IT requesting 2 additional contractors ($28,000).</li>
+                    </ol>
+                    <p style="margin: 10px 0 5px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem;">Action Items:</p>
+                    <ul style="margin: 0 0 10px; padding-left: 20px; font-size: 0.85rem;">
+                        <li><strong>Lisa Patel:</strong> Launch referral bonus program by Sept 22; schedule college job fairs (Oct 1&ndash;15)</li>
+                        <li><strong>Mike Torres:</strong> Submit revised digital ad budget to Sarah by Sept 19</li>
+                        <li><strong>Rachel Adams:</strong> Complete Janesville store audit; present findings at next meeting</li>
+                        <li><strong>David Kim:</strong> Provide updated POS rollout timeline with contractor costs by Sept 20</li>
+                    </ul>
+                    <p style="margin: 0; font-size: 0.85rem;"><strong>Next Meeting:</strong> September 29, 2025, 2:00 PM</p>
+                    <pre class="copy-text" style="display:none">Beacon Q4 Planning Meeting
+Date: September 15, 2025
+Location: Conference Room B, Rockford HQ
+
+Attendees:
+- Sarah Chen, VP Operations (meeting chair)
+- Mike Torres, Marketing Director
+- Lisa Patel, HR Manager
+- David Kim, IT Director
+- Rachel Adams, Regional Manager - North
+
+Key Discussion Points:
+1. Holiday Staffing Gap: Only 180 of 350 seasonal positions filled with 6 weeks until fall rush. HR proposing referral bonus ($200/hire) and job fairs at 3 community colleges.
+2. Marketing Budget Shift: Reallocating 25% of Q4 print budget ($45,000) to digital ads targeting seasonal applicants and holiday shoppers.
+3. Janesville Store Issues: BRG-015 return rate hit 11.3% in Q3 — nearly double company average (5.7%). Suspected cause: unclear product quality messaging.
+4. POS Rollout Delay: BeaconPOS v2.0 upgrade pushed from Oct 1 to Nov 1 due to inventory module integration issues. IT requesting 2 additional contractors ($28,000).
+
+Action Items:
+- Lisa Patel: Launch referral bonus program by Sept 22; schedule college job fairs (Oct 1-15)
+- Mike Torres: Submit revised digital ad budget to Sarah by Sept 19
+- Rachel Adams: Complete Janesville store audit; present findings at next meeting
+- David Kim: Provide updated POS rollout timeline with contractor costs by Sept 20
+
+Next Meeting: September 29, 2025, 2:00 PM</pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Your challenge:</strong> Rewrite the prompt so the AI knows <em>who the email goes to</em>, <em>what to highlight</em> from the meeting, and <em>the right tone</em>. Should everyone get the same email, or does each person need different action items?
+                </div>
+
                 <div class="step">
                     <input type="checkbox" id="step2-2">
-                    <label for="step2-2">Test Bad Prompt B in Gemini. Then rewrite it as a complete RCTFC prompt for Beacon (e.g., emailing store managers about last week's all-hands). Test your rewrite.</label>
+                    <label for="step2-2">Test Bad Prompt B in Gemini (paste both the prompt and the meeting notes). Then rewrite it as a complete RCTFC prompt that uses these details. Test your rewrite.</label>
                 </div>
 
                 <div class="reflection-area">
                     <label>Your RCTFC rewrite of Prompt B:</label>
-                    <textarea placeholder="Write your complete RCTFC version here. Include all five components: Role, Context, Task, Format, Constraints..."></textarea>
+                    <textarea placeholder="Write your complete RCTFC version here. Include the meeting details and all five RCTFC components: Role, Context, Task, Format, Constraints..."></textarea>
                 </div>
 
                 <h4 style="margin-top: 25px; color: #C8102E;">Bad Prompt C</h4>
                 <div class="prompt-box">
                     <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Act as a financial analyst and tell me about expenses.</div>
 
+                <p style="font-size: 0.9em; margin-top: 15px;">This prompt at least tries to set a role &mdash; but "tell me about expenses" with no data is nearly useless. Here's the expense data they had:</p>
+
+                <div class="data-box" data-label="DATA">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+                    <div class="data-title">Beacon Quarterly Operating Expenses (25 stores)</div>
+                    <table>
+                        <tr><th>Category</th><th>Q1 Actual</th><th>Q2 Actual</th><th>Q3 Actual</th><th>Q4 Projected</th></tr>
+                        <tr><td>Payroll &amp; Benefits</td><td>$2,180,000</td><td>$2,210,000</td><td>$2,250,000</td><td>$2,890,000</td></tr>
+                        <tr><td>Rent &amp; Facilities</td><td>$680,000</td><td>$680,000</td><td>$685,000</td><td>$690,000</td></tr>
+                        <tr><td>Marketing &amp; Advertising</td><td>$310,000</td><td>$280,000</td><td>$340,000</td><td>$520,000</td></tr>
+                        <tr><td>Inventory &amp; COGS</td><td>$1,450,000</td><td>$1,380,000</td><td>$1,520,000</td><td>$2,100,000</td></tr>
+                        <tr><td>Technology &amp; Systems</td><td>$120,000</td><td>$115,000</td><td>$167,000</td><td>$195,000</td></tr>
+                        <tr><td>Logistics &amp; Shipping</td><td>$240,000</td><td>$225,000</td><td>$260,000</td><td>$380,000</td></tr>
+                        <tr><td>Training &amp; Development</td><td>$85,000</td><td>$60,000</td><td>$70,000</td><td>$140,000</td></tr>
+                        <tr><td>Miscellaneous</td><td>$95,000</td><td>$88,000</td><td>$102,000</td><td>$110,000</td></tr>
+                    </table>
+                    <p style="margin: 12px 0 5px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem;">Data Dictionary:</p>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.82rem; line-height: 1.5;">
+                        <li><span class="dict-term">Payroll &amp; Benefits:</span> All employee compensation including seasonal hires</li>
+                        <li><span class="dict-term">Rent &amp; Facilities:</span> Store leases, utilities, maintenance across 25 locations</li>
+                        <li><span class="dict-term">Marketing &amp; Advertising:</span> Print, digital, and in-store promotional costs</li>
+                        <li><span class="dict-term">Inventory &amp; COGS:</span> Product purchasing and cost of goods sold</li>
+                        <li><span class="dict-term">Technology &amp; Systems:</span> IT infrastructure, BeaconPOS, software licenses</li>
+                        <li><span class="dict-term">Logistics &amp; Shipping:</span> Warehouse operations, delivery, and distribution</li>
+                        <li><span class="dict-term">Training &amp; Development:</span> Employee onboarding, skills training, materials</li>
+                        <li><span class="dict-term">Miscellaneous:</span> Office supplies, travel, professional services</li>
+                    </ul>
+                    <pre class="copy-text" style="display:none">Beacon Quarterly Operating Expenses (25 stores)
+
+Category                | Q1 Actual   | Q2 Actual   | Q3 Actual   | Q4 Projected
+Payroll & Benefits      | $2,180,000  | $2,210,000  | $2,250,000  | $2,890,000
+Rent & Facilities       | $680,000    | $680,000    | $685,000    | $690,000
+Marketing & Advertising | $310,000    | $280,000    | $340,000    | $520,000
+Inventory & COGS        | $1,450,000  | $1,380,000  | $1,520,000  | $2,100,000
+Technology & Systems    | $120,000    | $115,000    | $167,000    | $195,000
+Logistics & Shipping    | $240,000    | $225,000    | $260,000    | $380,000
+Training & Development  | $85,000     | $60,000     | $70,000     | $140,000
+Miscellaneous           | $95,000     | $88,000     | $102,000    | $110,000
+
+Data Dictionary:
+- Payroll & Benefits: All employee compensation including seasonal hires
+- Rent & Facilities: Store leases, utilities, maintenance across 25 locations
+- Marketing & Advertising: Print, digital, and in-store promotional costs
+- Inventory & COGS: Product purchasing and cost of goods sold
+- Technology & Systems: IT infrastructure, BeaconPOS, software licenses
+- Logistics & Shipping: Warehouse operations, delivery, and distribution
+- Training & Development: Employee onboarding, skills training, materials
+- Miscellaneous: Office supplies, travel, professional services</pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Your challenge:</strong> The CFO wants to understand why Q3 Technology costs jumped 45% over Q1 and which categories are growing fastest heading into Q4. Rewrite the prompt so it includes the data, a <em>specific analytical question</em>, and tells the AI how to present the analysis.
+                </div>
+
                 <div class="step">
                     <input type="checkbox" id="step2-3">
-                    <label for="step2-3">Test Bad Prompt C in Gemini. Then rewrite it as a complete RCTFC prompt for Beacon (e.g., analyzing Q3 operating expenses across 25 stores). Test your rewrite.</label>
+                    <label for="step2-3">Test Bad Prompt C in Gemini (paste both the prompt and the expense data). Then rewrite it as a complete RCTFC prompt that includes the data and a specific question for the CFO. Test your rewrite.</label>
                 </div>
 
                 <div class="reflection-area">
                     <label>Your RCTFC rewrite of Prompt C:</label>
-                    <textarea placeholder="Write your complete RCTFC version here. Include all five components: Role, Context, Task, Format, Constraints..."></textarea>
+                    <textarea placeholder="Write your complete RCTFC version here. Include the expense data and all five RCTFC components: Role, Context, Task, Format, Constraints..."></textarea>
                 </div>
 
                 <div class="tip-box" style="margin-top: 20px;">
@@ -623,6 +829,25 @@ Email: "I bought a winter jacket last week and the zipper broke on the first day
                     <label for="step3-4">Test the ambiguous email with both the zero-shot and few-shot prompts. Note any differences in categorization or confidence.</label>
                 </div>
 
+                <h4 style="margin-top: 20px; color: #1D428A;">Practice Emails</h4>
+                <p style="font-size: 0.9em;">Now try classifying these two trickier emails on your own. Test each with <strong>both</strong> the zero-shot and few-shot prompts:</p>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Your Schaumburg store is honestly the best shopping experience in the area — the holiday displays are beautiful and your staff always remembers my name. Quick question though: I heard you're discontinuing the Heritage candle line? Please say it isn't so, my book club buys those every Christmas!</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-6">
+                    <label for="step3-6">Classify the multi-topic email above (it combines two intents). How do zero-shot and few-shot handle it differently?</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Just some friendly feedback on my recent visit to your Peoria location. I noticed the checkout line took about 25 minutes on a Tuesday afternoon with only 2 registers open out of 6. I understand staffing can be challenging, but you might want to look into that before the holidays. I've started doing more shopping online at other retailers because it's just easier. Thought you'd want to know!</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-7">
+                    <label for="step3-7">This email sounds polite, but is it really just "feedback"? See if zero-shot and few-shot categorize it differently.</label>
+                </div>
+
                 <div class="reflection-area">
                     <label>Reflection: Compare zero-shot and few-shot results for both emails. When did few-shot outperform zero-shot? Why do you think examples help the AI?</label>
                     <textarea placeholder="Describe the differences you observed..."></textarea>
@@ -661,13 +886,15 @@ Email: "I bought a winter jacket last week and the zipper broke on the first day
                 </div>
 
                 <div class="prompt-box">
-                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Beacon Retail Group receives 850 customer emails per week with a 4-hour average response time. 60% are routine inquiries (store hours, return policy, order status).
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Beacon Retail Group (25 stores, Midwest) receives 850 customer emails per week with a 4-hour average response time. The current customer satisfaction score is 3.2 out of 5 stars. Two of Beacon's three regional competitors have already launched customer service chatbots.
+
+Email topic breakdown: 35% order status, 25% return/exchange questions, 15% store hours and locations, 10% product availability, 8% complaints, 7% other.
 
 Think through this step by step:
-1. What percentage of emails could an AI chatbot handle?
-2. What would be the cost savings (assume a customer service rep costs $18/hour)?
-3. What are the risks of using an AI chatbot?
-4. What are the risks of NOT implementing one?
+1. Based on the email topic breakdown, what percentage of emails could an AI chatbot realistically handle? Which categories are good candidates and which aren't?
+2. What would be the cost savings (assume a customer service rep costs $18/hour and handles ~12 emails/hour)?
+3. What are the risks of using an AI chatbot for customer service?
+4. What are the risks of NOT implementing one, given the competitive landscape?
 5. Based on this analysis, what is your recommendation?
 
 Show your reasoning for each step.</div>
@@ -734,6 +961,10 @@ Show your reasoning for each step.</div>
 - Include a section on Beacon's return policy (30-day returns, receipt required, gift receipts accepted)
 - Add POS system basics (our system is called BeaconPOS)
 - Include loss prevention awareness
+- Cover Beacon's product categories: home goods, seasonal decor, apparel, and electronics
+- Add common customer scenarios: price match requests, damaged item exchanges, and online order in-store pickup (BOPIS)
+- Include a safety and emergency procedures overview
+- Address the retention problem: last year 42% of seasonal turnover happened in the first 2 weeks, often because new hires felt unprepared
 - Keep it achievable in a 2-day onboarding program
 - Format as a day-by-day schedule</div>
 
@@ -884,10 +1115,13 @@ Show your reasoning for each step.</div>
             });
         });
 
-        // Copy prompt function
+        // Copy prompt function (handles both .prompt-box and .data-box)
         function copyPrompt(btn) {
-            const promptBox = btn.closest('.prompt-box');
-            const text = promptBox.textContent.replace('Copy', '').trim();
+            const box = btn.closest('.prompt-box') || btn.closest('.data-box');
+            const copyEl = box.querySelector('.copy-text');
+            const text = copyEl
+                ? copyEl.textContent.trim()
+                : box.textContent.replace('Copy', '').replace('Copied!', '').trim();
             navigator.clipboard.writeText(text).then(() => {
                 btn.textContent = 'Copied!';
                 setTimeout(() => btn.textContent = 'Copy', 2000);
