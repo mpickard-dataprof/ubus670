@@ -74,1507 +74,221 @@
         /* Adjust slides to account for fixed nav */
         .reveal .slides { margin-top: 30px; }
 
-        /* ============================================
-           LEFT-ALIGNED CONTENT LAYOUTS
-           ============================================ */
-        .left-content {
-            text-align: left !important;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .left-content h2 {
-            text-align: left;
-            border-bottom: 3px solid #C8102E;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            font-size: 1.8em;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-        .left-content p, .left-content ul, .left-content ol {
-            text-align: left;
-        }
-        /* Add space after lead-in text before lists */
-        .left-content p + ul,
-        .left-content p + ol {
-            margin-top: 1.2em;
-        }
-        /* Ensure lists align with text above (no extra indent) */
-        .left-content ul,
-        .left-content ol {
-            padding-left: 1.5em;
-            margin-left: 0;
+        /* Shrink background images for breathing room.
+           border-box makes padding shrink the content area inward.
+           contain then calculates within the smaller content-box.
+           3% vertical clears nav bar (~45px on 1920w) + bottom margin.
+           Scales proportionally on any screen size.
+           Background-color is unaffected by background-origin. */
+        .reveal .slide-background-content {
+            box-sizing: border-box;
+            padding: 3% 2%;
+            background-origin: content-box;
         }
 
         /* ============================================
-           TWO-COLUMN LAYOUT
+           INTERACTIVE CHECKPOINT QUIZ (light style)
            ============================================ */
-        .two-col {
+        .quiz-container {
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: left;
+            color: #333;
+        }
+        .quiz-container h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #1D428A;
+        }
+        .quiz-container .quiz-question {
+            font-size: 1.05em;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .quiz-options {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: start;
-            text-align: left;
+            gap: 14px;
         }
-        .two-col.visual-right {
-            grid-template-columns: 1.2fr 0.8fr;
-        }
-        .two-col.visual-left {
-            grid-template-columns: 0.8fr 1.2fr;
-        }
-
-        /* ============================================
-           VISUAL CONTAINERS
-           ============================================ */
-        .visual-box {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 25px;
-            border: 2px solid #e0e0e0;
-        }
-        .visual-box.dark {
-            background: #1a1a1a;
-            color: #f8f8f8;
-            border-color: #333;
-        }
-        .visual-box.accent {
-            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
-            color: white;
-            border: none;
-        }
-        .visual-box.blue {
-            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
-            color: white;
-            border: none;
-        }
-        .visual-box.green {
-            background: linear-gradient(135deg, #43B02A 0%, #358521 100%);
-            color: white;
-            border: none;
-        }
-        .visual-box.orange {
-            background: linear-gradient(135deg, #E35205 0%, #c04504 100%);
-            color: white;
-            border: none;
-        }
-
-        /* ============================================
-           DIAGRAM STYLES
-           ============================================ */
-        .flow-diagram {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-        .flow-box {
-            background: white;
-            border: 3px solid #C8102E;
+        .quiz-option {
+            padding: 18px 22px;
+            background: #ffffff;
+            border: 2px solid #d0d5dd;
             border-radius: 10px;
-            padding: 15px 25px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            font-size: 0.9em;
-            text-align: center;
-            min-width: 120px;
-        }
-        .flow-box.highlight {
-            background: #C8102E;
-            color: white;
-        }
-        .flow-arrow {
-            font-size: 1.5em;
-            color: #C8102E;
-        }
-
-        /* ============================================
-           COMPARISON CARDS
-           ============================================ */
-        .card-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 20px 0;
-        }
-        .card-row.two-col-cards {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .card-row.four-col-cards {
-            grid-template-columns: repeat(4, 1fr);
-        }
-        .info-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            text-align: left;
-            border-top: 4px solid #C8102E;
-        }
-        .info-card h4 {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0 0 12px;
-            font-size: 1.1em;
-        }
-        .info-card p {
-            font-size: 0.85em;
-            margin: 0;
-            color: #555;
-        }
-        .info-card.highlight {
-            border-top-color: #43B02A;
-            background: #f8fff8;
-        }
-        .info-card.warning {
-            border-top-color: #E35205;
-            background: #fff8f5;
-        }
-        .info-card.blue {
-            border-top-color: #00A9E0;
-            background: #f0f9ff;
-        }
-
-        /* ============================================
-           CALLOUT BOXES
-           ============================================ */
-        .callout {
-            padding: 20px 25px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: left;
-        }
-        .callout.key-insight {
-            background: rgba(200, 16, 46, 0.1);
-            border-left: 5px solid #C8102E;
-        }
-        .callout.warning {
-            background: rgba(227, 82, 5, 0.1);
-            border-left: 5px solid #E35205;
-        }
-        .callout.tip {
-            background: rgba(0, 169, 224, 0.1);
-            border-left: 5px solid #00A9E0;
-        }
-        .callout.definition {
-            background: rgba(67, 176, 42, 0.1);
-            border-left: 5px solid #43B02A;
-        }
-        .callout h4 {
-            margin: 0 0 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            color: #333;
             font-family: 'Montserrat', sans-serif;
         }
-        .callout p { margin: 0; }
-
-        /* ============================================
-           IMPROVED TYPOGRAPHY & SPACING
-           ============================================ */
-        .left-content ol, .left-content ul {
-            font-size: 1.05em;
-            line-height: 1.6;
+        .quiz-option:hover {
+            border-color: #1D428A;
+            background: #f0f4fa;
         }
-        .left-content ol li, .left-content ul li {
-            margin-bottom: 12px;
-            padding-left: 8px;
-        }
-        .left-content ol {
-            padding-left: 1.5em;
-        }
-
-        /* ============================================
-           DAY 5 SPECIFIC: CODE BLOCK STYLE
-           ============================================ */
-        .code-block {
-            background: #1e1e2e;
-            color: #cdd6f4;
-            border-radius: 12px;
-            padding: 24px;
-            font-family: 'Fira Code', 'Courier New', monospace;
-            font-size: 0.72em;
-            line-height: 1.7;
-            text-align: left;
-            overflow-x: auto;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .code-block .comment { color: #6c7086; }
-        .code-block .role { color: #f38ba8; }
-        .code-block .rules { color: #a6e3a1; }
-        .code-block .format { color: #89b4fa; }
-        .code-block .escalation { color: #fab387; }
-        .code-block .tone { color: #cba6f7; }
-        .code-block .boundaries { color: #f9e2af; }
-
-        /* ============================================
-           DAY 5 SPECIFIC: COMPARISON PANELS
-           ============================================ */
-        .compare-panel {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            border: 2px solid #e0e0e0;
-        }
-        .compare-panel.good {
+        .quiz-option.correct {
             border-color: #43B02A;
-            background: #f8fff8;
+            background: rgba(67, 176, 42, 0.12);
+            color: #2d7a1e;
         }
-        .compare-panel.bad {
+        .quiz-option.incorrect {
             border-color: #C8102E;
-            background: #fff8f8;
+            background: rgba(200, 16, 46, 0.12);
+            color: #a00d24;
         }
-        .compare-panel h5 {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0 0 10px;
-            font-size: 1.05em;
+        .quiz-feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.9em;
         }
-        .compare-panel.good h5 { color: #43B02A; }
-        .compare-panel.bad h5 { color: #C8102E; }
-
-        /* ============================================
-           HELPER CLASSES
-           ============================================ */
-        .small-text { font-size: 0.75em; color: #888; }
-        .mt-20 { margin-top: 20px; }
-        .mb-20 { margin-bottom: 20px; }
-        .text-center { text-align: center; }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct-fb {
+            background: rgba(67, 176, 42, 0.1);
+            color: #2d7a1e;
+            border: 1px solid rgba(67, 176, 42, 0.3);
+        }
+        .quiz-feedback.incorrect-fb {
+            background: rgba(200, 16, 46, 0.1);
+            color: #a00d24;
+            border: 1px solid rgba(200, 16, 46, 0.3);
+        }
     </style>
 </head>
 <body>
     <!-- Persistent Navigation -->
     <div class="global-nav">
         <div class="breadcrumb">
-            <a href="../../../index.html">UBUS 670</a>
-            <span class="separator">&rsaquo;</span>
-            <a href="../../index.html">Week 2</a>
-            <span class="separator">&rsaquo;</span>
             <a href="index.html">Day 5</a>
             <span class="separator">&rsaquo;</span>
             <span class="current">Lecture</span>
         </div>
         <div class="nav-links">
             <a href="index.html" class="secondary">Dashboard</a>
-            <a href="lecture.html" class="primary">Lecture</a>
             <a href="lab.html" class="secondary">Lab</a>
             <a href="quiz.html" class="secondary">Quiz</a>
+            <a href="day5-lecture.pdf" class="primary" target="_blank">PDF</a>
         </div>
     </div>
 
     <div class="reveal">
         <div class="slides">
 
-            <!-- ==================== SLIDE 1: TITLE ==================== -->
-            <section>
-                <div class="left-content">
-                    <!-- [NANO BANANA] prompt: A control panel with glowing dials and sliders next to a Google AI Studio interface, business professional adjusting settings, clean modern illustration, NIU red and navy brand colors -->
-                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;">
-                        <div>
-                            <h1 style="font-size: 2.6em; color: #C8102E; margin-bottom: 20px;">Google AI Studio: The AI Control Panel</h1>
-                            <p style="font-size: 1.3em; color: #666; margin-bottom: 30px;">Configuring AI for Business</p>
-                            <div>
-                                <p style="margin: 0; font-size: 0.9em;"><strong>UBUS 670</strong> | AI for Business Leaders</p>
-                                <p style="margin: 5px 0 0; font-size: 0.85em; color: #888;">Day 5 &bull; Week 2 &bull; Wednesday, March 18, 2026</p>
-                            </div>
-                        </div>
-                        <!-- Abstract control panel visualization -->
-                        <div style="position: relative; width: 200px; height: 200px;">
-                            <div style="position: absolute; width: 180px; height: 190px; background: white; border: 3px solid #1D428A; border-radius: 12px; top: 5px; left: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-                                <div style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; border-radius: 50%; border: 4px solid #C8102E;"></div>
-                                <div style="position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; border: 4px solid #00A9E0;"></div>
-                                <div style="position: absolute; top: 80px; left: 20px; right: 20px; height: 8px; background: #e0e0e0; border-radius: 4px;">
-                                    <div style="width: 60%; height: 100%; background: linear-gradient(90deg, #43B02A, #E35205); border-radius: 4px;"></div>
-                                </div>
-                                <div style="position: absolute; top: 105px; left: 20px; right: 20px; height: 8px; background: #e0e0e0; border-radius: 4px;">
-                                    <div style="width: 40%; height: 100%; background: linear-gradient(90deg, #1D428A, #00A9E0); border-radius: 4px;"></div>
-                                </div>
-                                <div style="position: absolute; bottom: 15px; left: 20px; right: 20px; height: 40px; background: linear-gradient(135deg, #C8102E 0%, #E35205 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                                    <div style="width: 50%; height: 3px; background: rgba(255,255,255,0.9); border-radius: 2px;"></div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Slide 1: Title — Google AI Studio: The AI Control Panel -->
+            <section data-background-image="images/slide-01.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Welcome to Day 5. You've been talking to AI for four days. Today you learn to configure it. We're moving from the showroom to the workshop — opening up the hood on Google AI Studio to control parameters, write system prompts, and understand token economics. By the end of today, you'll be an AI Configurer, not just a user.</aside>
+            </section>
+
+            <!-- Slide 2: The Showroom vs. The Workshop -->
+            <section data-background-image="images/slide-02.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Left side: Gemini Chat — the showroom. Simple chat interface, hidden parameters, no cost visibility. Right side: AI Studio — the workshop. Full parameter controls, custom system prompts, real-time token counter, and export to code. You've been buying cars in the showroom. Today, we open the hood. The key differences: AI Studio exposes temperature, top-p, top-k, max output tokens, and lets you write persistent system instructions.</aside>
+            </section>
+
+            <!-- Slide 3: The Configurer's Role — User → Configurer → Builder Pyramid -->
+            <section data-background-image="images/slide-03.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The AI skill pyramid. At the bottom: Users who type prompts into chatbots. In the middle: Configurers who set system prompts and parameters — that's today's goal. At the top: Builders who write code and deploy. Day 5 moves you from User to Configurer. You won't need to write code, but you will control the settings that determine how AI behaves in your organization. To lead in an AI-enabled org, you must be more than a User.</aside>
+            </section>
+
+            <!-- Slide 4: The Cockpit Layout — AI Studio Interface -->
+            <section data-background-image="images/slide-04.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The AI Studio interface has three key zones, like a cockpit. Top of central workspace: System Instructions — the rules that govern every response. Center: Chat Area — the testing ground where you send messages and see results. Right panel: Run Settings — temperature, top-p, top-k, max output tokens, and the real-time token counter. The model selector sits at the top of the page. When you open AI Studio in the lab, orient yourself to these three zones first.</aside>
+            </section>
+
+            <!-- Slide 5: Temperature — The Creativity Dial -->
+            <section data-background-image="images/slide-05.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Temperature is the most important parameter you'll learn today. It controls how random (stochastic) or deterministic the model's output is. The dial goes from 0.0 on the left — predictable, focused — to 1.0 on the right — creative, chaotic. Low temperature means the model always picks the highest-probability next token. High temperature means it's willing to pick less likely tokens, creating more varied and surprising outputs. Think of it as a creativity dial.</aside>
+            </section>
+
+            <!-- Slide 6: The Three Temperature Zones -->
+            <section data-background-image="images/slide-06.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Three zones you need to know. Focused (0.0-0.3): Use for classification, data extraction, triage — tasks where you need the same answer every time. Balanced (0.4-0.7): Use for summaries, professional writing, customer responses — tasks that need some natural variation but still need to be reliable. Creative (0.8-1.0): Use for brainstorming, marketing copy, product naming — tasks where you want variety and surprise. Rule of thumb: the more you need consistency, the lower the temperature. The more you need variety, the higher.</aside>
+            </section>
+
+            <!-- Slide 7: Quiz — What's the Temperature? (Visual matching exercise) -->
+            <section data-background-image="images/slide-07.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Quick visual check. Three tasks, three temperature settings. Extracting invoice numbers and dates from a PDF — that's Low (0.0-0.2), you need exact, consistent extraction every time. Drafting a polite response to a frustrated customer — that's Medium (0.5), you want natural language but professional consistency. Brainstorming names for a new sneaker line — that's High (0.9), you want creative variety. Ask students: which one would you get wrong if you guessed? Most people underestimate how low classification tasks should be set.</aside>
+            </section>
+
+            <!-- Slide 8: Fine Tuning — Top-P and Max Output Tokens -->
+            <section data-background-image="images/slide-08.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Temperature is the big knob. Top-p and max output tokens are the fine adjustments. Top-p (nucleus sampling): limits the pool of token choices. The model considers only the smallest set of tokens whose combined probability exceeds p. Lower top-p = more restricted, higher-probability tokens only. You rarely need to change this. Max output tokens: the cost and length ceiling. Sets how long the response can be. Longer is not always better — it costs more and can reduce quality. Set it to match your use case. For Beacon email classification, ~300 tokens is plenty.</aside>
+            </section>
+
+            <!-- INTERACTIVE: Checkpoint Quiz 1 — Parameter Knowledge -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz1">
+                    <h3>Checkpoint: The Right Temperature</h3>
+                    <p class="quiz-question">Beacon Retail needs to classify 6,000 customer emails per month into categories (Complaint, Order Status, Billing, etc.). The same type of email should <strong>always</strong> get the same classification. What temperature setting should they use?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', true)">A) Low (0.1) — Consistency is critical for reliable routing</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">B) Medium (0.5) — Balance creativity and consistency</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">C) High (0.9) — Let the AI be creative with classifications</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">D) Maximum (1.5) — More randomness means better coverage</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback-correct">
+                        <strong>Correct!</strong> Classification tasks need consistency — the same complaint email should always be classified as "Complaint." Temperature 0.1 ensures deterministic, repeatable outputs. Beacon learned this the hard way: setting temperature to 1.2 for classification caused inconsistent routing, broken SLAs, and angry customers.
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback-incorrect">
+                        <strong>Not quite.</strong> Think about what Beacon needs: the <em>same</em> email should always get the <em>same</em> classification. That means you need low randomness. High temperature creates variety — great for brainstorming, terrible for routing customer complaints. Try again!
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== SLIDE 2: LEARNING OBJECTIVES ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Today's Learning Objectives</h2>
-                    <div class="two-col">
-                        <div>
-                            <p>By the end of today, you will be able to:</p>
-                            <ol style="font-size: 0.95em;">
-                                <li><strong>Configure</strong> model parameters (temperature, top-p, top-k, max output tokens) and explain their effect on AI output</li>
-                                <li><strong>Write</strong> effective system prompts that define consistent AI behavior for a business use case</li>
-                                <li><strong>Estimate</strong> token costs for a real business deployment scenario</li>
-                                <li><strong>Build</strong> a reusable AI configuration in Google AI Studio for Beacon's email triage</li>
-                            </ol>
-                        </div>
-                        <div class="visual-box accent" style="padding: 30px;">
-                            <p style="font-size: 0.9em; margin: 0;"><strong>Today's Shift:</strong></p>
-                            <p style="font-size: 1.5em; margin: 10px 0; font-family: 'Montserrat', sans-serif;">User &rarr; Configurer</p>
-                            <p style="font-size: 0.85em; margin: 0; opacity: 0.9;">From talking to AI &rarr; controlling AI</p>
-                        </div>
+            <!-- Slide 9: System Prompts — The Job Description -->
+            <section data-background-image="images/slide-09.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Now we move from dials to rules. A user prompt is like a paper airplane — fleeting, one-time, gone after the conversation. A system prompt is like an anchor — persistent, permanent, active for every single response. The key insight: system prompts are the RCTFC framework from Day 2 made persistent. Role, Context, Task, Format, Constraints — all baked into instructions that apply to every message automatically. You write RCTFC once, and it governs every interaction.</aside>
+            </section>
+
+            <!-- Slide 10: Anatomy of a System Prompt — 6 Components -->
+            <section data-background-image="images/slide-10.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Six components radiate from the center — this is the anatomy of a great system prompt. Role: who the AI is. Rules: behavioral constraints. Format: output structure (JSON, categories, etc.). Escalation: when to involve humans. Tone: voice and style. Boundaries: what the AI must NOT do. Think of these as a complete job description for your AI employee. A vague system prompt is like a job description that says 'do stuff.' The more specific you are with each of these six components, the more reliable the AI becomes.</aside>
+            </section>
+
+            <!-- Slide 11: Case Study — Beacon Email Triage System Prompt -->
+            <section data-background-image="images/slide-11.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Here's the Beacon system prompt in action — the most important concrete example in this lecture. Role: You are Beacon Retail Group's email triage specialist. Rules: Classify every email into exactly ONE category — Complaint, Product Question, Order Status, Return/Exchange, Billing, Partnership Inquiry, Feedback/Praise. Format: Always respond with JSON containing Category, Priority, and Summary. Escalation: Legal threats go to Legal Team. Boundaries: Never share internal pricing margins. This is what you'll build in the lab — a complete, production-quality system prompt.</aside>
+            </section>
+
+            <!-- Slide 12: Specificity is Governance — Bad vs. Good Prompts -->
+            <section data-background-image="images/slide-12.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The contrast is dramatic. Left: 'You are a helpful assistant. Answer emails.' — vague, no structure, no boundaries. Risk: hallucinations, safety issues, inconsistent behavior. Right: The full Beacon prompt with all six components. Result: structured, safe, enforced behavior every time. This is why system prompts are governance — they're your first line of AI risk management. Scope control (what topics AI can discuss), escalation paths (when to route to humans), data protection (how to handle PII and sensitive info). In Day 6, we'll test how well these hold up under adversarial conditions.</aside>
+            </section>
+
+            <!-- INTERACTIVE: Checkpoint Quiz 2 — System Prompt Design -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz2">
+                    <h3>Checkpoint: The Missing Component</h3>
+                    <p class="quiz-question">A junior analyst writes this system prompt for Beacon's email triage: <em>"You are Beacon's email assistant. Classify emails into categories. Respond in JSON format."</em> This covers Role, Rules, and Format. Which missing component creates the <strong>biggest business risk</strong>?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">A) Tone — the AI might sound too formal</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', true)">B) Boundaries — the AI could promise refunds or share internal pricing</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">C) Escalation — emails will still get classified correctly</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">D) All components are equally risky to omit</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz2-feedback-correct">
+                        <strong>Correct!</strong> Without boundaries, the AI has no guardrails. It could promise specific refund amounts, share internal pricing or margins, or make up product information. Boundaries define what the AI must NOT do — and that's where the biggest business and legal risks live. Escalation is also critical (legal threats need human routing), but boundaries prevent the AI from actively causing harm in every single response.
+                    </div>
+                    <div class="quiz-feedback" id="quiz2-feedback-incorrect">
+                        <strong>Not quite.</strong> Think about risk: which missing component could cause the AI to actively harm the business? A wrong tone is awkward but manageable. Missing escalation means some emails don't reach the right team. But missing <em>boundaries</em> means the AI has no limits — it could promise anything to any customer. Try again!
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== SLIDE 3: RECAP DAYS 1-4 ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Quick Recap: Days 1&ndash;4 &rarr; Day 5</h2>
-                    <div class="callout key-insight" style="margin-bottom: 25px;">
-                        <p style="font-size: 1.05em;"><strong>You've been talking to AI. Now you learn to configure it.</strong></p>
-                    </div>
-                    <div style="text-align: center; margin: 20px 0;">
-                        <svg viewBox="0 0 880 160" style="max-width: 100%; height: auto;">
-                            <defs>
-                                <filter id="shadowTimeline">
-                                    <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/>
-                                </filter>
-                                <marker id="arrowTimeline" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                                    <path d="M0,0 L0,6 L9,3 z" fill="#C8102E"/>
-                                </marker>
-                            </defs>
-
-                            <!-- Day 1 -->
-                            <rect x="10" y="30" width="140" height="52" rx="10" fill="#f8f9fa" stroke="#888" stroke-width="2" filter="url(#shadowTimeline)"/>
-                            <text x="80" y="52" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#555">Day 1</text>
-                            <text x="80" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">What is AI?</text>
-
-                            <!-- Arrow 1 -->
-                            <path d="M158 56 L188 56" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowTimeline)"/>
-
-                            <!-- Day 2 -->
-                            <rect x="196" y="30" width="140" height="52" rx="10" fill="#f8f9fa" stroke="#888" stroke-width="2" filter="url(#shadowTimeline)"/>
-                            <text x="266" y="52" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#555">Day 2</text>
-                            <text x="266" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">Prompt Engineering</text>
-
-                            <!-- Arrow 2 -->
-                            <path d="M344 56 L374 56" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowTimeline)"/>
-
-                            <!-- Day 3 -->
-                            <rect x="382" y="30" width="140" height="52" rx="10" fill="#f8f9fa" stroke="#888" stroke-width="2" filter="url(#shadowTimeline)"/>
-                            <text x="452" y="52" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#555">Day 3</text>
-                            <text x="452" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">Context Engineering</text>
-
-                            <!-- Arrow 3 -->
-                            <path d="M530 56 L560 56" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowTimeline)"/>
-
-                            <!-- Day 4 -->
-                            <rect x="568" y="30" width="140" height="52" rx="10" fill="#f8f9fa" stroke="#888" stroke-width="2" filter="url(#shadowTimeline)"/>
-                            <text x="638" y="52" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#555">Day 4</text>
-                            <text x="638" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">Multimodal AI</text>
-
-                            <!-- Arrow 4 -->
-                            <path d="M716 56 L746 56" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowTimeline)"/>
-
-                            <!-- Day 5 (highlighted) -->
-                            <rect x="754" y="20" width="120" height="72" rx="10" fill="#C8102E" stroke="none" filter="url(#shadowTimeline)"/>
-                            <text x="814" y="48" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="white">Day 5</text>
-                            <text x="814" y="66" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="rgba(255,255,255,0.9)">Configure AI</text>
-                            <text x="814" y="82" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="rgba(255,255,255,0.75)">(AI Studio)</text>
-
-                            <!-- Bottom labels -->
-                            <text x="452" y="120" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#666">Talking to AI</text>
-                            <line x1="10" y1="110" x2="708" y2="110" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
-                            <text x="814" y="120" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#C8102E" font-weight="700">Controlling AI</text>
-                            <line x1="754" y1="110" x2="874" y2="110" stroke="#C8102E" stroke-width="2"/>
-                        </svg>
-                    </div>
-                </div>
+            <!-- Slide 13: Token Economics — Choosing Your Vehicle -->
+            <section data-background-image="images/slide-13.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Now we talk money. Two models, two price points — like choosing a car. Gemini 3 Flash (the Toyota): reliable, efficient, ~$0.50 input / $3.00 output per 1M tokens. Gemini 3 Pro (the Mercedes): complex reasoning, powerful, ~$2.00 input / $12.00 output per 1M tokens. Pro costs roughly 4x more per token than Flash. The business decision: don't drive the Mercedes to pick up groceries. Use Flash for high-volume, routine tasks like email classification. Save Pro for complex analysis that actually needs the extra reasoning power.</aside>
             </section>
 
-            <!-- ==================== SLIDE 4: SECTION DIVIDER - BEHIND THE CURTAIN ==================== -->
-            <section data-background-color="#1D428A">
-                <div class="left-content" style="text-align: center;">
-                    <h1 style="font-size: 3em; color: white; margin-bottom: 20px;">Section 1</h1>
-                    <p style="font-size: 1.5em; color: rgba(255,255,255,0.9);">Behind the Curtain</p>
-                    <p style="font-size: 1em; color: rgba(255,255,255,0.6);">What is AI Studio?</p>
-                </div>
+            <!-- Slide 14: The ROI — Pennies vs. Dollars -->
+            <section data-background-image="images/slide-14.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">This is the emotional centerpiece. Monthly costs for 6,000 emails: Human triage at $600/month (1 hour per day at $20/hour). Gemini 3 Pro at $30/month. Gemini 3 Flash at just $7.50/month. That's roughly 80x savings with Flash. The math: 200 emails/day × 30 days = 6,000/month. Input per email ~700 tokens (400 system prompt + 300 email), output ~300 tokens. Monthly: 4.2M input tokens + 1.8M output tokens. Flash: $2.10 + $5.40 = $7.50. Important disclaimer: these are illustrative costs based on early 2026 rates. Real deployments have additional costs — development, testing, monitoring, human oversight. AI augments human work, it doesn't eliminate it.</aside>
             </section>
 
-            <!-- ==================== SLIDE 5: WHAT IS GOOGLE AI STUDIO? ==================== -->
-            <section>
-                <!-- [NANO BANANA] prompt: Split comparison illustration: left side shows a clean car showroom (Gemini Chat), right side shows a mechanic's workshop with tools and gauges (AI Studio), clean minimalist style, NIU brand colors -->
-                <div class="left-content">
-                    <h2>What is Google AI Studio?</h2>
-                    <div class="callout definition" style="margin-bottom: 20px;">
-                        <h4 style="color: #43B02A;">Definition</h4>
-                        <p><strong>Google AI Studio</strong> is a browser-based tool that lets you configure, test, and prototype with Google's Gemini models. It exposes the parameters and settings that consumer chatbots like Gemini Chat hide from you.</p>
-                    </div>
-                    <div class="card-row two-col-cards">
-                        <div class="info-card">
-                            <h4 style="color: #C8102E;">Gemini Chat &mdash; The Showroom</h4>
-                            <ul style="font-size: 0.8em; padding-left: 1.2em; margin: 0;">
-                                <li>Simple conversational interface</li>
-                                <li>Pre-set parameters (hidden)</li>
-                                <li>No cost visibility</li>
-                                <li>No system prompt access</li>
-                                <li>Great for quick tasks</li>
-                            </ul>
-                        </div>
-                        <div class="info-card highlight">
-                            <h4 style="color: #43B02A;">AI Studio &mdash; The Workshop</h4>
-                            <ul style="font-size: 0.8em; padding-left: 1.2em; margin: 0;">
-                                <li>Full parameter controls</li>
-                                <li>Custom system prompts</li>
-                                <li>Real-time token counter</li>
-                                <li>Model comparison tools</li>
-                                <li>Export to code / API</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 6: THE AI STUDIO INTERFACE TOUR ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>The AI Studio Interface Tour</h2>
-                    <div style="text-align: center; margin: 15px 0;">
-                        <svg viewBox="0 0 860 400" style="max-width: 100%; height: auto;">
-                            <defs>
-                                <filter id="shadowUI">
-                                    <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.12"/>
-                                </filter>
-                            </defs>
-
-                            <!-- Main frame -->
-                            <rect x="30" y="10" width="800" height="380" rx="12" fill="white" stroke="#ccc" stroke-width="2" filter="url(#shadowUI)"/>
-
-                            <!-- Top bar - Model Selector -->
-                            <rect x="30" y="10" width="800" height="50" rx="12" fill="#f0f2f5" stroke="#ccc" stroke-width="1"/>
-                            <rect x="30" y="48" width="800" height="12" fill="#f0f2f5"/>
-                            <rect x="50" y="24" width="180" height="28" rx="6" fill="white" stroke="#1D428A" stroke-width="2"/>
-                            <text x="140" y="43" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="600" fill="#1D428A">Gemini 3 Flash</text>
-                            <circle cx="245" cy="38" r="8" fill="none" stroke="#1D428A" stroke-width="2"/>
-                            <path d="M242 38 L248 38 M245 35 L245 41" stroke="#1D428A" stroke-width="1.5"/>
-
-                            <!-- Label: Model Selector -->
-                            <rect x="280" y="18" width="140" height="30" rx="6" fill="#1D428A"/>
-                            <text x="350" y="38" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" font-weight="600" fill="white">MODEL SELECTOR</text>
-                            <line x1="280" y1="33" x2="256" y2="38" stroke="#1D428A" stroke-width="2"/>
-
-                            <!-- Central workspace - System Instructions at TOP -->
-                            <rect x="40" y="70" width="610" height="90" rx="8" fill="#fafbfc" stroke="#e0e0e0" stroke-width="1"/>
-                            <rect x="50" y="80" width="210" height="28" rx="4" fill="#1D428A"/>
-                            <text x="155" y="99" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" font-weight="600" fill="white">System Instructions</text>
-                            <rect x="55" y="118" width="195" height="8" rx="2" fill="#ddd"/>
-                            <rect x="55" y="132" width="170" height="8" rx="2" fill="#ddd"/>
-                            <rect x="280" y="118" width="185" height="8" rx="2" fill="#ddd"/>
-                            <rect x="280" y="132" width="155" height="8" rx="2" fill="#ddd"/>
-                            <rect x="480" y="118" width="150" height="8" rx="2" fill="#ddd"/>
-                            <rect x="480" y="132" width="130" height="8" rx="2" fill="#ddd"/>
-
-                            <!-- Label: System Instructions -->
-                            <rect x="50" y="148" width="200" height="22" rx="6" fill="#C8102E"/>
-                            <text x="150" y="163" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="9" font-weight="600" fill="white">SYSTEM INSTRUCTIONS (top)</text>
-
-                            <!-- Center panel - Chat Area (below system instructions) -->
-                            <rect x="40" y="175" width="610" height="205" rx="8" fill="white" stroke="#e0e0e0" stroke-width="1"/>
-
-                            <!-- Chat bubbles -->
-                            <rect x="60" y="195" width="200" height="40" rx="10" fill="#e8f0fe"/>
-                            <text x="75" y="220" font-family="Georgia, serif" font-size="10" fill="#333">Classify this email...</text>
-
-                            <rect x="370" y="195" width="220" height="55" rx="10" fill="#f0f0f0"/>
-                            <text x="385" y="218" font-family="Georgia, serif" font-size="10" fill="#333">Category: Complaint</text>
-                            <text x="385" y="233" font-family="Georgia, serif" font-size="10" fill="#333">Priority: High</text>
-
-                            <rect x="60" y="265" width="180" height="40" rx="10" fill="#e8f0fe"/>
-                            <text x="75" y="290" font-family="Georgia, serif" font-size="10" fill="#333">What about this one?</text>
-
-                            <!-- Input bar -->
-                            <rect x="50" y="335" width="590" height="36" rx="8" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/>
-                            <text x="70" y="357" font-family="Georgia, serif" font-size="10" fill="#aaa">Type a message...</text>
-
-                            <!-- Label: Chat Area -->
-                            <rect x="250" y="310" width="110" height="22" rx="6" fill="#00A9E0"/>
-                            <text x="305" y="325" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="9" font-weight="600" fill="white">CHAT AREA</text>
-
-                            <!-- Right panel - Run Settings -->
-                            <rect x="660" y="70" width="160" height="310" rx="8" fill="#fafbfc" stroke="#e0e0e0" stroke-width="1"/>
-                            <text x="740" y="95" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" font-weight="600" fill="#333">Run Settings</text>
-
-                            <!-- Temperature slider -->
-                            <text x="675" y="120" font-family="Georgia, serif" font-size="9" fill="#666">Temperature</text>
-                            <rect x="675" y="126" width="130" height="6" rx="3" fill="#e0e0e0"/>
-                            <rect x="675" y="126" width="65" height="6" rx="3" fill="#C8102E"/>
-                            <circle cx="740" cy="129" r="6" fill="#C8102E" stroke="white" stroke-width="2"/>
-
-                            <!-- Top-p slider -->
-                            <text x="675" y="158" font-family="Georgia, serif" font-size="9" fill="#666">Top-p</text>
-                            <rect x="675" y="164" width="130" height="6" rx="3" fill="#e0e0e0"/>
-                            <rect x="675" y="164" width="105" height="6" rx="3" fill="#1D428A"/>
-                            <circle cx="780" cy="167" r="6" fill="#1D428A" stroke="white" stroke-width="2"/>
-
-                            <!-- Top-k slider -->
-                            <text x="675" y="196" font-family="Georgia, serif" font-size="9" fill="#666">Top-k</text>
-                            <rect x="675" y="202" width="130" height="6" rx="3" fill="#e0e0e0"/>
-                            <rect x="675" y="202" width="78" height="6" rx="3" fill="#00A9E0"/>
-                            <circle cx="753" cy="205" r="6" fill="#00A9E0" stroke="white" stroke-width="2"/>
-
-                            <!-- Max tokens -->
-                            <text x="675" y="234" font-family="Georgia, serif" font-size="9" fill="#666">Max Output Tokens</text>
-                            <rect x="675" y="240" width="130" height="22" rx="4" fill="white" stroke="#ccc" stroke-width="1"/>
-                            <text x="740" y="255" text-anchor="middle" font-family="'Fira Code', monospace" font-size="10" fill="#333">2048</text>
-
-                            <!-- Token counter -->
-                            <rect x="675" y="280" width="130" height="40" rx="6" fill="#E8F5E9" stroke="#43B02A" stroke-width="1"/>
-                            <text x="740" y="298" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="9" font-weight="600" fill="#43B02A">Token Count</text>
-                            <text x="740" y="313" text-anchor="middle" font-family="'Fira Code', monospace" font-size="10" fill="#333">1,247 / 1M</text>
-
-                            <!-- Label: Run Settings -->
-                            <rect x="660" y="335" width="160" height="30" rx="6" fill="#E35205"/>
-                            <text x="740" y="355" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" font-weight="600" fill="white">RUN SETTINGS</text>
-                        </svg>
-                    </div>
-                    <p class="small-text" style="text-align: center;">Conceptual layout &mdash; actual interface may vary. System instructions sit at the top of the central workspace; run settings (parameters) are on the right.</p>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 7: WHY CONFIGURERS > USERS ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Why Configurers &gt; Users</h2>
-                    <div style="text-align: center; margin: 20px 0;">
-                        <svg viewBox="0 0 500 380" style="max-width: 480px; height: auto;">
-                            <defs>
-                                <filter id="shadowPyramid">
-                                    <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.15"/>
-                                </filter>
-                            </defs>
-
-                            <!-- Pyramid tier 3 (top) - Builder -->
-                            <polygon points="250,30 340,140 160,140" fill="#1D428A" filter="url(#shadowPyramid)"/>
-                            <text x="250" y="90" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="white">Builder</text>
-                            <text x="250" y="108" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="rgba(255,255,255,0.8)">Writes code + deploys</text>
-
-                            <!-- Pyramid tier 2 (middle) - Configurer -->
-                            <polygon points="160,150 340,150 400,260 100,260" fill="#C8102E" filter="url(#shadowPyramid)"/>
-                            <text x="250" y="200" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="15" font-weight="700" fill="white">Configurer</text>
-                            <text x="250" y="220" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="rgba(255,255,255,0.9)">Sets system prompts + parameters</text>
-
-                            <!-- Pyramid tier 1 (bottom) - User -->
-                            <polygon points="100,270 400,270 460,360 40,360" fill="#e0e0e0" filter="url(#shadowPyramid)"/>
-                            <text x="250" y="310" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="15" font-weight="700" fill="#555">User</text>
-                            <text x="250" y="330" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#888">Types prompts in chatbot</text>
-
-                            <!-- Arrow pointing to Configurer -->
-                            <rect x="340" y="175" width="140" height="40" rx="8" fill="#C8102E" filter="url(#shadowPyramid)"/>
-                            <text x="410" y="200" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="600" fill="white">Day 5 goal</text>
-                            <line x1="340" y1="195" x2="310" y2="205" stroke="#C8102E" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <div class="callout key-insight">
-                        <p><strong>Day 5 moves you from User to Configurer.</strong> You won't need to write code, but you will control the settings that determine how AI behaves in your organization.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 8: SECTION DIVIDER - THE DIALS ==================== -->
-            <section data-background-color="#C8102E">
-                <div class="left-content" style="text-align: center;">
-                    <h1 style="font-size: 3em; color: white; margin-bottom: 20px;">Section 2</h1>
-                    <p style="font-size: 1.5em; color: rgba(255,255,255,0.9);">The Dials</p>
-                    <p style="font-size: 1em; color: rgba(255,255,255,0.6);">Model Parameters</p>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 9: TEMPERATURE ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Temperature: The Creativity Dial</h2>
-                    <div class="callout definition" style="margin-bottom: 20px;">
-                        <h4 style="color: #43B02A;">Definition</h4>
-                        <p><strong>Temperature</strong> controls how random or deterministic the model's output is. Low temperature = more predictable; high temperature = more creative and varied.</p>
-                    </div>
-                    <div style="text-align: center; margin: 15px 0;">
-                        <svg viewBox="0 0 800 220" style="max-width: 100%; height: auto;">
-                            <defs>
-                                <filter id="shadowDial">
-                                    <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/>
-                                </filter>
-                            </defs>
-
-                            <!-- Dial background arc -->
-                            <rect x="10" y="10" width="780" height="200" rx="14" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="1" filter="url(#shadowDial)"/>
-
-                            <!-- Blue Zone: 0-0.3 -->
-                            <rect x="30" y="30" width="220" height="80" rx="10" fill="#1D428A" filter="url(#shadowDial)"/>
-                            <text x="140" y="55" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="white">0.0 &ndash; 0.3</text>
-                            <text x="140" y="75" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,0.9)">Focused</text>
-                            <text x="140" y="100" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="rgba(255,255,255,0.75)">Predictable, consistent</text>
-
-                            <!-- Yellow Zone: 0.4-0.8 -->
-                            <rect x="270" y="30" width="240" height="80" rx="10" fill="#E35205" filter="url(#shadowDial)"/>
-                            <text x="390" y="55" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="white">0.4 &ndash; 0.8</text>
-                            <text x="390" y="75" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,0.9)">Balanced</text>
-                            <text x="390" y="100" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="rgba(255,255,255,0.75)">Good variety, still coherent</text>
-
-                            <!-- Red Zone: 0.9-2.0 -->
-                            <rect x="530" y="30" width="240" height="80" rx="10" fill="#C8102E" filter="url(#shadowDial)"/>
-                            <text x="650" y="55" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="white">0.9 &ndash; 2.0</text>
-                            <text x="650" y="75" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,0.9)">Creative</text>
-                            <text x="650" y="100" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="rgba(255,255,255,0.75)">Surprising, sometimes wild</text>
-
-                            <!-- Example outputs -->
-                            <text x="140" y="140" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555" font-style="italic">"The email is a complaint</text>
-                            <text x="140" y="155" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555" font-style="italic">about shipping delays."</text>
-
-                            <text x="390" y="140" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555" font-style="italic">"This frustrated customer</text>
-                            <text x="390" y="155" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555" font-style="italic">is unhappy with delivery."</text>
-
-                            <text x="650" y="140" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555" font-style="italic">"A tempest of discontent</text>
-                            <text x="650" y="155" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555" font-style="italic">brews over shipping woes!"</text>
-
-                            <!-- Scale bar -->
-                            <rect x="30" y="180" width="740" height="10" rx="5" fill="white" stroke="#ccc" stroke-width="1"/>
-                            <rect x="30" y="180" width="740" height="10" rx="5" fill="url(#tempGradient)"/>
-                            <defs>
-                                <linearGradient id="tempGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#1D428A"/>
-                                    <stop offset="40%" stop-color="#E35205"/>
-                                    <stop offset="100%" stop-color="#C8102E"/>
-                                </linearGradient>
-                            </defs>
-                            <text x="30" y="205" font-family="Montserrat, sans-serif" font-size="10" fill="#888">0.0</text>
-                            <text x="770" y="205" text-anchor="end" font-family="Montserrat, sans-serif" font-size="10" fill="#888">2.0</text>
-                        </svg>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 10: WHEN TO USE WHICH TEMPERATURE ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>When to Use Which Temperature</h2>
-                    <div class="card-row">
-                        <div class="info-card" style="border-top-color: #1D428A;">
-                            <h4 style="color: #1D428A;">Low<br><span style="font-size: 0.8em;">0.0 &ndash; 0.3</span></h4>
-                            <p><strong>Classification &amp; triage</strong><br>Email sorting, ticket categorization, data extraction, sentiment analysis</p>
-                        </div>
-                        <div class="info-card warning">
-                            <h4 style="color: #E35205;">Medium<br><span style="font-size: 0.8em;">0.4 &ndash; 0.7</span></h4>
-                            <p><strong>Customer responses</strong><br>Drafting replies, summaries, recommendations, professional writing</p>
-                        </div>
-                        <div class="info-card" style="border-top-color: #C8102E;">
-                            <h4 style="color: #C8102E;">High<br><span style="font-size: 0.8em;">0.8 &ndash; 1.0</span></h4>
-                            <p><strong>Brainstorming</strong><br>Marketing copy, product naming, creative ideation, taglines</p>
-                        </div>
-                    </div>
-                    <div class="callout tip" style="margin-top: 15px;">
-                        <h4 style="color: #00A9E0;">Rule of Thumb</h4>
-                        <p>The more you need <em>consistency</em>, the lower the temperature. The more you need <em>variety</em>, the higher.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 11: TOP-P AND TOP-K ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Top-p and Top-k: Fine-Tuning Randomness</h2>
-                    <div class="callout tip" style="margin-bottom: 20px;">
-                        <h4 style="color: #00A9E0;">For MBA Purposes</h4>
-                        <p><strong>Temperature is the big knob. Top-p (nucleus sampling) and top-k are fine adjustments.</strong> <em>Nucleus sampling</em> means the model only considers the smallest set of tokens whose combined probability exceeds p. You rarely need to change these, but understanding what they do makes you a better configurer.</p>
-                    </div>
-                    <div style="text-align: center; margin: 15px 0;">
-                        <svg viewBox="0 0 800 260" style="max-width: 100%; height: auto;">
-                            <defs>
-                                <filter id="shadowBar">
-                                    <feDropShadow dx="1" dy="1" stdDeviation="2" flood-opacity="0.1"/>
-                                </filter>
-                            </defs>
-
-                            <!-- Left: Top-p explanation -->
-                            <rect x="20" y="10" width="370" height="240" rx="12" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="1" filter="url(#shadowBar)"/>
-                            <text x="205" y="40" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#1D428A">Top-p (Nucleus Sampling)</text>
-                            <text x="205" y="60" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#666">"Consider tokens until probabilities sum to p"</text>
-
-                            <!-- Probability bars -->
-                            <rect x="50" y="80" width="180" height="22" rx="4" fill="#1D428A" filter="url(#shadowBar)"/>
-                            <text x="55" y="95" font-family="Georgia, serif" font-size="10" fill="white">complain &mdash; 45%</text>
-
-                            <rect x="50" y="108" width="120" height="22" rx="4" fill="#00A9E0" filter="url(#shadowBar)"/>
-                            <text x="55" y="123" font-family="Georgia, serif" font-size="10" fill="white">frustrated &mdash; 30%</text>
-
-                            <rect x="50" y="136" width="60" height="22" rx="4" fill="#43B02A" filter="url(#shadowBar)"/>
-                            <text x="55" y="151" font-family="Georgia, serif" font-size="10" fill="white">upset &mdash; 15%</text>
-
-                            <rect x="50" y="164" width="28" height="22" rx="4" fill="#ccc" filter="url(#shadowBar)"/>
-                            <text x="55" y="179" font-family="Georgia, serif" font-size="9" fill="#888">angry</text>
-
-                            <rect x="50" y="192" width="16" height="22" rx="4" fill="#e8e8e8"/>
-                            <text x="55" y="207" font-family="Georgia, serif" font-size="9" fill="#aaa">mad</text>
-
-                            <!-- Cutoff line for top-p = 0.9 -->
-                            <line x1="40" y1="158" x2="290" y2="158" stroke="#C8102E" stroke-width="2" stroke-dasharray="6"/>
-                            <text x="295" y="163" font-family="Montserrat, sans-serif" font-size="10" font-weight="600" fill="#C8102E">top-p = 0.9 cutoff</text>
-                            <text x="295" y="178" font-family="Georgia, serif" font-size="9" fill="#888">Only considers top 3</text>
-
-                            <!-- Right: Top-k explanation -->
-                            <rect x="410" y="10" width="370" height="240" rx="12" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="1" filter="url(#shadowBar)"/>
-                            <text x="595" y="40" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#E35205">Top-k</text>
-                            <text x="595" y="60" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#666">"Only consider the top k most likely tokens"</text>
-
-                            <!-- Probability bars -->
-                            <rect x="440" y="80" width="180" height="22" rx="4" fill="#E35205" filter="url(#shadowBar)"/>
-                            <text x="445" y="95" font-family="Georgia, serif" font-size="10" fill="white">complain &mdash; 45%</text>
-
-                            <rect x="440" y="108" width="120" height="22" rx="4" fill="#E35205" opacity="0.7" filter="url(#shadowBar)"/>
-                            <text x="445" y="123" font-family="Georgia, serif" font-size="10" fill="white">frustrated &mdash; 30%</text>
-
-                            <rect x="440" y="136" width="60" height="22" rx="4" fill="#E35205" opacity="0.4" filter="url(#shadowBar)"/>
-                            <text x="445" y="151" font-family="Georgia, serif" font-size="10" fill="white">upset &mdash; 15%</text>
-
-                            <rect x="440" y="164" width="28" height="22" rx="4" fill="#ccc"/>
-                            <text x="445" y="179" font-family="Georgia, serif" font-size="9" fill="#888">angry</text>
-
-                            <rect x="440" y="192" width="16" height="22" rx="4" fill="#e8e8e8"/>
-                            <text x="445" y="207" font-family="Georgia, serif" font-size="9" fill="#aaa">mad</text>
-
-                            <!-- Cutoff line for top-k = 3 -->
-                            <line x1="430" y1="158" x2="680" y2="158" stroke="#C8102E" stroke-width="2" stroke-dasharray="6"/>
-                            <text x="685" y="163" font-family="Montserrat, sans-serif" font-size="10" font-weight="600" fill="#C8102E">top-k = 3</text>
-                            <text x="685" y="178" font-family="Georgia, serif" font-size="9" fill="#888">Hard limit: top 3 only</text>
-                        </svg>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 12: MAX OUTPUT TOKENS ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Max Output Tokens</h2>
-                    <div class="callout definition" style="margin-bottom: 20px;">
-                        <h4 style="color: #43B02A;">Definition</h4>
-                        <p><strong>Max Output Tokens</strong> sets a ceiling on how long the model's response can be. One token is roughly 3/4 of a word in English. This parameter controls response length and cost.</p>
-                    </div>
-                    <div style="text-align: center; margin: 15px 0;">
-                        <svg viewBox="0 0 800 200" style="max-width: 100%; height: auto;">
-                            <defs>
-                                <filter id="shadowToken">
-                                    <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/>
-                                </filter>
-                            </defs>
-
-                            <!-- Short -->
-                            <rect x="30" y="20" width="220" height="65" rx="10" fill="white" stroke="#1D428A" stroke-width="2" filter="url(#shadowToken)"/>
-                            <text x="140" y="42" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#1D428A">Short: ~50 tokens</text>
-                            <text x="140" y="60" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#666">Email classification label</text>
-                            <text x="140" y="75" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">(~37 words)</text>
-
-                            <!-- Bar: short -->
-                            <rect x="30" y="95" width="44" height="16" rx="4" fill="#1D428A"/>
-
-                            <!-- Medium -->
-                            <rect x="290" y="20" width="220" height="65" rx="10" fill="white" stroke="#E35205" stroke-width="2" filter="url(#shadowToken)"/>
-                            <text x="400" y="42" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#E35205">Medium: ~200 tokens</text>
-                            <text x="400" y="60" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#666">Email response draft</text>
-                            <text x="400" y="75" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">(~150 words)</text>
-
-                            <!-- Bar: medium -->
-                            <rect x="290" y="95" width="176" height="16" rx="4" fill="#E35205"/>
-
-                            <!-- Long -->
-                            <rect x="550" y="20" width="220" height="65" rx="10" fill="white" stroke="#C8102E" stroke-width="2" filter="url(#shadowToken)"/>
-                            <text x="660" y="42" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#C8102E">Long: ~2,000 tokens</text>
-                            <text x="660" y="60" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#666">Report generation</text>
-                            <text x="660" y="75" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">(~1,500 words)</text>
-
-                            <!-- Bar: long -->
-                            <rect x="550" y="95" width="220" height="16" rx="4" fill="#C8102E"/>
-
-                            <!-- Scale reference -->
-                            <line x1="30" y1="130" x2="770" y2="130" stroke="#e0e0e0" stroke-width="1"/>
-                            <text x="30" y="150" font-family="Montserrat, sans-serif" font-size="10" fill="#aaa">0</text>
-                            <text x="770" y="150" text-anchor="end" font-family="Montserrat, sans-serif" font-size="10" fill="#aaa">2,000 tokens</text>
-
-                            <text x="400" y="180" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#666">Set this to match your use case &mdash; longer is not always better</text>
-                        </svg>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 13: PARAMETER INTERACTION DEMO ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Parameter Interaction: Discussion</h2>
-                    <p style="font-size: 1em; margin-bottom: 25px;">Think about how these parameters interact:</p>
-                    <div class="card-row two-col-cards">
-                        <div class="info-card" style="border-top-color: #1D428A;">
-                            <h4 style="color: #1D428A;">Scenario A</h4>
-                            <p style="font-size: 0.9em; color: #333;"><strong>Temperature = 0</strong> and you ask the model to write a creative story.</p>
-                            <p style="margin-top: 12px; font-size: 0.85em;"><em>What happens? What kind of story do you get?</em></p>
-                        </div>
-                        <div class="info-card" style="border-top-color: #C8102E;">
-                            <h4 style="color: #C8102E;">Scenario B</h4>
-                            <p style="font-size: 0.9em; color: #333;"><strong>Temperature = 2.0</strong> and you ask the model to draft a legal contract clause.</p>
-                            <p style="margin-top: 12px; font-size: 0.85em;"><em>What happens? Would you trust this output?</em></p>
-                        </div>
-                    </div>
-                    <div class="callout key-insight" style="margin-top: 25px;">
-                        <h4 style="color: #C8102E;">The Insight</h4>
-                        <p>Parameters and prompts interact. A perfect prompt with wrong parameters still produces wrong results. <strong>Configuration is as important as the question you ask.</strong></p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 14: THE BUSINESS TAKEAWAY ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>The Business Takeaway</h2>
-                    <div class="visual-box accent" style="padding: 30px; margin-bottom: 25px;">
-                        <p style="font-size: 1.2em; margin: 0; text-align: center;"><strong>Parameters aren't just technical settings &mdash; they're business decisions.</strong></p>
-                    </div>
-                    <div class="two-col">
-                        <div>
-                            <h4 style="color: #C8102E;">Wrong Parameter Example</h4>
-                            <p style="font-size: 0.9em;">Beacon sets temperature to 1.2 for customer complaint classification. Result:</p>
-                            <ul style="font-size: 0.85em;">
-                                <li>Same email classified as "Complaint" one time, "Inquiry" the next</li>
-                                <li>Inconsistent routing breaks SLA promises</li>
-                                <li>Angry customers, confused support staff</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 style="color: #43B02A;">Right Parameter Choice</h4>
-                            <p style="font-size: 0.9em;">Temperature set to 0.1 for classification:</p>
-                            <ul style="font-size: 0.85em;">
-                                <li>Same input produces same classification every time</li>
-                                <li>Reliable routing, predictable SLAs</li>
-                                <li>Trust in the system builds over time</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 15: SECTION DIVIDER - SYSTEM PROMPTS ==================== -->
-            <section data-background-color="#00A9E0">
-                <div class="left-content" style="text-align: center;">
-                    <h1 style="font-size: 3em; color: white; margin-bottom: 20px;">Section 3</h1>
-                    <p style="font-size: 1.5em; color: rgba(255,255,255,0.95);">The AI Job Description</p>
-                    <p style="font-size: 1em; color: rgba(255,255,255,0.7);">System Prompts</p>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 16: WHAT IS A SYSTEM PROMPT? ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>What is a System Prompt?</h2>
-                    <div class="callout definition" style="margin-bottom: 20px;">
-                        <h4 style="color: #43B02A;">Definition</h4>
-                        <p>A <strong>system prompt</strong> is a set of persistent instructions that shapes every response the AI generates. Unlike a regular prompt that is sent once, the system prompt is active for the entire conversation.</p>
-                    </div>
-                    <div style="text-align: center; margin: 15px 0;">
-                        <svg viewBox="0 0 700 280" style="max-width: 680px; height: auto;">
-                            <defs>
-                                <filter id="shadowSys">
-                                    <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.12"/>
-                                </filter>
-                            </defs>
-
-                            <!-- Outer: System Prompt wrapper -->
-                            <rect x="20" y="10" width="660" height="260" rx="14" fill="none" stroke="#C8102E" stroke-width="3" stroke-dasharray="8" filter="url(#shadowSys)"/>
-                            <rect x="30" y="2" width="200" height="22" rx="4" fill="white"/>
-                            <text x="130" y="18" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#C8102E">SYSTEM PROMPT</text>
-                            <text x="350" y="50" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#888">Persistent &mdash; active for every message in the conversation</text>
-
-                            <!-- Inner: Conversation -->
-                            <rect x="60" y="70" width="580" height="180" rx="10" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="1"/>
-                            <text x="350" y="95" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="600" fill="#333">Conversation</text>
-
-                            <!-- User message 1 -->
-                            <rect x="80" y="110" width="200" height="36" rx="8" fill="#e8f0fe"/>
-                            <text x="95" y="133" font-family="Georgia, serif" font-size="10" fill="#333">User: "Classify this email"</text>
-
-                            <!-- AI response 1 -->
-                            <rect x="380" y="110" width="240" height="36" rx="8" fill="#f0f0f0"/>
-                            <text x="395" y="133" font-family="Georgia, serif" font-size="10" fill="#333">AI: "Category: Complaint..."</text>
-
-                            <!-- User message 2 -->
-                            <rect x="80" y="160" width="200" height="36" rx="8" fill="#e8f0fe"/>
-                            <text x="95" y="183" font-family="Georgia, serif" font-size="10" fill="#333">User: "Draft a response"</text>
-
-                            <!-- AI response 2 -->
-                            <rect x="380" y="160" width="240" height="36" rx="8" fill="#f0f0f0"/>
-                            <text x="395" y="183" font-family="Georgia, serif" font-size="10" fill="#333">AI: "Dear customer..."</text>
-
-                            <!-- Arrows from wrapper to messages -->
-                            <line x1="40" y1="128" x2="78" y2="128" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="3"/>
-                            <line x1="40" y1="178" x2="78" y2="178" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="3"/>
-                        </svg>
-                    </div>
-                    <p style="font-size: 0.9em; color: #666;">Think of it as the <strong>Day 2 RCTFC framework made persistent</strong>:</p>
-                    <ul style="font-size: 0.82em; color: #666; margin-top: 8px;">
-                        <li><strong>R</strong>ole &rarr; System prompt Role section</li>
-                        <li><strong>C</strong>ontext &rarr; System prompt Rules &amp; Boundaries</li>
-                        <li><strong>T</strong>ask &rarr; Defined once in system instructions, applied to every email</li>
-                        <li><strong>F</strong>ormat &rarr; System prompt Format section (JSON, categories, etc.)</li>
-                        <li><strong>C</strong>onstraints &rarr; System prompt Escalation, Tone &amp; Boundaries</li>
-                    </ul>
-                    <p style="font-size: 0.9em; color: #666;">Instead of writing RCTFC every time, you set it once and the system prompt applies it to every conversation.</p>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 17: ANATOMY OF A GREAT SYSTEM PROMPT ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Anatomy of a Great System Prompt</h2>
-                    <div style="text-align: center; margin: 10px 0;">
-                        <svg viewBox="0 0 860 360" style="max-width: 100%; height: auto;">
-                            <defs>
-                                <filter id="shadowAnatomy">
-                                    <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.12"/>
-                                </filter>
-                                <marker id="arrowAnatomy" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
-                                    <path d="M0,0 L0,6 L7,3 z" fill="#888"/>
-                                </marker>
-                            </defs>
-
-                            <!-- Center hub -->
-                            <circle cx="430" cy="180" r="55" fill="#C8102E" filter="url(#shadowAnatomy)"/>
-                            <text x="430" y="175" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="white">System</text>
-                            <text x="430" y="192" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="white">Prompt</text>
-
-                            <!-- 1. Role (top-left) -->
-                            <rect x="20" y="15" width="200" height="85" rx="10" fill="white" stroke="#C8102E" stroke-width="2" filter="url(#shadowAnatomy)"/>
-                            <text x="120" y="40" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#C8102E">1. Role</text>
-                            <text x="120" y="58" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555">Who the AI is</text>
-                            <text x="120" y="78" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">"You are Beacon's email</text>
-                            <text x="120" y="91" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">triage specialist."</text>
-                            <line x1="220" y1="60" x2="376" y2="160" stroke="#C8102E" stroke-width="1.5" opacity="0.4"/>
-
-                            <!-- 2. Rules (top-right) -->
-                            <rect x="640" y="15" width="200" height="85" rx="10" fill="white" stroke="#43B02A" stroke-width="2" filter="url(#shadowAnatomy)"/>
-                            <text x="740" y="40" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#43B02A">2. Rules</text>
-                            <text x="740" y="58" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555">Behavioral constraints</text>
-                            <text x="740" y="78" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">"Always classify into exactly</text>
-                            <text x="740" y="91" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">one of 7 categories."</text>
-                            <line x1="640" y1="60" x2="484" y2="160" stroke="#43B02A" stroke-width="1.5" opacity="0.4"/>
-
-                            <!-- 3. Format (middle-left) -->
-                            <rect x="20" y="140" width="200" height="85" rx="10" fill="white" stroke="#1D428A" stroke-width="2" filter="url(#shadowAnatomy)"/>
-                            <text x="120" y="165" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#1D428A">3. Format</text>
-                            <text x="120" y="183" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555">Output structure</text>
-                            <text x="120" y="203" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">"Return JSON with category,</text>
-                            <text x="120" y="216" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">priority, and summary."</text>
-                            <line x1="220" y1="182" x2="375" y2="182" stroke="#1D428A" stroke-width="1.5" opacity="0.4"/>
-
-                            <!-- 4. Escalation (middle-right) -->
-                            <rect x="640" y="140" width="200" height="85" rx="10" fill="white" stroke="#E35205" stroke-width="2" filter="url(#shadowAnatomy)"/>
-                            <text x="740" y="165" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#E35205">4. Escalation</text>
-                            <text x="740" y="183" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555">When to involve humans</text>
-                            <text x="740" y="203" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">"Flag legal threats and</text>
-                            <text x="740" y="216" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">safety issues for manager."</text>
-                            <line x1="640" y1="182" x2="485" y2="182" stroke="#E35205" stroke-width="1.5" opacity="0.4"/>
-
-                            <!-- 5. Tone (bottom-left) -->
-                            <rect x="20" y="265" width="200" height="85" rx="10" fill="white" stroke="#00A9E0" stroke-width="2" filter="url(#shadowAnatomy)"/>
-                            <text x="120" y="290" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#00A9E0">5. Tone</text>
-                            <text x="120" y="308" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555">Voice and style</text>
-                            <text x="120" y="328" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">"Professional, empathetic,</text>
-                            <text x="120" y="341" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">solution-oriented."</text>
-                            <line x1="220" y1="305" x2="395" y2="230" stroke="#00A9E0" stroke-width="1.5" opacity="0.4"/>
-
-                            <!-- 6. Boundaries (bottom-right) -->
-                            <rect x="640" y="265" width="200" height="85" rx="10" fill="white" stroke="#888" stroke-width="2" filter="url(#shadowAnatomy)"/>
-                            <text x="740" y="290" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#555">6. Boundaries</text>
-                            <text x="740" y="308" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#555">What AI must NOT do</text>
-                            <text x="740" y="328" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">"Never promise refunds or</text>
-                            <text x="740" y="341" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">share internal pricing."</text>
-                            <line x1="640" y1="305" x2="465" y2="230" stroke="#888" stroke-width="1.5" opacity="0.4"/>
-                        </svg>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 18: BEACON EMAIL TRIAGE SYSTEM PROMPT ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>System Prompt: Beacon Email Triage</h2>
-                    <div class="code-block">
-<span class="comment"># Beacon Retail Group &mdash; Email Triage System Prompt</span>
-
-<span class="role">## Role</span>
-<span class="role">You are Beacon Retail Group's email triage specialist.</span>
-<span class="role">You classify incoming customer emails and draft responses.</span>
-
-<span class="rules">## Rules</span>
-<span class="rules">- Classify every email into exactly ONE category:</span>
-<span class="rules">  Complaint, Product Question, Order Status,</span>
-<span class="rules">  Return/Exchange, Billing, Partnership Inquiry,</span>
-<span class="rules">  Feedback/Praise</span>
-<span class="rules">- Assign a priority: Low, Medium, High, Critical</span>
-
-<span class="format">## Format</span>
-<span class="format">Always respond with:</span>
-<span class="format">  Category: [category]</span>
-<span class="format">  Priority: [priority]</span>
-<span class="format">  Summary: [1-sentence summary]</span>
-<span class="format">  Suggested Response: [draft reply]</span>
-
-<span class="escalation">## Escalation</span>
-<span class="escalation">- Legal threats &rarr; flag for Legal team</span>
-<span class="escalation">- Safety concerns &rarr; flag for Safety Manager</span>
-<span class="escalation">- Requests over $500 &rarr; flag for Supervisor</span>
-
-<span class="tone">## Tone</span>
-<span class="tone">Professional, empathetic, solution-oriented.</span>
-<span class="tone">Use the customer's name when available.</span>
-
-<span class="boundaries">## Boundaries</span>
-<span class="boundaries">- Never promise specific refund amounts</span>
-<span class="boundaries">- Never share internal pricing or margins</span>
-<span class="boundaries">- Never make up product information</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 19: GOOD VS BAD SYSTEM PROMPTS ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Good vs. Bad System Prompts</h2>
-                    <div class="two-col" style="gap: 30px;">
-                        <div class="compare-panel bad">
-                            <h5>Bad: Vague and Generic</h5>
-                            <div style="background: #fff0f0; padding: 15px; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 0.72em; line-height: 1.6; margin-top: 10px;">
-                                You are a helpful assistant.<br>
-                                Answer customer emails politely.
-                            </div>
-                            <p style="font-size: 0.8em; color: #C8102E; margin-top: 12px;"><strong>Result:</strong> Inconsistent format, no classification, varies wildly between runs, no escalation rules, may share information it shouldn't.</p>
-                        </div>
-                        <div class="compare-panel good">
-                            <h5>Good: Detailed Beacon Prompt</h5>
-                            <div style="background: #f0fff0; padding: 15px; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 0.72em; line-height: 1.6; margin-top: 10px;">
-                                [The full prompt from previous slide]<br>
-                                Role + Rules + Format +<br>
-                                Escalation + Tone + Boundaries
-                            </div>
-                            <p style="font-size: 0.8em; color: #43B02A; margin-top: 12px;"><strong>Result:</strong> Structured output every time, clear categories, automatic escalation, safe boundaries, consistent tone.</p>
-                        </div>
-                    </div>
-                    <div class="callout key-insight" style="margin-top: 20px;">
-                        <p><strong>A vague system prompt is like a job description that says "do stuff."</strong> The more specific you are, the more reliable the AI becomes.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 20: SYSTEM PROMPTS AS GOVERNANCE ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>System Prompts as Governance</h2>
-                    <p style="font-size: 0.95em; margin-bottom: 20px;">A well-crafted system prompt is your <strong>first line of AI governance</strong>. It defines what AI can and cannot do before any code is written.</p>
-                    <div class="card-row">
-                        <div class="info-card" style="border-top-color: #C8102E;">
-                            <h4 style="color: #C8102E;">Scope Control</h4>
-                            <p>What topics the AI can discuss and what it must decline</p>
-                        </div>
-                        <div class="info-card" style="border-top-color: #E35205;">
-                            <h4 style="color: #E35205;">Escalation Paths</h4>
-                            <p>When to route to a human, which team gets flagged</p>
-                        </div>
-                        <div class="info-card highlight">
-                            <h4 style="color: #43B02A;">Data Protection</h4>
-                            <p>How to handle sensitive info: PII, financials, legal matters</p>
-                        </div>
-                    </div>
-                    <div class="callout tip" style="margin-top: 20px;">
-                        <h4 style="color: #00A9E0;">Looking Ahead</h4>
-                        <p>System prompts are governance you can write today. In <strong>Day 6</strong>, we'll test how well they hold up under adversarial conditions (red-teaming).</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 21: ITERATING SYSTEM PROMPTS ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Iterating System Prompts</h2>
-                    <p style="font-size: 0.95em; margin-bottom: 20px;">System prompts are living documents. Version them, test them, and improve them over time.</p>
-                    <div class="two-col">
-                        <div>
-                            <h4 style="color: #1D428A;">Iteration Process</h4>
-                            <ol style="font-size: 0.85em;">
-                                <li><strong>Write</strong> your initial system prompt</li>
-                                <li><strong>Test</strong> with typical inputs</li>
-                                <li><strong>Test edge cases</strong> (see right)</li>
-                                <li><strong>Refine</strong> based on failures</li>
-                                <li><strong>Version</strong> each iteration (v1, v2, v3...)</li>
-                            </ol>
-                        </div>
-                        <div>
-                            <h4 style="color: #C8102E;">Edge Cases to Test</h4>
-                            <div class="visual-box" style="padding: 18px;">
-                                <ul style="font-size: 0.82em; margin: 0; padding-left: 1.2em;">
-                                    <li>Email written in Spanish?</li>
-                                    <li>Profanity or abusive language?</li>
-                                    <li>Products Beacon doesn't sell?</li>
-                                    <li>Request for competitor pricing?</li>
-                                    <li>Blank email or just an attachment?</li>
-                                    <li>Multiple issues in one email?</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="callout warning" style="margin-top: 20px;">
-                        <h4 style="color: #E35205;">Common Mistake</h4>
-                        <p>Writing a system prompt once and never testing it. <strong>Every prompt has blind spots</strong> &mdash; edge case testing reveals them before your customers do.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 22: DISCUSSION ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Discussion: Your Industry's System Prompt</h2>
-                    <div class="visual-box blue" style="padding: 30px; margin-bottom: 25px;">
-                        <p style="font-size: 1.1em; margin: 0; text-align: center;"><strong>If your industry deployed an AI email responder, what rules would the system prompt need?</strong></p>
-                    </div>
-                    <div class="card-row">
-                        <div class="info-card" style="border-top-color: #C8102E;">
-                            <h4 style="color: #C8102E;">Healthcare</h4>
-                            <p>HIPAA compliance, never diagnose, always defer to provider, protect patient data</p>
-                        </div>
-                        <div class="info-card" style="border-top-color: #1D428A;">
-                            <h4 style="color: #1D428A;">Finance</h4>
-                            <p>No investment advice, regulatory disclaimers, flag suspicious activity, compliance language</p>
-                        </div>
-                        <div class="info-card warning">
-                            <h4 style="color: #E35205;">Retail</h4>
-                            <p>Return policy limits, price-match boundaries, no unauthorized discounts, brand voice</p>
-                        </div>
-                    </div>
-                    <p style="margin-top: 20px; font-size: 0.9em; color: #666;">Take 3 minutes: What are the <strong>must-have rules</strong> for an AI system in your field?</p>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 23: SECTION DIVIDER - TOKEN ECONOMICS ==================== -->
-            <section data-background-color="#43B02A">
-                <div class="left-content" style="text-align: center;">
-                    <h1 style="font-size: 3em; color: white; margin-bottom: 20px;">Section 4</h1>
-                    <p style="font-size: 1.5em; color: rgba(255,255,255,0.95);">What Does It Cost?</p>
-                    <p style="font-size: 1em; color: rgba(255,255,255,0.7);">Token Economics</p>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 24: WHAT ARE TOKENS (REFRESHER) ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>What Are Tokens? (Refresher)</h2>
-                    <div class="callout definition" style="margin-bottom: 20px;">
-                        <h4 style="color: #43B02A;">Quick Callback to Day 1</h4>
-                        <p><strong>Tokens</strong> are the units AI models use to process text. A token is roughly 3/4 of an English word. The word "Hello" is 1 token. "Unbelievable" might be 3 tokens (un + believ + able).</p>
-                    </div>
-                    <div style="text-align: center; margin: 15px 0;">
-                        <svg viewBox="0 0 760 220" style="max-width: 100%; height: auto;">
-                            <defs>
-                                <filter id="shadowTk">
-                                    <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/>
-                                </filter>
-                            </defs>
-
-                            <!-- Example: "Hello world" = 2 tokens -->
-                            <rect x="20" y="10" width="340" height="80" rx="10" fill="white" stroke="#1D428A" stroke-width="2" filter="url(#shadowTk)"/>
-                            <text x="190" y="35" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#1D428A">Example</text>
-                            <rect x="40" y="48" width="80" height="30" rx="6" fill="#1D428A"/>
-                            <text x="80" y="68" text-anchor="middle" font-family="'Fira Code', monospace" font-size="12" fill="white">Hello</text>
-                            <rect x="130" y="48" width="80" height="30" rx="6" fill="#00A9E0"/>
-                            <text x="170" y="68" text-anchor="middle" font-family="'Fira Code', monospace" font-size="12" fill="white">world</text>
-                            <text x="260" y="68" font-family="Georgia, serif" font-size="12" fill="#666">= 2 tokens</text>
-
-                            <!-- Critical insight: system prompt sent every time -->
-                            <rect x="400" y="10" width="340" height="80" rx="10" fill="#fff8f5" stroke="#E35205" stroke-width="2" filter="url(#shadowTk)"/>
-                            <text x="570" y="35" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#E35205">Key Cost Insight</text>
-                            <text x="570" y="58" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#555">Your system prompt is sent</text>
-                            <text x="570" y="76" text-anchor="middle" font-family="Georgia, serif" font-size="12" font-weight="700" fill="#C8102E">with EVERY message</text>
-
-                            <!-- Visual: system prompt tokens add up -->
-                            <rect x="20" y="110" width="720" height="95" rx="10" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="1"/>
-                            <text x="380" y="135" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#333">Token Breakdown: Single Email Classification</text>
-
-                            <rect x="40" y="150" width="180" height="36" rx="6" fill="#C8102E"/>
-                            <text x="130" y="173" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="white">System Prompt: ~400 tokens</text>
-
-                            <text x="230" y="173" font-family="Georgia, serif" font-size="14" fill="#888">+</text>
-
-                            <rect x="250" y="150" width="180" height="36" rx="6" fill="#1D428A"/>
-                            <text x="340" y="173" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="white">Email Input: ~300 tokens</text>
-
-                            <text x="440" y="173" font-family="Georgia, serif" font-size="14" fill="#888">+</text>
-
-                            <rect x="460" y="150" width="130" height="36" rx="6" fill="#43B02A"/>
-                            <text x="525" y="173" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="white">Output: ~300 tokens</text>
-
-                            <text x="610" y="173" font-family="Georgia, serif" font-size="14" fill="#888">=</text>
-
-                            <rect x="630" y="148" width="90" height="40" rx="6" fill="#E35205"/>
-                            <text x="675" y="173" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="white">~1,000</text>
-                        </svg>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 25: TOKEN PRICING ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Token Pricing: Model Tiers</h2>
-                    <div class="callout warning" style="margin-bottom: 20px;">
-                        <h4 style="color: #E35205;">Disclaimer</h4>
-                        <p>Prices shown are <strong>illustrative</strong> and based on approximate early 2026 rates. Actual rates change frequently. Always check current pricing before deployment.</p>
-                    </div>
-                    <div class="card-row two-col-cards">
-                        <div class="info-card blue">
-                            <h4 style="color: #00A9E0;">Gemini 3 Flash &mdash; The Toyota</h4>
-                            <p style="font-size: 0.9em; color: #333;">Fast, affordable, great for most tasks</p>
-                            <table style="width: 100%; margin-top: 12px; font-size: 0.85em; border-collapse: collapse;">
-                                <tr style="border-bottom: 1px solid #e0e0e0;">
-                                    <td style="padding: 6px 0;">Input</td>
-                                    <td style="padding: 6px 0; text-align: right; font-weight: 600;">~$0.50 / 1M tokens</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 6px 0;">Output</td>
-                                    <td style="padding: 6px 0; text-align: right; font-weight: 600;">~$3.00 / 1M tokens</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="info-card" style="border-top-color: #1D428A;">
-                            <h4 style="color: #1D428A;">Gemini 3 Pro &mdash; The Mercedes</h4>
-                            <p style="font-size: 0.9em; color: #333;">More capable, better reasoning</p>
-                            <table style="width: 100%; margin-top: 12px; font-size: 0.85em; border-collapse: collapse;">
-                                <tr style="border-bottom: 1px solid #e0e0e0;">
-                                    <td style="padding: 6px 0;">Input</td>
-                                    <td style="padding: 6px 0; text-align: right; font-weight: 600;">~$2.00 / 1M tokens</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 6px 0;">Output</td>
-                                    <td style="padding: 6px 0; text-align: right; font-weight: 600;">~$12.00 / 1M tokens</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <p class="small-text" style="margin-top: 15px; text-align: center;">Pro costs ~4x more per input token and ~4x more per output token than Flash. Choose based on task difficulty.</p>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 26: THE BEACON EMAIL MATH ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>The Beacon Email Math</h2>
-                    <p style="font-size: 0.9em; margin-bottom: 15px;">Let's calculate a real deployment cost for Beacon's email triage:</p>
-                    <div class="two-col" style="gap: 30px;">
-                        <div>
-                            <h4 style="color: #1D428A;">Volume Estimate</h4>
-                            <div class="visual-box" style="padding: 18px; font-size: 0.85em;">
-                                <p style="margin: 0 0 8px;"><strong>200</strong> emails/day &times; <strong>30</strong> days = <strong>6,000</strong>/month</p>
-                                <p style="margin: 0 0 8px;"><strong>Input per email:</strong> ~700 tokens<br>(400 system prompt + 300 email)</p>
-                                <p style="margin: 0 0 8px;"><strong>Output per email:</strong> ~300 tokens</p>
-                                <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 12px 0;">
-                                <p style="margin: 0;"><strong>Monthly input:</strong> 6,000 &times; 700 = <strong>4.2M tokens</strong></p>
-                                <p style="margin: 0;"><strong>Monthly output:</strong> 6,000 &times; 300 = <strong>1.8M tokens</strong></p>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 style="color: #C8102E;">Monthly Cost</h4>
-                            <div class="visual-box" style="padding: 18px; font-size: 0.85em; border-color: #43B02A;">
-                                <p style="margin: 0 0 12px; font-weight: 600; color: #00A9E0;">Gemini 3 Flash:</p>
-                                <p style="margin: 0 0 4px;">Input: 4.2M &times; $0.50/1M = $2.10</p>
-                                <p style="margin: 0 0 4px;">Output: 1.8M &times; $3.00/1M = $5.40</p>
-                                <p style="margin: 0 0 12px; font-weight: 700; color: #43B02A;">Total: ~$7.50/month</p>
-                                <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 12px 0;">
-                                <p style="margin: 0 0 12px; font-weight: 600; color: #1D428A;">Gemini 3 Pro:</p>
-                                <p style="margin: 0 0 4px;">Input: 4.2M &times; $2.00/1M = $8.40</p>
-                                <p style="margin: 0 0 4px;">Output: 1.8M &times; $12.00/1M = $21.60</p>
-                                <p style="margin: 0; font-weight: 700; color: #1D428A;">Total: ~$30.00/month</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="small-text" style="margin-top: 10px; text-align: center;">Illustrative pricing. Actual costs vary by model version, region, and pricing tier.</p>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 27: COST VS VALUE ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Cost vs. Value</h2>
-                    <div style="text-align: center; margin: 15px 0;">
-                        <svg viewBox="0 0 700 340" style="max-width: 680px; height: auto;">
-                            <defs>
-                                <filter id="shadowBar2">
-                                    <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.12"/>
-                                </filter>
-                            </defs>
-
-                            <!-- Title -->
-                            <text x="350" y="30" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#333">Monthly Cost: Human vs. AI Email Triage</text>
-
-                            <!-- Y-axis -->
-                            <line x1="100" y1="50" x2="100" y2="280" stroke="#ccc" stroke-width="1"/>
-                            <text x="90" y="58" text-anchor="end" font-family="Georgia, serif" font-size="10" fill="#888">$600</text>
-                            <text x="90" y="120" text-anchor="end" font-family="Georgia, serif" font-size="10" fill="#888">$400</text>
-                            <text x="90" y="182" text-anchor="end" font-family="Georgia, serif" font-size="10" fill="#888">$200</text>
-                            <text x="90" y="244" text-anchor="end" font-family="Georgia, serif" font-size="10" fill="#888">$50</text>
-                            <text x="90" y="280" text-anchor="end" font-family="Georgia, serif" font-size="10" fill="#888">$0</text>
-                            <line x1="95" y1="55" x2="600" y2="55" stroke="#f0f0f0" stroke-width="1"/>
-                            <line x1="95" y1="117" x2="600" y2="117" stroke="#f0f0f0" stroke-width="1"/>
-                            <line x1="95" y1="179" x2="600" y2="179" stroke="#f0f0f0" stroke-width="1"/>
-                            <line x1="95" y1="241" x2="600" y2="241" stroke="#f0f0f0" stroke-width="1"/>
-
-                            <!-- Human bar: $600/month -->
-                            <rect x="160" y="55" width="120" height="223" rx="6" fill="#C8102E" filter="url(#shadowBar2)"/>
-                            <text x="220" y="145" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="18" font-weight="700" fill="white">$600</text>
-                            <text x="220" y="165" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="rgba(255,255,255,0.9)">/month</text>
-                            <text x="220" y="300" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#333">Human Triage</text>
-                            <text x="220" y="316" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">1 hr/day @ $20/hr</text>
-
-                            <!-- Flash bar: ~$7.50/month -->
-                            <rect x="340" y="270" width="120" height="8" rx="3" fill="#43B02A" filter="url(#shadowBar2)"/>
-                            <rect x="340" y="250" width="120" height="28" rx="4" fill="#43B02A" filter="url(#shadowBar2)"/>
-                            <text x="400" y="269" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="700" fill="white">~$7.50</text>
-                            <text x="400" y="300" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#333">AI (Flash)</text>
-                            <text x="400" y="316" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">6,000 emails/mo</text>
-
-                            <!-- Pro bar: ~$30/month -->
-                            <rect x="520" y="265" width="120" height="13" rx="4" fill="#1D428A" filter="url(#shadowBar2)"/>
-                            <rect x="520" y="243" width="120" height="35" rx="4" fill="#1D428A" filter="url(#shadowBar2)"/>
-                            <text x="580" y="265" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="700" fill="white">~$30</text>
-                            <text x="580" y="300" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#333">AI (Pro)</text>
-                            <text x="580" y="316" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">6,000 emails/mo</text>
-                        </svg>
-                    </div>
-                    <div class="callout warning" style="margin-top: 5px;">
-                        <h4 style="color: #E35205;">Important Context</h4>
-                        <p>These ROI figures are <strong>illustrative</strong>. With Flash at ~$7.50/month vs. $600/month manual cost, that's roughly <strong>80x savings</strong>. But real deployments have additional costs: development time, testing, monitoring, and human oversight. AI triage augments human work &mdash; it doesn't eliminate it.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 28: BUILDING REUSABLE CONFIGURATIONS ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Building Reusable Configurations</h2>
-                    <p style="font-size: 0.95em; margin-bottom: 15px;">The real power of AI Studio: combine your system prompt, parameters, and model choice into a <strong>reusable template</strong>.</p>
-                    <div style="text-align: center; margin: 15px 0;">
-                        <svg viewBox="0 0 800 280" style="max-width: 100%; height: auto;">
-                            <defs>
-                                <filter id="shadowConfig">
-                                    <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.12"/>
-                                </filter>
-                                <marker id="arrowConfig" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                                    <path d="M0,0 L0,6 L9,3 z" fill="#C8102E"/>
-                                </marker>
-                            </defs>
-
-                            <!-- Component 1: System Prompt -->
-                            <rect x="20" y="30" width="170" height="80" rx="10" fill="white" stroke="#C8102E" stroke-width="2" filter="url(#shadowConfig)"/>
-                            <text x="105" y="60" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#C8102E">System Prompt</text>
-                            <text x="105" y="78" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">Role, rules, format,</text>
-                            <text x="105" y="92" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">escalation, tone</text>
-
-                            <!-- Component 2: Parameters -->
-                            <rect x="20" y="130" width="170" height="80" rx="10" fill="white" stroke="#1D428A" stroke-width="2" filter="url(#shadowConfig)"/>
-                            <text x="105" y="160" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#1D428A">Parameters</text>
-                            <text x="105" y="178" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">Temp: 0.1, Top-p: 0.9</text>
-                            <text x="105" y="192" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#888">Max tokens: 500</text>
-
-                            <!-- Component 3: Model -->
-                            <rect x="20" y="230" width="170" height="40" rx="10" fill="white" stroke="#43B02A" stroke-width="2" filter="url(#shadowConfig)"/>
-                            <text x="105" y="255" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#43B02A">Gemini 3 Flash</text>
-
-                            <!-- Arrows to center -->
-                            <path d="M195 70 L290 140" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowConfig)"/>
-                            <path d="M195 170 L290 150" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowConfig)"/>
-                            <path d="M195 250 L290 160" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowConfig)"/>
-
-                            <!-- Center: Saved Template -->
-                            <rect x="300" y="90" width="200" height="100" rx="14" fill="#C8102E" filter="url(#shadowConfig)"/>
-                            <text x="400" y="130" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="white">Saved Template</text>
-                            <text x="400" y="152" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="rgba(255,255,255,0.85)">Configure once</text>
-                            <text x="400" y="170" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="rgba(255,255,255,0.85)">Deploy everywhere</text>
-
-                            <!-- Arrows to deployments -->
-                            <path d="M505 120 L580 70" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowConfig)"/>
-                            <path d="M505 140 L580 140" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowConfig)"/>
-                            <path d="M505 160 L580 210" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowConfig)"/>
-
-                            <!-- Deployment targets -->
-                            <rect x="590" y="40" width="170" height="52" rx="10" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="2" filter="url(#shadowConfig)"/>
-                            <text x="675" y="62" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="600" fill="#333">Email Triage</text>
-                            <text x="675" y="78" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">Production</text>
-
-                            <rect x="590" y="110" width="170" height="52" rx="10" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="2" filter="url(#shadowConfig)"/>
-                            <text x="675" y="132" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="600" fill="#333">Team Training</text>
-                            <text x="675" y="148" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">Internal demo</text>
-
-                            <rect x="590" y="185" width="170" height="52" rx="10" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="2" filter="url(#shadowConfig)"/>
-                            <text x="675" y="207" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" font-weight="600" fill="#333">API Integration</text>
-                            <text x="675" y="223" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#888">Exported to code</text>
-                        </svg>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 29: KEY TAKEAWAYS ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>Key Takeaways</h2>
-                    <p style="font-size: 0.95em; margin-bottom: 20px;">Four takeaways, mapped to today's four objectives:</p>
-                    <div class="card-row two-col-cards" style="gap: 20px;">
-                        <div class="info-card" style="border-top-color: #C8102E;">
-                            <h4 style="color: #C8102E;">1. Parameters Control Behavior</h4>
-                            <p style="font-size: 0.9em;"><strong>Temperature is the key dial.</strong> Low for consistency (classification, extraction), high for creativity (marketing, brainstorming). Top-p and top-k are fine adjustments.</p>
-                        </div>
-                        <div class="info-card" style="border-top-color: #1D428A;">
-                            <h4 style="color: #1D428A;">2. System Prompts = Persistent RCTFC</h4>
-                            <p style="font-size: 0.9em;">A system prompt is your Day 2 RCTFC framework set once and applied to every conversation. Six components: Role, Rules, Format, Escalation, Tone, Boundaries.</p>
-                        </div>
-                        <div class="info-card highlight">
-                            <h4 style="color: #43B02A;">3. Pennies vs. Dollars</h4>
-                            <p style="font-size: 0.9em;">Beacon's email triage costs ~$7.50/month with Flash vs. $600/month manual &mdash; roughly 80x savings. At enterprise scale, model choice (Flash vs. Pro) becomes a real business decision.</p>
-                        </div>
-                        <div class="info-card blue">
-                            <h4 style="color: #00A9E0;">4. AI Studio: User &rarr; Configurer</h4>
-                            <p style="font-size: 0.9em;">AI Studio is where you move from using AI to controlling it. System prompts + parameters + model choice = your AI configuration toolkit.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 30: WHAT'S NEXT ==================== -->
-            <section>
-                <div class="left-content">
-                    <h2>What's Next: Day 6</h2>
-                    <div class="visual-box accent" style="padding: 30px; margin-bottom: 25px; text-align: center;">
-                        <p style="font-size: 1.3em; margin: 0; font-family: 'Montserrat', sans-serif;">You've <em>built</em> AI systems in Days 4&ndash;5.</p>
-                        <p style="font-size: 1.3em; margin: 10px 0 0; font-family: 'Montserrat', sans-serif;">Day 6: we <em>break</em> them.</p>
-                    </div>
-                    <div class="card-row">
-                        <div class="info-card" style="border-top-color: #C8102E;">
-                            <h4 style="color: #C8102E;">Red-Teaming</h4>
-                            <p>Deliberately trying to make AI fail, produce harmful outputs, or bypass guardrails</p>
-                        </div>
-                        <div class="info-card" style="border-top-color: #E35205;">
-                            <h4 style="color: #E35205;">Testing</h4>
-                            <p>Systematic evaluation of system prompt reliability under edge cases</p>
-                        </div>
-                        <div class="info-card" style="border-top-color: #1D428A;">
-                            <h4 style="color: #1D428A;">Guardrails</h4>
-                            <p>Building defenses that keep AI within its intended boundaries</p>
-                        </div>
-                    </div>
-                    <div class="callout tip" style="margin-top: 20px;">
-                        <h4 style="color: #00A9E0;">Prepare</h4>
-                        <p>Save the system prompt you build in today's lab. We'll stress-test it on Day 6.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==================== SLIDE 31: QUESTIONS ==================== -->
-            <section>
-                <div class="left-content" style="text-align: center;">
-                    <h1 style="font-size: 3em; color: #C8102E;">Questions?</h1>
-                    <p style="font-size: 1.2em; color: #666;">Before we move to the lab...</p>
-                    <p style="margin-top: 40px;"><a href="lab.html" style="display: inline-block; background: #C8102E; color: white; padding: 14px 36px; border-radius: 8px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.1em;">Next: Start the Lab &rarr;</a></p>
-                </div>
+            <!-- Slide 15: Key Takeaways & Next Steps -->
+            <section data-background-image="images/slide-15.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Four takeaways to remember. Dials: Temperature controls creativity — low for consistency, high for variety. Top-p and top-k are fine adjustments. Rules: System prompts are persistent laws — the RCTFC framework set once, with six components: Role, Rules, Format, Escalation, Tone, Boundaries. Money: Flash at $7.50 vs. human at $600 = the business case for AI configuration. Role: You are now a Configurer, not just a user. System prompts + parameters + model choice = your AI configuration toolkit. Next up — Day 6: Red Teaming. We break what we just built. Save the system prompt you build in today's lab — we'll stress-test it on Day 6.</aside>
             </section>
 
         </div>
@@ -1582,8 +296,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/notes/notes.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/markdown/markdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/highlight/highlight.min.js"></script>
     <script>
         Reveal.initialize({
             hash: true,
@@ -1593,8 +305,37 @@
             controls: true,
             controlsTutorial: false,
             transition: 'slide',
-            plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+            plugins: [ RevealNotes ]
         });
+
+        // Interactive checkpoint quiz handler
+        function checkQuiz(element, quizId, isCorrect) {
+            var container = document.getElementById(quizId);
+            var options = container.querySelectorAll('.quiz-option');
+            var feedbackCorrect = document.getElementById(quizId + '-feedback-correct');
+            var feedbackIncorrect = document.getElementById(quizId + '-feedback-incorrect');
+
+            // Reset all options
+            options.forEach(function(opt) {
+                opt.classList.remove('correct', 'incorrect');
+            });
+
+            // Hide both feedbacks
+            feedbackCorrect.style.display = 'none';
+            feedbackCorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+            feedbackIncorrect.style.display = 'none';
+            feedbackIncorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedbackCorrect.style.display = 'block';
+                feedbackCorrect.classList.add('correct-fb', 'show');
+            } else {
+                element.classList.add('incorrect');
+                feedbackIncorrect.style.display = 'block';
+                feedbackIncorrect.classList.add('incorrect-fb', 'show');
+            }
+        }
     </script>
 </body>
 </html>
