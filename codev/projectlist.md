@@ -121,7 +121,7 @@ projects:
       review: null
     dependencies: []
     tags: [course, mba, ai]
-    notes: "Day 1 complete (2026-02-06). Day 2 complete (2026-02-10). Day 3 complete/reworked (2026-02-11). Day 4 spec+plan written, not implemented. Day 5 spec+plan drafted. Days 6-9 not started. Days 7-9 need dual versions: Plan A (ADK Visual Builder) + Plan B (MindStudio backup)."
+    notes: "Days 1-5 complete and committed. Days 1-3 use NotebookLM full-bleed image approach (retrofitted). Days 4-5 built with NotebookLM from start. Days 6-9 remaining. Days 7-9 need dual versions: Plan A (ADK Visual Builder) + Plan B (MindStudio backup)."
 
   - id: "0002"
     title: "Day 3 Context Engineering — Major Rework"
@@ -147,12 +147,12 @@ projects:
       review: null
     dependencies: []
     tags: [course, images, tooling]
-    notes: "Day 3 images complete (4/4). Tool established (_tools/generate_image.py). Two integration modes: Mode A (text-free) and Mode B (hybrid HTML+AI). Days 1-2 retroactive + Days 4-9 pending as content is created."
+    notes: "Day 3 images complete (4/4). Tool established (_tools/generate_image.py). Two integration modes: Mode A (text-free) and Mode B (hybrid HTML+AI). Partially superseded by Spec 0006 (NotebookLM) for lecture slides; still used for custom lab images (e.g., competitor ads)."
 
   - id: "0004"
     title: "Day 4 Multimodal AI — Major Rework"
     summary: "Rework Day 4 from narrow receipt extraction to broad multimodal AI with marketing campaign scenario, image generation exercises, and real multimodal uploads"
-    status: planned
+    status: committed
     priority: high
     files:
       spec: codev/specs/0004-day4-rework.md
@@ -160,12 +160,12 @@ projects:
       review: null
     dependencies: ["0001", "0002"]
     tags: [course, day4, rework, multimodal]
-    notes: "Spec+plan drafted 2026-02-12, awaiting human approval before implementation. Current Day 4 files have old receipt-extraction prototype with partial uncommitted edits from a session that hit rate limit."
+    notes: "Implemented and committed 2026-02-18. Full rework: marketing campaign scenario, multimodal uploads, NotebookLM full-bleed slides, ElevenLabs audio, Nano Banana competitor ad images."
 
   - id: "0005"
     title: "Day 5 — Google AI Studio"
     summary: "Day 5 materials: model parameters (temperature, top-p, top-k), system prompts, token economics, and email triage lab for Beacon"
-    status: planned
+    status: committed
     priority: high
     files:
       spec: codev/specs/0005-day5-ai-studio.md
@@ -173,12 +173,12 @@ projects:
       review: null
     dependencies: ["0001", "0004"]
     tags: [course, day5, ai-studio, parameters]
-    notes: "Spec+plan drafted 2026-02-13, awaiting human review/approval. Email triage lab produces system that Day 6 will red-team. Date: Wed March 18, 2026."
+    notes: "Implemented and committed 2026-02-18. NotebookLM full-bleed slides (15 slides + 2 quizzes). Email triage lab produces system that Day 6 will red-team. Date: Wed March 18, 2026."
 
   - id: "0006"
     title: "NotebookLM Integration — Visual & Educational Quality Agent"
     summary: "Integrate NotebookLM as primary agent for improving slide visual and educational quality, replacing Nano Banana as the main visual improvement workflow"
-    status: conceived
+    status: implementing
     priority: high
     files:
       spec: codev/specs/0006-notebooklm-integration.md
@@ -186,7 +186,7 @@ projects:
       review: null
     dependencies: ["0001"]
     tags: [course, visuals, notebooklm, tooling]
-    notes: "Spec drafted 2026-02-17. Includes html2md.py conversion tool for NotebookLM ingestion. Day 1 test run ready. Partially supersedes Spec 0003 (Nano Banana)."
+    notes: "Proven across Days 1-5. Full-bleed image workflow established. Tools: html2md.py, extract_slides.py, /deploy-notebooklm skill, lecture template. Partially supersedes Spec 0003 (Nano Banana). Days 6-9 remaining."
 ```
 
 ## Next Available Number

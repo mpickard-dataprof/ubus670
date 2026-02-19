@@ -187,3 +187,93 @@ After each day is approved, append an entry below:
 - Avoid "pretty but purposeless" images — every image must have educational intent
 
 ---
+
+### Day 4: Multimodal AI (Rework via NotebookLM)
+**Rework completed:** 2026-02-18
+**Spec:** 0004
+
+**What worked well:**
+- NotebookLM full-bleed image approach scales well to multimodal topics (20 slides with diverse visual metaphors for image, audio, video AI)
+- ElevenLabs v3 audio tags (`[excited]`, `[frustrated]`, `[disappointed]`) produce realistic customer personas — students can hear emotional delivery differences
+- Competitor ad images (Nano Banana) work well for lab assets while NotebookLM handles lecture slides — complementary tools, not competing
+- Cohesion across modalities: images, audio, and video all referencing the same competitor brands (Luxe Home & Style, MarketSquare) creates immersive business scenario
+- Marketing campaign scenario (replacing receipt extraction) gives students creative ownership and multimodal variety
+
+**What required significant revision:**
+- Original Day 4 (receipt extraction) was too narrow — only covered image input, not generation or audio/video
+- Context package for NotebookLM needed INSTRUCTOR_FEEDBACK.md with slide-by-slide feedback to get high-quality output
+- Audio generation required specific voice selection and stability settings to match character personas
+
+**Patterns to apply to future days:**
+- When a day covers multiple modalities, use different AI tools for each: NotebookLM for lecture visuals, Nano Banana for lab-specific images, ElevenLabs for audio
+- INSTRUCTOR_FEEDBACK.md is the highest-impact context file — specific slide-by-slide feedback produces dramatically better NotebookLM output
+- Lab exercises with real AI-generated assets (actual audio files, actual images) are more engaging than describing what they would look like
+- Competitor brand consistency across all materials (lecture, lab, quiz) creates narrative immersion
+
+**Content or approach to avoid:**
+- Single-modality labs when the lecture covers multimodal AI — students should experience all modalities hands-on
+- Generic audio clips — invest in character-driven personas with emotional variety
+- Disconnected lab assets — all images, audio, and video should reference the same business scenario
+
+---
+
+### Day 5: Google AI Studio (via NotebookLM)
+**Completed:** 2026-02-18
+**Spec:** 0005
+
+**What worked well:**
+- 15 slides + 2 quizzes is the most efficient deck yet (down from 31 SVG slides in the original)
+- INSTRUCTOR_FEEDBACK.md continues to be the highest-impact context file for NotebookLM
+- The "pennies vs. dollars" emotional centerpiece ($7.50/month AI vs. $600/month human) translates well to NotebookLM visual treatment — strong bar chart contrast
+- Lecture-lab alignment is strong when both follow the same 4-section arc (What is AI Studio → Parameters → System Prompts → Token Economics)
+- Quiz checkpoints placed after parameters section and after system prompts section create natural learning breaks
+- Temperature zone visualization (Low/Medium/High with business use cases) is NotebookLM's strongest visual contribution to this deck
+
+**What required significant revision:**
+- Temperature zones must match exactly across lecture, lab, and quiz (0.0-0.3, 0.4-0.7, 0.8-1.0) — any inconsistency confuses students
+- System prompt anatomy (6 components) needed to explicitly map to Day 2's RCTFC framework for continuity
+- Token economics math must be preserved exactly from the spec — NotebookLM sometimes rounds or simplifies pricing
+
+**Patterns to apply to future days:**
+- 15-20 image slides + 2 interactive quizzes is the sweet spot for a 4-hour session (leaves room for lab time)
+- Place quiz checkpoints at natural section boundaries (after ~1/3 and ~2/3 of content)
+- When a day's content builds on a previous day's framework, make the connection explicit in both the PROJECT_BRIEF and INSTRUCTOR_FEEDBACK
+- Speaker notes should reference "you'll do this in the lab" to create forward connections
+- The Day 5 → Day 6 handoff (build system prompt → red-team it) is a strong pedagogical pattern: create then stress-test
+
+**Content or approach to avoid:**
+- Letting NotebookLM round or simplify pricing — exact figures must match across all materials
+- Assuming students remember frameworks from earlier days — always include a brief recap or explicit reference
+- More than 6 consecutive image slides without an interactive break (quiz or discussion prompt)
+
+---
+
+### NotebookLM Workflow (Cross-Cutting Lessons)
+**Established:** 2026-02-17 to 2026-02-18 (Days 1-5)
+
+**Key metrics:**
+- Full-bleed approach produces 300-340 line lecture.html vs 1,700-1,900 for the old SVG approach
+- 1-2 NotebookLM generation attempts typical (after Day 1, which took 3 attempts to calibrate)
+- Slide counts range 15-21 depending on topic depth
+- Context package quality directly correlates with output quality
+
+**What makes a great context package:**
+- PROJECT_BRIEF.md: audience, brand identity, deck structure, what to preserve (freeze sections with the template)
+- INSTRUCTOR_FEEDBACK.md: slide-by-slide specific feedback — this is the single highest-impact file
+- lecture.md: full text content converted from HTML (via html2md.py)
+- day{N}-slides-current.pdf: visual reference of current state
+
+**The full-bleed decision:**
+- Do NOT recreate NotebookLM text in HTML — it duplicates content and loses visual quality
+- Use slide PNGs as `data-background-image` with `data-background-size="contain"`
+- Add CSS breathing room (box-sizing + padding + background-origin) so images don't clip against nav bar
+- Inject interactive HTML-only quiz slides between image slides
+- Speaker notes provide accessibility and presenter support
+
+**Process improvements captured:**
+- `/deploy-notebooklm` skill automates the deployment phase (copy images, copy PDF, generate lecture.html from template)
+- Lecture template (`Materials/_shared/lecture-template.html`) freezes CSS/JS — only slide sections and metadata change
+- Context package templates freeze the common sections — only day-specific content needs writing
+- Deployment checklist (`notebooklm-deployment.md`) catches the CSS pitfalls that cost hours on Day 1
+
+---

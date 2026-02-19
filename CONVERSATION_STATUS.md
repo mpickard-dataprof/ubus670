@@ -1,6 +1,6 @@
 # UBUS 670 Course Development - Conversation Status
 
-**Last Updated:** 2026-02-17
+**Last Updated:** 2026-02-18
 **Purpose:** Context recovery file for new Claude Code sessions
 
 ---
@@ -9,49 +9,45 @@
 
 When starting a new session, say:
 
-> "Read Materials/PROJECT_STATUS.md and codev/projectlist.md to restore context. We're building UBUS 670 course materials."
+> "Read CONVERSATION_STATUS.md and codev/projectlist.md to restore context. We're building UBUS 670 course materials."
 
-For deeper context, also read:
-- `codev/lessons/0001-course-materials.md` (design patterns and lessons learned)
-- `codev/specs/0004-day4-rework.md` (next spec to implement)
-- `codev/specs/0005-day5-ai-studio.md` (next spec to review)
-- `Materials/Week 2/Day 4/feedback/slide_feedback.md` (instructor feedback on Day 4)
+The `/deploy-notebooklm {day}` skill automates the most common operation. For deeper context:
+- `codev/lessons/0001-course-materials.md` — design patterns and lessons learned (Days 1-5)
+- `codev/specs/0006-notebooklm-integration.md` — the established visual workflow
 
 ---
 
-## Current State (2026-02-17)
+## Current State (2026-02-18)
 
-### Completed
-- Days 1-3 materials are DONE and committed to git
-- Day 3 was reworked (Spec 0002) with structured formats, Gemini Gems, Accidental Fine-Tuner story
-- AI Image Generation tool (Spec 0003) established, Day 3 images complete (4/4)
-- Directory structure flattened: `Materials/Materials/` -> `Materials/`
+### Completed (Days 1-5)
+- **Days 1-3**: Materials complete, committed, retrofitted with NotebookLM full-bleed image slides
+- **Day 4 (Spec 0004)**: Reworked to marketing campaign scenario, multimodal uploads, ElevenLabs audio, NotebookLM slides. Committed.
+- **Day 5 (Spec 0005)**: Google AI Studio — parameters, system prompts, token economics. 15 NotebookLM slides + 2 quizzes. Committed.
+- **NotebookLM workflow (Spec 0006)**: Proven across all 5 days. Tools, templates, and `/deploy-notebooklm` skill established.
 
-### In Progress
-- **Day 4 Rework (Spec 0004):** Spec and plan WRITTEN but NOT APPROVED or IMPLEMENTED
-  - Old prototype (receipt extraction) needs to be replaced with marketing campaign scenario
-  - Current files have partial uncommitted edits from a session that hit rate limits
-  - The "feeback" typo directory was renamed to "feedback" (uncommitted)
-- **Day 5 (Spec 0005):** Spec and plan DRAFTED, awaiting human review
+### Not Started (Days 6-9)
+- **Day 6**: Red Teaming & AI Safety (tests system prompt from Day 5)
+- **Day 7**: Agent Builder (Plan A: ADK Visual Builder + Plan B: MindStudio backup)
+- **Day 8**: AI Strategy & Governance
+- **Day 9**: Capstone / Final Presentations
+- Datasets needed: customer emails (Day 5 lab), resumes with hidden patterns (Days 7-9)
 
-### Not Started
-- Days 6-9 (no specs written)
-- Datasets: customer emails (Day 5), resumes with hidden patterns (Days 7-9)
-- Days 7-9 need dual tool versions: Plan A (ADK Visual Builder) + Plan B (MindStudio backup)
+### Reusable Assets
+- **Lecture template**: `Materials/_shared/lecture-template.html`
+- **Context package templates**: `Materials/_shared/notebooklm-*-template.md`
+- **Skills**: `/deploy-notebooklm`, `/generate-audio`
+- **Tools**: `html2md.py`, `extract_slides.py`, `generate_image.py`, `generate_audio.py`
 
 ---
 
 ## Key Decisions (Reference)
 
-See `Materials/PROJECT_STATUS.md` for full details. Summary:
-
 - **Audience:** MBA students, no work experience, not tech-savvy
 - **Format:** HTML/Reveal.js web modules (index, lecture, lab, quiz per day)
+- **Visual workflow:** NotebookLM full-bleed image slides (Spec 0006) — primary. Nano Banana (Spec 0003) — backup for custom lab images only.
 - **Case Study:** Beacon Retail Group throughout all 9 days
 - **AI Ecosystem:** Gemini-focused (no ChatGPT references)
-- **Workflow:** Generator-Critic with 4 critic personas + human checkpoint
 - **Session Rule:** One day of content per session to avoid context overflow
-- **Image Generation:** Nano Banana (`gemini-2.5-flash-image`), never bake text into AI images
 - **Git:** Never use `git add -A` or `git add .`
 
 ---
