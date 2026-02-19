@@ -4,8 +4,27 @@
 import argparse
 import os
 import sys
+from pathlib import Path
 from google import genai
 from google.genai import types
+
+
+def _load_dotenv():
+    """Load .env from project root (3 levels up from _tools/)."""
+    env_file = Path(__file__).resolve().parent.parent.parent / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key, value = key.strip(), value.strip()
+        if key and value and key not in os.environ:
+            os.environ[key] = value
+
+
+_load_dotenv()
 
 # Style definitions
 STYLES = {

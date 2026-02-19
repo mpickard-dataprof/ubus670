@@ -497,20 +497,31 @@
                     <span class="task-number">1</span>
                     <h3 class="task-title">Analyze a Competitor Ad</h3>
                 </div>
-                <p>Find a real retail marketing image to analyze. You can use:</p>
+                <p>Beacon competes with retailers like <strong>Luxe Home &amp; Style</strong> (upscale lifestyle) and <strong>MarketSquare</strong> (budget-friendly). Your job is to gather real competitor marketing images and use AI to extract competitive intelligence.</p>
+
+                <p>Start with the two sample ads below, then find <strong>at least one more</strong> on your own that fits the competitive landscape:</p>
                 <ul style="font-size: 0.9em;">
-                    <li><strong>Sample Assets:</strong> <a href="images/competitor_ad_1.png" target="_blank">Competitor A (Luxe Home)</a> or <a href="images/competitor_ad_2.png" target="_blank">Competitor B (Value Mart)</a> (generate these using the script first)</li>
-                    <li>A screenshot of a retail ad from Instagram, Facebook, or a retailer's website</li>
-                    <li>A photo of an in-store promotional display (take one with your phone)</li>
+                    <li><strong>Sample Ad A:</strong> <a href="images/competitor_ad_1.png" target="_blank">Luxe Home &amp; Style</a> &mdash; premium lifestyle positioning</li>
+                    <li><strong>Sample Ad B:</strong> <a href="images/competitor_ad_2.png" target="_blank">MarketSquare</a> &mdash; budget-friendly, family-oriented</li>
+                    <li><strong>Find your own:</strong> Search for a spring retail ad from a real competitor (Target, Anthropologie, TJ Maxx, Kohl's, etc.). Screenshot it from their website, Instagram, or Facebook.</li>
+                    <li><strong>Bonus:</strong> Take a photo of an in-store promotional display at a local retailer and include it in your analysis.</li>
                 </ul>
 
                 <div class="step">
                     <input type="checkbox" id="step1-1">
-                    <label for="step1-1">Find and save a retail marketing image (screenshot or photo).</label>
+                    <label for="step1-1">Analyze <strong>Sample Ad A</strong> (Luxe Home &amp; Style). Upload the image to a <strong>new Gemini chat</strong> and use the prompt below.</label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step1-2">
-                    <label for="step1-2">Start a <strong>new chat</strong> in Gemini. Upload the image and use this prompt:</label>
+                    <label for="step1-2">Analyze <strong>Sample Ad B</strong> (MarketSquare) using the same prompt in the same chat.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step1-3a">
+                    <label for="step1-3a">Find and analyze <strong>at least one real competitor ad</strong> you found online or photographed in-store.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step1-3b">
+                    <label for="step1-3b">Upload all images and use this prompt:</label>
                 </div>
 
                 <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Analyze this marketing image for competitive intelligence. Identify and present as a structured table:
@@ -524,12 +535,8 @@
 7. **Weaknesses/Opportunities**: What could Beacon do better?</div>
 
                 <div class="step">
-                    <input type="checkbox" id="step1-3">
-                    <label for="step1-3">Review the AI's analysis. Save or copy the structured output &mdash; you'll use it in Part 4.</label>
-                </div>
-                <div class="step">
                     <input type="checkbox" id="step1-4">
-                    <label for="step1-4">Repeat with a second competitor image for comparison. Look for patterns across both analyses.</label>
+                    <label for="step1-4">Review the AI's analyses. Look for patterns across all images &mdash; where does Beacon fit in? Save or copy the output; you'll use it in Part 4.</label>
                 </div>
             </div>
 
@@ -537,35 +544,43 @@
             <div class="task">
                 <div class="task-header">
                     <span class="task-number">2</span>
-                    <h3 class="task-title">Compare Prompt Quality: Vague vs. Detailed</h3>
+                    <h3 class="task-title">Build a Competitive Intelligence Strategy</h3>
                 </div>
-                <p>Using the <strong>same image</strong> from Task 1, test how prompt quality affects the analysis.</p>
+                <p>Task 1 gave you a first pass at competitive analysis. Now go deeper. What else would you want to know about Luxe Home &amp; Style and MarketSquare before building Beacon's spring campaign?</p>
 
                 <div class="step">
                     <input type="checkbox" id="step2-1">
-                    <label for="step2-1">Start a <strong>new chat</strong>. Upload the same image with this vague prompt:</label>
+                    <label for="step2-1">Review your Task 1 output. Identify <strong>3 gaps</strong> &mdash; what's missing that a real marketing team would need to know?</label>
                 </div>
-
-                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>What do you see in this image?</div>
 
                 <div class="step">
                     <input type="checkbox" id="step2-2">
-                    <label for="step2-2">Compare the vague prompt output with the detailed prompt output from Task 1. What's different?</label>
-                </div>
-
-                <div class="reflection-area">
-                    <label>Reflection: How did the prompt quality change the output?</label>
-                    <textarea placeholder="The detailed prompt gave me... while the vague prompt..."></textarea>
+                    <label for="step2-2">Improve your prompt. Using what you learned in Day 2 (RCTFC framework), rewrite the analysis prompt to extract deeper competitive intelligence. Upload the same images again with your improved prompt.</label>
                 </div>
 
                 <div class="tip-box">
-                    <strong>Day 2 Callback:</strong> This is prompt engineering applied to images! The same principles (specificity, structure, clear format) that worked for text prompts work for multimodal prompts too.
+                    <strong>Think like a strategist:</strong> Consider asking about pricing signals, seasonal timing, target demographics, brand voice, omnichannel strategy, or loyalty/promotional tactics. What would help Beacon <em>differentiate</em>, not just imitate?
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-3">
+                    <label for="step2-3">Compare your improved analysis to the first one. What new insights did your better prompt uncover?</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Reflection: What competitive insights did you uncover with a better prompt that you missed the first time?</label>
+                    <textarea placeholder="My improved prompt revealed... This matters for Beacon's campaign because..."></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-4">
+                    <label for="step2-4">Write a 2&ndash;3 sentence <strong>positioning statement</strong> for Beacon: how should Beacon differentiate from Luxe Home &amp; Style (premium) and MarketSquare (budget)?</label>
                 </div>
             </div>
 
             <div class="compare-box">
                 <h4>Compare with Classmates</h4>
-                <p>Did your classmates get the same analysis for similar images? How did different prompt wording change the output? Compare your structured competitive intelligence tables.</p>
+                <p>Share your positioning statements. Did your classmates find different competitive gaps? How did different prompting strategies change what the AI surfaced?</p>
             </div>
         </section>
 
@@ -582,24 +597,32 @@
                     <h3 class="task-title">Analyze Customer Feedback</h3>
                 </div>
 
+                <p>Beacon's marketing team recorded customer interviews about their shopping experience. Download the audio files below and upload them to Gemini for analysis.</p>
+
                 <div class="tip-box">
-                    <strong>Audio Upload Option:</strong> If you have a short audio recording (a voicemail, a voice memo, or a podcast clip), upload it to Gemini to practice audio analysis. If not, use the text transcript below as a simulation.
+                    <strong>Why audio?</strong> Multimodal AI can analyze tone, hesitation, and emphasis in spoken feedback &mdash; things you'd miss in a text transcript. This is how real companies extract insights from customer interviews and call center recordings.
                 </div>
 
-                <p><strong>Option A: Upload Audio</strong> &mdash; Record a 1-2 minute voice memo reading the customer feedback below (or use any short audio clip). Upload it to Gemini.</p>
-                <p><strong>Option B: Text Simulation</strong> &mdash; If audio upload isn't available, copy the transcript below into Gemini and ask it to analyze as if it were audio feedback.</p>
+                <p><strong>Customer Feedback Recordings:</strong></p>
+                <ul style="font-size: 0.9em;">
+                    <li><a href="audio/customer1_enthusiastic.mp3" download>Customer 1</a> &mdash; Loyal shopper, loves quality but feeling the price pressure (mentions MarketSquare)</li>
+                    <li><a href="audio/customer2_neutral.mp3" download>Customer 2</a> &mdash; Likes the store, frustrated by weak online presence (mentions Luxe Home &amp; Style)</li>
+                    <li><a href="audio/customer3_frustrated.mp3" download>Customer 3</a> &mdash; Return policy complaint, loves accessories (mentions both competitors)</li>
+                </ul>
+
+                <p style="font-size: 0.85em; color: #666;"><strong>Fallback:</strong> If audio upload isn't working, use the text transcript below instead.</p>
 
                 <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>[SIMULATED CUSTOMER FEEDBACK TRANSCRIPT]
 
-Customer 1 (Female, enthusiastic): "I absolutely love Beacon's quality. The spring jackets last year were amazing — I still wear mine. But honestly? The prices have gone up a lot. I used to shop there every month, now it's more like every few months. I wish they had more affordable basics."
+Customer 1 (Female, enthusiastic): "I absolutely love Beacon's quality. The spring jackets last year were amazing — I still wear mine. But honestly? The prices have gone up a lot. I used to shop there every month, now it's more like every few months. My friend started going to MarketSquare instead because they have similar styles for way less. I wish Beacon had more affordable basics so I didn't have to choose."
 
-Customer 2 (Male, neutral): "The store layout is nice, clean, well-organized. I find what I need quickly. The staff is friendly. But I noticed they don't have much of an online presence compared to competitors. I do a lot of shopping online now and their website feels outdated."
+Customer 2 (Male, neutral): "The store layout is nice, clean, well-organized. I find what I need quickly. The staff is friendly. But I noticed they don't have much of an online presence compared to competitors. I do a lot of shopping online now and their website feels outdated. Luxe Home and Style has this gorgeous website where you can see whole room setups — Beacon doesn't do anything like that. If I can't browse online first, I just end up going somewhere else."
 
-Customer 3 (Female, frustrated): "I tried to return something last week and it was such a hassle. The return policy is confusing. I love the products though — especially the accessories line. The scarves and bags are really unique. I just wish the customer service matched the product quality."</div>
+Customer 3 (Female, frustrated): "I tried to return something last week and it was such a hassle. The return policy is confusing — at MarketSquare you just walk in and they handle it, no questions asked. I love Beacon's products though, especially the accessories line. The scarves and bags are really unique, way better quality than what you'd find at MarketSquare. I just wish the customer service matched the product quality. And honestly, Luxe Home and Style has better seasonal displays — Beacon's spring section felt like an afterthought this year."</div>
 
                 <div class="step">
                     <input type="checkbox" id="step3-1">
-                    <label for="step3-1">Upload the audio file OR paste the transcript into a <strong>new Gemini chat</strong> with this prompt:</label>
+                    <label for="step3-1">Download all 3 audio files. Start a <strong>new Gemini chat</strong>, upload them, and use this prompt:</label>
                 </div>
 
                 <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Analyze this customer feedback for marketing insights. Create a structured table with these columns:
@@ -660,43 +683,54 @@ Also provide:
                     <span class="task-number">4b</span>
                     <h3 class="task-title">Analyze a Short Video with Gemini</h3>
                 </div>
-                <p>Multimodal AI also works with <strong>video</strong>. Let's try analyzing a short YouTube clip to complete the modality trifecta: images, audio, and video.</p>
+                <p>Multimodal AI also works with <strong>video</strong>. You've analyzed competitor images and customer audio &mdash; now complete the trifecta by analyzing competitor video content.</p>
 
                 <div class="tip-box">
-                    <strong>Free tier note:</strong> Gemini's free tier supports YouTube videos up to 5 minutes. We'll use a short clip that fits well within this limit.
+                    <strong>Free tier note:</strong> Gemini's free tier supports YouTube video analysis up to 5 minutes. Just paste the URL directly into Gemini &mdash; no downloading needed.
                 </div>
+
+                <p>Choose at least one video from each competitor lane:</p>
+
+                <p style="font-weight: 600; margin-bottom: 5px;">Upscale lane (Luxe Home &amp; Style competitors):</p>
+                <ul style="font-size: 0.9em; margin-top: 0;">
+                    <li><a href="https://www.youtube.com/watch?v=iLXRmBnxfUA" target="_blank">Target &mdash; "That Target Feeling" Brand Campaign</a> (1:02) &mdash; aspirational lifestyle positioning</li>
+                    <li><a href="https://www.youtube.com/watch?v=R2Kyh6N0ChU" target="_blank">Target Circle Week &mdash; Target Lady Commercials</a> (2:50) &mdash; loyalty program + seasonal campaign tactics</li>
+                </ul>
+
+                <p style="font-weight: 600; margin-bottom: 5px;">Budget lane (MarketSquare competitors):</p>
+                <ul style="font-size: 0.9em; margin-top: 0;">
+                    <li><a href="https://www.youtube.com/watch?v=y5Uhzu5UwaI" target="_blank">Kohl's &mdash; "Where Families Come First"</a> (1:00) &mdash; family-first value messaging</li>
+                    <li><a href="https://www.youtube.com/watch?v=dwU8Qs89Oc8" target="_blank">Kohl's Spring 2024 &mdash; In-Store Walkthrough</a> (4:25) &mdash; real store layout and merchandising</li>
+                </ul>
 
                 <div class="step">
                     <input type="checkbox" id="step4b-1">
-                    <label for="step4b-1">Find a short YouTube video (under 3 minutes) of a retail store walkthrough or commercial. <strong>Recommended Examples:</strong>
-                        <ul>
-                            <li><a href="https://www.youtube.com/watch?v=UVnxp_6nduk" target="_blank">Amazon Go Retail Walkthrough</a> (1:50)</li>
-                            <li><a href="https://www.youtube.com/watch?v=0v2xnl6LwJE" target="_blank">Nike Live Concept Store</a> (2:10)</li>
-                        </ul>
-                    </label>
+                    <label for="step4b-1">Pick one video from each lane. Open a <strong>new Gemini chat</strong>, paste the YouTube URL, and use this prompt:</label>
                 </div>
 
-                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Watch this video and analyze it from a retail marketing perspective. Identify:
-1. What products or brands are featured?
-2. What is the overall visual aesthetic (colors, lighting, mood)?
-3. What marketing techniques are used (signage, layout, displays)?
-4. What's one thing Beacon could learn from this for their spring campaign?
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Watch this video and analyze it from the perspective of Beacon Retail Group's marketing team. Beacon is a mid-market lifestyle retailer (clothing, seasonal products, home goods) competing against upscale brands like Luxe Home & Style and budget retailers like MarketSquare. Identify:
+
+1. **Brand Positioning**: How does this retailer position itself? (premium, value, family, lifestyle?)
+2. **Visual Aesthetic**: Colors, lighting, mood — what feeling are they selling?
+3. **Marketing Techniques**: Signage, layout, displays, loyalty programs, seasonal tactics
+4. **Product Mix**: What categories are featured and how are they merchandised?
+5. **Beacon Takeaways**: What should Beacon borrow, avoid, or do differently for their spring campaign?
 
 [Paste your YouTube URL here]</div>
 
                 <div class="step">
                     <input type="checkbox" id="step4b-2">
-                    <label for="step4b-2">Paste a YouTube URL into Gemini along with the analysis prompt above.</label>
+                    <label for="step4b-2">Analyze your second video using the same prompt. Look for differences between the upscale and budget approaches.</label>
                 </div>
 
                 <div class="step">
                     <input type="checkbox" id="step4b-3">
-                    <label for="step4b-3">Review Gemini's video analysis. Note: AI analyzes video by sampling key frames and combining visual + audio information.</label>
+                    <label for="step4b-3">Review both analyses. Where does Beacon fit between these two lanes? Save your insights for Part 4.</label>
                 </div>
 
                 <div class="reflection-area">
-                    <label>Video Analysis Reflection: What did Gemini notice that you might have missed? What did it get wrong?</label>
-                    <textarea placeholder="Gemini noticed... It missed..."></textarea>
+                    <label>Video Analysis Reflection: What competitive patterns did Gemini surface from the videos? What did it miss?</label>
+                    <textarea placeholder="The upscale video showed... The budget video showed... Beacon should..."></textarea>
                 </div>
             </div>
 
