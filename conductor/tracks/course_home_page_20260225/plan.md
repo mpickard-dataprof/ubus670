@@ -12,10 +12,10 @@ Goal: Design and build the home page and update breadcrumb links.
     - [x] Ensure all `index.html` breadcrumbs correctly link back to `../../../index.html`.
 - [x] Task: Conductor - User Manual Verification 'Implementation & Integration' (Protocol in workflow.md)
 
-## Phase 2: Deployment & Verification
+## Phase 2: Deployment & Verification [checkpoint: 188223c]
 
 Goal: Verify the home page on GitHub Pages.
 
-- [~] Task: Push changes to GitHub.
-- [ ] Task: Verify the root URL: `https://mpickard-dataprof.github.io/ubus670/index.html`.
-- [ ] Task: Conductor - User Manual Verification 'Deployment & Verification' (Protocol in workflow.md)
+- [x] Task: Push changes to GitHub.
+- [x] Task: Verify the root URL: `https://mpickard-dataprof.github.io/ubus670/index.html`.
+- [x] Task: Conductor - User Manual Verification 'Deployment & Verification' (Protocol in workflow.md)
