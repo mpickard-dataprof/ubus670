@@ -12,6 +12,7 @@
     *   `generate_image.py`: Gemini-powered image generation for "Visual Educator" slides.
     *   `generate_audio.py`: ElevenLabs or Gemini-powered audio generation.
     *   `html2md.py` & `extract_slides.py`: Content conversion and extraction tools.
+    *   `validate_links.py`: Audits HTML files for absolute/relative path consistency (GitHub Pages safety).
 *   **Package Management:** `requirements.txt` / `.env` for credential management.
 
 ## AI & Data Services
