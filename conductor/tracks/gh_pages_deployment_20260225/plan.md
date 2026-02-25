@@ -1,6 +1,6 @@
 # Implementation Plan: Configure and Deploy to GitHub Pages
 
-## Phase 1: Environment Readiness & Validation Tooling
+## Phase 1: Environment Readiness & Validation Tooling [checkpoint: a91d9c1]
 
 Goal: Audit existing files and create a safety net to ensure GitHub Pages compatibility.
 
@@ -11,7 +11,7 @@ Goal: Audit existing files and create a safety net to ensure GitHub Pages compat
     - [x] **Write Tests:** Create `tests/test_link_validator.py` with failing cases for absolute paths.
     - [x] **Implement Feature:** Build the validator to detect non-relative paths in HTML.
     - [x] **Verify Coverage:** Ensure validator logic is fully tested.
-- [~] Task: Conductor - User Manual Verification 'Environment Readiness & Validation Tooling' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Environment Readiness & Validation Tooling' (Protocol in workflow.md)
 
 ## Phase 2: Deployment Automation
 
