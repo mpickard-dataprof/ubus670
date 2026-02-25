@@ -1,6 +1,6 @@
 # Implementation Plan: Create Centralized Course Home Page
 
-## Phase 1: Implementation & Integration
+## Phase 1: Implementation & Integration [checkpoint: d82aa3a]
 
 Goal: Design and build the home page and update breadcrumb links.
 
@@ -10,7 +10,7 @@ Goal: Design and build the home page and update breadcrumb links.
     - [x] Create cards/links for Week 1, 2, and 3.
 - [x] Task: Update breadcrumbs in existing modules.
     - [x] Ensure all `index.html` breadcrumbs correctly link back to `../../../index.html`.
-- [~] Task: Conductor - User Manual Verification 'Implementation & Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Implementation & Integration' (Protocol in workflow.md)
 
 ## Phase 2: Deployment & Verification
 
