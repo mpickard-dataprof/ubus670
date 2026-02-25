@@ -18,6 +18,6 @@ Goal: Rename directories and update any broken internal links.
 
 Goal: Verify the new structure on GitHub Pages.
 
-- [ ] Task: Push changes to GitHub.
+- [~] Task: Push changes to GitHub.
 - [ ] Task: Verify new URL structure on GitHub Pages.
 - [ ] Task: Conductor - User Manual Verification 'Deployment & Finalization' (Protocol in workflow.md)
