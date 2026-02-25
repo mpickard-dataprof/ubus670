@@ -14,10 +14,10 @@ Goal: Rename directories and update any broken internal links.
     - [x] **Implement Feature:** Use a search-and-replace to update `Week 1` to `week-1`, etc., in HTML files. (No hardcoded paths found).
 - [x] Task: Conductor - User Manual Verification 'Execution & Link Update' (Protocol in workflow.md)
 
-## Phase 2: Deployment & Finalization
+## Phase 2: Deployment & Finalization [checkpoint: 1e1701a]
 
 Goal: Verify the new structure on GitHub Pages.
 
-- [~] Task: Push changes to GitHub.
-- [ ] Task: Verify new URL structure on GitHub Pages.
-- [ ] Task: Conductor - User Manual Verification 'Deployment & Finalization' (Protocol in workflow.md)
+- [x] Task: Push changes to GitHub.
+- [x] Task: Verify new URL structure on GitHub Pages.
+- [x] Task: Conductor - User Manual Verification 'Deployment & Finalization' (Protocol in workflow.md)

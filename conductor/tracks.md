@@ -4,6 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Rename folders to use hyphens for cleaner URLs**
+- [x] **Track: Rename folders to use hyphens for cleaner URLs**
   *Link: [./tracks/rename_folders_hyphens_20260225/](./tracks/rename_folders_hyphens_20260225/)*
 
