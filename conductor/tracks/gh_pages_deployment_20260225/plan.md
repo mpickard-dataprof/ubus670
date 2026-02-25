@@ -17,12 +17,12 @@ Goal: Audit existing files and create a safety net to ensure GitHub Pages compat
 
 Goal: Set up the CI/CD pipeline.
 
-- [ ] Task: Create GitHub Actions workflow `.github/workflows/deploy.yml`.
-    - [ ] **Write Tests:** Create a mock CI test to verify YAML syntax.
-    - [ ] **Implement Feature:** Configure the action to deploy the `Materials/` folder to `gh-pages` branch.
-- [ ] Task: Configure GitHub Repository Settings.
-    - [ ] Enable Pages on the repository.
-    - [ ] Set source to `gh-pages` branch or GitHub Actions.
-- [ ] Task: Verify Public URL Accessibility.
-    - [ ] Deploy and check the live URL for Day 1 Index.
-- [ ] Task: Conductor - User Manual Verification 'Deployment Automation' (Protocol in workflow.md)
+- [x] Task: Create GitHub Actions workflow `.github/workflows/deploy.yml`.
+    - [x] **Write Tests:** Verify YAML syntax using `PyYAML`.
+    - [x] **Implement Feature:** Configure the action to deploy the `Materials/` folder to `gh-pages` branch.
+- [x] Task: Configure GitHub Repository Settings.
+    - [x] Enable Pages on the repository.
+    - [x] Set source to `gh-pages` branch or GitHub Actions.
+- [x] Task: Verify Public URL Accessibility.
+    - [x] Deploy and check the live URL for Day 1 Index.
+- [x] Task: Conductor - User Manual Verification 'Deployment Automation' (Protocol in workflow.md)
