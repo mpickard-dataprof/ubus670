@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 2 Lab: Crafting Prompts for Beacon</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
+    <style>
+        /* Lab-specific styles */
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        .lab-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Navigation with Breadcrumb */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* Lab header */
+        .lab-header {
+            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
+            color: white;
+            padding: 60px 40px;
+            margin: -40px -30px 40px;
+            text-align: center;
+        }
+        .lab-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px;
+            font-size: 2.5rem;
+        }
+        .lab-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Compare with classmates box */
+        .compare-box {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4ff 100%);
+            border: 2px solid #00A9E0;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+        }
+        .compare-box h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1D428A;
+            margin: 0 0 10px;
+            font-size: 1rem;
+        }
+        .compare-box p {
+            font-size: 0.9em;
+            margin: 0 0 12px;
+            line-height: 1.6;
+        }
+
+        /* Time estimate */
+        .time-estimate {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Objectives box */
+        .objectives-box {
+            background: white;
+            border-left: 5px solid #C8102E;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .objectives-box h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        /* Section styling */
+        .lab-section {
+            background: white;
+            padding: 30px 35px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .lab-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            border-bottom: 3px solid #C8102E;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* Task styling */
+        .task {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .task-number {
+            background: #C8102E;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .task-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Checkbox steps */
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .step:last-child {
+            border-bottom: none;
+        }
+        .step input[type="checkbox"] {
+            margin-top: 5px;
+            transform: scale(1.3);
+            cursor: pointer;
+            accent-color: #C8102E;
+        }
+        .step label {
+            cursor: pointer;
+            flex: 1;
+        }
+        .step.completed label {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        /* Code/prompt boxes */
+        .prompt-box {
+            background: #1a1a1a;
+            color: #f8f8f8;
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            position: relative;
+        }
+        .prompt-box::before {
+            content: 'PROMPT';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #C8102E;
+            color: white;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .copy-btn:hover {
+            background: #555;
+        }
+
+        /* Data/context boxes */
+        .data-box {
+            background: #f0f4f8;
+            color: #333;
+            padding: 30px 25px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            position: relative;
+            border: 1px solid #d0d8e0;
+            overflow: visible;
+        }
+        .data-box::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #1D428A;
+            color: white;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        .data-box .copy-btn {
+            background: #1D428A;
+        }
+        .data-box .copy-btn:hover {
+            background: #2a5aaa;
+        }
+        .data-box .data-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1D428A;
+            margin: 0 0 12px;
+        }
+        .data-box table {
+            display: block;
+            overflow-x: auto;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            margin: 10px 0;
+            font-family: 'Fira Code', 'Consolas', monospace;
+        }
+        .data-box th, .data-box td {
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid #d0d8e0;
+            white-space: nowrap;
+        }
+        .data-box th {
+            background: #e0e8f0;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .data-box .dict-term {
+            font-weight: 600;
+            color: #1D428A;
+        }
+
+        /* Tip boxes */
+        .tip-box {
+            background: rgba(0, 169, 224, 0.1);
+            border-left: 4px solid #00A9E0;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .tip-box strong {
+            color: #00A9E0;
+        }
+
+        /* Warning boxes */
+        .warning-box {
+            background: rgba(227, 82, 5, 0.1);
+            border-left: 4px solid #E35205;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning-box strong {
+            color: #E35205;
+        }
+
+        /* Reflection/answer areas */
+        .reflection-area {
+            background: #fff;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .reflection-area label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .reflection-area textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        /* Progress tracker */
+        .progress-tracker {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            z-index: 100;
+        }
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #C8102E;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* CTA button */
+        .btn-primary {
+            display: inline-block;
+            background: #C8102E;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-primary:hover {
+            background: #a00d24;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&#8250;</span>
+            <a href="../../index.html">Week 1</a>
+            <span class="separator">&#8250;</span>
+            <span class="current">Day 2</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill active">Lab</a>
+            <a href="quiz.html" class="nav-pill">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="lab-container">
+
+        <!-- Lab Header -->
+        <div class="lab-header">
+            <h1>Lab 2: Crafting Prompts for Beacon</h1>
+            <p>Transform vague requests into precise, reliable AI outputs</p>
+            <span class="time-estimate">Estimated time: 90-120 minutes</span>
+        </div>
+
+        <!-- Learning Objectives -->
+        <div class="objectives-box">
+            <h2>Lab Objectives</h2>
+            <p>By completing this lab, you will:</p>
+            <ul>
+                <li>Apply the RCTFC framework to create structured prompts</li>
+                <li>Compare zero-shot, few-shot, and chain-of-thought results</li>
+                <li>Practice systematic prompt iteration</li>
+                <li>Identify when AI outputs need improvement and how to fix them</li>
+            </ul>
+        </div>
+
+        <!-- TOOL SETUP -->
+        <section class="lab-section">
+            <h2>Tool Setup</h2>
+            <p><strong>What you need:</strong> A web browser and a free Google account (personal Gmail works fine).</p>
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">0</span>
+                    <h3 class="task-title">Get Started with Gemini</h3>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-1">
+                    <label for="step0-1">Open <strong>gemini.google.com</strong> in your web browser and sign in with your Google account.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-2">
+                    <label for="step0-2">You should see a chat interface with a text box at the bottom. Type "Hello" and press Enter to verify it works.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-3">
+                    <label for="step0-3">Throughout this lab, when instructions say <strong>"start a new chat,"</strong> click the <strong>[+] button</strong> in the left sidebar to begin a fresh conversation.</label>
+                </div>
+                <div class="tip-box">
+                    <strong>Don't have a Google account?</strong> You can use <strong>ChatGPT</strong> instead at <strong>chatgpt.com</strong> (free version works fine for all lab exercises). The prompts work with either tool.
+                </div>
+                <div class="warning-box">
+                    <strong>Rate limits:</strong> Free Gemini accounts have usage limits. If you see "Too many requests," wait a few minutes and try again. This is normal.
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 1: THE RCTFC FRAMEWORK IN ACTION -->
+        <section class="lab-section">
+            <h2>Part 1: The RCTFC Framework in Action</h2>
+            <p>In the lecture, you learned about the RCTFC framework: <strong>Role, Context, Task, Format, Constraints</strong>. Now you'll see the difference it makes in practice.</p>
+
+            <!-- Task 1: Your First RCTFC Prompt -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">1</span>
+                    <h3 class="task-title">Your First RCTFC Prompt</h3>
+                </div>
+
+                <p><strong>Scenario:</strong> Beacon's HR department needs a job description for a seasonal retail associate position. You'll build a prompt piece by piece using RCTFC and compare the results to a vague request.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step1-1">
+                    <label for="step1-1">First, try the "bad" prompt below &mdash; paste it into Gemini (or ChatGPT) and review the result:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Write a job description for a retail worker.</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step1-3">
+                    <label for="step1-3">Notice the result is generic. It doesn't mention Beacon, seasonal work, or any specific requirements. Now start a <strong>new chat</strong> and try the RCTFC version:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Role: You are an experienced HR recruiter at a mid-sized retail company in the Midwest.
+
+Context: Beacon Retail Group is a 25-store regional retailer headquartered in Rockford, IL. We need to hire 300-400 seasonal workers for the fall rush (September-December). Last year, 42% of seasonal hires didn't complete the season, and we want to improve retention by setting clearer expectations upfront.
+
+Task: Write a job description for a Seasonal Retail Associate position.
+
+Format: Include these sections: Job Title, Location (multiple Midwest locations), Duration, Key Responsibilities (5-7 bullets), Requirements, What We Offer, and How to Apply. Use a professional but welcoming tone.
+
+Constraints: Keep it under 400 words. Do not require prior retail experience. Emphasize the benefits of seasonal work (flexible scheduling, employee discount, potential for permanent hire).</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step1-4">
+                    <label for="step1-4">Compare the two outputs side by side. Note the differences in specificity, tone, and usefulness.</label>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Notice the difference?</strong> The first prompt produced a generic template that could apply to any company. The RCTFC prompt produced a tailored job description that addresses Beacon's specific retention problem. That's the power of structured prompting.
+                </div>
+
+                <div class="reflection-area">
+                    <label>Reflection: How did the RCTFC prompt improve the output? Which component (Role, Context, Task, Format, or Constraints) made the biggest difference?</label>
+                    <textarea placeholder="Compare the two outputs and explain which RCTFC component had the most impact..."></textarea>
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with a Classmate</h4>
+                    <p>Turn to a neighbor and compare your RCTFC outputs. Did you get the same job description? You probably didn't &mdash; and that's important. AI is <strong>non-deterministic</strong> (like rolling dice &mdash; the same input can produce different outputs each time). This is why reviewing AI output is always necessary.</p>
+                    <div class="step">
+                        <input type="checkbox" id="step1-5">
+                        <label for="step1-5">Compare your RCTFC output with a classmate's. Note one similarity and one difference below.</label>
+                    </div>
+                    <div class="reflection-area">
+                        <label>What was similar? What was different? Does this change how much you'd trust AI output without review?</label>
+                        <textarea placeholder="Describe what you and your classmate's outputs had in common and how they differed..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task 2: Fix the Bad Prompts -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">2</span>
+                    <h3 class="task-title">Fix the Bad Prompts</h3>
+                </div>
+
+                <p><strong>Scenario:</strong> Your teammates at Beacon have been using AI but getting useless results. Below are three real prompts they tried. Your job: diagnose what's wrong, rewrite each one using RCTFC, and test your rewrites in Gemini.</p>
+
+                <p style="font-size: 0.9em; color: #666;"><strong>For each prompt below:</strong> (1) Read it and think about what RCTFC components are missing or weak. (2) Rewrite it as a complete RCTFC prompt for a Beacon business scenario. (3) Test both the bad version and your RCTFC version in Gemini.</p>
+
+                <h4 style="margin-top: 25px; color: #C8102E;">Bad Prompt A</h4>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Summarize this data.</div>
+
+                <p style="font-size: 0.9em; margin-top: 15px;">Imagine a Beacon analyst pasted this data into an AI tool along with the bad prompt above. Here's the data they had:</p>
+
+                <div class="data-box" data-label="DATA">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+                    <div class="data-title">Beacon Q3 Store Performance Summary</div>
+                    <table>
+                        <tr><th>Store ID</th><th>Location</th><th>Q3 Revenue</th><th>Foot Traffic</th><th>Return Rate</th><th>Avg Transaction</th><th>Staff</th></tr>
+                        <tr><td>BRG-001</td><td>Rockford, IL</td><td>$1,240,000</td><td>45,200</td><td>6.2%</td><td>$47.30</td><td>28</td></tr>
+                        <tr><td>BRG-005</td><td>DeKalb, IL</td><td>$680,000</td><td>22,100</td><td>4.8%</td><td>$38.90</td><td>15</td></tr>
+                        <tr><td>BRG-008</td><td>Peoria, IL</td><td>$920,000</td><td>33,400</td><td>5.1%</td><td>$44.10</td><td>22</td></tr>
+                        <tr><td>BRG-012</td><td>Naperville, IL</td><td>$1,810,000</td><td>61,300</td><td>5.5%</td><td>$52.60</td><td>35</td></tr>
+                        <tr><td>BRG-015</td><td>Janesville, WI</td><td>$540,000</td><td>18,700</td><td>11.3%</td><td>$36.20</td><td>12</td></tr>
+                        <tr><td>BRG-018</td><td>Davenport, IA</td><td>$760,000</td><td>28,900</td><td>5.9%</td><td>$41.50</td><td>18</td></tr>
+                        <tr><td>BRG-021</td><td>Bloomington, IL</td><td>$890,000</td><td>31,200</td><td>4.3%</td><td>$45.80</td><td>20</td></tr>
+                        <tr><td>BRG-024</td><td>Schaumburg, IL</td><td>$1,560,000</td><td>52,800</td><td>7.8%</td><td>$49.70</td><td>32</td></tr>
+                    </table>
+                    <pre class="copy-text" style="display:none">Beacon Q3 Store Performance Summary
+
+Store ID  | Location         | Q3 Revenue  | Foot Traffic | Return Rate | Avg Transaction | Staff
+BRG-001   | Rockford, IL     | $1,240,000  | 45,200       | 6.2%        | $47.30          | 28
+BRG-005   | DeKalb, IL       | $680,000    | 22,100       | 4.8%        | $38.90          | 15
+BRG-008   | Peoria, IL       | $920,000    | 33,400       | 5.1%        | $44.10          | 22
+BRG-012   | Naperville, IL   | $1,810,000  | 61,300       | 5.5%        | $52.60          | 35
+BRG-015   | Janesville, WI   | $540,000    | 18,700       | 11.3%       | $36.20          | 12
+BRG-018   | Davenport, IA    | $760,000    | 28,900       | 5.9%        | $41.50          | 18
+BRG-021   | Bloomington, IL  | $890,000    | 31,200       | 4.3%        | $45.80          | 20
+BRG-024   | Schaumburg, IL   | $1,560,000  | 52,800       | 7.8%        | $49.70          | 32</pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Your challenge:</strong> Rewrite the prompt so it tells the AI <em>what to look for</em> in this data and <em>how to present</em> the findings. Think: who's the audience? What patterns matter?
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-1">
+                    <label for="step2-1">Test Bad Prompt A in Gemini (paste both the prompt and the data). Then rewrite it as a complete RCTFC prompt that includes this data and tells the AI exactly what analysis you need. Test your rewrite.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Your RCTFC rewrite of Prompt A:</label>
+                    <textarea placeholder="Write your complete RCTFC version here. Include the data above and all five RCTFC components: Role, Context, Task, Format, Constraints..."></textarea>
+                </div>
+
+                <h4 style="margin-top: 25px; color: #C8102E;">Bad Prompt B</h4>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Write a professional email about the meeting.</div>
+
+                <p style="font-size: 0.9em; margin-top: 15px;">Here are the meeting notes this person had when they wrote that prompt:</p>
+
+                <div class="data-box" data-label="MEETING NOTES">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+                    <div class="data-title">Beacon Q4 Planning Meeting</div>
+                    <p style="margin: 0 0 5px; font-size: 0.85rem;"><strong>Date:</strong> September 15, 2025 &nbsp;&bull;&nbsp; <strong>Location:</strong> Conference Room B, Rockford HQ</p>
+                    <p style="margin: 0 0 10px; font-size: 0.85rem;"><strong>Attendees:</strong> Sarah Chen (VP Operations, chair), Mike Torres (Marketing Director), Lisa Patel (HR Manager), David Kim (IT Director), Rachel Adams (Regional Manager &mdash; North)</p>
+                    <p style="margin: 10px 0 5px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem;">Key Discussion Points:</p>
+                    <ol style="margin: 0 0 10px; padding-left: 20px; font-size: 0.85rem;">
+                        <li><strong>Holiday Staffing Gap:</strong> Only 180 of 350 seasonal positions filled with 6 weeks until fall rush. HR proposing referral bonus ($200/hire) and job fairs at 3 community colleges.</li>
+                        <li><strong>Marketing Budget Shift:</strong> Reallocating 25% of Q4 print budget ($45,000) to digital ads targeting seasonal applicants and holiday shoppers.</li>
+                        <li><strong>Janesville Store Issues:</strong> BRG-015 return rate hit 11.3% in Q3 &mdash; nearly double the company average (5.7%). Suspected cause: unclear product quality messaging.</li>
+                        <li><strong>POS Rollout Delay:</strong> BeaconPOS v2.0 upgrade pushed from Oct 1 to Nov 1 due to inventory module integration issues. IT requesting 2 additional contractors ($28,000).</li>
+                    </ol>
+                    <p style="margin: 10px 0 5px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem;">Action Items:</p>
+                    <ul style="margin: 0 0 10px; padding-left: 20px; font-size: 0.85rem;">
+                        <li><strong>Lisa Patel:</strong> Launch referral bonus program by Sept 22; schedule college job fairs (Oct 1&ndash;15)</li>
+                        <li><strong>Mike Torres:</strong> Submit revised digital ad budget to Sarah by Sept 19</li>
+                        <li><strong>Rachel Adams:</strong> Complete Janesville store audit; present findings at next meeting</li>
+                        <li><strong>David Kim:</strong> Provide updated POS rollout timeline with contractor costs by Sept 20</li>
+                    </ul>
+                    <p style="margin: 0; font-size: 0.85rem;"><strong>Next Meeting:</strong> September 29, 2025, 2:00 PM</p>
+                    <pre class="copy-text" style="display:none">Beacon Q4 Planning Meeting
+Date: September 15, 2025
+Location: Conference Room B, Rockford HQ
+
+Attendees:
+- Sarah Chen, VP Operations (meeting chair)
+- Mike Torres, Marketing Director
+- Lisa Patel, HR Manager
+- David Kim, IT Director
+- Rachel Adams, Regional Manager - North
+
+Key Discussion Points:
+1. Holiday Staffing Gap: Only 180 of 350 seasonal positions filled with 6 weeks until fall rush. HR proposing referral bonus ($200/hire) and job fairs at 3 community colleges.
+2. Marketing Budget Shift: Reallocating 25% of Q4 print budget ($45,000) to digital ads targeting seasonal applicants and holiday shoppers.
+3. Janesville Store Issues: BRG-015 return rate hit 11.3% in Q3 — nearly double company average (5.7%). Suspected cause: unclear product quality messaging.
+4. POS Rollout Delay: BeaconPOS v2.0 upgrade pushed from Oct 1 to Nov 1 due to inventory module integration issues. IT requesting 2 additional contractors ($28,000).
+
+Action Items:
+- Lisa Patel: Launch referral bonus program by Sept 22; schedule college job fairs (Oct 1-15)
+- Mike Torres: Submit revised digital ad budget to Sarah by Sept 19
+- Rachel Adams: Complete Janesville store audit; present findings at next meeting
+- David Kim: Provide updated POS rollout timeline with contractor costs by Sept 20
+
+Next Meeting: September 29, 2025, 2:00 PM</pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Your challenge:</strong> Rewrite the prompt so the AI knows <em>who the email goes to</em>, <em>what to highlight</em> from the meeting, and <em>the right tone</em>. Should everyone get the same email, or does each person need different action items?
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-2">
+                    <label for="step2-2">Test Bad Prompt B in Gemini (paste both the prompt and the meeting notes). Then rewrite it as a complete RCTFC prompt that uses these details. Test your rewrite.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Your RCTFC rewrite of Prompt B:</label>
+                    <textarea placeholder="Write your complete RCTFC version here. Include the meeting details and all five RCTFC components: Role, Context, Task, Format, Constraints..."></textarea>
+                </div>
+
+                <h4 style="margin-top: 25px; color: #C8102E;">Bad Prompt C</h4>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Act as a financial analyst and tell me about expenses.</div>
+
+                <p style="font-size: 0.9em; margin-top: 15px;">This prompt at least tries to set a role &mdash; but "tell me about expenses" with no data is nearly useless. Here's the expense data they had:</p>
+
+                <div class="data-box" data-label="DATA">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+                    <div class="data-title">Beacon Quarterly Operating Expenses (25 stores)</div>
+                    <table>
+                        <tr><th>Category</th><th>Q1 Actual</th><th>Q2 Actual</th><th>Q3 Actual</th><th>Q4 Projected</th></tr>
+                        <tr><td>Payroll &amp; Benefits</td><td>$2,180,000</td><td>$2,210,000</td><td>$2,250,000</td><td>$2,890,000</td></tr>
+                        <tr><td>Rent &amp; Facilities</td><td>$680,000</td><td>$680,000</td><td>$685,000</td><td>$690,000</td></tr>
+                        <tr><td>Marketing &amp; Advertising</td><td>$310,000</td><td>$280,000</td><td>$340,000</td><td>$520,000</td></tr>
+                        <tr><td>Inventory &amp; COGS</td><td>$1,450,000</td><td>$1,380,000</td><td>$1,520,000</td><td>$2,100,000</td></tr>
+                        <tr><td>Technology &amp; Systems</td><td>$120,000</td><td>$115,000</td><td>$167,000</td><td>$195,000</td></tr>
+                        <tr><td>Logistics &amp; Shipping</td><td>$240,000</td><td>$225,000</td><td>$260,000</td><td>$380,000</td></tr>
+                        <tr><td>Training &amp; Development</td><td>$85,000</td><td>$60,000</td><td>$70,000</td><td>$140,000</td></tr>
+                        <tr><td>Miscellaneous</td><td>$95,000</td><td>$88,000</td><td>$102,000</td><td>$110,000</td></tr>
+                    </table>
+                    <p style="margin: 12px 0 5px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem;">Data Dictionary:</p>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.82rem; line-height: 1.5;">
+                        <li><span class="dict-term">Payroll &amp; Benefits:</span> All employee compensation including seasonal hires</li>
+                        <li><span class="dict-term">Rent &amp; Facilities:</span> Store leases, utilities, maintenance across 25 locations</li>
+                        <li><span class="dict-term">Marketing &amp; Advertising:</span> Print, digital, and in-store promotional costs</li>
+                        <li><span class="dict-term">Inventory &amp; COGS:</span> Product purchasing and cost of goods sold</li>
+                        <li><span class="dict-term">Technology &amp; Systems:</span> IT infrastructure, BeaconPOS, software licenses</li>
+                        <li><span class="dict-term">Logistics &amp; Shipping:</span> Warehouse operations, delivery, and distribution</li>
+                        <li><span class="dict-term">Training &amp; Development:</span> Employee onboarding, skills training, materials</li>
+                        <li><span class="dict-term">Miscellaneous:</span> Office supplies, travel, professional services</li>
+                    </ul>
+                    <pre class="copy-text" style="display:none">Beacon Quarterly Operating Expenses (25 stores)
+
+Category                | Q1 Actual   | Q2 Actual   | Q3 Actual   | Q4 Projected
+Payroll & Benefits      | $2,180,000  | $2,210,000  | $2,250,000  | $2,890,000
+Rent & Facilities       | $680,000    | $680,000    | $685,000    | $690,000
+Marketing & Advertising | $310,000    | $280,000    | $340,000    | $520,000
+Inventory & COGS        | $1,450,000  | $1,380,000  | $1,520,000  | $2,100,000
+Technology & Systems    | $120,000    | $115,000    | $167,000    | $195,000
+Logistics & Shipping    | $240,000    | $225,000    | $260,000    | $380,000
+Training & Development  | $85,000     | $60,000     | $70,000     | $140,000
+Miscellaneous           | $95,000     | $88,000     | $102,000    | $110,000
+
+Data Dictionary:
+- Payroll & Benefits: All employee compensation including seasonal hires
+- Rent & Facilities: Store leases, utilities, maintenance across 25 locations
+- Marketing & Advertising: Print, digital, and in-store promotional costs
+- Inventory & COGS: Product purchasing and cost of goods sold
+- Technology & Systems: IT infrastructure, BeaconPOS, software licenses
+- Logistics & Shipping: Warehouse operations, delivery, and distribution
+- Training & Development: Employee onboarding, skills training, materials
+- Miscellaneous: Office supplies, travel, professional services</pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Your challenge:</strong> The CFO wants to understand why Q3 Technology costs jumped 45% over Q1 and which categories are growing fastest heading into Q4. Rewrite the prompt so it includes the data, a <em>specific analytical question</em>, and tells the AI how to present the analysis.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-3">
+                    <label for="step2-3">Test Bad Prompt C in Gemini (paste both the prompt and the expense data). Then rewrite it as a complete RCTFC prompt that includes the data and a specific question for the CFO. Test your rewrite.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Your RCTFC rewrite of Prompt C:</label>
+                    <textarea placeholder="Write your complete RCTFC version here. Include the expense data and all five RCTFC components: Role, Context, Task, Format, Constraints..."></textarea>
+                </div>
+
+                <div class="tip-box" style="margin-top: 20px;">
+                    <strong>Want feedback on your rewrites?</strong> Try this <strong>meta-prompt</strong> (a prompt that asks AI to evaluate your prompt) &mdash; paste your rewritten prompt into a new Gemini chat and ask:
+                    <div class="prompt-box" style="margin-top: 10px; font-size: 0.9em;">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I'm learning the RCTFC prompt framework (Role, Context, Task, Format, Constraints). Please evaluate the following prompt and tell me: (1) which RCTFC components are present and which are missing, (2) how I could improve it, and (3) rate it on a scale of 1-10.
+
+My prompt: [PASTE YOUR REWRITE HERE]</div>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-4">
+                    <label for="step2-4">Use the meta-prompt above to get AI feedback on at least one of your rewrites. Did the AI's suggestions surprise you?</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Reflection: Which bad prompt was hardest to rewrite? What did the AI feedback reveal about your prompt that you didn't notice?</label>
+                    <textarea placeholder="Describe your experience rewriting the prompts and what the AI feedback taught you..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 2: PROMPTING TECHNIQUES SHOWDOWN -->
+        <section class="lab-section">
+            <h2>Part 2: Prompting Techniques Showdown</h2>
+            <p>Now that you can structure prompts, let's explore three different <em>techniques</em> for getting better results: zero-shot, few-shot, and chain-of-thought prompting.</p>
+
+            <!-- Task 3: Zero-Shot vs. Few-Shot -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">3</span>
+                    <h3 class="task-title">Zero-Shot vs. Few-Shot</h3>
+                </div>
+
+                <p><strong>Scenario:</strong> Beacon's customer service team receives hundreds of emails each week. They need to automatically categorize incoming emails into: <strong>Complaint, Question, Return Request, Compliment,</strong> or <strong>Other</strong>.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-1">
+                    <label for="step3-1">Start a <strong>new chat</strong> in Gemini. Try the <strong>zero-shot approach</strong> (no examples provided):</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Categorize the following customer email into one of these categories: Complaint, Question, Return Request, Compliment, Other.
+
+Email: "I bought a winter jacket last week and the zipper broke on the first day. This is unacceptable for a $89 jacket. I want my money back or a replacement immediately."</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-2">
+                    <label for="step3-2">Note the category and any explanation Gemini provides. Now start a <strong>new chat</strong> and try the <strong>few-shot approach</strong> (with examples):</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Categorize customer emails for Beacon Retail Group into these categories: Complaint, Question, Return Request, Compliment, Other.
+
+Here are examples:
+Email: "When do your stores close on Thanksgiving?" → Category: Question
+Email: "I love the new home section! The staff at your Rockford store were so helpful." → Category: Compliment
+Email: "I need to return a blender I bought online. It's still in the box. What's the process?" → Category: Return Request
+
+Now categorize this email:
+Email: "I bought a winter jacket last week and the zipper broke on the first day. This is unacceptable for a $89 jacket. I want my money back or a replacement immediately."</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-3">
+                    <label for="step3-3">Compare the two results. Now test both approaches on a <strong>harder, ambiguous email</strong>. Start a new chat for each:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I ordered the Beacon holiday gift set for my mom (#ORD-4521) but it hasn't arrived yet. The website says delivered but I never got it. I need this resolved before Christmas.</div>
+
+                <div class="warning-box">
+                    <strong>Why this email is tricky:</strong> It could be categorized as a Complaint (they're frustrated), a Question (where's my order?), or Other (shipping/delivery issue). Ambiguous cases like this reveal the real difference between zero-shot and few-shot prompting.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-4">
+                    <label for="step3-4">Test the ambiguous email with both the zero-shot and few-shot prompts. Note any differences in categorization or confidence.</label>
+                </div>
+
+                <h4 style="margin-top: 20px; color: #1D428A;">Practice Emails</h4>
+                <p style="font-size: 0.9em;">Now try classifying these two trickier emails on your own. Test each with <strong>both</strong> the zero-shot and few-shot prompts:</p>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Your Schaumburg store is honestly the best shopping experience in the area — the holiday displays are beautiful and your staff always remembers my name. Quick question though: I heard you're discontinuing the Heritage candle line? Please say it isn't so, my book club buys those every Christmas!</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-6">
+                    <label for="step3-6">Classify the multi-topic email above (it combines two intents). How do zero-shot and few-shot handle it differently?</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Just some friendly feedback on my recent visit to your Peoria location. I noticed the checkout line took about 25 minutes on a Tuesday afternoon with only 2 registers open out of 6. I understand staffing can be challenging, but you might want to look into that before the holidays. I've started doing more shopping online at other retailers because it's just easier. Thought you'd want to know!</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-7">
+                    <label for="step3-7">This email sounds polite, but is it really just "feedback"? See if zero-shot and few-shot categorize it differently.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Reflection: Compare zero-shot and few-shot results for both emails. When did few-shot outperform zero-shot? Why do you think examples help the AI?</label>
+                    <textarea placeholder="Describe the differences you observed..."></textarea>
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with a Classmate</h4>
+                    <p>Compare your zero-shot categorization of the ambiguous email with a classmate's. Did the AI give you the same category? Same confidence level? This shows how the <strong>same prompt can produce different results</strong> &mdash; a key reason why AI outputs need human review, especially for edge cases.</p>
+                    <div class="step">
+                        <input type="checkbox" id="step3-5">
+                        <label for="step3-5">Ask a neighbor what category their zero-shot prompt assigned to the ambiguous email. Note any differences.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task 4: Chain-of-Thought Prompting -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">4</span>
+                    <h3 class="task-title">Chain-of-Thought Prompting</h3>
+                </div>
+
+                <p><strong>Scenario:</strong> Beacon's executive team is considering whether to implement an AI chatbot for customer service. They need a thorough analysis, not just a yes/no answer.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-1">
+                    <label for="step4-1">Start a <strong>new chat</strong>. First, try the <strong>direct prompt</strong> (no reasoning structure):</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Should Beacon Retail Group implement an AI chatbot for customer service?</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-2">
+                    <label for="step4-2">Note the response. It's likely generic advice without specific analysis. Now start a <strong>new chat</strong> and try the <strong>chain-of-thought prompt</strong>:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Beacon Retail Group (25 stores, Midwest) receives 850 customer emails per week with a 4-hour average response time. The current customer satisfaction score is 3.2 out of 5 stars. Two of Beacon's three regional competitors have already launched customer service chatbots.
+
+Email topic breakdown: 35% order status, 25% return/exchange questions, 15% store hours and locations, 10% product availability, 8% complaints, 7% other.
+
+Think through this step by step:
+1. Based on the email topic breakdown, what percentage of emails could an AI chatbot realistically handle? Which categories are good candidates and which aren't?
+2. What would be the cost savings (assume a customer service rep costs $18/hour and handles ~12 emails/hour)?
+3. What are the risks of using an AI chatbot for customer service?
+4. What are the risks of NOT implementing one, given the competitive landscape?
+5. Based on this analysis, what is your recommendation?
+
+Show your reasoning for each step.</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-3">
+                    <label for="step4-3">Compare the two responses carefully. Pay attention to the depth of analysis, use of numbers, and quality of reasoning.</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Why Chain-of-Thought works:</strong> By asking the AI to "think step by step" and providing a reasoning structure, you force the model to break down complex problems rather than jumping to conclusions. This produces more thorough, defensible analysis -- exactly what executives need for decision-making.
+                </div>
+
+                <div class="reflection-area">
+                    <label>Reflection: How did the chain-of-thought approach change the quality and depth of the response? What specific improvements did you notice?</label>
+                    <textarea placeholder="Compare the direct vs. chain-of-thought responses..."></textarea>
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with a Classmate</h4>
+                    <p>Compare your chain-of-thought chatbot analysis with a classmate's. Did the AI recommend the same thing? Were the cost calculations the same? Even with structured step-by-step prompts, <strong>AI can reach different conclusions from the same data</strong>. This is why AI analysis should inform decisions, not make them.</p>
+                    <div class="step">
+                        <input type="checkbox" id="step4-4">
+                        <label for="step4-4">Compare your CoT recommendation with a classmate's. Did you get the same conclusion? Different numbers?</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 3: THE ITERATION CYCLE -->
+        <section class="lab-section">
+            <h2>Part 3: The Iteration Cycle</h2>
+            <p>Great prompts rarely happen on the first try. Professional prompt engineers use an iterative process: generate, evaluate, refine, repeat. In this section, you'll practice that cycle.</p>
+
+            <!-- Task 5: Iterative Refinement -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">5</span>
+                    <h3 class="task-title">Iterative Refinement</h3>
+                </div>
+
+                <p><strong>Scenario:</strong> Beacon needs a training manual outline for their 300-400 incoming seasonal workers. The onboarding program is only 2 days, so every minute counts.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-1">
+                    <label for="step5-1"><strong>Round 1 -- Start simple.</strong> Open a new chat and use this basic prompt:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Create a training manual outline for seasonal retail workers at Beacon Retail Group.</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-2">
+                    <label for="step5-2">Review the output. It probably covers generic retail topics but misses Beacon-specific details. Note what's missing or too vague.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-3">
+                    <label for="step5-3"><strong>Round 2 -- Add specificity.</strong> In the <strong>same chat</strong>, send this follow-up prompt:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Revise the training manual outline with these additions:
+- Include a section on Beacon's return policy (30-day returns, receipt required, gift receipts accepted)
+- Add POS system basics (our system is called BeaconPOS)
+- Include loss prevention awareness
+- Cover Beacon's product categories: home goods, seasonal decor, apparel, and electronics
+- Add common customer scenarios: price match requests, damaged item exchanges, and online order in-store pickup (BOPIS)
+- Include a safety and emergency procedures overview
+- Address the retention problem: last year 42% of seasonal turnover happened in the first 2 weeks, often because new hires felt unprepared
+- Keep it achievable in a 2-day onboarding program
+- Format as a day-by-day schedule</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-4">
+                    <label for="step5-4">Review the revised output. It should be much more useful now. Identify <strong>one more improvement</strong> you'd make.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-5">
+                    <label for="step5-5"><strong>Round 3 -- Your turn.</strong> Write your own iteration prompt that adds one or two specific improvements. Send it in the same chat.</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>The Iteration Cycle:</strong> Generate &#8594; Evaluate &#8594; Specify &#8594; Regenerate. Each round should add <strong>one or two</strong> specific improvements, not rewrite everything. Think of it like sculpting: start with the rough shape, then refine the details.
+                </div>
+
+                <div class="warning-box">
+                    <strong>Common mistake:</strong> Don't try to fix everything in one prompt. If you dump ten changes at once, the AI may lose track of some. Iterate in small, focused steps for better results.
+                </div>
+
+                <div class="reflection-area">
+                    <label>Reflection: How many iterations did it take to get useful output? What was your iteration strategy? Paste your Round 3 prompt below.</label>
+                    <textarea placeholder="Describe your iteration process and paste your Round 3 prompt..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 4: LAB REFLECTION -->
+        <section class="lab-section">
+            <h2>Part 4: Lab Reflection</h2>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">6</span>
+                    <h3 class="task-title">Capture Your Learnings</h3>
+                </div>
+
+                <p>Take 10 minutes to reflect on what you learned today. These reflections will become part of your course portfolio.</p>
+
+                <div class="reflection-area">
+                    <label>1. Which RCTFC component do you think is most important? Why?</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+
+                <div class="reflection-area">
+                    <label>2. Describe a real business task where you would use chain-of-thought prompting. Why would step-by-step reasoning help?</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+
+                <div class="reflection-area">
+                    <label>3. What's your biggest takeaway about prompt engineering that you didn't know before today?</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 5: SUBMISSION -->
+        <section class="lab-section">
+            <h2>Part 5: Submit Your Work</h2>
+            <p>Compile your responses and upload them to the LMS (Learning Management System, e.g., Blackboard) as a PDF.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">7</span>
+                    <h3 class="task-title">Generate and Upload Your Lab Report</h3>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step7-1">
+                    <label for="step7-1">Review all your reflection responses above to make sure they are complete.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step7-2">
+                    <label for="step7-2">Click <strong>"Download as PDF"</strong> below. A new window will open showing your responses, and a print dialog will appear automatically.</label>
+                </div>
+
+                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="downloadPDF()">Download as PDF</button>
+
+                <div class="tip-box" style="margin-bottom: 15px;">
+                    <strong>Saving as PDF:</strong> In the print dialog, select <strong>"Save as PDF"</strong> or <strong>"Microsoft Print to PDF"</strong> as your printer, then click <strong>Save</strong>. On Mac, look for the <strong>"PDF"</strong> dropdown in the bottom-left corner.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step7-3">
+                    <label for="step7-3">Open the saved PDF and verify your responses look correct.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step7-4">
+                    <label for="step7-4">Log in to your LMS and upload the PDF to the <strong>Day 2 Lab</strong> assignment.</label>
+                </div>
+
+                <div class="tip-box" style="margin-top: 20px;">
+                    <strong>How to upload:</strong>
+                    <ol style="margin-bottom: 0; font-size: 0.9em;">
+                        <li>Go to your LMS (e.g., Blackboard) and find the UBUS 670 course</li>
+                        <li>Navigate to <strong>Assignments</strong> &rarr; <strong>Day 2 Lab: Prompt Engineering</strong></li>
+                        <li>Click <strong>Upload File</strong> and select the PDF you just downloaded</li>
+                        <li>Click <strong>Submit</strong></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPLETION -->
+        <section class="lab-section" style="text-align: center;">
+            <h2>Lab Complete!</h2>
+            <p>Congratulations on completing the Prompt Engineering lab. Before moving on:</p>
+            <ul style="text-align: left; max-width: 500px; margin: 20px auto;">
+                <li>Verify your PDF was uploaded to the LMS</li>
+                <li>Save any chat transcripts you want to keep for your portfolio</li>
+                <li>Note any questions for class discussion</li>
+            </ul>
+            <p style="margin-top: 30px;">
+                <a href="quiz.html" class="btn-primary">Take the Knowledge Check &#8594;</a>
+            </p>
+        </section>
+
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+        <span id="progress-text">Progress: 0/0 steps</span>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Progress tracking
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const total = checkboxes.length;
+            const percentage = Math.round((checked / total) * 100);
+
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `Progress: ${checked}/${total} steps`;
+        }
+
+        // Add event listeners to all checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.closest('.step').classList.toggle('completed', this.checked);
+                updateProgress();
+            });
+        });
+
+        // Copy prompt function (handles both .prompt-box and .data-box)
+        function copyPrompt(btn) {
+            const box = btn.closest('.prompt-box') || btn.closest('.data-box');
+            const copyEl = box.querySelector('.copy-text');
+            const text = copyEl
+                ? copyEl.textContent.trim()
+                : box.textContent.replace('Copy', '').replace('Copied!', '').trim();
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        }
+
+        // Initialize progress
+        updateProgress();
+
+        // Download lab report as PDF
+        function downloadPDF() {
+            const textareas = document.querySelectorAll('.reflection-area textarea');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
+
+            const reflectionLabels = [
+                'Task 1: RCTFC Framework Reflection',
+                'Task 1: Compare with Classmate',
+                'Task 2: Rewrite of Bad Prompt A',
+                'Task 2: Rewrite of Bad Prompt B',
+                'Task 2: Rewrite of Bad Prompt C',
+                'Task 2: Reflection on Rewrites & AI Feedback',
+                'Task 3: Zero-Shot vs. Few-Shot Reflection',
+                'Task 4: Chain-of-Thought Reflection',
+                'Task 5: Iterative Refinement Reflection',
+                'Final Reflection 1: Most Important RCTFC Component',
+                'Final Reflection 2: Chain-of-Thought Business Use Case',
+                'Final Reflection 3: Biggest Takeaway'
+            ];
+
+            let sections = '';
+            textareas.forEach((textarea, index) => {
+                const label = reflectionLabels[index] || `Response ${index + 1}`;
+                const response = textarea.value.trim() || '[No response provided]';
+                sections += `
+                    <div style="margin-bottom: 24px; page-break-inside: avoid;">
+                        <h3 style="font-family: Montserrat, sans-serif; font-size: 13px; color: #1D428A; margin: 0 0 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px;">${label}</h3>
+                        <p style="font-family: Georgia, serif; font-size: 12px; line-height: 1.6; color: #333; white-space: pre-wrap; margin: 0;">${response.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+                    </div>`;
+            });
+
+            const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>UBUS 670 - Day 2 Lab Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    @media print { body { margin: 0; } @page { margin: 0.75in; } }
+    body { font-family: Georgia, serif; max-width: 700px; margin: 0 auto; padding: 40px; color: #333; }
+</style></head><body>
+<div style="border-bottom: 3px solid #C8102E; padding-bottom: 15px; margin-bottom: 25px;">
+    <h1 style="font-family: Montserrat, sans-serif; font-size: 20px; color: #C8102E; margin: 0;">UBUS 670: AI for Business Leaders</h1>
+    <h2 style="font-family: Montserrat, sans-serif; font-size: 16px; color: #333; margin: 8px 0 0;">Day 2 Lab: Crafting Prompts for Beacon</h2>
+    <p style="font-size: 12px; color: #666; margin: 10px 0 0;">
+        Student Name: _____________________________ &nbsp;&nbsp; Date: ${new Date().toLocaleDateString()} &nbsp;&nbsp; Progress: ${checkboxes.length}/${totalCheckboxes} steps
+    </p>
+</div>
+${sections}
+<div style="border-top: 2px solid #e0e0e0; padding-top: 12px; margin-top: 30px; text-align: center;">
+    <p style="font-size: 11px; color: #888;">Generated: ${new Date().toLocaleString()} | UBUS 670 - Northern Illinois University</p>
+</div>
+</body></html>`;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(html);
+            printWindow.document.close();
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+
+            document.getElementById('download-pdf-btn').textContent = 'PDF Generated - Print/Save';
+        }
+    </script>
+
+</body>
+</html>
