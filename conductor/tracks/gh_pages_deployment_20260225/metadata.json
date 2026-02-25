@@ -1,8 +1,0 @@
-{
-  "track_id": "gh_pages_deployment_20260225",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-02-25T11:45:00Z",
-  "updated_at": "2026-02-25T11:45:00Z",
-  "description": "Configure and Deploy Course Materials to GitHub Pages for LMS integration."
-}
