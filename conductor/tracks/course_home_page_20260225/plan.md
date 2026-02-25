@@ -16,6 +16,6 @@ Goal: Design and build the home page and update breadcrumb links.
 
 Goal: Verify the home page on GitHub Pages.
 
-- [ ] Task: Push changes to GitHub.
+- [~] Task: Push changes to GitHub.
 - [ ] Task: Verify the root URL: `https://mpickard-dataprof.github.io/ubus670/index.html`.
 - [ ] Task: Conductor - User Manual Verification 'Deployment & Verification' (Protocol in workflow.md)
