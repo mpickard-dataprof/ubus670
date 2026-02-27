@@ -15,11 +15,11 @@ Goal: Establish the format and complete rubrics for the first week.
 
 Goal: Complete rubrics for the multimodal and control modules.
 
-- [ ] Task: Implement Rubrics for Week 2.
-    - [ ] Day 4: Multimodal AI
-    - [ ] Day 5: The AI Cockpit
-    - [ ] Day 6: Red Teaming & Safety
-- [ ] Task: Conductor - User Manual Verification 'Week 2 Rubrics' (Protocol in workflow.md)
+- [x] Task: Implement Rubrics for Week 2.
+    - [x] Day 4: Multimodal AI
+    - [x] Day 5: The AI Cockpit
+    - [x] Day 6: Red Teaming & Safety
+- [~] Task: Conductor - User Manual Verification 'Week 2 Rubrics' (Protocol in workflow.md)
 
 ## Phase 3: Week 3 & Final Integration
 
