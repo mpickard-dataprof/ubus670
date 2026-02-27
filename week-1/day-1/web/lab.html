@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 1 Lab: Exploring Gemini with Beacon</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
+    <style>
+        /* Lab-specific styles */
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        .lab-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Navigation with Breadcrumb */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* Lab header */
+        .lab-header {
+            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
+            color: white;
+            padding: 60px 40px;
+            margin: -40px -30px 40px;
+            text-align: center;
+        }
+        .lab-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px;
+            font-size: 2.5rem;
+        }
+        .lab-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Time estimate */
+        .time-estimate {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Objectives box */
+        .objectives-box {
+            background: white;
+            border-left: 5px solid #C8102E;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .objectives-box h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        /* Section styling */
+        .lab-section {
+            background: white;
+            padding: 30px 35px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .lab-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            border-bottom: 3px solid #C8102E;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* Task styling */
+        .task {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .task-number {
+            background: #C8102E;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .task-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Checkbox steps */
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .step:last-child {
+            border-bottom: none;
+        }
+        .step input[type="checkbox"] {
+            margin-top: 5px;
+            transform: scale(1.3);
+            cursor: pointer;
+            accent-color: #C8102E;
+        }
+        .step label {
+            cursor: pointer;
+            flex: 1;
+        }
+        .step.completed label {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        /* Code/prompt boxes */
+        .prompt-box {
+            background: #1a1a1a;
+            color: #f8f8f8;
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            position: relative;
+        }
+        .prompt-box::before {
+            content: 'PROMPT';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #C8102E;
+            color: white;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .copy-btn:hover {
+            background: #555;
+        }
+
+        /* Tip boxes */
+        .tip-box {
+            background: rgba(0, 169, 224, 0.1);
+            border-left: 4px solid #00A9E0;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .tip-box strong {
+            color: #00A9E0;
+        }
+
+        /* Warning boxes */
+        .warning-box {
+            background: rgba(227, 82, 5, 0.1);
+            border-left: 4px solid #E35205;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning-box strong {
+            color: #E35205;
+        }
+
+        /* Reflection/answer areas */
+        .reflection-area {
+            background: #fff;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .reflection-area label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .reflection-area textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        /* Progress tracker */
+        .progress-tracker {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            z-index: 100;
+        }
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #C8102E;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* CTA button */
+        .btn-primary {
+            display: inline-block;
+            background: #C8102E;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: #a00d24;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">›</span>
+            <a href="../../../index.html">Week 1</a>
+            <span class="separator">›</span>
+            <span class="current">Day 1</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill active">Lab</a>
+            <a href="quiz.html" class="nav-pill">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="lab-container">
+
+        <!-- Lab Header -->
+        <div class="lab-header">
+            <h1>Lab 1: Exploring Gemini with Beacon</h1>
+            <p>Your first hands-on experience with generative AI</p>
+            <span class="time-estimate">⏱️ Estimated time: 90-120 minutes</span>
+        </div>
+
+        <!-- Learning Objectives -->
+        <div class="objectives-box">
+            <h2>Lab Objectives</h2>
+            <p>By completing this lab, you will:</p>
+            <ul>
+                <li>Set up and navigate Google Gemini Chat</li>
+                <li>Complete three business tasks using AI: summarization, Q&A, and drafting</li>
+                <li>Experience and document an AI hallucination firsthand</li>
+                <li>Begin building your AI portfolio for this course</li>
+            </ul>
+        </div>
+
+        <!-- PART 1: SETUP -->
+        <section class="lab-section">
+            <h2>Part 1: Setting Up Gemini</h2>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">1</span>
+                    <h3 class="task-title">Access Google Gemini</h3>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step1-1">
+                    <label for="step1-1">Open your web browser (Chrome, Firefox, Safari, or Edge) and navigate to <strong>gemini.google.com</strong></label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step1-2">
+                    <label for="step1-2">Sign in with your personal Google account (Gmail). A free account is all you need.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step1-3">
+                    <label for="step1-3">Verify you see the Gemini chat interface with an input box at the bottom of the screen</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 No upgrade needed:</strong> If Gemini prompts you to try "Gemini Advanced" or a paid subscription, just click "No thanks" or close the popup. The free version is sufficient for all coursework.
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">2</span>
+                    <h3 class="task-title">Explore the Interface</h3>
+                </div>
+
+                <p>Take 5 minutes to familiarize yourself with the interface. Find these elements:</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-1">
+                    <label for="step2-1"><strong>Left sidebar</strong> — Contains your chat history, "New chat" button, and settings. Click the menu icon (☰) if it's collapsed.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step2-2">
+                    <label for="step2-2"><strong>New chat button</strong> — Usually at the top of the sidebar. Starts a fresh conversation (this resets the context window—the AI forgets everything from previous chats).</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step2-3">
+                    <label for="step2-3"><strong>Input box</strong> — At the bottom of the screen. This is where you type your prompts. Press Enter or click the send arrow to submit.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step2-4">
+                    <label for="step2-4"><strong>Attachment button</strong> — Look for a paperclip or "+" icon near the input box. Use this to upload images, PDFs, or other documents for Gemini to analyze.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step2-5">
+                    <label for="step2-5"><strong>Model selector</strong> — Usually in the lower-right corner of the input area. You may see options like "Gemini" or different model versions. Keep the default for now.</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Tip:</strong> After Gemini responds, hover over the response to see action buttons: <strong>Copy</strong> (copies text to clipboard), <strong>Share</strong>, and a <strong>thumbs up/down</strong> for feedback. The exact button layout may vary.
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 2: BUSINESS TASKS -->
+        <section class="lab-section">
+            <h2>Part 2: Three Beacon Business Tasks</h2>
+            <p>Now you'll complete three common business tasks using Gemini. For each task, you're acting as a member of Beacon's AI Strategy Task Force.</p>
+
+            <!-- Task 3: Summarization -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">3</span>
+                    <h3 class="task-title">Task A: Summarization</h3>
+                </div>
+
+                <p><strong>Scenario:</strong> CEO Pat Holloway has written a detailed memo about the AI Task Force mission. You need a quick summary for a busy executive who has 30 seconds to read it.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-1">
+                    <label for="step3-1">Copy the prompt below and paste it into Gemini:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Please summarize the following CEO memo in 3-4 bullet points. Focus on: (1) what the task force is supposed to do, (2) the three main business challenges, and (3) the timeline.
+
+---
+
+INTERNAL MEMORANDUM - BEACON RETAIL GROUP
+
+TO: AI Strategy Task Force Members
+FROM: Patricia Holloway, Chief Executive Officer
+DATE: March 3, 2026
+RE: Launch of AI Strategy Task Force — Your Mission
+
+Thank you for agreeing to serve on Beacon Retail Group's first-ever AI Strategy Task Force. I'm personally excited about this initiative and confident that your work will shape Beacon's future.
+
+Your task force will: (1) Learn how generative AI and related technologies actually work, (2) Evaluate specific opportunities where AI could create value for Beacon, (3) Build proof-of-concept solutions for our most pressing challenges, and (4) Recommend which initiatives we should pursue—and which we should avoid.
+
+Our three most pressing challenges are:
+
+1. SEASONAL HIRING (HR): Every fall, we scramble to hire 300-400 seasonal workers. We received 4,200 applications last year, took 6 weeks to screen them, and 42% of hires didn't complete the season.
+
+2. CUSTOMER SERVICE (MARKETING): We receive 850 customer emails per week with a 4-hour average response time. 60% are routine inquiries.
+
+3. EXPENSE MANAGEMENT (FINANCE): 1,200 expense reports per month, 8-day average processing time, ~4% error rate in manual entry.
+
+By the end of Week 1, you should understand AI fundamentals. By Week 2, have working prototypes. By Week 3, present a working multi-agent system for seasonal hiring to the executive team.
+
+— Patricia "Pat" Holloway, CEO</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-2">
+                    <label for="step3-2">Review the AI's response. Does it capture the key points?</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Reflection: How would you rate this summary? What did the AI do well? What's missing?</label>
+                    <textarea placeholder="Write your observations here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Task 4: Q&A -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">4</span>
+                    <h3 class="task-title">Task B: Question & Answer</h3>
+                </div>
+
+                <p><strong>Scenario:</strong> You're preparing for a meeting and need to quickly understand Beacon's seasonal hiring challenge in more depth.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-1">
+                    <label for="step4-1"><strong>Important:</strong> Start a NEW chat (click "New chat" in the sidebar). This resets the context window.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-2">
+                    <label for="step4-2">Now, WITHOUT providing the memo again, ask Gemini:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>What are the three main challenges facing Beacon Retail Group's AI Strategy Task Force?</div>
+
+                <div class="warning-box">
+                    <strong>⚠️ What happened?</strong> Gemini doesn't know about Beacon. It might make something up, ask for clarification, or admit it doesn't know. This demonstrates that <strong>the AI has no memory between conversations</strong>—it only knows what's in the current context window.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-3">
+                    <label for="step4-3">Now, provide context and ask again. Paste the memo first, then ask your question:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Here is a memo from Beacon Retail Group's CEO:
+
+[Paste the full memo from Task A here]
+
+Based on this memo, what are the three main challenges facing the AI Strategy Task Force? For each challenge, what specific metrics indicate the problem's severity?</div>
+
+                <div class="reflection-area">
+                    <label>Reflection: Compare the two responses. What does this teach you about context?</label>
+                    <textarea placeholder="Write your observations here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Task 5: Drafting -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">5</span>
+                    <h3 class="task-title">Task C: Drafting</h3>
+                </div>
+
+                <p><strong>Scenario:</strong> You need to draft an email to your team summarizing the first Task Force meeting.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-1">
+                    <label for="step5-1">In the same chat (where you have the memo context), ask Gemini to draft an email:</label>
+                </div>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft a brief email (150 words max) from me to my Task Force teammates. The email should:
+- Summarize what we learned today about generative AI
+- Mention the three Beacon challenges we'll be addressing
+- Express enthusiasm for the project
+- End with a call to action for our next meeting
+
+Keep the tone professional but friendly.</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-2">
+                    <label for="step5-2">Review the draft. Is it appropriate for a professional setting?</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-3">
+                    <label for="step5-3"><strong>Iterate:</strong> Ask Gemini to revise one aspect (e.g., "Make it more concise" or "Make the call to action more specific")</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Reflection: How useful was the AI's draft? How much editing would it need for real use?</label>
+                    <textarea placeholder="Write your observations here..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 3: HALLUCINATION HUNT -->
+        <section class="lab-section">
+            <h2>Part 3: The Hallucination Hunt</h2>
+            <p>Now let's intentionally trigger a hallucination to see how AI can confidently state incorrect information. Modern AI models have become better at admitting uncertainty, so we'll try multiple approaches.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">6</span>
+                    <h3 class="task-title">Trigger a Hallucination</h3>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-1">
+                    <label for="step6-1">Start a NEW chat (to reset context)</label>
+                </div>
+
+                <p><strong>Try each of these approaches until you catch a hallucination:</strong></p>
+
+                <h4 style="margin-top: 20px; font-family: 'Montserrat', sans-serif;">Approach A: Ask for Research Citations</h4>
+                <p style="font-size: 0.95em;">Ask Gemini to cite specific research to support a claim:</p>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>What peer-reviewed academic studies have been published about the effectiveness of AI in retail hiring? Please provide specific paper titles, authors, and publication years.</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-2">
+                    <label for="step6-2">Verify one or two of the citations by searching Google Scholar or the journal's website. Are they real?</label>
+                </div>
+
+                <h4 style="margin-top: 25px; font-family: 'Montserrat', sans-serif;">Approach B: Ask for Specific Statistics</h4>
+                <p style="font-size: 0.95em;">Request precise numbers without providing sources:</p>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>What is the exact average cost-per-hire for seasonal retail workers in the Midwest United States as of 2025? Include the specific dollar amount and the source of this data.</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-3">
+                    <label for="step6-3">Check if the source exists. If Gemini provides a specific statistic, can you verify it?</label>
+                </div>
+
+                <h4 style="margin-top: 25px; font-family: 'Montserrat', sans-serif;">Approach C: Fictional Company Test</h4>
+                <p style="font-size: 0.95em;">Ask about our fictional company as if it were real:</p>
+
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Tell me about Beacon Retail Group, the Midwest retail chain founded in Rockford, Illinois. Who founded it? When? How many stores do they have?</div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Note:</strong> Beacon Retail Group is fictional—we created it for this course. Modern AI might:
+                    <ul style="margin-bottom: 0;">
+                        <li>Admit it doesn't know (good!)</li>
+                        <li>Confuse it with a real company</li>
+                        <li><strong>Make up plausible-sounding but completely false details</strong></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-4">
+                    <label for="step6-4">Document at least ONE hallucination you found from any of the approaches above.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Document the Hallucination: Which approach worked? What false information did the AI provide? How confident did it sound?</label>
+                    <textarea placeholder="Which approach did you use? Copy-paste the AI's response and note what's incorrect..."></textarea>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Key Insight:</strong> AI models are getting better at saying "I don't know," but they still hallucinate—especially with specific statistics, citations, and unfamiliar topics. This is why you should <strong>NEVER trust AI output for critical business decisions without human verification</strong>.
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 4: REFLECTION -->
+        <section class="lab-section">
+            <h2>Part 4: Lab Reflection</h2>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">7</span>
+                    <h3 class="task-title">Capture Your Learnings</h3>
+                </div>
+
+                <p>Take 10 minutes to reflect on what you learned. These reflections will become part of your course portfolio.</p>
+
+                <div class="reflection-area">
+                    <label>1. What surprised you most about working with generative AI today?</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+
+                <div class="reflection-area">
+                    <label>2. Based on today's experience, what's ONE thing you think AI could help Beacon with? Why?</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+
+                <div class="reflection-area">
+                    <label>3. What concerns do you have about using AI for business tasks?</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUBMISSION -->
+        <section class="lab-section">
+            <h2>Part 5: Submit Your Work</h2>
+            <p>Compile your responses and upload them to the LMS (Learning Management System, e.g., Blackboard) as a PDF.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">8</span>
+                    <h3 class="task-title">Generate and Upload Your Lab Report</h3>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step8-1">
+                    <label for="step8-1">Review all your reflection responses above to make sure they are complete.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step8-2">
+                    <label for="step8-2">Click <strong>"Download as PDF"</strong> below to generate your lab report.</label>
+                </div>
+
+                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="downloadPDF()">Download as PDF</button>
+
+                <div class="step">
+                    <input type="checkbox" id="step8-3">
+                    <label for="step8-3">Open the downloaded PDF and verify your responses look correct.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step8-4">
+                    <label for="step8-4">Log in to your LMS and upload the PDF to the <strong>Day 1 Lab</strong> assignment.</label>
+                </div>
+
+                <div class="tip-box" style="margin-top: 20px;">
+                    <strong>How to upload:</strong>
+                    <ol style="margin-bottom: 0; font-size: 0.9em;">
+                        <li>Go to your LMS (e.g., Blackboard) and find the UBUS 670 course</li>
+                        <li>Navigate to <strong>Assignments</strong> &rarr; <strong>Day 1 Lab: Exploring Gemini</strong></li>
+                        <li>Click <strong>Upload File</strong> and select the PDF you just downloaded</li>
+                        <li>Click <strong>Submit</strong></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPLETION -->
+        <section class="lab-section" style="text-align: center;">
+            <h2>Lab Complete!</h2>
+            <p>Congratulations on completing your first AI lab. Before moving on:</p>
+            <ul style="text-align: left; max-width: 500px; margin: 20px auto;">
+                <li>Verify your PDF was uploaded to the LMS</li>
+                <li>Save any chat transcripts you want to keep for your portfolio</li>
+                <li>Note any questions for class discussion</li>
+            </ul>
+            <p style="margin-top: 30px;">
+                <a href="quiz.html" class="btn-primary">Take the Knowledge Check →</a>
+            </p>
+        </section>
+
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+        <span id="progress-text">Progress: 0/7 tasks</span>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Progress tracking
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const total = checkboxes.length;
+            const percentage = Math.round((checked / total) * 100);
+
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `Progress: ${checked}/${total} steps`;
+        }
+
+        // Add event listeners to all checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.closest('.step').classList.toggle('completed', this.checked);
+                updateProgress();
+            });
+        });
+
+        // Copy prompt function
+        function copyPrompt(btn) {
+            const promptBox = btn.closest('.prompt-box');
+            const text = promptBox.textContent.replace('Copy', '').trim();
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        }
+
+        // Initialize progress
+        updateProgress();
+
+        // Download lab report as PDF
+        function downloadPDF() {
+            const textareas = document.querySelectorAll('.reflection-area textarea');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
+
+            const reflectionLabels = [
+                'Task A: Summarization Reflection',
+                'Task B: Q&A Reflection',
+                'Task C: Drafting Reflection',
+                'Hallucination Documentation',
+                'Final Reflection 1: What Surprised You',
+                'Final Reflection 2: AI Opportunity for Beacon',
+                'Final Reflection 3: Concerns About AI'
+            ];
+
+            let sections = '';
+            textareas.forEach((textarea, index) => {
+                const label = reflectionLabels[index] || `Response ${index + 1}`;
+                const response = textarea.value.trim() || '[No response provided]';
+                sections += `
+                    <div style="margin-bottom: 24px; page-break-inside: avoid;">
+                        <h3 style="font-family: Montserrat, sans-serif; font-size: 13px; color: #1D428A; margin: 0 0 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px;">${label}</h3>
+                        <p style="font-family: Georgia, serif; font-size: 12px; line-height: 1.6; color: #333; white-space: pre-wrap; margin: 0;">${response.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+                    </div>`;
+            });
+
+            const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>UBUS 670 - Day 1 Lab Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    @media print { body { margin: 0; } @page { margin: 0.75in; } }
+    body { font-family: Georgia, serif; max-width: 700px; margin: 0 auto; padding: 40px; color: #333; }
+</style></head><body>
+<div style="border-bottom: 3px solid #C8102E; padding-bottom: 15px; margin-bottom: 25px;">
+    <h1 style="font-family: Montserrat, sans-serif; font-size: 20px; color: #C8102E; margin: 0;">UBUS 670: AI for Business Leaders</h1>
+    <h2 style="font-family: Montserrat, sans-serif; font-size: 16px; color: #333; margin: 8px 0 0;">Day 1 Lab: Exploring Gemini with Beacon</h2>
+    <p style="font-size: 12px; color: #666; margin: 10px 0 0;">
+        Student Name: _____________________________ &nbsp;&nbsp; Date: ${new Date().toLocaleDateString()} &nbsp;&nbsp; Progress: ${checkboxes.length}/${totalCheckboxes} steps
+    </p>
+</div>
+${sections}
+<div style="border-top: 2px solid #e0e0e0; padding-top: 12px; margin-top: 30px; text-align: center;">
+    <p style="font-size: 11px; color: #888;">Generated: ${new Date().toLocaleString()} | UBUS 670 - Northern Illinois University</p>
+</div>
+</body></html>`;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(html);
+            printWindow.document.close();
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+
+            document.getElementById('download-pdf-btn').textContent = 'PDF Generated - Print/Save';
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 4 Quiz: Multimodal AI Knowledge Check</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../../_shared/styles.css">
+    <style>
+        body { font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; background: #fafafa; }
+        .quiz-container { max-width: 800px; margin: 0 auto; padding: 40px 30px; }
+        .global-nav { position: sticky; top: 0; z-index: 100; background: white; border-bottom: 1px solid #e0e0e0; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; font-family: 'Montserrat', sans-serif; font-size: 14px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #666; }
+        .breadcrumb a { color: #1D428A; text-decoration: none; font-weight: 500; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+        .nav-pills { display: flex; gap: 8px; }
+        .nav-pill { padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px; transition: all 0.2s; }
+        .nav-pill.active { background: #C8102E; color: white; }
+        .nav-pill:not(.active) { background: #f0f0f0; color: #333; }
+        .nav-pill:not(.active):hover { background: #e0e0e0; }
+        .quiz-header { background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%); color: white; padding: 50px 40px; margin: -40px -30px 40px; text-align: center; border-radius: 0 0 20px 20px; }
+        .quiz-header h1 { font-family: 'Montserrat', sans-serif; margin: 0 0 10px; font-size: 2.2rem; }
+        .quiz-header p { margin: 0; opacity: 0.9; }
+        .question-card { background: white; padding: 30px 35px; margin-bottom: 25px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 5px solid #C8102E; }
+        .question-card.answered-correct { border-left-color: #43B02A; background: #f8fff8; }
+        .question-card.answered-wrong { border-left-color: #E35205; background: #fff8f5; }
+        .question-number { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .question-text { font-size: 1.15rem; font-weight: 500; margin-bottom: 20px; color: #222; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option { display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: #f8f9fa; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { background: #f0f0f0; border-color: #ccc; }
+        .option.selected { border-color: #C8102E; background: rgba(200, 16, 46, 0.05); }
+        .option.correct { border-color: #43B02A; background: rgba(67, 176, 42, 0.1); }
+        .option.incorrect { border-color: #E35205; background: rgba(227, 82, 5, 0.1); }
+        .option.disabled { cursor: default; }
+        .option input[type="radio"] { display: none; }
+        .option-marker { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #ccc; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.9rem; flex-shrink: 0; transition: all 0.2s ease; }
+        .option.selected .option-marker { border-color: #C8102E; background: #C8102E; color: white; }
+        .option.correct .option-marker { border-color: #43B02A; background: #43B02A; color: white; }
+        .option.incorrect .option-marker { border-color: #E35205; background: #E35205; color: white; }
+        .option-text { flex: 1; }
+        .feedback { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: rgba(67, 176, 42, 0.1); border-left: 4px solid #43B02A; }
+        .feedback.incorrect { background: rgba(227, 82, 5, 0.1); border-left: 4px solid #E35205; }
+        .feedback-header { font-family: 'Montserrat', sans-serif; font-weight: 600; margin-bottom: 10px; }
+        .feedback.correct .feedback-header { color: #43B02A; }
+        .feedback.incorrect .feedback-header { color: #E35205; }
+        .submit-btn { display: block; width: 100%; padding: 15px 30px; background: #C8102E; color: white; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 15px; }
+        .submit-btn:hover:not(:disabled) { background: #a00d24; }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+        .results { background: white; padding: 40px; border-radius: 12px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: none; }
+        .results.show { display: block; }
+        .results h2 { font-family: 'Montserrat', sans-serif; margin-top: 0; }
+        .score { font-size: 4rem; font-family: 'Montserrat', sans-serif; font-weight: 700; color: #C8102E; margin: 20px 0; }
+        .score-label { color: #666; font-size: 1.1rem; }
+        .retry-btn { display: inline-block; padding: 12px 30px; background: #1D428A; color: white; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 600; cursor: pointer; margin-top: 20px; text-decoration: none; }
+        .retry-btn:hover { background: #152d5e; }
+        .quiz-progress { text-align: center; margin-bottom: 30px; font-family: 'Montserrat', sans-serif; color: #666; }
+        .progress-dots { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background: #e0e0e0; }
+        .dot.current { background: #C8102E; }
+        .dot.correct { background: #43B02A; }
+        .dot.incorrect { background: #E35205; }
+    </style>
+</head>
+<body>
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="../../../index.html">Week 2</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="index.html">Day 4</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Quiz</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="quiz.html" class="nav-pill active">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Day 4: Multimodal AI Knowledge Check</h1>
+            <p>Test your understanding of multimodal AI concepts, image generation, and marketing workflows</p>
+            <p style="font-size: 0.85em; opacity: 0.8; margin-top: 8px;">20 randomized questions &bull; Target: 70%+ (14/20) &bull; Retake with new questions anytime</p>
+        </div>
+
+        <div class="quiz-progress">
+            <span id="progress-label">Question 1 of 20</span>
+            <div class="progress-dots" id="progress-dots"></div>
+        </div>
+
+        <div id="questions-container"></div>
+
+        <div class="results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="final-score">0/20</div>
+            <p class="score-label">Questions Correct</p>
+            <p id="results-message"></p>
+            <button class="retry-btn" onclick="location.reload()">Retake with New Questions</button>
+            <a href="index.html" class="retry-btn" style="margin-left: 10px; background: #43B02A;">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const QUESTIONS_PER_QUIZ = 20;
+
+        const questionBank = [
+            // TOPIC 1: MULTIMODAL AI DEFINITION (2 variants)
+            {
+                topic: "multimodal-definition",
+                question: "What makes an AI system 'multimodal'?",
+                options: [
+                    "It can process multiple types of input — text, images, audio, video — not just text",
+                    "It runs on multiple devices simultaneously",
+                    "It can generate output in multiple programming languages",
+                    "It uses multiple neural networks for the same task"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Multimodal AI can process multiple types of input (text, images, audio, video) rather than being limited to text alone. This ability to understand different data types makes it powerful for business applications.",
+                    incorrect: "Not quite. Multimodal AI refers to the ability to process multiple types of input — text, images, audio, video — not just text. 'Multi' + 'modal' = multiple modes of input."
+                }
+            },
+            {
+                topic: "multimodal-definition",
+                question: "Which scenario best demonstrates multimodal AI capabilities?",
+                options: [
+                    "A chatbot that answers questions using only text",
+                    "An AI that analyzes a marketing photo, transcribes a customer call, and generates a campaign image — all in one workflow",
+                    "A spell-checker that corrects typos in documents",
+                    "A calculator that performs complex math operations"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Analyzing a photo (image), transcribing a call (audio), and generating an image (creation) demonstrates all three multimodal capabilities: understanding images, processing audio, and generating visual content.",
+                    incorrect: "The best example is analyzing a photo, transcribing a call, and generating an image — this uses image understanding, audio processing, and image generation, all core multimodal capabilities."
+                }
+            },
+
+            // TOPIC 2: MODALITY TYPES (2 variants)
+            {
+                topic: "modality-types",
+                question: "Which of these is NOT a modality that modern multimodal AI can process?",
+                options: [
+                    "Images and photographs",
+                    "Audio recordings and voice",
+                    "Physical taste and smell",
+                    "Video and YouTube content"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Current AI cannot process taste or smell. The four main modalities are text, images, audio, and video. While AI sensors exist for chemical detection, consumer multimodal AI focuses on these four.",
+                    incorrect: "Physical taste and smell are NOT modalities that current multimodal AI can process. AI works with text, images, audio, and video."
+                }
+            },
+            {
+                topic: "modality-types",
+                question: "Google Gemini's free tier supports which multimodal inputs?",
+                options: [
+                    "Text only — images require a paid subscription",
+                    "Text and images, but not audio or video",
+                    "Text, images, audio files, and video/YouTube URLs",
+                    "All modalities, but only with a Google Workspace account"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Google Gemini's free tier supports text, image uploads, audio file uploads, and video analysis (including YouTube URLs). This makes it accessible for learning multimodal AI without any cost.",
+                    incorrect: "Google Gemini's free tier supports text, images, audio files, and video/YouTube URLs — all four major modalities are available without a paid subscription."
+                }
+            },
+
+            // TOPIC 3: IMAGE UNDERSTANDING (2 variants)
+            {
+                topic: "image-understanding",
+                question: "When you upload a marketing photo to AI, what can it identify?",
+                options: [
+                    "Objects, text (OCR), layout, context, emotional appeal, and design patterns",
+                    "Only the colors present in the image",
+                    "Only whether the image is high or low quality",
+                    "Only the file format and resolution"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Modern AI can identify objects, read text (OCR), understand layout and composition, interpret context and meaning, assess emotional appeal, and recognize design patterns — all from a single uploaded image.",
+                    incorrect: "AI can do much more than that. It identifies objects, text (OCR), layout, context, emotional appeal, and design patterns — all from a single image. This is what makes it so useful for competitive analysis."
+                }
+            },
+            {
+                topic: "image-understanding",
+                question: "What is the business value of AI image understanding for competitive analysis?",
+                options: [
+                    "It makes competitor ads look worse",
+                    "It only works with text-based advertisements",
+                    "It automatically copies competitor designs",
+                    "It turns subjective visual analysis into structured, comparable data in minutes"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! AI image understanding converts subjective visual analysis into structured, comparable data. Instead of hours of manual analysis, you get organized competitive intelligence (target audience, colors, messaging, positioning) in minutes.",
+                    incorrect: "The main value is turning subjective visual analysis into structured, comparable data in minutes. Upload a competitor's ad, and AI extracts target audience, colors, messaging, and positioning into a structured table."
+                }
+            },
+
+            // TOPIC 4: AUDIO UNDERSTANDING (2 variants)
+            {
+                topic: "audio-understanding",
+                question: "What business insights can AI extract from a customer call recording?",
+                options: [
+                    "Only a text transcript of what was said",
+                    "Transcript, speaker identification, sentiment analysis, key topics, and recommended actions",
+                    "Only whether the customer was male or female",
+                    "Only the length of the call in minutes"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! AI audio analysis goes far beyond transcription. It can identify speakers, analyze sentiment and tone, extract key topics and product mentions, and even suggest follow-up actions — turning a raw recording into actionable business intelligence.",
+                    incorrect: "AI extracts much more than just a transcript. It provides speaker identification, sentiment analysis, key topics, product mentions, and recommended actions — turning audio into structured business intelligence."
+                }
+            },
+            {
+                topic: "audio-understanding",
+                question: "How does AI audio analysis compare to traditional call center quality monitoring?",
+                options: [
+                    "AI is less accurate than human reviewers",
+                    "AI can only process calls shorter than 30 seconds",
+                    "AI can analyze 100% of calls vs. the 2-5% that humans typically sample",
+                    "There is no difference — both methods are equally effective"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Companies like Observe.AI analyze 100% of customer calls, compared to the 2-5% that human quality teams can manually review. This comprehensive coverage reveals patterns and issues that sampling would miss.",
+                    incorrect: "AI can analyze 100% of calls compared to the 2-5% that humans typically sample. This comprehensive coverage is one of the biggest advantages of AI-powered audio analysis."
+                }
+            },
+
+            // TOPIC 5: VIDEO UNDERSTANDING (2 variants)
+            {
+                topic: "video-understanding",
+                question: "What makes video analysis different from image analysis?",
+                options: [
+                    "Video adds the dimension of time — AI can track actions, scene changes, and temporal patterns",
+                    "Video analysis is always less accurate than image analysis",
+                    "Video analysis can only work with professional footage",
+                    "There is no difference — video is just a series of images"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Video adds the critical dimension of time. AI can track actions and events, identify scene changes, analyze temporal patterns (like peak traffic times), and combine audio+visual information — things that individual image analysis cannot do.",
+                    incorrect: "Video adds the dimension of time. AI can track actions, scene changes, and temporal patterns — capabilities that go beyond analyzing individual images."
+                }
+            },
+            {
+                topic: "video-understanding",
+                question: "Which video analysis capability would be most valuable for a retail store manager?",
+                options: [
+                    "Counting the number of pixels in each frame",
+                    "Measuring the exact dimensions of the store",
+                    "Converting the video into an audio-only file",
+                    "Identifying peak traffic times, customer flow patterns, and which displays get the most attention"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! For retail managers, identifying peak traffic times, customer flow patterns, and display attention metrics are the most valuable insights. These help optimize staffing, store layout, and merchandising decisions.",
+                    incorrect: "Identifying peak traffic times, customer flow patterns, and which displays get the most attention would be most valuable. These insights help optimize staffing, layout, and merchandising."
+                }
+            },
+
+            // TOPIC 6: UNSTRUCTURED TO STRUCTURED (2 variants)
+            {
+                topic: "unstructured-structured",
+                question: "What is the primary business value of multimodal AI?",
+                options: [
+                    "Making images look prettier",
+                    "Turning messy, unstructured data (photos, audio, video) into clean, actionable structured information",
+                    "Replacing all human workers in data entry",
+                    "Storing large files more efficiently"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The core value proposition of multimodal AI is converting unstructured data (photos, audio, video) into structured, actionable information — tables, reports, insights, and briefs that businesses can act on.",
+                    incorrect: "The primary value is turning messy, unstructured data (photos, audio, video) into clean, actionable structured information. This is the core of multimodal context engineering."
+                }
+            },
+            {
+                topic: "unstructured-structured",
+                question: "How does multimodal AI connect to Day 3's context engineering?",
+                options: [
+                    "It doesn't — they are completely separate topics",
+                    "Multimodal AI replaces context engineering entirely",
+                    "The same principles (structure input, specify output format, iterate) apply across all modalities — text, images, audio, and video",
+                    "Context engineering only works with text documents"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Context engineering principles (structure your input, specify your output format, iterate) apply equally to all modalities. Day 3 focused on text; Day 4 extends the same approach to images, audio, and video.",
+                    incorrect: "The same context engineering principles from Day 3 (structure input, specify output format, iterate) apply across all modalities. Day 4 extends these principles from text to images, audio, and video."
+                }
+            },
+
+            // TOPIC 7: IMAGE GENERATION CAPABILITIES (2 variants)
+            {
+                topic: "image-gen-capabilities",
+                question: "What can AI image generators reliably produce for business use?",
+                options: [
+                    "Marketing visuals, product mockups, concept art, and presentation graphics",
+                    "Only simple geometric shapes",
+                    "Only exact copies of existing photographs",
+                    "Only black and white sketches"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! AI image generators can reliably produce marketing visuals, product mockups, concept art, and presentation graphics. These are the strongest business applications where AI-generated images add real value.",
+                    incorrect: "AI image generators can reliably produce marketing visuals, product mockups, concept art, and presentation graphics — these are the strongest business applications."
+                }
+            },
+            {
+                topic: "image-gen-capabilities",
+                question: "What is the main business advantage of AI image generation over traditional design?",
+                options: [
+                    "AI images are always higher quality than human designs",
+                    "AI images never need any review or editing",
+                    "AI completely eliminates the need for any human designers",
+                    "Speed and iteration — generating dozens of concept variations in minutes instead of days, at minimal cost"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! The main advantage is speed and iteration: AI can generate 50+ concept variations in minutes at minimal cost, compared to days and thousands of dollars with traditional design. This accelerates the creative process enormously.",
+                    incorrect: "The main advantage is speed and iteration — generating dozens of concepts in minutes instead of days, at minimal cost. This accelerates exploration without replacing human creativity."
+                }
+            },
+
+            // TOPIC 8: IMAGE GENERATION LIMITATIONS (2 variants)
+            {
+                topic: "image-gen-limitations",
+                question: "Which task would AI image generation struggle with most?",
+                options: [
+                    "Generating a marketing banner with perfectly readable, correctly-spelled promotional text",
+                    "Creating a colorful abstract background for a presentation",
+                    "Producing a product mockup with general visual themes",
+                    "Creating concept art for a seasonal retail display"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! AI image generators notoriously struggle with readable text in images. Letters often appear garbled or misspelled. For text-heavy designs, it's better to generate the visual elements with AI and add text using a design tool.",
+                    incorrect: "AI struggles most with generating perfectly readable, correctly-spelled text in images. This is a well-known limitation — text often appears garbled. Add text using design tools instead."
+                }
+            },
+            {
+                topic: "image-gen-limitations",
+                question: "Why is 'trust but verify' important for AI-generated images?",
+                options: [
+                    "AI images are always perfect and never need checking",
+                    "AI may hallucinate details, misspell text, create impossible physics, or miss brand guidelines",
+                    "Verification is only needed for legal documents",
+                    "AI images can never be used professionally"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! AI-generated images may contain hallucinated details (wrong number of fingers), misspelled text, impossible physics, or brand-inconsistent elements. Always review before professional use — the iteration skill (prompt, review, refine) produces the best results.",
+                    incorrect: "AI may hallucinate details, misspell text, create impossible physics, or miss brand guidelines. That's why 'trust but verify' is essential — always review AI output before using it professionally."
+                }
+            },
+
+            // TOPIC 9: IMAGE PROMPT ENGINEERING (2 variants)
+            {
+                topic: "image-prompt-engineering",
+                question: "What makes an effective image generation prompt?",
+                options: [
+                    "Keep it as short and vague as possible so AI has creative freedom",
+                    "Include specific details about style, composition, mood, lighting, and brand elements",
+                    "Always write prompts in a foreign language for better results",
+                    "Copy someone else's prompt exactly without modification"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Effective image prompts include specific details about style (photography vs. illustration), composition (wide shot vs. close-up), mood/lighting (warm vs. cool), and brand elements (colors, tone). Specificity is key.",
+                    incorrect: "Effective prompts include specific details about style, composition, mood, lighting, and brand elements. Vague prompts produce generic results — specificity is the key to professional-quality output."
+                }
+            },
+            {
+                topic: "image-prompt-engineering",
+                question: "How does the RCTFC framework from Day 2 apply to image generation?",
+                options: [
+                    "It doesn't apply — image prompts are completely different from text prompts",
+                    "You only need the 'Task' component for images",
+                    "Role (photographer), Context (campaign), Task (create banner), Format (16:9, bright), Constraints (brand colors, no text errors)",
+                    "RCTFC should be replaced with a completely new framework for images"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! RCTFC translates directly: Role (professional photographer), Context (spring marketing campaign), Task (create a banner), Format (16:9 aspect ratio, bright, clean), Constraints (brand colors, no text errors). The same prompt engineering principles apply across modalities.",
+                    incorrect: "RCTFC applies directly to images: Role (photographer), Context (campaign), Task (create banner), Format (16:9, bright), Constraints (brand colors). The same prompt engineering principles from Day 2 work for image generation."
+                }
+            },
+
+            // TOPIC 10: MULTIMODAL CONTEXT ENGINEERING (2 variants)
+            {
+                topic: "multimodal-context",
+                question: "What does 'multimodal context engineering' mean?",
+                options: [
+                    "Applying context engineering principles (structure, format, iterate) to images, audio, and video — not just text",
+                    "Using only text documents as AI context",
+                    "Building physical hardware that can see and hear",
+                    "Converting all data to text before sending to AI"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Multimodal context engineering extends Day 3's principles to all modalities. The same ideas — structure your input, specify your output format, iterate and refine — apply whether you're working with text, images, audio, or video.",
+                    incorrect: "Multimodal context engineering means applying context engineering principles (structure, format, iterate) to images, audio, and video — extending Day 3's text-focused approach to all modalities."
+                }
+            },
+            {
+                topic: "multimodal-context",
+                question: "In Beacon's marketing campaign workflow, which step best demonstrates multimodal context engineering?",
+                options: [
+                    "Typing a text-only email to the marketing team",
+                    "Hiring a professional photographer instead of using AI",
+                    "Printing out all the marketing materials on paper",
+                    "Combining image analysis, audio insights, and generated visuals into a structured campaign brief"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! Combining image analysis (visual competitive intelligence), audio insights (customer feedback), and generated visuals into a structured campaign brief is the ultimate demonstration — multiple modalities structured into a single actionable deliverable.",
+                    incorrect: "Combining image analysis, audio insights, and generated visuals into a structured campaign brief demonstrates multimodal context engineering — multiple data types combined into one structured output."
+                }
+            },
+
+            // TOPIC 11: REAL-WORLD USE CASES (2 variants)
+            {
+                topic: "real-world-cases",
+                question: "Match the use case: 'Autonomous drones scanning warehouse shelves and counting inventory' primarily uses which modality?",
+                options: [
+                    "Audio analysis",
+                    "Image/video understanding — drones capture visual data of shelves that AI analyzes for inventory counts",
+                    "Text processing",
+                    "Image generation"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Warehouse drone inventory uses image/video understanding. Companies like Gather AI use autonomous drones to capture visual data of warehouse shelves, then AI analyzes the images to count inventory 25x faster with 99.9% accuracy.",
+                    incorrect: "Warehouse drone inventory primarily uses image/video understanding. Drones capture visual data of shelves that AI analyzes for inventory counts — image understanding, not audio or text."
+                }
+            },
+            {
+                topic: "real-world-cases",
+                question: "Which industry application uses multimodal AI for audio understanding?",
+                options: [
+                    "Drone-based warehouse inventory counting",
+                    "Manufacturing visual quality inspection",
+                    "Call center analytics — analyzing 100% of customer calls for sentiment, compliance, and coaching",
+                    "Retail store shelf monitoring with cameras"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Call center analytics is the primary audio understanding use case. Companies like Observe.AI analyze 100% of customer calls (vs. 2-5% manual sampling) to extract sentiment, check compliance, and identify coaching opportunities.",
+                    incorrect: "Call center analytics uses audio understanding — analyzing 100% of customer calls for sentiment, compliance, and coaching. This is the primary business application for AI audio analysis."
+                }
+            },
+
+            // TOPIC 12: HUMAN-IN-THE-LOOP (2 variants)
+            {
+                topic: "human-in-loop",
+                question: "Why do AI-generated marketing materials need human review?",
+                options: [
+                    "Brand voice consistency, cultural sensitivity, strategic alignment, and legal/compliance review all require human judgment",
+                    "AI output is always perfect and doesn't need review",
+                    "Human review is only needed for legal documents",
+                    "AI can handle all aspects of marketing without human involvement"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! AI generates drafts, but humans must ensure brand voice consistency, cultural sensitivity, strategic alignment, and legal/compliance standards. These require contextual judgment that AI doesn't reliably provide.",
+                    incorrect: "AI-generated materials need human review for brand voice consistency, cultural sensitivity, strategic alignment, and legal/compliance. These require contextual human judgment."
+                }
+            },
+            {
+                topic: "human-in-loop",
+                question: "In the human-in-the-loop workflow, what is AI's role vs. the human's role?",
+                options: [
+                    "AI makes all decisions; humans just approve",
+                    "AI and humans do exactly the same tasks",
+                    "Humans do all the work; AI just stores the files",
+                    "AI generates drafts and variations quickly; humans curate, refine, and ensure quality and alignment"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! AI accelerates the creative process by generating drafts and variations quickly, while humans curate the best options, refine them to meet brand standards, and ensure strategic alignment. It's a collaboration, not a replacement.",
+                    incorrect: "AI generates drafts and variations quickly; humans curate, refine, and ensure quality. This collaboration leverages AI's speed with human judgment and creativity."
+                }
+            },
+
+            // TOPIC 13: ROI OF MULTIMODAL AI (2 variants)
+            {
+                topic: "roi-multimodal",
+                question: "What drives the ROI of AI-powered marketing content creation?",
+                options: [
+                    "AI marketing always produces viral content",
+                    "Speed (minutes vs. days), cost reduction ($1,500 vs. $5,000), and scale (50+ variations vs. 10)",
+                    "AI eliminates the need for any marketing budget",
+                    "ROI comes only from reducing headcount"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The ROI comes from three factors: speed (concept art in minutes vs. days), cost reduction (AI drafts + designer polish is cheaper than full designer creation), and scale (exploring 50+ variations instead of just 10).",
+                    incorrect: "ROI comes from speed (minutes vs. days), cost reduction ($1,500 vs. $5,000 per campaign), and scale (50+ variations vs. 10). It's about accelerating and expanding the creative process, not eliminating humans."
+                }
+            },
+            {
+                topic: "roi-multimodal",
+                question: "Why should you be cautious about vendor-published ROI figures for AI marketing tools?",
+                options: [
+                    "Vendor ROI figures are always perfectly accurate",
+                    "Only government-published figures are trustworthy",
+                    "ROI figures are irrelevant to business decisions",
+                    "They often reflect ideal conditions; actual savings depend on campaign complexity, brand requirements, and review needs"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! Vendor ROI figures often reflect ideal conditions. Your actual savings depend on campaign complexity, brand requirements, and how much human review is needed. Always calculate YOUR specific numbers rather than relying on vendor claims.",
+                    incorrect: "Vendor figures often reflect ideal conditions. Actual savings depend on your specific campaign complexity, brand requirements, and review needs. Always calculate your own numbers."
+                }
+            },
+
+            // TOPIC 14: ETHICAL CONSIDERATIONS (2 variants)
+            {
+                topic: "ethical-considerations",
+                question: "What should a company consider before using AI-generated images in marketing?",
+                options: [
+                    "Copyright implications, potential for misleading content, brand representation accuracy, and whether to disclose AI usage",
+                    "Nothing — AI-generated content has no ethical implications",
+                    "Only the file size of the images",
+                    "Only whether the images are high resolution"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Companies should consider copyright implications (who owns AI-generated images?), potential for misleading content (AI can create unrealistic representations), brand accuracy, and whether to disclose AI usage to customers and stakeholders.",
+                    incorrect: "Companies should consider copyright implications, potential for misleading content, brand representation accuracy, and whether to disclose AI usage. AI-generated content has real ethical and legal implications."
+                }
+            },
+            {
+                topic: "ethical-considerations",
+                question: "Why is AI image generation's inability to reliably identify specific people actually a good thing?",
+                options: [
+                    "It's not — this is purely a limitation with no benefits",
+                    "It helps prevent deepfakes, identity theft, and unauthorized use of people's likenesses in generated content",
+                    "It makes AI images load faster",
+                    "It reduces the file size of generated images"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The inability to generate specific people's faces is actually a safety feature. It helps prevent deepfakes, identity theft, and unauthorized use of likenesses — all of which would create serious ethical and legal problems for businesses.",
+                    incorrect: "This limitation is actually a safety feature. It helps prevent deepfakes, identity theft, and unauthorized use of people's likenesses — protecting businesses from serious ethical and legal problems."
+                }
+            },
+
+            // TOPIC 15: MARKETING WORKFLOW (2 variants)
+            {
+                topic: "marketing-workflow",
+                question: "What is the correct order for Beacon's AI-assisted marketing workflow?",
+                options: [
+                    "Analyze competitor visuals → Gather customer voice insights → Generate marketing visuals → Build structured campaign brief",
+                    "Generate images → Analyze competitors → Listen to customers → Write brief",
+                    "Write the brief first → Then decide what images to create → Skip customer research",
+                    "Generate random images → Pick the best one → Ship it without review"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! The workflow is: (1) Analyze competitor visuals for intelligence, (2) Gather customer voice insights for messaging direction, (3) Generate marketing visuals informed by steps 1-2, (4) Build a structured campaign brief combining all insights. Research first, create second.",
+                    incorrect: "The correct order is: Analyze competitors → Customer voice → Generate visuals → Build brief. Research and insights come first; creation is informed by that research."
+                }
+            },
+            {
+                topic: "marketing-workflow",
+                question: "Why does the marketing workflow start with competitive analysis and customer voice BEFORE image generation?",
+                options: [
+                    "It doesn't matter what order you do things in",
+                    "Because the insights from analysis inform what visuals to create — research drives creation, not the other way around",
+                    "Image generation takes longer, so it should go last",
+                    "Competitive analysis is required by law"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Research drives creation. The competitive analysis reveals what works in the market, and customer voice reveals what your audience wants. These insights directly inform the image generation prompts, leading to more targeted, effective marketing visuals.",
+                    incorrect: "Research drives creation. Competitive analysis reveals market patterns, and customer voice reveals audience needs. These insights inform your image generation prompts, making visuals more targeted and effective."
+                }
+            },
+
+            // TOPIC 16: MULTIMODAL AI IN SUPPLY CHAIN (2 variants)
+            {
+                topic: "supply-chain-multimodal",
+                question: "How are companies like Gather AI using multimodal technology in warehouses?",
+                options: [
+                    "Autonomous drones capture images of warehouse shelves, and AI vision analyzes them to count inventory 25x faster than manual methods",
+                    "They use text-based chatbots to ask warehouse workers about stock levels",
+                    "They play audio announcements to remind workers to count inventory",
+                    "They generate AI images of what the warehouse should look like"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Companies like Gather AI deploy autonomous drones that fly through warehouses capturing images of shelves. AI vision then analyzes those images to count inventory with 99.9% accuracy — 25x faster than manual cycle counts.",
+                    incorrect: "Gather AI uses autonomous drones that capture images of warehouse shelves. AI vision analyzes those images to count inventory 25x faster than manual methods with 99.9% accuracy — a prime example of image understanding in supply chain."
+                }
+            },
+            {
+                topic: "supply-chain-multimodal",
+                question: "A manufacturing plant uses cameras on the assembly line to detect defective products. Which multimodal capability does this primarily demonstrate?",
+                options: [
+                    "Audio analysis of machine sounds",
+                    "Text extraction from product labels",
+                    "Image generation of replacement parts",
+                    "Visual inspection — AI image understanding identifies defects that human inspectors might miss at production speed"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! Visual quality inspection uses AI image understanding to spot defects — scratches, misalignments, color variations — at production speed. Companies report catching defects that human inspectors miss due to fatigue or speed constraints.",
+                    incorrect: "This is visual inspection using AI image understanding. The cameras capture images of products, and AI analyzes them to detect defects like scratches, misalignments, or color variations at production speed."
+                }
+            },
+
+            // TOPIC 17: AUDIO TRANSCRIPTION VS. AUDIO UNDERSTANDING (2 variants)
+            {
+                topic: "transcription-vs-understanding",
+                question: "What is the key difference between audio transcription and audio understanding?",
+                options: [
+                    "There is no difference — they produce identical output",
+                    "Transcription converts speech to text; audio understanding extracts meaning, sentiment, topics, and actionable insights from the recording",
+                    "Transcription is more expensive than understanding",
+                    "Audio understanding only works with music, not speech"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Transcription simply converts speech to text — a written record of what was said. Audio understanding goes further: it extracts sentiment, identifies speakers, flags key topics, detects urgency, and recommends actions. The difference is raw text vs. actionable intelligence.",
+                    incorrect: "Transcription converts speech to text (what was said). Audio understanding extracts deeper meaning — sentiment, speaker identification, key topics, urgency, and recommended actions. It is the difference between a written record and actionable intelligence."
+                }
+            },
+            {
+                topic: "transcription-vs-understanding",
+                question: "A retail manager uploads a recording of a customer complaint call. Which output demonstrates audio understanding rather than just transcription?",
+                options: [
+                    "A word-for-word text version of everything that was said",
+                    "A summary listing the file format, duration, and bitrate of the audio",
+                    "A report identifying the customer's frustration level as high, the key issue as a delayed shipment, and a recommended follow-up action of offering expedited replacement",
+                    "A count of how many words were spoken during the call"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Identifying frustration level (sentiment), the key issue (topic extraction), and a recommended action goes far beyond transcription. This is audio understanding — turning a raw recording into structured, actionable business intelligence.",
+                    incorrect: "Audio understanding produces insights like sentiment analysis (frustration level: high), topic extraction (delayed shipment), and recommended actions (offer expedited replacement). A word-for-word transcript is just transcription."
+                }
+            },
+
+            // TOPIC 18: ITERATION AS A SKILL (2 variants)
+            {
+                topic: "iteration-skill",
+                question: "Why is iteration considered a core skill for AI image generation?",
+                options: [
+                    "Because AI always produces a perfect image on the first attempt",
+                    "Because images cannot be edited after generation",
+                    "Because the prompt-review-refine cycle progressively improves results — first attempts are rarely final quality",
+                    "Because you must generate exactly three versions of every image"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! First-attempt images are rarely production-ready. The prompt-review-refine cycle is how professionals get quality results: generate, evaluate what is wrong (wrong colors, bad composition, missing elements), adjust the prompt, and regenerate. Each round gets closer to the goal.",
+                    incorrect: "Iteration matters because first attempts are rarely final quality. The prompt-review-refine cycle progressively improves results: generate, evaluate, adjust the prompt, regenerate. This cycle is how professionals get production-ready images from AI."
+                }
+            },
+            {
+                topic: "iteration-skill",
+                question: "During image generation, your first result has the right concept but the wrong color palette and the text is garbled. What is the best next step?",
+                options: [
+                    "Accept the image as-is since AI output cannot be improved",
+                    "Start over with a completely different concept",
+                    "Give up on AI image generation entirely",
+                    "Refine your prompt by specifying the exact colors you want and remove text from the AI image — plan to add text with a design tool instead"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! This is the iterate-and-refine approach: keep what works (the concept), fix what does not (specify exact colors), and work around known limitations (add text separately with a design tool). Each iteration builds on what the previous attempt got right.",
+                    incorrect: "The best approach is to iterate: refine your prompt by specifying exact colors (fixing the palette), and plan to add text with a design tool (working around AI's text limitation). Keep what works, fix what does not."
+                }
+            },
+
+            // TOPIC 19: COMPETITIVE VISUAL ANALYSIS (2 variants)
+            {
+                topic: "competitive-visual-analysis",
+                question: "How does AI-powered competitive visual analysis differ from traditional competitor research?",
+                options: [
+                    "AI analysis is less accurate than human analysis",
+                    "AI can only analyze one competitor image at a time",
+                    "AI extracts structured data (target audience, color strategy, messaging tone, positioning) from competitor visuals in minutes, replacing hours of subjective manual review",
+                    "Traditional research is faster than AI analysis"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! AI turns subjective visual analysis into structured, comparable data in minutes. Upload a competitor's ad and AI extracts target audience, color strategy, messaging tone, emotional appeal, and market positioning — analysis that would take a human team hours of manual work.",
+                    incorrect: "AI extracts structured data from competitor visuals in minutes: target audience, color strategy, messaging tone, and positioning. This replaces hours of subjective manual review and produces consistent, comparable analysis across competitors."
+                }
+            },
+            {
+                topic: "competitive-visual-analysis",
+                question: "Beacon's marketing team uploads three competitor holiday campaign images to AI. What is the most valuable output they could request?",
+                options: [
+                    "A simple list of colors found in each image",
+                    "The file sizes of each image",
+                    "The exact fonts used in each advertisement",
+                    "A structured comparison table showing each competitor's target audience, emotional appeal, color strategy, key messaging, and market positioning"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! A structured comparison table provides actionable intelligence — revealing patterns across competitors such as who they target, what emotions they use, and where positioning gaps exist. This is far more valuable than isolated details like colors or fonts.",
+                    incorrect: "The most valuable output is a structured comparison table with target audience, emotional appeal, color strategy, messaging, and positioning for each competitor. This reveals market patterns and positioning gaps that inform Beacon's own campaign strategy."
+                }
+            },
+
+            // TOPIC 20: CAMPAIGN BRIEF WORKFLOW (2 variants)
+            {
+                topic: "campaign-brief-workflow",
+                question: "In the campaign brief workflow, why is combining insights from multiple modalities (images, audio, text) into a single brief more powerful than analyzing each separately?",
+                options: [
+                    "It is not — separate analyses are always better",
+                    "Combined briefs are shorter and easier to write",
+                    "A combined brief reveals connections across data types — visual competitive gaps, customer voice themes, and generated concepts all inform each other, creating a more complete strategic picture",
+                    "Combining modalities is only useful for technology companies"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! A combined brief creates connections across data types. Competitive visual analysis might reveal a color gap, customer audio might confirm demand for that aesthetic, and image generation can prototype the concept — each insight strengthens the others, producing a more complete strategy.",
+                    incorrect: "Combining modalities reveals connections: competitive visual gaps align with customer voice themes, which inform generated concept directions. Each modality strengthens the others, creating a more complete strategic picture than separate analyses."
+                }
+            },
+            {
+                topic: "campaign-brief-workflow",
+                question: "What should a well-structured AI-assisted campaign brief include?",
+                options: [
+                    "Only AI-generated images with no supporting analysis",
+                    "Only a transcript of customer calls",
+                    "Only a list of competitor names",
+                    "Competitive intelligence from visual analysis, customer insights from audio analysis, AI-generated concept visuals, and strategic recommendations tying them together"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! A complete campaign brief combines competitive intelligence (from visual analysis), customer insights (from audio analysis), concept visuals (from image generation), and strategic recommendations that tie all the multimodal insights together into an actionable plan.",
+                    incorrect: "A well-structured brief includes competitive intelligence from visual analysis, customer insights from audio analysis, AI-generated concept visuals, and strategic recommendations tying them together. This is the complete multimodal workflow in action."
+                }
+            }
+        ];
+
+        // Quiz state
+        let selectedQuestions = [];
+        let answered = 0;
+        let correct = 0;
+
+        function initQuiz() {
+            const topics = [...new Set(questionBank.map(q => q.topic))];
+            selectedQuestions = [];
+
+            topics.forEach(topic => {
+                const topicQuestions = questionBank.filter(q => q.topic === topic);
+                const randomQ = topicQuestions[Math.floor(Math.random() * topicQuestions.length)];
+                selectedQuestions.push({...randomQ});
+            });
+
+            selectedQuestions = shuffleArray(selectedQuestions);
+
+            const container = document.getElementById('questions-container');
+            container.innerHTML = selectedQuestions.map((q, index) => generateQuestionHTML(q, index + 1)).join('');
+
+            const dotsContainer = document.getElementById('progress-dots');
+            dotsContainer.innerHTML = selectedQuestions.map((_, i) =>
+                `<span class="dot ${i === 0 ? 'current' : ''}"></span>`
+            ).join('');
+
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function generateQuestionHTML(q, num) {
+            const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, wasIndex: i }));
+            const shuffledOptions = shuffleArray(optionsWithIndex);
+            const newCorrectIndex = shuffledOptions.findIndex(o => o.wasIndex === q.correct);
+            selectedQuestions[num - 1].correctShuffled = newCorrectIndex;
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const optionsHTML = shuffledOptions.map((opt, i) => `
+                <label class="option">
+                    <input type="radio" name="q${num}" value="${i}">
+                    <span class="option-marker">${letters[i]}</span>
+                    <span class="option-text">${opt.text}</span>
+                </label>
+            `).join('');
+
+            return `
+                <div class="question-card" data-question="${num}" data-correct="${newCorrectIndex}">
+                    <div class="question-number">Question ${num}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">${optionsHTML}</div>
+                    <div class="feedback">
+                        <div class="feedback-header"></div>
+                        <div class="feedback-text"></div>
+                    </div>
+                    <button class="submit-btn" disabled onclick="checkAnswer(${num})">Check Answer</button>
+                </div>
+            `;
+        }
+
+        function handleOptionClick(e) {
+            const option = e.currentTarget;
+            const questionCard = option.closest('.question-card');
+            if (questionCard.classList.contains('answered-correct') || questionCard.classList.contains('answered-wrong')) return;
+            questionCard.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            option.querySelector('input').checked = true;
+            questionCard.querySelector('.submit-btn').disabled = false;
+        }
+
+        function checkAnswer(questionNum) {
+            const card = document.querySelector(`[data-question="${questionNum}"]`);
+            const correctAnswer = parseInt(card.dataset.correct);
+            const selectedOption = card.querySelector('input:checked');
+            const questionData = selectedQuestions[questionNum - 1];
+            if (!selectedOption) return;
+
+            const selected = parseInt(selectedOption.value);
+            const isCorrect = selected === correctAnswer;
+
+            card.querySelectorAll('.option').forEach((o) => {
+                o.classList.add('disabled');
+                if (parseInt(o.querySelector('input').value) === correctAnswer) o.classList.add('correct');
+                if (parseInt(o.querySelector('input').value) === selected && !isCorrect) o.classList.add('incorrect');
+            });
+            card.querySelector('.submit-btn').disabled = true;
+            card.querySelector('.submit-btn').textContent = isCorrect ? '\u2713 Correct' : '\u2717 Incorrect';
+
+            const feedbackDiv = card.querySelector('.feedback');
+            feedbackDiv.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+            feedbackDiv.querySelector('.feedback-header').textContent = isCorrect ? '\u2713 Correct!' : '\u2717 Not quite right';
+            feedbackDiv.querySelector('.feedback-text').textContent = questionData.feedback[isCorrect ? 'correct' : 'incorrect'];
+
+            card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+            answered++;
+            if (isCorrect) correct++;
+            updateProgress();
+
+            if (answered === selectedQuestions.length) setTimeout(showResults, 1000);
+        }
+
+        function updateProgress() {
+            document.getElementById('progress-label').textContent =
+                `Question ${Math.min(answered + 1, selectedQuestions.length)} of ${selectedQuestions.length}`;
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                dot.classList.remove('current', 'correct', 'incorrect');
+                const card = document.querySelector(`[data-question="${i + 1}"]`);
+                if (card.classList.contains('answered-correct')) dot.classList.add('correct');
+                else if (card.classList.contains('answered-wrong')) dot.classList.add('incorrect');
+                else if (i === answered) dot.classList.add('current');
+            });
+        }
+
+        function showResults() {
+            document.getElementById('questions-container').style.display = 'none';
+            document.querySelector('.quiz-progress').style.display = 'none';
+            const results = document.getElementById('results');
+            results.classList.add('show');
+            document.getElementById('final-score').textContent = `${correct}/${selectedQuestions.length}`;
+
+            let message = '';
+            const percentage = (correct / selectedQuestions.length) * 100;
+            if (percentage === 100) message = "Perfect score! You've mastered multimodal AI concepts.";
+            else if (percentage >= 80) message = "Excellent! You passed with a strong understanding of multimodal AI.";
+            else if (percentage >= 70) message = "Good work! You passed. Review any missed questions to solidify your understanding.";
+            else message = "Keep studying! Review the lecture materials and try again. You need 70%+ (14/20) to pass.";
+            document.getElementById('results-message').textContent = message;
+        }
+
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

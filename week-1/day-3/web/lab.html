@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 3 Lab: Building Beacon's Knowledge Assistant</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
+    <style>
+        /* Lab-specific styles */
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        .lab-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Navigation with Breadcrumb */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* Lab header */
+        .lab-header {
+            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
+            color: white;
+            padding: 60px 40px;
+            margin: -40px -30px 40px;
+            text-align: center;
+        }
+        .lab-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px;
+            font-size: 2.5rem;
+        }
+        .lab-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Compare with classmates box */
+        .compare-box {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4ff 100%);
+            border: 2px solid #00A9E0;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+        }
+        .compare-box h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1D428A;
+            margin: 0 0 10px;
+            font-size: 1rem;
+        }
+        .compare-box p {
+            font-size: 0.9em;
+            margin: 0 0 12px;
+            line-height: 1.6;
+        }
+
+        /* Time estimate */
+        .time-estimate {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Objectives box */
+        .objectives-box {
+            background: white;
+            border-left: 5px solid #C8102E;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .objectives-box h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        /* Section styling */
+        .lab-section {
+            background: white;
+            padding: 30px 35px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .lab-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            border-bottom: 3px solid #C8102E;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .lab-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1D428A;
+            margin-top: 25px;
+        }
+
+        /* Task styling */
+        .task {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .task-number {
+            background: #C8102E;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .task-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Checkbox steps */
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .step:last-child {
+            border-bottom: none;
+        }
+        .step input[type="checkbox"] {
+            margin-top: 5px;
+            transform: scale(1.3);
+            cursor: pointer;
+            accent-color: #C8102E;
+        }
+        .step label {
+            cursor: pointer;
+            flex: 1;
+        }
+        .step.completed label {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        /* Document boxes */
+        .document-box {
+            background: white;
+            border: 2px solid #1D428A;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 20px 0;
+            position: relative;
+        }
+        .document-box::before {
+            content: attr(data-doc-title);
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background: #1D428A;
+            color: white;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            border-radius: 3px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        .document-box.doc-overview { border-color: #1D428A; }
+        .document-box.doc-overview::before { background: #1D428A; }
+        .document-box.doc-org { border-color: #00A9E0; }
+        .document-box.doc-org::before { background: #00A9E0; }
+        .document-box.doc-org h4 { color: #00A9E0; }
+        .document-box.doc-finance { border-color: #43B02A; }
+        .document-box.doc-finance::before { background: #43B02A; }
+        .document-box.doc-finance h4 { color: #43B02A; }
+        .document-box.doc-strategy { border-color: #E35205; }
+        .document-box.doc-strategy::before { background: #E35205; }
+        .document-box.doc-strategy h4 { color: #E35205; }
+        .document-box.doc-memo { border-color: #C8102E; }
+        .document-box.doc-memo::before { background: #C8102E; }
+        .document-box.doc-memo h4 { color: #C8102E; }
+        .document-box h4 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+            color: #1D428A;
+        }
+        .document-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+        }
+        .copy-doc-btn {
+            background: #1D428A;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .copy-doc-btn:hover {
+            background: #153366;
+        }
+
+        /* Download all button */
+        .download-all-btn {
+            background: #00A9E0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        .download-all-btn:hover {
+            background: #0088b8;
+        }
+
+        /* Tip boxes */
+        .tip-box {
+            background: rgba(0, 169, 224, 0.1);
+            border-left: 4px solid #00A9E0;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .tip-box strong {
+            color: #00A9E0;
+        }
+
+        /* Warning boxes */
+        .warning-box {
+            background: rgba(227, 82, 5, 0.1);
+            border-left: 4px solid #E35205;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning-box strong {
+            color: #E35205;
+        }
+
+        /* Reflection/answer areas */
+        .reflection-area {
+            background: #fff;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .reflection-area label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .reflection-area textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        /* Progress tracker */
+        .progress-tracker {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            z-index: 100;
+        }
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #C8102E;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* CTA button */
+        .btn-primary {
+            display: inline-block;
+            background: #C8102E;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-primary:hover {
+            background: #a00d24;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&#8250;</span>
+            <a href="../../../index.html">Week 1</a>
+            <span class="separator">&#8250;</span>
+            <a href="index.html">Day 3</a>
+            <span class="separator">&#8250;</span>
+            <span class="current">Lab</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill active">Lab</a>
+            <a href="quiz.html" class="nav-pill">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="lab-container">
+
+        <!-- Lab Header -->
+        <div class="lab-header">
+            <h1>Lab 3: Building Beacon's Knowledge Assistant</h1>
+            <p>Transform company documents into an AI-powered knowledge base</p>
+            <span class="time-estimate">Estimated time: 110 minutes</span>
+        </div>
+
+        <!-- Learning Objectives -->
+        <div class="objectives-box">
+            <h2>Lab Objectives</h2>
+            <p>By completing this lab, you will:</p>
+            <ul>
+                <li>Create a <strong>Gemini Gem</strong> with persistent Knowledge for Beacon Retail Group</li>
+                <li>Compare three context engineering approaches: no context, chat upload, and Gems</li>
+                <li>Test your AI assistant's ability to <strong>cite sources</strong> from uploaded documents</li>
+                <li>Stress-test cross-referencing, boundary detection, and ambiguity handling</li>
+                <li>Share your Gem with classmates and compare results</li>
+            </ul>
+        </div>
+
+        <!-- TOOL SETUP -->
+        <section class="lab-section">
+            <h2>Tool Setup</h2>
+            <p><strong>What you need:</strong> A web browser and a free personal Google account.</p>
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">0</span>
+                    <h3 class="task-title">Get Started with Google Gemini</h3>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step0-1">
+                    <label for="step0-1">Open <strong>gemini.google.com</strong> in your web browser and sign in with your Google account.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-2">
+                    <label for="step0-2">Verify that file upload works: Look for the paperclip icon or "Add files" button in the chat interface.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-3">
+                    <label for="step0-3">Find the <strong>Gem manager</strong>: Click "Gem manager" in the left sidebar. You'll use this later to create a Gemini Gem.</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>You do NOT need a paid subscription.</strong> Gemini's free tier supports file uploads, Gems, and Knowledge uploads &mdash; everything needed for this lab. If prompted to select a model, choose the latest free-tier option (e.g., Gemini 2.5 Flash).
+                </div>
+
+                <div class="warning-box">
+                    <strong>Context window limits:</strong> A <strong>context window</strong> is the amount of text an AI model can "remember" at once (similar to short-term memory). The free tier supports ~32K tokens (~24K words) in a chat conversation. The 5 Beacon documents total ~3,500 words, so they fit comfortably. For larger document sets, Google AI Studio (ai.google.dev) offers up to 1 million tokens for free.
+                </div>
+
+                <div class="warning-box" style="border-left-color: #1D428A; background: #f0f7ff;">
+                    <strong>Troubleshooting Common Issues:</strong>
+                    <ul style="margin: 8px 0 0; padding-left: 20px; font-size: 0.9em;">
+                        <li><strong>File won't upload:</strong> Check that each file is under 10MB. Try .txt format instead of .pdf.</li>
+                        <li><strong>"Context limit reached":</strong> Start a new chat and re-upload. This is a real limitation worth noting!</li>
+                        <li><strong>AI gives generic answers (ignores your documents):</strong> Re-upload the files and explicitly say "Answer using ONLY the documents I uploaded."</li>
+                        <li><strong>Can't find the upload button:</strong> Look for a paperclip icon, "+" button, or "Attach files" near the text input area.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- BEACON DOCUMENTS -->
+        <section class="lab-section">
+            <h2>Beacon Company Documents</h2>
+            <p>Below are five company documents from Beacon Retail Group. You'll use these to build a knowledge assistant in the next section. <strong>You can copy each document individually or download all five as text files.</strong></p>
+
+            <button class="download-all-btn" onclick="downloadAllDocuments()">Download All Documents as .txt Files</button>
+
+            <div class="document-box doc-overview" data-doc-title="DOCUMENT 1">
+                <h4>Company Overview</h4>
+                <div class="document-content" id="doc1">Beacon Retail Group
+Company Overview
+
+Founded: 2003 in DeKalb, Illinois
+
+Locations: 25 stores across Illinois, Wisconsin, and Indiana
+
+Employees: 1,200 full-time and part-time staff
+
+Revenue: $180 million (Fiscal Year 2025)
+
+Business Model: Mid-sized regional retailer offering a mix of general merchandise and specialty departments including Home & Garden, Electronics, Apparel, Housewares, and Seasonal items.
+
+Market Position: Known for strong customer service, community involvement, and competitive pricing in smaller Midwest markets. Competes with national chains like Target and Walmart, as well as regional independents.
+
+CEO: Patricia Langford (appointed 2018)
+
+Recent Challenges:
+- Inflation pressuring profit margins (gross margin declined from 35.8% to 34.2% in 2025)
+- Increased competition from e-commerce retailers (Amazon, Chewy, Wayfair)
+- Difficulty recruiting and retaining seasonal workers during peak periods (November-December and May-June)
+- Rising labor costs due to minimum wage increases in Illinois and Wisconsin
+- Supply chain disruptions affecting product availability in Electronics and Apparel</div>
+                <button class="copy-doc-btn" onclick="copyDocument('doc1', this)">Copy Document</button>
+            </div>
+
+            <div class="document-box doc-org" data-doc-title="DOCUMENT 2">
+                <h4>Organizational Chart</h4>
+                <div class="document-content" id="doc2">Beacon Retail Group
+Organizational Chart (Simplified)
+
+CEO: Patricia Langford
+├─ VP of Operations: Marcus Webb
+│  ├─ Regional Manager, North Region (IL/WI): Sarah Martinez
+│  ├─ Regional Manager, South Region (IL/IN): Tom Chen
+│  └─ Director of Store Operations: Kyle Johnson
+│
+├─ VP of Marketing: Anita Patel
+│  ├─ Director of Brand Strategy: Jessica Tran
+│  ├─ Director of Digital Marketing: Rajesh Gupta
+│  └─ Community Relations Manager: Emily Warren
+│
+├─ VP of Finance: David Kim
+│  ├─ Controller: Linda Zhao
+│  ├─ Director of Purchasing: Mark Olsen
+│  └─ Financial Analyst: Priya Desai
+│
+├─ VP of Human Resources: Claudia Reeves
+│  ├─ Director of Talent Acquisition: Brian Foster
+│  ├─ Director of Training & Development: Monica Alvarez
+│  └─ HR Business Partner: James Carter
+│
+└─ VP of Technology: James Okonkwo
+   ├─ Director of IT Infrastructure: Susan Lee
+   ├─ Director of Innovation: Derek Brown
+   └─ Data & Analytics Manager: Anjali Mehta
+
+Total Leadership Team: 21 directors and managers reporting to 6 VPs and 1 CEO</div>
+                <button class="copy-doc-btn" onclick="copyDocument('doc2', this)">Copy Document</button>
+            </div>
+
+            <div class="document-box doc-finance" data-doc-title="DOCUMENT 3">
+                <h4>Q3 2025 Financial Summary</h4>
+                <div class="document-content" id="doc3">Beacon Retail Group
+Q3 2025 Financial Summary (July - September 2025)
+
+REVENUE
+Total Revenue: $47.2 million
+Year-over-Year Growth: +3.1% (vs. Q3 2024: $45.8M)
+Comparable Store Sales Growth: +1.4% (same-store sales)
+
+PROFITABILITY
+Gross Margin: 34.2% (down from 35.8% in Q3 2024)
+- Primary drivers: increased cost of goods (supplier price increases), higher shrink (theft/damage)
+
+Operating Expenses: $13.8 million (up 6.2% YoY)
+- Labor costs: $8.9M (+7.1% due to wage increases and overtime)
+- Store buildout (new Naperville location): $1.2M one-time expense
+- Marketing: $1.8M
+- Technology & IT: $0.9M
+- Other: $1.0M
+
+Net Income: $2.1 million (4.4% net margin)
+
+DEPARTMENT PERFORMANCE (Q3 2025 vs. Q3 2024)
+- Home & Garden: +12.3% (strong patio furniture and grills)
+- Apparel: +4.1%
+- Housewares: +2.8%
+- Seasonal: +1.2% (back-to-school underperformed)
+- Electronics: -8.4% (continued decline; online competition)
+
+CASH POSITION
+Cash & Equivalents: $12.4 million
+Available Credit Line: $5.0 million (undrawn)
+Status: Adequate liquidity, but limited flexibility for major initiatives
+
+SEASONAL HIRING OUTLOOK (Q4 2025)
+Projected Budget for Seasonal Hiring: $890,000
+Target Hires: 350-400 associates for November-December rush
+Challenge: Last year's completion rate was 58% (42% attrition before season end)</div>
+                <button class="copy-doc-btn" onclick="copyDocument('doc3', this)">Copy Document</button>
+            </div>
+
+            <div class="document-box doc-strategy" data-doc-title="DOCUMENT 4">
+                <h4>Strategic Plan Excerpt: AI Initiative</h4>
+                <div class="document-content" id="doc4">Beacon Retail Group
+Strategic Plan 2026-2028
+Excerpt: Artificial Intelligence Pilot Initiative
+
+INITIATIVE OVERVIEW
+Goal: Evaluate the practical application of AI tools to improve operational efficiency and decision-making across three pilot areas.
+
+PILOT AREAS
+1. Human Resources — Automated Resume Screening for Seasonal Hiring
+   - Problem: HR team manually reviews 1,200+ seasonal applications each year
+   - Proposed Solution: Use AI to pre-screen resumes for minimum qualifications, flagging top candidates
+   - Expected Impact: 30% reduction in time-to-hire; faster deployment of seasonal staff
+   - Owner: VP of Human Resources (Claudia Reeves)
+
+2. Finance — Expense Categorization and Anomaly Detection
+   - Problem: Finance team manually categorizes 2,500+ vendor invoices per month
+   - Proposed Solution: AI tool to auto-categorize expenses and flag unusual transactions (e.g., duplicate payments, over-budget line items)
+   - Expected Impact: 50% faster expense processing; reduced errors; earlier detection of fraud or overspending
+   - Owner: VP of Finance (David Kim)
+
+3. Customer Service — Email Triage and Response Drafting
+   - Problem: Customer service team receives 850 emails/week with 4-hour average response time
+   - Proposed Solution: AI chatbot to triage emails by urgency and draft responses for routine inquiries (store hours, return policy, order status)
+   - Expected Impact: 40% faster email response; reduced workload for human agents
+   - Owner: VP of Marketing (Anita Patel, customer experience lead)
+
+TIMELINE
+- Q1 2026: Vendor evaluation and tool selection
+- Q2 2026: Pilot deployment (3-month trial in each area)
+- Q3 2026: Assessment and decision (scale, pivot, or discontinue)
+
+BUDGET
+Total Budget: $150,000
+- Software/Tools: $90,000
+- Training: $35,000
+- Consulting: $25,000
+
+SUCCESS METRICS
+- Time savings (measured in hours saved per week)
+- Cost savings (measured in reduced labor or error costs)
+- Quality improvement (accuracy, customer satisfaction)
+- Adoption rate (% of team actively using AI tools)
+
+RISKS
+- Vendor lock-in with AI tool providers
+- Data privacy concerns (customer data, employee data)
+- Resistance to change from staff
+- Over-reliance on AI without human oversight</div>
+                <button class="copy-doc-btn" onclick="copyDocument('doc4', this)">Copy Document</button>
+            </div>
+
+            <div class="document-box doc-memo" data-doc-title="DOCUMENT 5">
+                <h4>CEO Memo to AI Task Force</h4>
+                <div class="document-content" id="doc5">MEMORANDUM
+
+TO: AI Strategy Task Force
+FROM: Patricia Langford, CEO
+DATE: January 15, 2026
+RE: AI Initiative — Expectations and Approach
+
+Team,
+
+I'm excited about the potential of AI to help Beacon compete more effectively in a challenging retail environment. At the same time, I'm cautious about hype. I've seen too many technology initiatives fail because they promised transformation but delivered frustration.
+
+Here's what I need from this task force:
+
+1. HONEST ASSESSMENT: Don't just tell me what AI CAN do. Tell me what it SHOULD do for Beacon. Be specific. What problems are we solving? What's the ROI?
+
+2. CLEAR RISKS: I want to know what could go wrong. Data breaches? Vendor failures? Employee pushback? If we're going to take risks, I need to understand them upfront.
+
+3. REALISTIC COSTS: We have a $150K budget, but I need to know the TOTAL cost — not just software, but training, maintenance, integration with our existing systems. If this balloons to $300K in Year 2, I need to know now.
+
+4. MEASURABLE OUTCOMES: I don't want "AI increases efficiency." I want "AI reduces time-to-hire by 30% and saves $45K annually in HR labor costs." Be specific.
+
+5. HUMAN-CENTERED: AI should help our people do their jobs better, not replace them. If this initiative creates fear or resentment, it will fail. I want a plan that brings employees along.
+
+I've allocated budget and executive sponsorship for this initiative because I believe it can make a difference. But I need YOUR honest judgment. If you think a pilot won't work, tell me. If you think we should start smaller, tell me. If you think we're not ready, tell me.
+
+The board will ask hard questions. I need you to help me answer them.
+
+Thank you for your leadership on this.
+
+— Patricia
+
+Patricia Langford
+Chief Executive Officer
+Beacon Retail Group</div>
+                <button class="copy-doc-btn" onclick="copyDocument('doc5', this)">Copy Document</button>
+            </div>
+
+            <div class="tip-box">
+                <strong>How to use these documents:</strong> You'll upload all 5 documents to Google Gemini to create a "knowledge assistant" that can answer questions about Beacon's business. Keep this page open so you can reference the documents as needed.
+            </div>
+        </section>
+
+        <!-- PART 1: DOCUMENT PREPARATION -->
+        <section class="lab-section">
+            <h2>Part 1: Review &amp; Prepare Documents</h2>
+            <p><strong>Time estimate: 15 minutes</strong></p>
+            <p>Before building a knowledge assistant, take a few minutes to review the Beacon documents. Modern AI can read almost any format &mdash; even scanned PDFs and handwritten notes &mdash; but well-structured documents still help AI give better, more consistent answers.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">1</span>
+                    <h3 class="task-title">Review the Documents</h3>
+                </div>
+
+                <p>Skim through all 5 Beacon documents above. As you read, think about how well each one is organized.</p>
+
+                <div class="tip-box">
+                    <strong>Structure helps AI &mdash; but isn't required.</strong> AI can read messy documents just fine. But clear headings, labeled sections, and specific data points help AI give more precise answers. Think of it like an organized desk vs. a messy desk &mdash; you can find things either way, but organization is faster.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step1-1">
+                    <label for="step1-1">Read each of the 5 Beacon documents. Which one do you think is <em>best organized</em> for an AI to work with? Which is weakest? Note why.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Your observations (best organized document and why):</label>
+                    <textarea placeholder="Example: The Financial Summary is well-organized — it has clear sections (Revenue, Profitability, Department Performance) with specific numbers. The CEO Memo is less structured — it reads more like a personal letter..."></textarea>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">2</span>
+                    <h3 class="task-title">Save the Documents</h3>
+                </div>
+
+                <p>You'll need to upload these documents to Gemini in the next sections. Prepare them now.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-1">
+                    <label for="step2-1">Click <strong>"Download All Documents as .txt Files"</strong> above (or copy each document individually to separate text files on your computer).</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-2">
+                    <label for="step2-2">Verify that you have 5 separate text files ready to upload.</label>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- PART 2: CREATE YOUR GEMINI GEM -->
+        <section class="lab-section">
+            <h2>Part 2: Create Your Gemini Gem</h2>
+            <p><strong>Time estimate: 20 minutes</strong></p>
+            <p>A <strong>Gemini Gem</strong> is a custom AI assistant you create inside Google Gemini. Unlike uploading documents to a regular chat (which disappears when the chat ends), a Gem keeps its Knowledge permanently and can be shared with others via a link.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">3</span>
+                    <h3 class="task-title">Create Your Beacon Knowledge Gem</h3>
+                </div>
+
+                <p>You'll create a Gem that acts as Beacon Retail Group's internal knowledge assistant.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-1">
+                    <label for="step3-1">Open <strong>gemini.google.com</strong> and click <strong>"Gem manager"</strong> in the left sidebar.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-2">
+                    <label for="step3-2">Click <strong>"New Gem"</strong> (or "+ Create") to start a new Gem.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-3">
+                    <label for="step3-3">Name your Gem: <strong>"Beacon Retail Knowledge Assistant"</strong></label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-4">
+                    <label for="step3-4">In the <strong>Instructions</strong> field, paste this system prompt:</label>
+                </div>
+
+                <div class="prompt-box">You are Beacon Retail Group's internal knowledge assistant. You help the AI Strategy Task Force answer questions about the company.
+
+Rules:
+- Answer questions using ONLY the uploaded documents
+- Always cite which document your answer comes from (e.g., "According to the Q3 Financial Summary...")
+- If the answer isn't in the documents, say "I don't have that information in the uploaded documents" — do NOT guess
+- Be specific: use exact numbers, names, and dates from the documents</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-5">
+                    <label for="step3-5">Under <strong>"Knowledge"</strong>, click <strong>"Upload files"</strong> and upload all 5 Beacon documents (the .txt files you downloaded in Part 1).</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-6">
+                    <label for="step3-6">Click <strong>"Save"</strong> to create your Gem.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-7">
+                    <label for="step3-7">Test it! Ask your Gem: <strong>"How many stores does Beacon operate and where?"</strong> Verify it answers correctly (25 stores across IL, WI, and IN).</label>
+                </div>
+
+                <div class="tip-box" style="border-left-color: #43B02A; background: #f0fff0;">
+                    <strong>If your Gem doesn't have a "Knowledge" section:</strong> The Gems interface may vary slightly depending on your account. If you don't see a Knowledge upload option, try clicking "Edit" on your created Gem, or look for an "Add files" or "Upload" button within the Gem settings.
+                </div>
+
+                <div class="warning-box">
+                    <strong>Why a Gem instead of regular chat?</strong> When you upload documents to a regular Gemini chat, the AI "forgets" them when you close the chat. A Gem's Knowledge is <strong>persistent</strong> &mdash; it stays available every time you open the Gem. This is a form of <strong>context engineering</strong>: designing how and when the AI gets information.
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with Classmates</h4>
+                    <p>Did your Gem instructions differ from your neighbor's? How might different instructions change the AI's behavior? You can <strong>share your Gem</strong> &mdash; click the three-dot menu (&hellip;) on your Gem and select "Share." Send the link to a classmate and see if they get the same answers you do.</p>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">4</span>
+                    <h3 class="task-title">Test with Starter Questions</h3>
+                </div>
+
+                <p>Test your Gem with three questions that require extracting information from the Beacon documents.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-1">
+                    <label for="step4-1"><strong>Question 1:</strong> "What is Beacon's current gross margin and how has it changed?"</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Gem's response to Question 1:</label>
+                    <textarea placeholder="Paste or summarize the AI's response here..."></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-2">
+                    <label for="step4-2"><strong>Question 2:</strong> "Who leads the HR department and what is their main challenge?"</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Gem's response to Question 2:</label>
+                    <textarea placeholder="Paste or summarize the AI's response here..."></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-3">
+                    <label for="step4-3"><strong>Question 3:</strong> "What are the three pilot areas in Beacon's AI strategic plan?"</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Gem's response to Question 3:</label>
+                    <textarea placeholder="Paste or summarize the AI's response here..."></textarea>
+                </div>
+
+                <div class="tip-box" style="border-left-color: #43B02A; background: #f0fff0;">
+                    <strong>Self-Check:</strong> Your Gem should have found these key facts:
+                    <ul style="margin: 8px 0 0; padding-left: 20px; font-size: 0.9em;">
+                        <li><strong>Q1:</strong> Gross margin is 34.2%, down from 35.8% (from the Q3 Financial Summary)</li>
+                        <li><strong>Q2:</strong> Claudia Reeves (VP of HR) &mdash; main challenge is seasonal hiring completion rate (58% last year)</li>
+                        <li><strong>Q3:</strong> HR (resume screening), Finance (expense categorization), Customer Service (email triage) from the Strategic Plan</li>
+                    </ul>
+                    <p style="margin-top: 8px; font-size: 0.85em;">If your Gem got these wrong or made up information, re-check that all 5 documents uploaded successfully in the Gem's Knowledge section.</p>
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with Classmates</h4>
+                    <p>Turn to a neighbor and compare your responses to Questions 1-3. Did everyone get the same answers? Even with the same documents and instructions, AI can phrase answers differently. This is called <strong>non-determinism</strong> &mdash; the same input can produce slightly different outputs each time.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 3: STRESS-TESTING YOUR GEM -->
+        <section class="lab-section">
+            <h2>Part 3: Stress-Testing Your Gem</h2>
+            <p><strong>Time estimate: 20 minutes</strong></p>
+            <p>Now you'll test the limits of your Beacon Knowledge Gem by asking harder questions that require cross-referencing, boundary detection, and handling ambiguity.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">5</span>
+                    <h3 class="task-title">Cross-Referencing Test</h3>
+                </div>
+
+                <p>These questions require the Gem to combine information from MULTIPLE documents in its Knowledge.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-1">
+                    <label for="step5-1"><strong>Question A:</strong> "Given the Q3 financials and the AI budget, what percentage of net income is allocated to the AI initiative?"</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Gem's response and your evaluation (Did it calculate correctly? Show its work?):</label>
+                    <textarea placeholder="Paste the Gem's response and note whether it correctly identified net income ($2.1M per quarter) and AI budget ($150K total)..."></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-2">
+                    <label for="step5-2"><strong>Question B:</strong> "Based on the org chart and strategic plan, which VP would own each of the three pilot areas?"</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Gem's response and your evaluation (Did it correctly match VPs to pilot areas?):</label>
+                    <textarea placeholder="Expected: Claudia Reeves (HR), David Kim (Finance), Anita Patel (Marketing/Customer Service). Did the Gem get this right?"></textarea>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Common AI challenge:</strong> Cross-referencing requires the AI to "remember" information from multiple documents simultaneously. Since your Gem has all 5 documents in its Knowledge, it should handle this well &mdash; but note any errors or inconsistencies.
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">6</span>
+                    <h3 class="task-title">Boundary Detection Test</h3>
+                </div>
+
+                <p>These questions ask for information that ISN'T in the documents. A good knowledge assistant should say "I don't know" rather than making up information.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-1">
+                    <label for="step6-1"><strong>Question C:</strong> "What was Beacon's revenue in Q2 2025?" (This is NOT in the Gem's Knowledge.)</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Gem's response (Did it admit it didn't have the information, or did it guess/hallucinate?):</label>
+                    <textarea placeholder="Evaluate: Did the Gem say 'I don't have that information' or did it make up a number?"></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-2">
+                    <label for="step6-2"><strong>Question D:</strong> "How many applicants did Beacon receive last holiday season?" (This is NOT in the Gem's Knowledge.)</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Gem's response (Did it admit it didn't have the information, or did it guess/hallucinate?):</label>
+                    <textarea placeholder="Evaluate: Did the Gem correctly say this information isn't in its documents?"></textarea>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Why boundary detection matters:</strong> In business contexts, it's critical that AI doesn't fabricate information. A hallucinated financial figure or hiring statistic could lead to bad decisions. Your Gem's instructions ("If the answer isn't in the documents, say so") should help prevent this &mdash; this is an example of how <strong>context engineering</strong> improves AI reliability.
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">7</span>
+                    <h3 class="task-title">Ambiguity Handling Test</h3>
+                </div>
+
+                <p>This question is intentionally vague and requires interpretation.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step7-1">
+                    <label for="step7-1"><strong>Question E:</strong> "Should Beacon prioritize fixing the Electronics department decline or investing in the AI initiative? Justify your answer using information from the documents."</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Gem's response (Did it weigh trade-offs? Did it acknowledge competing stakeholder perspectives?):</label>
+                    <textarea placeholder="Evaluate: Did the Gem recognize this is a genuine dilemma? The VP of Operations cares about Electronics revenue; the CEO cares about long-term AI strategy. A good answer should acknowledge BOTH sides and cite specific data (e.g., 8% Electronics decline vs. $150K AI budget)."></textarea>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Ambiguity is common in business:</strong> Questions like "Should we expand?" or "Which initiative should we prioritize?" require judgment across competing stakeholder perspectives. AI can surface relevant information from each viewpoint, but humans must make the final call.
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with Classmates</h4>
+                    <p>Did your Gem recommend the same priority as your neighbor's? Try <strong>sharing your Gem link</strong> and asking the same question. Trade-off questions like this often produce different answers depending on the Gem's instructions and how the AI weighs evidence. This is exactly why humans must stay in the decision loop.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 4: THREE-WAY CONTEXT COMPARISON -->
+        <section class="lab-section">
+            <h2>Part 4: The Context Engineering Showdown</h2>
+            <p><strong>Time estimate: 25 minutes</strong></p>
+            <p>This is the central experiment of the lab. You'll ask the <strong>same questions</strong> using three different context approaches and compare the results. This demonstrates why <em>how</em> you give AI information matters just as much as <em>what</em> you give it.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">8</span>
+                    <h3 class="task-title">Three-Way Context Comparison</h3>
+                </div>
+
+                <p>You'll test three approaches to giving AI context about Beacon. For each approach, ask the <strong>same four questions</strong> and record the results.</p>
+
+                <div class="tip-box">
+                    <strong>The Four Test Questions:</strong>
+                    <ol style="margin: 8px 0 0; padding-left: 20px; font-size: 0.9em;">
+                        <li>"How many stores does Beacon operate?"</li>
+                        <li>"What are the main risks of Beacon's AI initiative?"</li>
+                        <li>"What did the CEO say about measurable outcomes?"</li>
+                        <li>"What's the seasonal hiring completion rate?"</li>
+                    </ol>
+                </div>
+
+                <h3 style="color: #E35205;">Approach A: No Context (Fresh Chat)</h3>
+                <div class="step">
+                    <input type="checkbox" id="step8-1">
+                    <label for="step8-1">Open a <strong>brand new Gemini chat</strong> (NOT your Gem). Do NOT upload any documents. Ask all 4 questions and record the responses.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Approach A responses (no documents, no context):</label>
+                    <textarea placeholder="For each question, note: Did the AI know the answer? Did it make something up? Did it admit it didn't know?"></textarea>
+                </div>
+
+                <h3 style="color: #1D428A;">Approach B: Normal Chat Upload</h3>
+                <div class="step">
+                    <input type="checkbox" id="step8-2">
+                    <label for="step8-2">Open another <strong>new Gemini chat</strong>. Upload all 5 Beacon documents using the paperclip icon. Ask the same 4 questions and record the responses.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Approach B responses (documents uploaded to regular chat):</label>
+                    <textarea placeholder="For each question, note: Was the answer accurate? Did it cite specific documents? How detailed was it?"></textarea>
+                </div>
+
+                <h3 style="color: #43B02A;">Approach C: Your Gemini Gem</h3>
+                <div class="step">
+                    <input type="checkbox" id="step8-3">
+                    <label for="step8-3">Open your <strong>Beacon Knowledge Assistant Gem</strong> (from Part 2). Ask the same 4 questions and record the responses.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Approach C responses (Gemini Gem with persistent Knowledge):</label>
+                    <textarea placeholder="For each question, note: Was the answer accurate? Did it cite sources? How did it compare to Approaches A and B?"></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step8-4">
+                    <label for="step8-4">Compare all three approaches. Fill in your analysis below.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Your comparison analysis:</label>
+                    <textarea placeholder="Consider:
+1. Which approach gave the most accurate answers? Why?
+2. Which approach cited specific documents?
+3. What happens if you start a NEW regular chat — are the uploaded documents still there? (Try it!)
+4. What's the key difference between Approach B (upload) and Approach C (Gem)?
+5. When would each approach be most useful in a business setting?"></textarea>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Key insight:</strong> When you close a regular Gemini chat and start a new one, the uploaded documents are <strong>gone</strong>. But your Gem's Knowledge persists across every conversation. This is the difference between <strong>temporary context</strong> (chat upload) and <strong>persistent context</strong> (Gem Knowledge). In business, you want persistent context for frequently-used knowledge bases.
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with Classmates</h4>
+                    <p>Share your three-way comparison results with a neighbor. Did you both see the same patterns? Try <strong>sharing your Gem link</strong> with your neighbor &mdash; does your Gem give them the same quality answers? This demonstrates that Gems are portable and shareable across users.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 5: CITATION TESTING -->
+        <section class="lab-section">
+            <h2>Part 5: Can Your AI Cite Its Sources?</h2>
+            <p><strong>Time estimate: 15 minutes</strong></p>
+            <p>In business, it's not enough for AI to give a correct answer &mdash; you need to know <strong>where</strong> the answer came from. Source citation is critical for accountability, verification, and trust.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">9</span>
+                    <h3 class="task-title">Citation Testing</h3>
+                </div>
+
+                <p>Test your Gem's ability to cite its sources accurately.</p>
+
+                <h3>Test 1: Single-Source Question</h3>
+                <div class="step">
+                    <input type="checkbox" id="step9-1">
+                    <label for="step9-1">Ask your Gem: <strong>"What is Beacon's organizational structure? List the VPs."</strong></label>
+                </div>
+                <div class="reflection-area">
+                    <label>Did the Gem cite the Org Chart document specifically?</label>
+                    <textarea placeholder="Note: Did it say something like 'According to the Organizational Chart...'? Or did it just give the answer without citing a source?"></textarea>
+                </div>
+
+                <h3>Test 2: Multi-Source Question</h3>
+                <div class="step">
+                    <input type="checkbox" id="step9-2">
+                    <label for="step9-2">Ask your Gem: <strong>"How does Beacon's financial performance relate to its AI strategic goals?"</strong></label>
+                </div>
+                <div class="reflection-area">
+                    <label>Did the Gem reference BOTH the Financial Summary AND the Strategic Plan?</label>
+                    <textarea placeholder="This question requires combining info from at least 2 documents. Note whether the Gem cited both sources or only one."></textarea>
+                </div>
+
+                <h3>Test 3: Unanswerable Question</h3>
+                <div class="step">
+                    <input type="checkbox" id="step9-3">
+                    <label for="step9-3">Ask your Gem: <strong>"What is Beacon's social media marketing strategy?"</strong></label>
+                </div>
+                <div class="reflection-area">
+                    <label>Did the Gem acknowledge that this information isn't in the documents, or did it make something up?</label>
+                    <textarea placeholder="The documents don't contain social media strategy details. A good AI assistant should say 'I don't have that information' rather than inventing an answer."></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step9-4">
+                    <label for="step9-4">Now try the same three questions in a <strong>regular Gemini chat with uploaded documents</strong> (Approach B). Compare citation quality.</label>
+                </div>
+                <div class="reflection-area">
+                    <label>Citation comparison: Gem vs. regular upload &mdash; which cited sources better?</label>
+                    <textarea placeholder="Did the Gem's instructions ('always cite which document') make a difference compared to a regular chat upload? Which approach was more reliable for citations?"></textarea>
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with Classmates</h4>
+                    <p>Did classmates with different Gem instructions get different citation behavior? For example, if someone's instructions didn't mention citing sources, did their Gem still cite them? Share your findings.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 6: ADDING CONTEXT & ROI -->
+        <section class="lab-section">
+            <h2>Part 6: Dynamic Context &amp; Business Value</h2>
+            <p><strong>Time estimate: 15 minutes</strong></p>
+            <p>Real business conversations aren't static &mdash; new information arrives constantly. In this section, you'll test how your AI handles new context mid-conversation, and calculate the business value of a knowledge assistant.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">10</span>
+                    <h3 class="task-title">Adding Context Mid-Conversation</h3>
+                </div>
+
+                <p>Test whether your Gem can integrate NEW information that wasn't in the original Knowledge upload.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step10-1">
+                    <label for="step10-1">Open your Beacon Gem. Paste this new memo as a chat message:</label>
+                </div>
+
+                <div class="prompt-box">URGENT MEMO
+
+TO: AI Task Force
+FROM: Marcus Webb, VP of Operations
+DATE: February 10, 2026
+RE: Electronics Department Decline
+
+The Electronics department revenue declined 8% in Q3, continuing a downward trend. We're losing customers to Amazon and Best Buy's price-matching.
+
+I want to know if AI-powered inventory management could help us:
+1. Predict which products will sell and optimize our stock levels
+2. Adjust pricing dynamically to stay competitive
+3. Identify slow-moving inventory before it becomes dead stock
+
+Please analyze whether this should be added as a 4th pilot area in our AI strategic plan, and what the ROI might be.</div>
+
+                <div class="step">
+                    <input type="checkbox" id="step10-2">
+                    <label for="step10-2">After pasting the memo, ask: <strong>"Based on all available information, should we add AI-powered inventory management as a 4th pilot area?"</strong></label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Did the Gem integrate the new memo with its existing Knowledge? Did it reference both?</label>
+                    <textarea placeholder="Evaluate: Did the AI treat the new memo as part of its context? Did it reference the original AI budget ($150K), risks, and CEO expectations when answering?"></textarea>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Context accumulation:</strong> Your Gem now has TWO types of context: (1) persistent Knowledge from the uploaded files, and (2) temporary context from this chat message. The persistent Knowledge stays forever; the chat message context disappears when you close this conversation. Understanding this distinction is key to effective context engineering.
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">11</span>
+                    <h3 class="task-title">ROI Reality Check</h3>
+                </div>
+
+                <p>Let's put some numbers behind context engineering. Use the assumptions below to calculate ROI for Beacon.</p>
+
+                <div class="visual-box" style="padding: 20px; margin-bottom: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #1D428A;">
+                    <p style="margin: 0 0 8px; font-weight: 600;">Scenario: Beacon's HR team answering policy questions</p>
+                    <ul style="font-size: 0.9em; margin: 0; padding-left: 20px;">
+                        <li>HR team answers ~200 policy questions per month from employees</li>
+                        <li>Each question takes ~10 minutes of manual document searching</li>
+                        <li>HR analyst salary: $30/hour</li>
+                        <li>AI query cost: ~$0.15 per question (with document retrieval)</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step11-1">
+                    <label for="step11-1">Calculate the monthly cost of manual research: 200 questions &times; 10 min &times; ($30/60 min) = ?</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step11-2">
+                    <label for="step11-2">Calculate the monthly AI cost: 200 questions &times; $0.15 = ?</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Your ROI calculation (show your work):</label>
+                    <textarea placeholder="Manual cost: $___/month. AI cost: $___/month. Monthly savings: $___. Annual savings: $___. Is this worth doing?"></textarea>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step11-3">
+                    <label for="step11-3"><strong>Bonus question:</strong> What if the AI only saves 5 minutes per query instead of 10? Is it still worth it?</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Your adjusted calculation and conclusion:</label>
+                    <textarea placeholder="Even with reduced time savings, is the ROI still positive? At what point does it stop being worth it?"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 7: LAB REFLECTION -->
+        <section class="lab-section">
+            <h2>Part 7: Lab Reflection & Submission</h2>
+            <p><strong>Time estimate: 10 minutes</strong></p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">12</span>
+                    <h3 class="task-title">Capture Your Learnings</h3>
+                </div>
+
+                <p>Take 10 minutes to reflect on what you learned about context engineering.</p>
+
+                <div class="reflection-area">
+                    <label>1. What is the single most important thing you learned about context engineering?</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+
+                <div class="reflection-area">
+                    <label>2. When would context engineering be MORE valuable than just better prompting?</label>
+                    <textarea placeholder="Think about: What types of tasks or questions require rich context vs. simple prompts?"></textarea>
+                </div>
+
+                <div class="reflection-area">
+                    <label>3. If you were advising Beacon's CEO, what would you recommend as the first step in their AI initiative?</label>
+                    <textarea placeholder="Based on the documents, the CEO's memo, and what you learned in this lab, what should Beacon do first?"></textarea>
+                </div>
+            </div>
+
+            <!-- SUBMISSION -->
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">13</span>
+                    <h3 class="task-title">Generate and Upload Your Lab Report</h3>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step13-1">
+                    <label for="step13-1">Review all your reflection responses above to make sure they are complete.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step13-2">
+                    <label for="step13-2">Click <strong>"Download as PDF"</strong> below. A new window will open showing your responses, and a print dialog will appear automatically.</label>
+                </div>
+
+                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="downloadPDF()">Download as PDF</button>
+
+                <div class="tip-box" style="margin-bottom: 15px;">
+                    <strong>Saving as PDF:</strong> In the print dialog, select <strong>"Save as PDF"</strong> or <strong>"Microsoft Print to PDF"</strong> as your printer, then click <strong>Save</strong>. On Mac, look for the <strong>"PDF"</strong> dropdown in the bottom-left corner.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step13-3">
+                    <label for="step13-3">Open the saved PDF and verify your responses look correct.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step13-4">
+                    <label for="step13-4">Log in to your LMS and upload the PDF to the <strong>Day 3 Lab</strong> assignment.</label>
+                </div>
+
+                <div class="tip-box" style="margin-top: 20px;">
+                    <strong>How to upload:</strong>
+                    <ol style="margin-bottom: 0; font-size: 0.9em;">
+                        <li>Go to your LMS (e.g., Blackboard) and find the UBUS 670 course</li>
+                        <li>Navigate to <strong>Assignments</strong> &rarr; <strong>Day 3 Lab: Context Engineering</strong></li>
+                        <li>Click <strong>Upload File</strong> and select the PDF you just downloaded</li>
+                        <li>Click <strong>Submit</strong></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPLETION -->
+        <section class="lab-section" style="text-align: center;">
+            <h2>Lab Complete!</h2>
+            <p>Congratulations on completing the Context Engineering lab. Before moving on:</p>
+            <ul style="text-align: left; max-width: 500px; margin: 20px auto;">
+                <li>Verify your PDF was uploaded to the LMS</li>
+                <li>Your Gemini Gem is saved &mdash; you can come back to it anytime</li>
+                <li>If you shared your Gem link, your classmates can still access it</li>
+                <li>Note any questions for class discussion</li>
+            </ul>
+            <p style="margin-top: 30px;">
+                <a href="quiz.html" class="btn-primary">Take the Knowledge Check &#8594;</a>
+            </p>
+        </section>
+
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+        <span id="progress-text">Progress: 0/0 steps</span>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Document definitions
+        const documents = {
+            doc1: document.getElementById('doc1').textContent,
+            doc2: document.getElementById('doc2').textContent,
+            doc3: document.getElementById('doc3').textContent,
+            doc4: document.getElementById('doc4').textContent,
+            doc5: document.getElementById('doc5').textContent
+        };
+
+        const documentNames = {
+            doc1: 'Beacon_Company_Overview.txt',
+            doc2: 'Beacon_Organizational_Chart.txt',
+            doc3: 'Beacon_Q3_2025_Financial_Summary.txt',
+            doc4: 'Beacon_Strategic_Plan_AI_Initiative.txt',
+            doc5: 'Beacon_CEO_Memo_AI_Task_Force.txt'
+        };
+
+        // Copy individual document
+        function copyDocument(docId, btn) {
+            const text = documents[docId];
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy Document', 2000);
+            });
+        }
+
+        // Download all documents as separate .txt files
+        function downloadAllDocuments() {
+            Object.keys(documents).forEach(docId => {
+                const text = documents[docId];
+                const filename = documentNames[docId];
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        // Progress tracking
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const total = checkboxes.length;
+            const percentage = Math.round((checked / total) * 100);
+
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `Progress: ${checked}/${total} steps`;
+        }
+
+        // Add event listeners to all checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.closest('.step').classList.toggle('completed', this.checked);
+                updateProgress();
+            });
+        });
+
+        // Initialize progress
+        updateProgress();
+
+        // Download lab report as PDF
+        function downloadPDF() {
+            const textareas = document.querySelectorAll('.reflection-area textarea');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
+
+            const reflectionLabels = [
+                'Task 1: Document Organization Observations',
+                'Task 4: Gem Test — Question 1 (Gross Margin)',
+                'Task 4: Gem Test — Question 2 (HR Department)',
+                'Task 4: Gem Test — Question 3 (AI Pilot Areas)',
+                'Task 5: Cross-Reference Question A (AI Budget % of Net Income)',
+                'Task 5: Cross-Reference Question B (VP Ownership)',
+                'Task 6: Boundary Detection Question C (Q2 Revenue)',
+                'Task 6: Boundary Detection Question D (Applicants)',
+                'Task 7: Ambiguity Handling Question E (Electronics vs AI)',
+                'Task 8: Three-Way Comparison — Approach A (No Context)',
+                'Task 8: Three-Way Comparison — Approach B (Chat Upload)',
+                'Task 8: Three-Way Comparison — Approach C (Gemini Gem)',
+                'Task 8: Three-Way Comparison Analysis',
+                'Task 9: Citation Test 1 — Single Source',
+                'Task 9: Citation Test 2 — Multi Source',
+                'Task 9: Citation Test 3 — Unanswerable',
+                'Task 9: Citation Comparison (Gem vs Upload)',
+                'Task 10: Adding Context Mid-Conversation',
+                'Task 11: ROI Calculation',
+                'Task 11: ROI Bonus — Reduced Time Savings',
+                'Final Reflection 1: Most Important Lesson',
+                'Final Reflection 2: When Context Beats Prompting',
+                'Final Reflection 3: Advice for Beacon CEO'
+            ];
+
+            let sections = '';
+            textareas.forEach((textarea, index) => {
+                const label = reflectionLabels[index] || `Response ${index + 1}`;
+                const response = textarea.value.trim() || '[No response provided]';
+                sections += `
+                    <div style="margin-bottom: 24px; page-break-inside: avoid;">
+                        <h3 style="font-family: Montserrat, sans-serif; font-size: 13px; color: #1D428A; margin: 0 0 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px;">${label}</h3>
+                        <p style="font-family: Georgia, serif; font-size: 12px; line-height: 1.6; color: #333; white-space: pre-wrap; margin: 0;">${response.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+                    </div>`;
+            });
+
+            const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>UBUS 670 - Day 3 Lab Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    @media print { body { margin: 0; } @page { margin: 0.75in; } }
+    body { font-family: Georgia, serif; max-width: 700px; margin: 0 auto; padding: 40px; color: #333; }
+</style></head><body>
+<div style="border-bottom: 3px solid #C8102E; padding-bottom: 15px; margin-bottom: 25px;">
+    <h1 style="font-family: Montserrat, sans-serif; font-size: 20px; color: #C8102E; margin: 0;">UBUS 670: AI for Business Leaders</h1>
+    <h2 style="font-family: Montserrat, sans-serif; font-size: 16px; color: #333; margin: 8px 0 0;">Day 3 Lab: Building Beacon's Knowledge Assistant</h2>
+    <p style="font-size: 12px; color: #666; margin: 10px 0 0;">
+        Student Name: _____________________________ &nbsp;&nbsp; Date: ${new Date().toLocaleDateString()} &nbsp;&nbsp; Progress: ${checkboxes.length}/${totalCheckboxes} steps
+    </p>
+</div>
+${sections}
+<div style="border-top: 2px solid #e0e0e0; padding-top: 12px; margin-top: 30px; text-align: center;">
+    <p style="font-size: 11px; color: #888;">Generated: ${new Date().toLocaleString()} | UBUS 670 - Northern Illinois University</p>
+</div>
+</body></html>`;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(html);
+            printWindow.document.close();
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+
+            document.getElementById('download-pdf-btn').textContent = 'PDF Generated - Print/Save';
+        }
+    </script>
+
+</body>
+</html>

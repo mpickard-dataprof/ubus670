@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UBUS 670: AI for Business Leaders - Course Home</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="./_shared/styles.css">
+
+    <style>
+        body {
+            background: var(--bg-secondary);
+        }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            background: linear-gradient(135deg, var(--niu-red) 0%, #a00d24 100%);
+            color: var(--text-inverse);
+            padding: var(--space-16) 0 var(--space-12);
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: var(--text-4xl);
+            margin-bottom: var(--space-2);
+            letter-spacing: -1px;
+        }
+        .hero .subtitle {
+            font-size: var(--text-xl);
+            opacity: 0.9;
+            font-family: var(--font-headline);
+            font-weight: var(--font-medium);
+        }
+
+        /* ============================================
+           COURSE OVERVIEW
+           ============================================ */
+        .overview {
+            margin-top: calc(-1 * var(--space-8));
+            margin-bottom: var(--space-12);
+        }
+        .overview-card {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* ============================================
+           WEEKLY SECTIONS
+           ============================================ */
+        .week-section {
+            margin-bottom: var(--space-12);
+        }
+        .week-header {
+            border-bottom: 2px solid var(--niu-red);
+            padding-bottom: var(--space-2);
+            margin-bottom: var(--space-6);
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+        .week-header h2 {
+            margin-bottom: 0;
+            color: var(--niu-black);
+        }
+        .week-header .badge {
+            background: var(--niu-red);
+            color: var(--text-inverse);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            text-transform: uppercase;
+        }
+
+        /* ============================================
+           DAY CARDS
+           ============================================ */
+        .day-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+        }
+        .day-card {
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .day-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .day-card .day-label {
+            font-family: var(--font-headline);
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--niu-red);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-1);
+        }
+        .day-card h3 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-3);
+        }
+        .day-card p {
+            font-size: var(--text-base);
+            color: var(--text-secondary);
+            flex-grow: 1;
+            margin-bottom: var(--space-6);
+        }
+        .day-card .footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            text-align: center;
+            padding: var(--space-12) 0;
+            border-top: 1px solid var(--niu-gray);
+            background: var(--bg-primary);
+            color: var(--text-muted);
+            font-size: var(--text-sm);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="container">
+            <h1>AI for Business Leaders</h1>
+            <p class="subtitle">UBUS 670 | Spring 2026</p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="overview">
+            <div class="card overview-card">
+                <p>Welcome to the UBUS 670 course dashboard. This 9-day intensive program is designed to transform MBA students into AI-aware strategic leaders. Explore the modules below to access lectures, hands-on labs, and knowledge checks.</p>
+            </div>
+        </section>
+
+        <!-- Week 1 -->
+        <section class="week-section">
+            <div class="week-header">
+                <span class="badge">Week 1</span>
+                <h2>Foundations & Prompting</h2>
+            </div>
+            <div class="day-grid">
+                
+                <div class="card day-card">
+                    <span class="day-label">Day 1</span>
+                    <h3>What is Generative AI?</h3>
+                    <p>Understanding the technology behind the hype: tokens, context windows, and model behavior.</p>
+                    <div class="footer">
+                        <a href="week-1/day-1/web/index.html" class="btn btn-primary">Enter Day 1</a>
+                    </div>
+                </div>
+
+                <div class="card day-card">
+                    <span class="day-label">Day 2</span>
+                    <h3>Strategic Prompting</h3>
+                    <p>Mastering the art of directed AI: structured formats, few-shot prompting, and persona design.</p>
+                    <div class="footer">
+                        <a href="week-1/day-2/web/index.html" class="btn btn-primary">Enter Day 2</a>
+                    </div>
+                </div>
+
+                <div class="card day-card">
+                    <span class="day-label">Day 3</span>
+                    <h3>Context Engineering</h3>
+                    <p>Moving from prompts to systems: RAG, Gemini Gems, and grounding AI in business data.</p>
+                    <div class="footer">
+                        <a href="week-1/day-3/web/index.html" class="btn btn-primary">Enter Day 3</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Week 2 -->
+        <section class="week-section">
+            <div class="week-header">
+                <span class="badge">Week 2</span>
+                <h2>Multimodal & Control</h2>
+            </div>
+            <div class="day-grid">
+                
+                <div class="card day-card">
+                    <span class="day-label">Day 4</span>
+                    <h3>Multimodal AI</h3>
+                    <p>Visualizing strategy: image generation, audio analysis, and marketing campaign automation.</p>
+                    <div class="footer">
+                        <a href="week-2/day-4/web/index.html" class="btn btn-primary">Enter Day 4</a>
+                    </div>
+                </div>
+
+                <div class="card day-card">
+                    <span class="day-label">Day 5</span>
+                    <h3>The AI Cockpit</h3>
+                    <p>Technical precision: temperature, top-p, and system prompts in Google AI Studio.</p>
+                    <div class="footer">
+                        <a href="week-2/day-5/web/index.html" class="btn btn-primary">Enter Day 5</a>
+                    </div>
+                </div>
+
+                <div class="card day-card">
+                    <span class="day-label">Day 6</span>
+                    <h3>Safety & Red Teaming</h3>
+                    <p>Stress-testing AI: finding vulnerabilities, understanding bias, and ensuring reliable outputs.</p>
+                    <div class="footer">
+                        <a href="week-2/day-6/web/index.html" class="btn btn-primary">Enter Day 6</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Week 3 -->
+        <section class="week-section">
+            <div class="week-header">
+                <span class="badge">Week 3</span>
+                <h2>Agents & Governance</h2>
+            </div>
+            <div class="day-grid">
+                
+                <div class="card day-card">
+                    <span class="day-label">Day 7</span>
+                    <h3>Agentic Workflows</h3>
+                    <p>From chatbots to colleagues: building autonomous agents for complex business tasks.</p>
+                    <div class="footer">
+                        <a href="week-3/day-7/web/index.html" class="btn btn-primary">Enter Day 7</a>
+                    </div>
+                </div>
+
+                <div class="card day-card">
+                    <span class="day-label">Day 8</span>
+                    <h3>Final Project: Strategy</h3>
+                    <p>Capstone Phase 1: Designing an AI-first business solution for Beacon Retail Group.</p>
+                    <div class="footer">
+                        <a href="#" class="btn btn-ghost disabled">Coming Soon</a>
+                    </div>
+                </div>
+
+                <div class="card day-card">
+                    <span class="day-label">Day 9</span>
+                    <h3>Capstone Presentation</h3>
+                    <p>Pitching the future: presenting AI implementations to the executive task force.</p>
+                    <div class="footer">
+                        <a href="#" class="btn btn-ghost disabled">Coming Soon</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Northern Illinois University — UBUS 670: AI for Business Leaders</p>
+        </div>
+    </footer>
+
+</body>
+</html>

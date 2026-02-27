@@ -1,0 +1,10 @@
+### GENERAL SLIDE FEEDBACK
+- the text and bulleting layout still needs improvement
+- use an image generation agent to generate better images (instead of logo-like images)
+- improve the "whitespace balance" - some slides have too much whitespace, other slides have text and bullets that need more whitespace
+- Expand the "Part 2: How do LLMs Actually Work" section. Use the slides and content from the other_material_for_the_slides.pptx as an example of the depth of knowledge and presentation of knowledge about LLMs.  I want to cover embeddings as well.
+  - Keep the content you have in Part 2.  Just expand it.  I like slides 9-14.
+- slide 15 - the checkpoint quiz is not working.  The answers are already selected.  Make it interactive.
+- Part 3: Hallucination Problem - add more examples - flesh it about
+- For Part 5 - Meet Google Gemini: I want more details for non-tech-savvy students to help them come up to speed on gemini - go beyond the obvious (many of them have probably used ChatGPT chat interface, or esomething similar).  How risky or complicated would it be to create a video (or at least a walk through with images)
+- Improve slides 22 "Why We're Using Gemini" - mainly the text layout

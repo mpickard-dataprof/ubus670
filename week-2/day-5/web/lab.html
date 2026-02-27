@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 5 Lab: Beacon's Customer Email Triage System</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
+    <style>
+        /* Lab-specific styles */
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        .lab-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Navigation with Breadcrumb */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* Lab header */
+        .lab-header {
+            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
+            color: white;
+            padding: 60px 40px;
+            margin: -40px -30px 40px;
+            text-align: center;
+        }
+        .lab-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px;
+            font-size: 2.5rem;
+        }
+        .lab-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Compare with classmates box */
+        .compare-box {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4ff 100%);
+            border: 2px solid #00A9E0;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+        }
+        .compare-box h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1D428A;
+            margin: 0 0 10px;
+            font-size: 1rem;
+        }
+        .compare-box p {
+            font-size: 0.9em;
+            margin: 0 0 12px;
+            line-height: 1.6;
+        }
+
+        /* Time estimate */
+        .time-estimate {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Objectives box */
+        .objectives-box {
+            background: white;
+            border-left: 5px solid #C8102E;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .objectives-box h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        /* Section styling */
+        .lab-section {
+            background: white;
+            padding: 30px 35px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .lab-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            border-bottom: 3px solid #C8102E;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .lab-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1D428A;
+            margin-top: 25px;
+        }
+
+        /* Task styling */
+        .task {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .task-number {
+            background: #C8102E;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .task-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Checkbox steps */
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .step:last-child {
+            border-bottom: none;
+        }
+        .step input[type="checkbox"] {
+            margin-top: 5px;
+            transform: scale(1.3);
+            cursor: pointer;
+            accent-color: #C8102E;
+        }
+        .step label {
+            cursor: pointer;
+            flex: 1;
+        }
+        .step.completed label {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        /* Tip boxes */
+        .tip-box {
+            background: rgba(0, 169, 224, 0.1);
+            border-left: 4px solid #00A9E0;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .tip-box strong {
+            color: #00A9E0;
+        }
+
+        /* Warning boxes */
+        .warning-box {
+            background: rgba(227, 82, 5, 0.1);
+            border-left: 4px solid #E35205;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning-box strong {
+            color: #E35205;
+        }
+
+        /* Reflection/answer areas */
+        .reflection-area {
+            background: #fff;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .reflection-area label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .reflection-area textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        /* Progress tracker */
+        .progress-tracker {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            z-index: 100;
+        }
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #C8102E;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* CTA button */
+        .btn-primary {
+            display: inline-block;
+            background: #C8102E;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-primary:hover {
+            background: #a00d24;
+            text-decoration: none;
+        }
+
+        /* Prompt / code boxes */
+        .prompt-box {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 20px 25px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            margin: 15px 0;
+            position: relative;
+        }
+        .prompt-box .copy-prompt-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #444;
+            color: #e0e0e0;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        .prompt-box .copy-prompt-btn:hover {
+            background: #666;
+        }
+
+        /* =============================================
+           EMAIL CARD STYLES
+           ============================================= */
+        .email-group-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 30px 0 5px;
+            color: #333;
+        }
+        .email-group-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .email-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-left: 5px solid #999;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 15px 0;
+            position: relative;
+        }
+        .email-card.cat-complaint { border-left-color: #C8102E; }
+        .email-card.cat-return { border-left-color: #E35205; }
+        .email-card.cat-inquiry { border-left-color: #00A9E0; }
+        .email-card.cat-compliment { border-left-color: #43B02A; }
+        .email-card.cat-escalation { border-left-color: #1D428A; }
+        .email-card.cat-edge { border-left-color: #888; }
+
+        .email-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 12px;
+        }
+        .email-meta {
+            flex: 1;
+        }
+        .email-from {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .email-subject {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 2px;
+        }
+        .email-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .badge-complaint { background: #fce4e8; color: #C8102E; }
+        .badge-return { background: #fde8db; color: #E35205; }
+        .badge-inquiry { background: #d9f2fc; color: #0088b8; }
+        .badge-compliment { background: #e4f7e0; color: #2d8a1a; }
+        .badge-escalation { background: #dce3f0; color: #1D428A; }
+
+        .email-body {
+            font-size: 0.92rem;
+            line-height: 1.65;
+            color: #444;
+            margin-bottom: 12px;
+        }
+        .email-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        .copy-email-btn {
+            background: #1D428A;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        .copy-email-btn:hover {
+            background: #153366;
+        }
+
+        /* Editable table styling */
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.85rem;
+        }
+        .result-table th {
+            background: #f0f0f0;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 2px solid #ccc;
+        }
+        .result-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+        .result-table input[type="text"] {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: 0.85rem;
+        }
+        .result-table select {
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: 0.85rem;
+        }
+
+        /* Configuration card */
+        .config-card {
+            background: white;
+            border: 2px solid #1D428A;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .config-card h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1D428A;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .config-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 0.92rem;
+        }
+        .config-row label {
+            font-weight: 600;
+            min-width: 220px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+        }
+        .config-row input[type="text"] {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: 0.9rem;
+        }
+
+        /* Cost worksheet */
+        .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.85rem;
+        }
+        .cost-table th {
+            background: #1D428A;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        .cost-table th:first-child {
+            text-align: left;
+        }
+        .cost-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        .cost-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+        }
+        .cost-table input[type="text"] {
+            width: 80px;
+            padding: 5px 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: 0.82rem;
+            text-align: center;
+        }
+        .cost-table tr.total-row td {
+            border-top: 2px solid #1D428A;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Pricing reference */
+        .pricing-ref {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            font-size: 0.88rem;
+        }
+        .pricing-ref h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            margin: 0 0 8px;
+            color: #333;
+        }
+        .pricing-ref table {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .pricing-ref th, .pricing-ref td {
+            padding: 5px 10px;
+            font-size: 0.82rem;
+            border-bottom: 1px solid #eee;
+        }
+        .pricing-ref th {
+            background: transparent;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            color: #666;
+        }
+        .pricing-disclaimer {
+            font-size: 0.75rem;
+            color: #999;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        /* ROI comparison box */
+        .roi-box {
+            background: #f0fff0;
+            border-left: 4px solid #43B02A;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .roi-box strong {
+            color: #2d8a1a;
+        }
+
+        /* Email accordion */
+        .email-accordion {
+            margin: 15px 0;
+        }
+        .email-accordion .email-card {
+            margin: 0;
+        }
+        .email-summary {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            list-style: none;
+        }
+        .email-summary::-webkit-details-marker { display: none; }
+        .email-summary::before {
+            content: '▶ ';
+            font-size: 0.8em;
+            color: #888;
+        }
+        details[open] > .email-summary::before {
+            content: '▼ ';
+        }
+        details[open] > .email-summary {
+            border-radius: 8px 8px 0 0;
+            border-bottom: none;
+        }
+
+        /* Print styles */
+        @media print {
+            .global-nav, .progress-tracker, .copy-email-btn, .copy-prompt-btn, #download-pdf-btn {
+                display: none !important;
+            }
+            .lab-container {
+                padding: 0;
+            }
+            .lab-header {
+                margin: 0 0 20px;
+                padding: 30px 20px;
+            }
+            .lab-section {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&#8250;</span>
+            <a href="../../../index.html">Week 2</a>
+            <span class="separator">&#8250;</span>
+            <a href="index.html">Day 5</a>
+            <span class="separator">&#8250;</span>
+            <span class="current">Lab</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill active">Lab</a>
+            <a href="quiz.html" class="nav-pill">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="lab-container">
+
+        <!-- Lab Header -->
+        <div class="lab-header">
+            <h1>Lab 5: Beacon's Customer Email Triage System</h1>
+            <p>Configuring AI with Parameters, System Prompts, and Cost Analysis</p>
+            <span class="time-estimate">Estimated time: 90&ndash;120 minutes</span>
+        </div>
+
+        <!-- Learning Objectives -->
+        <div class="objectives-box">
+            <h2>Lab Objectives</h2>
+            <p>By completing this lab, you will:</p>
+            <ul>
+                <li><strong>Configure</strong> model parameters and explain their business impact</li>
+                <li><strong>Write</strong> system prompts that define consistent AI behavior</li>
+                <li><strong>Estimate</strong> token costs for real business deployments</li>
+                <li><strong>Build</strong> a reusable AI configuration for email triage</li>
+            </ul>
+        </div>
+
+        <!-- =============================================
+             PART 0: TOOL SETUP
+             ============================================= -->
+        <section class="lab-section">
+            <h2>Part 0: Tool Setup</h2>
+            <p><strong>Time estimate: 10 minutes</strong></p>
+            <p>Today you will use <strong>Google AI Studio</strong> &mdash; a free developer tool that gives you direct access to model parameters, system instructions, and a token counter. This is the control panel behind consumer AI products like Gemini Chat.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">0</span>
+                    <h3 class="task-title">Access Google AI Studio</h3>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step0-1">
+                    <label for="step0-1">Open <strong>aistudio.google.com</strong> in your web browser and sign in with your Google account.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-2">
+                    <label for="step0-2">Click <strong>"Create new prompt"</strong> (or start a new chat). Identify the <strong>System Instructions</strong> area at the <strong>top of the central workspace</strong>.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-3">
+                    <label for="step0-3">Locate the <strong>Run Settings</strong> panel on the right: Temperature, Top P, Top K, Max Output Tokens.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-4">
+                    <label for="step0-4">Find the <strong>token counter</strong> &mdash; it shows how many tokens are in your system instructions and conversation.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step0-5">
+                    <label for="step0-5">Verify the <strong>model selector</strong> is set to a Gemini model (e.g., Gemini 3 Flash). The free tier is sufficient for this lab.</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Fallback option:</strong> If AI Studio is unavailable, Gemini Chat (gemini.google.com) can be used for Parts 1&ndash;2. You will miss the parameter controls but can still practice system prompts.
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             EMAIL DATASET
+             ============================================= -->
+        <section class="lab-section">
+            <h2>Beacon Customer Email Dataset</h2>
+            <p>Below are 16 customer emails sent to Beacon Retail Group. You will use these throughout the lab to test your AI triage system. Each email has a <strong>Copy to Clipboard</strong> button so you can paste it into AI Studio.</p>
+
+            <!-- TEST SET -->
+            <h3 class="email-group-title">Test Set (5 emails)</h3>
+            <p class="email-group-desc">One email per main category. Use these in Part 1 to validate your system prompt.</p>
+
+            <details class="email-accordion" open>
+            <summary class="email-summary">EMAIL #1 — Maria Chen: "Broken blender - ORDER #BRG-4521"</summary>
+            <div class="email-card cat-complaint" id="email1">
+                <div class="email-number">EMAIL #1</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Maria Chen</div>
+                        <div class="email-subject">Subject: "Broken blender - ORDER #BRG-4521"</div>
+                    </div>
+                    <span class="email-badge badge-complaint">Complaint</span>
+                </div>
+                <div class="email-body">I received my order yesterday and the blender was cracked right out of the box. The lid is chipped and the base has a visible crack. I've been a loyal Beacon customer for 5 years and this is the first time something like this has happened. I need a replacement sent immediately. This was supposed to be a birthday gift for my daughter.</div>
+                <button class="copy-email-btn" onclick="copyEmail('email1', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion" open>
+            <summary class="email-summary">EMAIL #2 — James Wilson: "Return request - hiking boots"</summary>
+            <div class="email-card cat-return" id="email2">
+                <div class="email-number">EMAIL #2</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: James Wilson</div>
+                        <div class="email-subject">Subject: "Return request - hiking boots"</div>
+                    </div>
+                    <span class="email-badge badge-return">Return</span>
+                </div>
+                <div class="email-body">Hi, I purchased a pair of hiking boots from your Schaumburg store last Saturday (receipt #RS-2847). They don't fit right &mdash; too narrow in the toe box. I'd like to return them for a full refund. They're unworn and still in the original box. What's the process?</div>
+                <button class="copy-email-btn" onclick="copyEmail('email2', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion" open>
+            <summary class="email-summary">EMAIL #3 — Priya Patel: "Holiday hours question"</summary>
+            <div class="email-card cat-inquiry" id="email3">
+                <div class="email-number">EMAIL #3</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Priya Patel</div>
+                        <div class="email-subject">Subject: "Holiday hours question"</div>
+                    </div>
+                    <span class="email-badge badge-inquiry">Inquiry</span>
+                </div>
+                <div class="email-body">Hello! I'm planning to visit your downtown location this weekend. Are you open on Sunday? If so, what time do you close? Also, do you have a parking garage nearby? I'll be coming from the suburbs and I'm not familiar with the area. Thanks!</div>
+                <button class="copy-email-btn" onclick="copyEmail('email3', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion" open>
+            <summary class="email-summary">EMAIL #4 — Robert Kim: "Amazing service from David!"</summary>
+            <div class="email-card cat-compliment" id="email4">
+                <div class="email-number">EMAIL #4</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Robert Kim</div>
+                        <div class="email-subject">Subject: "Amazing service from David!"</div>
+                    </div>
+                    <span class="email-badge badge-compliment">Compliment</span>
+                </div>
+                <div class="email-body">I just wanted to let you know that David at your Evanston location went above and beyond today. I was looking for a specific camping stove that was out of stock online, and he called three other stores to find one for me, then had it shipped to my house at no extra charge. That's the kind of service that keeps me coming back. Please give him a raise!</div>
+                <button class="copy-email-btn" onclick="copyEmail('email4', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion" open>
+            <summary class="email-summary">EMAIL #5 — Thomas Wright: "URGENT - Defective product caused injury"</summary>
+            <div class="email-card cat-escalation" id="email5">
+                <div class="email-number">EMAIL #5</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Thomas Wright</div>
+                        <div class="email-subject">Subject: "URGENT - Defective product caused injury"</div>
+                    </div>
+                    <span class="email-badge badge-escalation">Escalation</span>
+                </div>
+                <div class="email-body">Your defective space heater (model BH-450) malfunctioned last night and nearly started a fire in my living room. The unit began smoking and the plastic housing melted. I have photos and video documentation. If I don't hear from a manager within 24 hours, I will be contacting my attorney and filing a complaint with the Consumer Product Safety Commission. This is a serious safety hazard.</div>
+                <button class="copy-email-btn" onclick="copyEmail('email5', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <!-- EXPERIMENT SET -->
+            <h3 class="email-group-title">Experiment Set (7 emails)</h3>
+            <p class="email-group-desc">More variety for Parts 2&ndash;3. Use these to test parameter effects and cost estimation.</p>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #6 — Angela Torres: "Waited 45 minutes for help"</summary>
+            <div class="email-card cat-complaint" id="email6">
+                <div class="email-number">EMAIL #6</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Angela Torres</div>
+                        <div class="email-subject">Subject: "Waited 45 minutes for help"</div>
+                    </div>
+                    <span class="email-badge badge-complaint">Complaint</span>
+                </div>
+                <div class="email-body">I visited your Naperville store yesterday and waited 45 minutes before anyone acknowledged me. Three employees walked past me in the electronics section without saying a word. I finally left without buying the TV I came for. I've never been treated like this at any retail store.</div>
+                <button class="copy-email-btn" onclick="copyEmail('email6', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #7 — David Park: "Charged twice for same order"</summary>
+            <div class="email-card cat-complaint" id="email7">
+                <div class="email-number">EMAIL #7</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: David Park</div>
+                        <div class="email-subject">Subject: "Charged twice for same order"</div>
+                    </div>
+                    <span class="email-badge badge-complaint">Complaint</span>
+                </div>
+                <div class="email-body">I just noticed two identical charges of $89.99 on my credit card statement from February 12th, both from Beacon online. Order #BO-7793. I only placed one order. Please refund the duplicate charge immediately.</div>
+                <button class="copy-email-btn" onclick="copyEmail('email7', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #8 — Lisa Chang: "Can I still return this?"</summary>
+            <div class="email-card cat-return" id="email8">
+                <div class="email-number">EMAIL #8</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Lisa Chang</div>
+                        <div class="email-subject">Subject: "Can I still return this?"</div>
+                    </div>
+                    <span class="email-badge badge-return">Return</span>
+                </div>
+                <div class="email-body">I bought a winter jacket in November but never wore it because winter was mild this year. I know it's been over 90 days, but the tags are still on and it's in perfect condition. Is there any way you can make an exception? I have the receipt.</div>
+                <button class="copy-email-btn" onclick="copyEmail('email8', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #9 — Michael Brown: "Coffee maker broke after 2 weeks"</summary>
+            <div class="email-card cat-return" id="email9">
+                <div class="email-number">EMAIL #9</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Michael Brown</div>
+                        <div class="email-subject">Subject: "Coffee maker broke after 2 weeks"</div>
+                    </div>
+                    <span class="email-badge badge-return">Return</span>
+                </div>
+                <div class="email-body">The Beacon Premium coffee maker I bought two weeks ago stopped working. It powers on but no water flows through. The carafe also has a small chip on the rim that I didn't notice at purchase. Can I get a replacement or refund?</div>
+                <button class="copy-email-btn" onclick="copyEmail('email9', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #10 — Sarah Johnson: "Do you carry the NovaTech 3000?"</summary>
+            <div class="email-card cat-inquiry" id="email10">
+                <div class="email-number">EMAIL #10</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Sarah Johnson</div>
+                        <div class="email-subject">Subject: "Do you carry the NovaTech 3000?"</div>
+                    </div>
+                    <span class="email-badge badge-inquiry">Inquiry</span>
+                </div>
+                <div class="email-body">My neighbor recommended the NovaTech 3000 air purifier and said she bought it at Beacon. I checked your website but couldn't find it. Do you still carry it? If so, which stores have it in stock? I need it for my daughter's nursery.</div>
+                <button class="copy-email-btn" onclick="copyEmail('email10', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #11 — Kevin Nguyen: "Gift card balance check"</summary>
+            <div class="email-card cat-inquiry" id="email11">
+                <div class="email-number">EMAIL #11</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Kevin Nguyen</div>
+                        <div class="email-subject">Subject: "Gift card balance check"</div>
+                    </div>
+                    <span class="email-badge badge-inquiry">Inquiry</span>
+                </div>
+                <div class="email-body">I received a Beacon gift card for Christmas and I've used it a couple of times. Can you tell me the remaining balance? The card number is BGC-5522-8891-3347. Also, do gift cards expire?</div>
+                <button class="copy-email-btn" onclick="copyEmail('email11', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #12 — Emily Rodriguez: "Love the Beacon Signature blanket!"</summary>
+            <div class="email-card cat-compliment" id="email12">
+                <div class="email-number">EMAIL #12</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Emily Rodriguez</div>
+                        <div class="email-subject">Subject: "Love the Beacon Signature blanket!"</div>
+                    </div>
+                    <span class="email-badge badge-compliment">Compliment</span>
+                </div>
+                <div class="email-body">I just have to say &mdash; the Beacon Signature weighted blanket is the best purchase I've made all year. The quality is incredible, it's so cozy, and it arrived beautifully packaged. I've already recommended it to three friends. Keep making great products!</div>
+                <button class="copy-email-btn" onclick="copyEmail('email12', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <!-- EDGE CASE SET -->
+            <h3 class="email-group-title">Edge Case Set (4 emails)</h3>
+            <p class="email-group-desc">Challenging emails for Part 4. Can your system handle ambiguity, mixed languages, anger, and spam?</p>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #13 — Jennifer Lee: "Wrong item sent AND it's damaged"</summary>
+            <div class="email-card cat-edge" id="email13">
+                <div class="email-number">EMAIL #13</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Jennifer Lee</div>
+                        <div class="email-subject">Subject: "Wrong item sent AND it's damaged"</div>
+                    </div>
+                </div>
+                <div class="email-body">I ordered a blue ceramic vase (order #BO-9912) but received a red glass one instead. To make matters worse, it arrived shattered &mdash; glass everywhere in the box. I want a refund for this order AND I still want the blue vase I originally ordered. This is really frustrating.</div>
+                <button class="copy-email-btn" onclick="copyEmail('email13', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #14 — Carlos Mendez: "Problema con mi pedido"</summary>
+            <div class="email-card cat-edge" id="email14">
+                <div class="email-number">EMAIL #14</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Carlos Mendez</div>
+                        <div class="email-subject">Subject: "Problema con mi pedido"</div>
+                    </div>
+                </div>
+                <div class="email-body">Hello, sorry my English is not so good. I order una televisi&oacute;n from your website pero it no arrive. It say delivered but I no receive nada. My order number es BO-4418. Can you help me por favor? Necesito this for my son's birthday next week.</div>
+                <button class="copy-email-btn" onclick="copyEmail('email14', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #15 — Mark Stevens: "This is absolutely ridiculous"</summary>
+            <div class="email-card cat-edge" id="email15">
+                <div class="email-number">EMAIL #15</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: Mark Stevens</div>
+                        <div class="email-subject">Subject: "This is absolutely ridiculous"</div>
+                    </div>
+                </div>
+                <div class="email-body">Are you kidding me?! I've been on hold for TWO HOURS trying to reach someone about my broken dishwasher. Your customer service is a complete joke. I spent $800 on this piece of garbage and it stopped working after one month. Fix this NOW or I'm posting about this nightmare on every review site I can find.</div>
+                <button class="copy-email-btn" onclick="copyEmail('email15', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <details class="email-accordion">
+            <summary class="email-summary">EMAIL #16 — support@beacon-rewards-claim.net: "Congratulations! You've won a $500 Beacon gift card!"</summary>
+            <div class="email-card cat-edge" id="email16">
+                <div class="email-number">EMAIL #16</div>
+                <div class="email-card-header">
+                    <div class="email-meta">
+                        <div class="email-from">From: support@beacon-rewards-claim.net</div>
+                        <div class="email-subject">Subject: "Congratulations! You've won a $500 Beacon gift card!"</div>
+                    </div>
+                </div>
+                <div class="email-body">Dear valued customer, you have been selected for our exclusive reward program! Click here to claim your $500 Beacon gift card. Just verify your account by entering your credit card number and social security number. This offer expires in 24 hours! Act now!</div>
+                <button class="copy-email-btn" onclick="copyEmail('email16', this)">Copy to Clipboard</button>
+            </div>
+            </details>
+
+            <div class="tip-box">
+                <strong>How to use these emails:</strong> Copy individual emails into AI Studio to test your system prompt and parameter settings. The <strong>Test Set</strong> has expected category badges shown &mdash; the Edge Case Set does not, because part of the challenge is figuring out how your system handles them.
+            </div>
+        </section>
+
+        <!-- =============================================
+             PART 1: SYSTEM PROMPT ENGINEERING
+             ============================================= -->
+        <section class="lab-section">
+            <h2>Part 1: System Prompt Engineering</h2>
+            <p><strong>Time estimate: 25 minutes</strong></p>
+            <p>A <strong>system prompt</strong> defines who the AI is, what it should do, and how it should respond. It is the single most powerful lever for controlling AI behavior in a business application.</p>
+
+            <div class="tip-box" style="margin-bottom: 20px;">
+                <strong>JSON Refresher (from Day 3):</strong> Your system prompt will ask the AI to respond in JSON format. JSON uses key-value pairs inside curly braces. Here's a quick example:
+                <div class="prompt-box" style="margin-top: 10px; font-size: 0.85rem;">{
+  "category": "complaint",
+  "urgency": "high",
+  "reasoning": "Customer reports a broken product"
+}</div>
+                <p style="margin-top: 8px; font-size: 0.88em;">Keys are in quotes on the left, values on the right, separated by a colon. Each pair is separated by a comma. This structured format makes it easy for downstream systems to process AI output.</p>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">1</span>
+                    <h3 class="task-title">Write the Classification System Prompt</h3>
+                </div>
+
+                <div class="tip-box" style="margin-bottom: 20px;">
+                    <strong>Worked Example:</strong> Here's what a complete classification looks like. Given this email:
+                    <blockquote style="margin: 10px 0; padding: 10px 15px; background: #fff; border-left: 3px solid #ccc; font-size: 0.9em; color: #444;"><em>"Hi, I ordered a red sweater but received a blue one. Order #BRG-1234. Can I exchange it?"</em></blockquote>
+                    A well-configured system should output:
+                    <div class="prompt-box" style="margin-top: 8px; font-size: 0.85rem;">{
+  "category": "return_exchange",
+  "urgency": "medium",
+  "reasoning": "Customer received wrong item, requesting exchange"
+}</div>
+                    <p style="margin-top: 8px; font-size: 0.88em;">A sample response draft might be: <em>"Dear Customer, we apologize for the mix-up with your order #BRG-1234. We'd be happy to arrange an exchange for the correct red sweater. Please [instructions]... — The Beacon Team"</em></p>
+                </div>
+
+                <p>Use the template below as a starting point. Fill in the blanks, then paste the completed prompt into AI Studio's <strong>System Instructions</strong> pane.</p>
+
+                <div class="prompt-box" id="prompt-template">You are [ROLE - define who this AI is].
+Your primary task is to [PRIMARY TASK - what should it do with each email?].
+
+## Classification Categories
+- complaint: [define what qualifies]
+- product_question: [define what qualifies]
+- order_status: [define what qualifies]
+- return_exchange: [define what qualifies]
+- billing: [define what qualifies]
+- partnership_inquiry: [define what qualifies]
+- feedback_praise: [define what qualifies]
+
+## Urgency Levels
+- high: [define criteria]
+- medium: [define criteria]
+- low: [define criteria]
+
+## Output Format
+Respond with a JSON object:
+{
+  "category": "[one of the categories above]",
+  "urgency": "[high/medium/low]",
+  "reasoning": "[brief explanation of classification]"
+}
+
+## Rules
+- [Add at least 3 behavioral rules]<button class="copy-prompt-btn" onclick="copyPrompt('prompt-template', this)">Copy</button></div>
+
+                <div class="step">
+                    <input type="checkbox" id="step1-1">
+                    <label for="step1-1">Fill in all the bracketed blanks in the template above with your own definitions.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step1-2">
+                    <label for="step1-2">Paste your completed system prompt into the <strong>System Instructions</strong> area at the top of AI Studio's central workspace.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step1-3">
+                    <label for="step1-3">Note the <strong>token count</strong> of your system prompt (shown in AI Studio). Write it down &mdash; you will need it in Part 3.</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Good system prompts are specific.</strong> Instead of "complaint: negative emails," try "complaint: emails expressing dissatisfaction with a product, service, or experience, requesting resolution." The more precise your definitions, the more consistent your classifications.
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">2</span>
+                    <h3 class="task-title">Test with the 5 Test Set Emails</h3>
+                </div>
+
+                <p>Copy each Test Set email (emails #1&ndash;5) into AI Studio one at a time. Record the AI's classification in the table below.</p>
+
+                <div class="warning-box">
+                    <strong>Instructor Tip:</strong> Start a <strong>new chat for each email</strong>. Previous emails in the conversation create context that can influence the AI's classification of the next email (context bleed). In a real production system, each email would be processed independently.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step2-1">
+                    <label for="step2-1">Test all 5 Test Set emails and fill in the results table below.</label>
+                </div>
+
+                <table class="result-table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Expected Category</th>
+                            <th>AI Category</th>
+                            <th>Expected Urgency</th>
+                            <th>AI Urgency</th>
+                            <th>Correct?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#1 Maria Chen</td>
+                            <td>complaint</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td>medium</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td><select><option value="">--</option><option value="yes">Yes</option><option value="partial">Partial</option><option value="no">No</option></select></td>
+                        </tr>
+                        <tr>
+                            <td>#2 James Wilson</td>
+                            <td>return</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td>low</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td><select><option value="">--</option><option value="yes">Yes</option><option value="partial">Partial</option><option value="no">No</option></select></td>
+                        </tr>
+                        <tr>
+                            <td>#3 Priya Patel</td>
+                            <td>inquiry</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td>low</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td><select><option value="">--</option><option value="yes">Yes</option><option value="partial">Partial</option><option value="no">No</option></select></td>
+                        </tr>
+                        <tr>
+                            <td>#4 Robert Kim</td>
+                            <td>compliment</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td>low</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td><select><option value="">--</option><option value="yes">Yes</option><option value="partial">Partial</option><option value="no">No</option></select></td>
+                        </tr>
+                        <tr>
+                            <td>#5 Thomas Wright</td>
+                            <td>escalation</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td>high</td>
+                            <td><input type="text" placeholder="..."></td>
+                            <td><select><option value="">--</option><option value="yes">Yes</option><option value="partial">Partial</option><option value="no">No</option></select></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">3</span>
+                    <h3 class="task-title">Iterate the System Prompt</h3>
+                </div>
+
+                <p>Look at your results table. Did any classification come back wrong or partially wrong? If so, improve your system prompt and re-test.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step3-1">
+                    <label for="step3-1">Identify at least one weakness in your classifications.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step3-2">
+                    <label for="step3-2">Modify your system prompt to address the weakness.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step3-3">
+                    <label for="step3-3">Re-test the problem email(s) and document the result.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Iteration log: What went wrong? What did you change? Did it fix it?</label>
+                    <textarea placeholder="Example: Email #1 was classified as 'return' instead of 'complaint.' I added a rule: 'If the customer expresses frustration about product quality but does NOT explicitly ask to return the item, classify as complaint, not return.' Re-testing email #1 now correctly classifies as complaint."></textarea>
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with Classmates</h4>
+                    <p>Share your system prompts with a neighbor. Did different wording produce different classification accuracy? Which system prompt components made the biggest difference &mdash; the category definitions, the urgency criteria, or the behavioral rules?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             PART 2: PARAMETER TUNING
+             ============================================= -->
+        <section class="lab-section">
+            <h2>Part 2: Parameter Tuning</h2>
+            <p><strong>Time estimate: 20 minutes</strong></p>
+            <p><strong>Temperature</strong> controls how "creative" or "random" the AI's responses are. Low temperature = deterministic and consistent. High temperature = varied and sometimes surprising. For business classification, you generally want low temperature. For customer response drafting, you may want slightly higher.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">4</span>
+                    <h3 class="task-title">Temperature Experiment</h3>
+                </div>
+
+                <p>Keep your system prompt the same. Pick 3 emails from the Test Set. Run each email at three different temperature settings and record the results.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step4-1">
+                    <label for="step4-1">Set temperature to <strong>0.1</strong> in AI Studio. Run 3 emails. Record results below.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step4-2">
+                    <label for="step4-2">Set temperature to <strong>0.7</strong>. Run the same 3 emails. Record results.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step4-3">
+                    <label for="step4-3">Set temperature to <strong>1.5</strong>. Run the same 3 emails. Record results.</label>
+                </div>
+
+                <table class="result-table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Temp 0.1</th>
+                            <th>Temp 0.7</th>
+                            <th>Temp 1.5</th>
+                            <th>Consistent?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" placeholder="Email #" style="width:60px"></td>
+                            <td><input type="text" placeholder="category / urgency"></td>
+                            <td><input type="text" placeholder="category / urgency"></td>
+                            <td><input type="text" placeholder="category / urgency"></td>
+                            <td><select><option value="">--</option><option value="yes">Yes</option><option value="no">No</option></select></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Email #" style="width:60px"></td>
+                            <td><input type="text" placeholder="category / urgency"></td>
+                            <td><input type="text" placeholder="category / urgency"></td>
+                            <td><input type="text" placeholder="category / urgency"></td>
+                            <td><select><option value="">--</option><option value="yes">Yes</option><option value="no">No</option></select></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Email #" style="width:60px"></td>
+                            <td><input type="text" placeholder="category / urgency"></td>
+                            <td><input type="text" placeholder="category / urgency"></td>
+                            <td><input type="text" placeholder="category / urgency"></td>
+                            <td><select><option value="">--</option><option value="yes">Yes</option><option value="no">No</option></select></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="warning-box">
+                    <strong>What to watch for:</strong> At temperature 1.5, you may see the AI invent categories not in your system prompt, produce malformed JSON, or give inconsistent urgency levels for the same email. This is why production classification systems use low temperature.
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">5</span>
+                    <h3 class="task-title">Response Drafting Parameters</h3>
+                </div>
+
+                <p>Now switch modes: add a response drafting instruction to your system prompt. You are testing whether the same temperature works for both classification AND customer response writing.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-1">
+                    <label for="step5-1">Add this to the end of your system prompt:</label>
+                </div>
+
+                <div class="prompt-box" id="prompt-response-addon">After classifying the email, draft a customer response using Beacon's brand voice: professional, empathetic, and solution-oriented. Sign off as "The Beacon Team."<button class="copy-prompt-btn" onclick="copyPrompt('prompt-response-addon', this)">Copy</button></div>
+
+                <div class="step">
+                    <input type="checkbox" id="step5-2">
+                    <label for="step5-2">Test the same email at <strong>temperature 0.3</strong> and <strong>temperature 0.8</strong>. Compare the drafted responses.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Compare the two responses: Which sounds more natural? Which is more consistent? Which would you use in production?</label>
+                    <textarea placeholder="At temp 0.3, the response was... At temp 0.8, the response was... I would use ___ for production because..."></textarea>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">6</span>
+                    <h3 class="task-title">Find Your Optimal Settings</h3>
+                </div>
+
+                <p>Based on your experiments, fill in your recommended configuration for Beacon's email triage system.</p>
+
+                <div class="config-card">
+                    <h4>Beacon Email Triage &mdash; Optimal Configuration</h4>
+                    <div class="config-row">
+                        <label>Classification temperature:</label>
+                        <input type="text" placeholder="e.g., 0.1">
+                    </div>
+                    <div class="config-row">
+                        <label>Response drafting temperature:</label>
+                        <input type="text" placeholder="e.g., 0.5">
+                    </div>
+                    <div class="config-row">
+                        <label>Max tokens (classification):</label>
+                        <input type="text" placeholder="e.g., 200">
+                    </div>
+                    <div class="config-row">
+                        <label>Max tokens (response draft):</label>
+                        <input type="text" placeholder="e.g., 500">
+                    </div>
+                    <div class="config-row">
+                        <label>Reasoning:</label>
+                        <input type="text" placeholder="Why did you choose these settings?">
+                    </div>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step6-1">
+                    <label for="step6-1">Complete the configuration card above with your recommended settings.</label>
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with Classmates</h4>
+                    <p>Did everyone arrive at the same optimal settings? Why might different settings be "optimal" for different team members? Consider: Did your system prompt's level of detail affect which temperature worked best?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             PART 3: TOKEN ECONOMICS
+             ============================================= -->
+        <section class="lab-section">
+            <h2>Part 3: Token Economics</h2>
+            <p><strong>Time estimate: 20 minutes</strong></p>
+            <p>Every AI call costs money. Understanding <strong>token economics</strong> is essential for building a business case. In this section you will measure real token counts and project monthly costs for Beacon.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">7</span>
+                    <h3 class="task-title">Count Real Tokens</h3>
+                </div>
+
+                <p>Use AI Studio's token counter to measure the token count of each component of a triage call.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step7-1">
+                    <label for="step7-1">Record your <strong>system prompt</strong> token count (from AI Studio).</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step7-2">
+                    <label for="step7-2">Measure the token count of <strong>3 sample emails</strong> and calculate the average.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step7-3">
+                    <label for="step7-3">Measure the average <strong>classification output</strong> token count (the JSON response).</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step7-4">
+                    <label for="step7-4">Measure the average <strong>drafted response</strong> token count.</label>
+                </div>
+
+                <div class="config-card">
+                    <h4>Token Measurements</h4>
+                    <div class="config-row">
+                        <label>(a) System prompt tokens:</label>
+                        <input type="text" id="tokens-system" placeholder="e.g., 250">
+                    </div>
+                    <div class="config-row">
+                        <label>(b) Avg. email input tokens:</label>
+                        <input type="text" id="tokens-email" placeholder="e.g., 120">
+                    </div>
+                    <div class="config-row">
+                        <label>(c) Avg. classification output tokens:</label>
+                        <input type="text" id="tokens-classify" placeholder="e.g., 60">
+                    </div>
+                    <div class="config-row">
+                        <label>(d) Avg. response draft output tokens:</label>
+                        <input type="text" id="tokens-response" placeholder="e.g., 180">
+                    </div>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">8</span>
+                    <h3 class="task-title">Monthly Cost Projection</h3>
+                </div>
+
+                <p>Beacon receives approximately <strong>6,000 customer emails per month</strong> (based on the strategic plan: ~850/week). Use the pricing reference below to project monthly costs.</p>
+
+                <div class="pricing-ref">
+                    <h4>Gemini API Pricing Reference</h4>
+                    <p style="font-size: 0.82rem; color: #666; margin: 0 0 8px;"><strong>What's an API?</strong> An <em>Application Programming Interface</em> (API) lets software talk to AI models directly &mdash; no chat window needed. When businesses deploy AI at scale, they use the API. The prices below are what Google charges per million tokens processed through their API.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model Tier</th>
+                                <th>Input (per 1M tokens)</th>
+                                <th>Output (per 1M tokens)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Gemini 3 Flash</strong> (fast, affordable)</td>
+                                <td>~$0.50</td>
+                                <td>~$3.00</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gemini 3 Pro</strong> (powerful, premium)</td>
+                                <td>~$2.00</td>
+                                <td>~$12.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="pricing-disclaimer">Illustrative prices &mdash; actual rates change frequently. Check ai.google.dev/pricing for current rates.</p>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step8-1">
+                    <label for="step8-1">Fill in the cost worksheet below using your token measurements from Task 7 and the pricing reference above.</label>
+                </div>
+
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Tokens / Email</th>
+                            <th>&times; 6,000 Emails/Mo</th>
+                            <th>Flash Cost</th>
+                            <th>Pro Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>System prompt (input)</td>
+                            <td><input type="text" placeholder="___"></td>
+                            <td><input type="text" placeholder="___"></td>
+                            <td><input type="text" placeholder="$___"></td>
+                            <td><input type="text" placeholder="$___"></td>
+                        </tr>
+                        <tr>
+                            <td>Email body (input)</td>
+                            <td><input type="text" placeholder="___"></td>
+                            <td><input type="text" placeholder="___"></td>
+                            <td><input type="text" placeholder="$___"></td>
+                            <td><input type="text" placeholder="$___"></td>
+                        </tr>
+                        <tr>
+                            <td>Classification (output)</td>
+                            <td><input type="text" placeholder="___"></td>
+                            <td><input type="text" placeholder="___"></td>
+                            <td><input type="text" placeholder="$___"></td>
+                            <td><input type="text" placeholder="$___"></td>
+                        </tr>
+                        <tr>
+                            <td>Response draft (output)</td>
+                            <td><input type="text" placeholder="___"></td>
+                            <td><input type="text" placeholder="___"></td>
+                            <td><input type="text" placeholder="$___"></td>
+                            <td><input type="text" placeholder="$___"></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>TOTAL</td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" placeholder="$___"></td>
+                            <td><input type="text" placeholder="$___"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">9</span>
+                    <h3 class="task-title">Build the Business Case</h3>
+                </div>
+
+                <p>Compare AI triage costs to manual processing costs. Use the assumptions below.</p>
+
+                <div class="roi-box">
+                    <strong>Manual triage benchmark:</strong> 1 hour/day &times; $20/hr &times; 30 days = <strong>$600/month</strong>
+                </div>
+
+                <div class="config-card">
+                    <h4>ROI Comparison</h4>
+                    <div class="config-row">
+                        <label>AI triage cost (Flash):</label>
+                        <input type="text" placeholder="$ from your calculation">
+                    </div>
+                    <div class="config-row">
+                        <label>Monthly savings:</label>
+                        <input type="text" placeholder="$600 - AI cost = $___">
+                    </div>
+                    <div class="config-row">
+                        <label>Annual savings:</label>
+                        <input type="text" placeholder="Monthly savings x 12 = $___">
+                    </div>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step9-1">
+                    <label for="step9-1">Complete the ROI comparison above.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step9-2">
+                    <label for="step9-2">Draft a 3-sentence pitch to Beacon's CFO explaining why they should deploy this system.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Your 3-sentence CFO pitch:</label>
+                    <textarea placeholder="Our customer email triage system using Gemini Flash would cost approximately $__ per month to classify and draft responses for all 6,000 monthly emails. Compared to the current manual process at $600/month, this represents annual savings of $___. Additionally, AI triage would reduce average response time from 4 hours to near-instant, improving customer satisfaction scores."></textarea>
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with Classmates</h4>
+                    <p>Compare your cost projections. Did different system prompts produce different token counts? What is the cost impact of a verbose system prompt vs. a concise one? Did anyone find a scenario where Pro is worth the extra cost?</p>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Finished early?</strong> Try these extensions: (1) Calculate costs for a 10x volume scenario (60,000 emails/month). How does scale change the Flash vs. Pro decision? (2) What if Beacon wanted to add a second AI step &mdash; generating a priority score from 1&ndash;100 instead of high/medium/low? How would that affect token counts?
+                </div>
+                <div class="tip-box">
+                    <strong>Stuck?</strong> Use the lecture's Beacon math slide as a worked example. The key formula is: <em>monthly tokens = (system prompt tokens + email tokens) &times; emails/month</em> for input, and <em>output tokens &times; emails/month</em> for output. Then multiply each by the price per million tokens.
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             PART 4: BUILD & SUBMIT
+             ============================================= -->
+        <section class="lab-section">
+            <h2>Part 4: Build &amp; Submit</h2>
+            <p><strong>Time estimate: 25 minutes</strong></p>
+            <p>Bring everything together: your best system prompt, optimal parameters, and chosen model tier. Then stress-test with edge cases and reflect on what you have learned.</p>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">10</span>
+                    <h3 class="task-title">Build Your Complete Configuration</h3>
+                </div>
+
+                <p>In AI Studio, set your final configuration: optimal system prompt + temperature + max tokens + model tier. Then test with 3 Experiment Set emails you have not yet used.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step10-1">
+                    <label for="step10-1">Configure AI Studio with your final settings (system prompt, temperature, max tokens).</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step10-2">
+                    <label for="step10-2">Test with 3 Experiment Set emails. Verify classifications are correct and responses are professional.</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step10-3">
+                    <label for="step10-3">Copy your final system prompt into the textarea below for submission.</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Your final system prompt (paste the complete text from AI Studio):</label>
+                    <textarea style="min-height: 200px; font-family: 'Courier New', monospace; font-size: 0.9rem;" placeholder="Paste your complete system prompt here. This will be saved in your lab report PDF and used again on Day 6 for red-teaming."></textarea>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Final configuration test results (which 3 emails did you test? How did they perform?):</label>
+                    <textarea placeholder="I tested emails #__, #__, and #__. All three were classified correctly with appropriate urgency levels. The drafted responses were [professional/natural/etc.]..."></textarea>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">11</span>
+                    <h3 class="task-title">Edge Case Testing</h3>
+                </div>
+
+                <p>Now test with the 4 Edge Case emails (#13&ndash;#16). These are intentionally difficult. Document how your system handles each one.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step11-1">
+                    <label for="step11-1">Test <strong>Email #13</strong> (multi-category: complaint + return). How did the system handle it?</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step11-2">
+                    <label for="step11-2">Test <strong>Email #14</strong> (non-English fragments). Did the system classify correctly despite mixed language?</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step11-3">
+                    <label for="step11-3">Test <strong>Email #15</strong> (angry/profanity). Did the system maintain a professional response?</label>
+                </div>
+                <div class="step">
+                    <input type="checkbox" id="step11-4">
+                    <label for="step11-4">Test <strong>Email #16</strong> (phishing/spam). Did the system flag it appropriately?</label>
+                </div>
+
+                <div class="reflection-area">
+                    <label>Edge case results: How did your system handle each one? What weaknesses did you find?</label>
+                    <textarea placeholder="Email #13 (multi-category): The system classified it as ___. It [did/did not] recognize both the complaint and return aspects...
+Email #14 (non-English): ...
+Email #15 (profanity): ...
+Email #16 (phishing): ...
+Main weakness I found: ..."></textarea>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Edge cases matter in production.</strong> Real customer email contains typos, mixed languages, emotional outbursts, and even phishing attempts. A robust triage system needs to handle all of these gracefully. These edge cases preview what you will explore on Day 6 (guardrails and safety).
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-header">
+                    <span class="task-number">12</span>
+                    <h3 class="task-title">Reflection &amp; Submission</h3>
+                </div>
+
+                <p>Take a few minutes to reflect on what you learned in this lab.</p>
+
+                <div class="reflection-area">
+                    <label>1. What surprised you most about how parameter settings affected AI behavior?</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+
+                <div class="reflection-area">
+                    <label>2. How did your system prompt evolve from start to finish? What was the most impactful change?</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+
+                <div class="reflection-area">
+                    <label>3. What edge cases would you want to test before deploying this system for real? (Think beyond the ones provided.)</label>
+                    <textarea placeholder="Your response..."></textarea>
+                </div>
+
+                <div class="compare-box">
+                    <h4>Compare with Classmates</h4>
+                    <p>Share your edge case findings. What broke everyone's system? What would you add to the system prompt to handle these cases? Did anyone find a way to handle phishing emails that the rest of the class missed?</p>
+                </div>
+            </div>
+
+            <!-- SUBMISSION -->
+            <div class="task" style="margin-top: 30px;">
+                <div class="task-header">
+                    <span class="task-number" style="background: #1D428A;">PDF</span>
+                    <h3 class="task-title">Generate and Upload Your Lab Report</h3>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step-sub-1">
+                    <label for="step-sub-1">Review all your reflection responses and tables above to make sure they are complete.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step-sub-2">
+                    <label for="step-sub-2">Click <strong>"Download as PDF"</strong> below. A new window will open with your responses, and a print dialog will appear automatically.</label>
+                </div>
+
+                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="downloadPDF()">Download as PDF</button>
+
+                <div class="tip-box" style="margin-bottom: 15px;">
+                    <strong>Saving as PDF:</strong> In the print dialog, select <strong>"Save as PDF"</strong> or <strong>"Microsoft Print to PDF"</strong> as your printer, then click <strong>Save</strong>. On Mac, look for the <strong>"PDF"</strong> dropdown in the bottom-left corner.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step-sub-3">
+                    <label for="step-sub-3">Open the saved PDF and verify your responses look correct.</label>
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step-sub-4">
+                    <label for="step-sub-4">Log in to your LMS and upload the PDF to the <strong>Day 5 Lab</strong> assignment.</label>
+                </div>
+
+                <div class="tip-box" style="margin-top: 20px;">
+                    <strong>How to upload:</strong>
+                    <ol style="margin-bottom: 0; font-size: 0.9em;">
+                        <li>Go to your LMS (e.g., Blackboard) and find the UBUS 670 course</li>
+                        <li>Navigate to <strong>Assignments</strong> &rarr; <strong>Day 5 Lab: Email Triage System</strong></li>
+                        <li>Click <strong>Upload File</strong> and select the PDF you just downloaded</li>
+                        <li>Click <strong>Submit</strong></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPLETION -->
+        <section class="lab-section" style="text-align: center;">
+            <h2>Lab Complete!</h2>
+            <p>Congratulations on building Beacon's email triage system. Before moving on:</p>
+            <ul style="text-align: left; max-width: 550px; margin: 20px auto;">
+                <li>Verify your PDF was uploaded to the LMS</li>
+                <li>Your AI Studio configuration can be saved and reused</li>
+                <li>Note which edge cases broke your system &mdash; Day 6 covers guardrails and safety</li>
+                <li>Consider: How would you adapt this system for other business processes?</li>
+            </ul>
+            <p style="margin-top: 30px;">
+                <a href="quiz.html" class="btn-primary">Take the Knowledge Check &#8594;</a>
+            </p>
+        </section>
+
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+        <span id="progress-text">Progress: 0/0 tasks</span>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // Copy email to clipboard
+        // =============================================
+        function copyEmail(emailId, btn) {
+            const card = document.getElementById(emailId);
+            const from = card.querySelector('.email-from').textContent;
+            const subject = card.querySelector('.email-subject').textContent;
+            const body = card.querySelector('.email-body').textContent;
+            const text = from + '\n' + subject + '\n\n' + body;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy to Clipboard', 2000);
+            });
+        }
+
+        // =============================================
+        // Copy prompt box to clipboard
+        // =============================================
+        function copyPrompt(promptId, btn) {
+            const el = document.getElementById(promptId);
+            // Get only the text content, excluding the button text
+            const clone = el.cloneNode(true);
+            const buttons = clone.querySelectorAll('button');
+            buttons.forEach(b => b.remove());
+            const text = clone.textContent.trim();
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        }
+
+        // =============================================
+        // Progress tracking
+        // =============================================
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const total = checkboxes.length;
+            const percentage = Math.round((checked / total) * 100);
+
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = 'Progress: ' + checked + '/' + total + ' steps';
+        }
+
+        // Add event listeners to all checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.closest('.step').classList.toggle('completed', this.checked);
+                updateProgress();
+            });
+        });
+
+        // Initialize progress
+        updateProgress();
+
+        // =============================================
+        // Download lab report as PDF
+        // =============================================
+        function downloadPDF() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
+
+            // Gather all reflection textareas
+            const textareas = document.querySelectorAll('.reflection-area textarea');
+            const reflectionLabels = [
+                'Task 3: System Prompt Iteration Log',
+                'Task 5: Response Drafting Temperature Comparison',
+                'Task 9: CFO Pitch (3 sentences)',
+                'Task 10: Final Configuration Test Results',
+                'Task 11: Edge Case Results',
+                'Reflection 1: Parameter Effects',
+                'Reflection 2: System Prompt Evolution',
+                'Reflection 3: Additional Edge Cases for Production'
+            ];
+
+            // Gather result table data (Task 2)
+            let task2Rows = '';
+            const resultTable = document.querySelector('.result-table');
+            if (resultTable) {
+                const rows = resultTable.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const emailName = cells[0].textContent.trim();
+                    const expected = cells[1].textContent.trim();
+                    const aiCat = cells[2].querySelector('input') ? cells[2].querySelector('input').value : '';
+                    const expUrg = cells[3].textContent.trim();
+                    const aiUrg = cells[4].querySelector('input') ? cells[4].querySelector('input').value : '';
+                    const correct = cells[5].querySelector('select') ? cells[5].querySelector('select').value : '';
+                    task2Rows += '<tr><td>' + emailName + '</td><td>' + expected + '</td><td>' + (aiCat || '---') + '</td><td>' + expUrg + '</td><td>' + (aiUrg || '---') + '</td><td>' + (correct || '---') + '</td></tr>';
+                });
+            }
+
+            // Gather temperature table data (Task 4)
+            let task4Rows = '';
+            const tempTables = document.querySelectorAll('.result-table');
+            if (tempTables.length > 1) {
+                const rows = tempTables[1].querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    const inputs = row.querySelectorAll('input[type="text"]');
+                    const sel = row.querySelector('select');
+                    const email = inputs[0] ? inputs[0].value : '';
+                    const t01 = inputs[1] ? inputs[1].value : '';
+                    const t07 = inputs[2] ? inputs[2].value : '';
+                    const t15 = inputs[3] ? inputs[3].value : '';
+                    const consistent = sel ? sel.value : '';
+                    task4Rows += '<tr><td>' + (email || '---') + '</td><td>' + (t01 || '---') + '</td><td>' + (t07 || '---') + '</td><td>' + (t15 || '---') + '</td><td>' + (consistent || '---') + '</td></tr>';
+                });
+            }
+
+            // Gather config card data (Task 6)
+            const configInputs = document.querySelectorAll('.config-card input[type="text"]');
+            let configData = '';
+            const configLabelsArr = [
+                'System prompt tokens', 'Avg email input tokens', 'Avg classification output tokens', 'Avg response draft output tokens',
+                'Classification temperature', 'Response drafting temperature', 'Max tokens (classification)', 'Max tokens (response draft)', 'Reasoning',
+                'AI triage cost (Flash)', 'Monthly savings', 'Annual savings'
+            ];
+            configInputs.forEach((input, i) => {
+                const label = configLabelsArr[i] || 'Setting ' + (i + 1);
+                const val = input.value || '[not filled]';
+                configData += '<p style="margin:4px 0;font-size:12px;"><strong>' + label + ':</strong> ' + val + '</p>';
+            });
+
+            // Gather cost table data (Task 8)
+            let costRows = '';
+            const costTable = document.querySelector('.cost-table');
+            if (costTable) {
+                const rows = costTable.querySelectorAll('tbody tr');
+                const rowLabels = ['System prompt (input)', 'Email body (input)', 'Classification (output)', 'Response draft (output)', 'TOTAL'];
+                rows.forEach((row, i) => {
+                    const inputs = row.querySelectorAll('input[type="text"]');
+                    const vals = [];
+                    inputs.forEach(inp => vals.push(inp.value || '---'));
+                    const label = rowLabels[i] || '';
+                    if (i < 4) {
+                        costRows += '<tr><td>' + label + '</td><td>' + vals[0] + '</td><td>' + vals[1] + '</td><td>' + vals[2] + '</td><td>' + vals[3] + '</td></tr>';
+                    } else {
+                        costRows += '<tr style="font-weight:700;border-top:2px solid #1D428A;"><td>' + label + '</td><td></td><td></td><td>' + vals[0] + '</td><td>' + vals[1] + '</td></tr>';
+                    }
+                });
+            }
+
+            // Build reflection sections
+            let sections = '';
+            textareas.forEach((textarea, index) => {
+                const label = reflectionLabels[index] || 'Response ' + (index + 1);
+                const response = textarea.value.trim() || '[No response provided]';
+                sections += '<div style="margin-bottom:24px;page-break-inside:avoid;"><h3 style="font-family:Montserrat,sans-serif;font-size:13px;color:#1D428A;margin:0 0 8px;border-bottom:1px solid #e0e0e0;padding-bottom:6px;">' + label + '</h3><p style="font-family:Georgia,serif;font-size:12px;line-height:1.6;color:#333;white-space:pre-wrap;margin:0;">' + response.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</p></div>';
+            });
+
+            const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>UBUS 670 - Day 5 Lab Report</title><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"><style>@media print{body{margin:0}@page{margin:0.75in}}body{font-family:Georgia,serif;max-width:700px;margin:0 auto;padding:40px;color:#333}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:11px}th,td{padding:5px 8px;border:1px solid #ddd;text-align:left}th{background:#f0f0f0;font-family:Montserrat,sans-serif;font-weight:600}</style></head><body>' +
+                '<div style="border-bottom:3px solid #C8102E;padding-bottom:15px;margin-bottom:25px;">' +
+                '<h1 style="font-family:Montserrat,sans-serif;font-size:20px;color:#C8102E;margin:0;">UBUS 670: AI for Business Leaders</h1>' +
+                '<h2 style="font-family:Montserrat,sans-serif;font-size:16px;color:#333;margin:8px 0 0;">Day 5 Lab: Beacon\'s Customer Email Triage System</h2>' +
+                '<p style="font-size:12px;color:#666;margin:10px 0 0;">Student Name: _____________________________ &nbsp;&nbsp; Date: ' + new Date().toLocaleDateString() + ' &nbsp;&nbsp; Progress: ' + checkboxes.length + '/' + totalCheckboxes + ' steps</p></div>' +
+
+                '<h3 style="font-family:Montserrat,sans-serif;font-size:14px;color:#C8102E;margin:20px 0 8px;">Task 2: Classification Results</h3>' +
+                '<table><thead><tr><th>Email</th><th>Expected</th><th>AI Category</th><th>Exp. Urgency</th><th>AI Urgency</th><th>Correct?</th></tr></thead><tbody>' + task2Rows + '</tbody></table>' +
+
+                '<h3 style="font-family:Montserrat,sans-serif;font-size:14px;color:#C8102E;margin:20px 0 8px;">Task 4: Temperature Experiment</h3>' +
+                '<table><thead><tr><th>Email</th><th>Temp 0.1</th><th>Temp 0.7</th><th>Temp 1.5</th><th>Consistent?</th></tr></thead><tbody>' + task4Rows + '</tbody></table>' +
+
+                '<h3 style="font-family:Montserrat,sans-serif;font-size:14px;color:#C8102E;margin:20px 0 8px;">Configuration &amp; Token Data</h3>' +
+                '<div style="background:#f8f9fa;padding:12px 16px;border-radius:6px;margin:10px 0;">' + configData + '</div>' +
+
+                '<h3 style="font-family:Montserrat,sans-serif;font-size:14px;color:#C8102E;margin:20px 0 8px;">Task 8: Monthly Cost Projection</h3>' +
+                '<table><thead><tr><th>Component</th><th>Tokens/Email</th><th>&times; 6,000</th><th>Flash Cost</th><th>Pro Cost</th></tr></thead><tbody>' + costRows + '</tbody></table>' +
+
+                sections +
+
+                '<div style="border-top:2px solid #e0e0e0;padding-top:12px;margin-top:30px;text-align:center;"><p style="font-size:11px;color:#888;">Generated: ' + new Date().toLocaleString() + ' | UBUS 670 - Northern Illinois University</p></div></body></html>';
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(html);
+            printWindow.document.close();
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+
+            document.getElementById('download-pdf-btn').textContent = 'PDF Generated - Print/Save';
+        }
+    </script>
+
+</body>
+</html>

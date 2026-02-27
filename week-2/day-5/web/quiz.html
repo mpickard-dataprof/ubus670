@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 5 Quiz: Knowledge Check</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Navigation with Breadcrumb */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* Quiz header */
+        .quiz-header {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white;
+            padding: 50px 40px;
+            margin: -40px -30px 40px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+        }
+        .quiz-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px;
+            font-size: 2.2rem;
+        }
+        .quiz-header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Question card */
+        .question-card {
+            background: white;
+            padding: 30px 35px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 5px solid #C8102E;
+        }
+        .question-card.answered-correct {
+            border-left-color: #43B02A;
+            background: #f8fff8;
+        }
+        .question-card.answered-wrong {
+            border-left-color: #E35205;
+            background: #fff8f5;
+        }
+
+        .question-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        /* Answer options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option:hover:not(.disabled) {
+            background: #f0f0f0;
+            border-color: #ccc;
+        }
+        .option.selected {
+            border-color: #C8102E;
+            background: rgba(200, 16, 46, 0.05);
+        }
+        .option.correct {
+            border-color: #43B02A;
+            background: rgba(67, 176, 42, 0.1);
+        }
+        .option.incorrect {
+            border-color: #E35205;
+            background: rgba(227, 82, 5, 0.1);
+        }
+        .option.disabled {
+            cursor: default;
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        .option-marker {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .option.selected .option-marker {
+            border-color: #C8102E;
+            background: #C8102E;
+            color: white;
+        }
+        .option.correct .option-marker {
+            border-color: #43B02A;
+            background: #43B02A;
+            color: white;
+        }
+        .option.incorrect .option-marker {
+            border-color: #E35205;
+            background: #E35205;
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback.correct {
+            background: rgba(67, 176, 42, 0.1);
+            border-left: 4px solid #43B02A;
+        }
+        .feedback.incorrect {
+            background: rgba(227, 82, 5, 0.1);
+            border-left: 4px solid #E35205;
+        }
+        .feedback-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .feedback.correct .feedback-header { color: #43B02A; }
+        .feedback.incorrect .feedback-header { color: #E35205; }
+
+        /* Submit button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 30px;
+            background: #C8102E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 15px;
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: #a00d24;
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Results */
+        .results {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .results.show {
+            display: block;
+        }
+        .results h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+        }
+        .score {
+            font-size: 4rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #C8102E;
+            margin: 20px 0;
+        }
+        .score-label {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .retry-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #1D428A;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+        .retry-btn:hover {
+            background: #152d5e;
+        }
+
+        /* Progress indicator */
+        .quiz-progress {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+        }
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+        .dot.current { background: #C8102E; }
+        .dot.correct { background: #43B02A; }
+        .dot.incorrect { background: #E35205; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="../../../index.html">Week 2</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="index.html">Day 5</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Quiz</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="quiz.html" class="nav-pill active">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="quiz-container">
+
+        <!-- Quiz Header -->
+        <div class="quiz-header">
+            <h1>Day 5: Knowledge Check</h1>
+            <p>Test your understanding of AI Studio, model parameters, system prompts, and token economics</p>
+            <p style="font-size: 0.85em; opacity: 0.8; margin-top: 8px;">20 randomized questions &bull; Target: 70%+ (14/20) &bull; Retake with new questions anytime</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="quiz-progress">
+            <span id="progress-label">Question 1 of 20</span>
+            <div class="progress-dots" id="progress-dots">
+                <!-- Dots generated dynamically -->
+            </div>
+        </div>
+
+        <!-- Questions Container (dynamically generated) -->
+        <div id="questions-container">
+            <!-- Questions will be generated by JavaScript -->
+        </div>
+
+        <!-- Results -->
+        <div class="results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="final-score">0/20</div>
+            <p class="score-label">Questions Correct</p>
+            <p id="results-message"></p>
+            <button class="retry-btn" onclick="location.reload()">Try Again (New Questions)</button>
+            <a href="index.html" class="retry-btn" style="margin-left: 10px; background: #43B02A;">Back to Dashboard</a>
+        </div>
+
+    </div>
+
+    <script>
+        // Configuration
+        const QUESTIONS_PER_QUIZ = 20;
+
+        // Question Bank - 22 topics x 2 variants = 44 questions
+        const questionBank = [
+            // TOPIC 1: AI STUDIO PURPOSE (2 variants)
+            {
+                topic: "ai-studio-purpose",
+                question: "What distinguishes Google AI Studio from Gemini Chat?",
+                options: [
+                    "AI Studio exposes parameter controls, system instructions, token counting, and model selection that consumer chat hides",
+                    "AI Studio uses a different AI model than Gemini Chat",
+                    "AI Studio requires a paid enterprise license while Gemini Chat is free",
+                    "AI Studio is optimized for mobile devices while Gemini Chat is desktop-only"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! AI Studio provides parameter controls, system instructions, token counting, and model selection that go well beyond the simple chat interface of Gemini Chat. It's a professional configuration tool.",
+                    incorrect: "Not quite. AI Studio provides parameter controls, system instructions, token counting, and model selection beyond simple chat. It's designed for configuring AI behavior, not just chatting."
+                }
+            },
+            {
+                topic: "ai-studio-purpose",
+                question: "Why would a business professional use AI Studio instead of Gemini Chat?",
+                options: [
+                    "Gemini Chat is being discontinued and AI Studio is the replacement",
+                    "AI Studio processes requests faster than Gemini Chat",
+                    "AI Studio enables configurable parameters, reusable system prompts, and exportable configurations for repeatable business workflows",
+                    "AI Studio includes built-in project management features"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! AI Studio lets you configure AI behavior with parameters, system prompts, and export capabilities for repeatable business use. It transforms you from a user into a configurer.",
+                    incorrect: "Not quite. The key advantage is that AI Studio lets you configure AI behavior with parameters, system prompts, and export capabilities for repeatable business use, going beyond simple chat interactions."
+                }
+            },
+
+            // TOPIC 2: TEMPERATURE DEFINITION (2 variants)
+            {
+                topic: "temperature-definition",
+                question: "What does the temperature parameter control in an AI model?",
+                options: [
+                    "The speed at which the model generates responses",
+                    "The maximum length of the model's output",
+                    "The randomness/creativity of output — low temperature produces focused, predictable responses",
+                    "The number of documents the model can process"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Temperature controls the randomness and creativity of output. Low temperature produces focused, predictable responses, while high temperature introduces more variation and creativity.",
+                    incorrect: "Not quite. Temperature controls the randomness/creativity of output. Low temperature produces focused, predictable responses, while high temperature introduces more variation and surprises."
+                }
+            },
+            {
+                topic: "temperature-definition",
+                question: "A temperature setting of 0.0 produces output that is:",
+                options: [
+                    "Maximally creative and unpredictable",
+                    "Balanced between creativity and consistency",
+                    "Randomly varied each time you run it",
+                    "Highly deterministic and predictable — the model always picks the most likely next token"
+                ],
+                correct: 3,
+                feedback: {
+                    correct: "Correct! A temperature of 0.0 is highly deterministic and predictable. The model always picks the most likely next token, producing the same output for the same input every time.",
+                    incorrect: "Not quite. A temperature of 0.0 is highly deterministic and predictable — the model always picks the most likely next token. Higher temperatures introduce randomness and variation."
+                }
+            },
+
+            // TOPIC 3: TEMPERATURE BUSINESS USE (2 variants)
+            {
+                topic: "temperature-business",
+                question: "Which temperature setting is best for email classification tasks?",
+                options: [
+                    "High (0.8-1.0) for creative categorization",
+                    "Medium (0.5) for balanced results",
+                    "Low (0.1-0.3) — classification needs consistent, predictable outputs",
+                    "Maximum (2.0) to explore all possible categories"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Low temperature (0.1-0.3) is best for classification because it needs consistent, predictable outputs. The same type of email should always get the same category.",
+                    incorrect: "Not quite. Low temperature (0.1-0.3) is best for classification tasks because they need consistent, predictable outputs. You want the same type of email classified the same way every time."
+                }
+            },
+            {
+                topic: "temperature-business",
+                question: "Beacon wants their AI to classify customer emails the same way every time. Which temperature should they use?",
+                options: [
+                    "0.8-1.0 (high) for nuanced understanding",
+                    "0.1-0.3 (low) for maximum consistency",
+                    "1.5-2.0 (very high) to consider all possibilities",
+                    "0.5 (medium) as a safe default"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! A low temperature of 0.1-0.3 provides maximum consistency, ensuring the same type of email gets classified the same way every time. This is essential for reliable business automation.",
+                    incorrect: "Not quite. For maximum consistency in classification, Beacon should use a low temperature of 0.1-0.3. This ensures the same type of email always gets the same category."
+                }
+            },
+
+            // TOPIC 4: TOP-P CONCEPT (2 variants)
+            {
+                topic: "top-p-concept",
+                question: "What does top-p (nucleus sampling) control?",
+                options: [
+                    "The number of paragraphs in the response",
+                    "The cumulative probability threshold — it limits the pool of tokens the model considers when generating output",
+                    "The priority order of different AI models",
+                    "The percentage of the document the AI reads before responding"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Top-p controls the cumulative probability threshold, limiting the pool of tokens the model considers when generating output. A lower top-p restricts choices to higher-probability tokens.",
+                    incorrect: "Not quite. Top-p (nucleus sampling) controls the cumulative probability threshold — it limits the pool of tokens the model considers when generating output, affecting the diversity of responses."
+                }
+            },
+            {
+                topic: "top-p-concept",
+                question: "How does reducing top-p affect AI output?",
+                options: [
+                    "It makes the output longer and more detailed",
+                    "It has no measurable effect on output quality",
+                    "It restricts the model to higher-probability tokens, making output more focused and predictable",
+                    "It increases the creativity and randomness of responses"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Reducing top-p restricts the model to higher-probability tokens, making output more focused and predictable. The model draws from a smaller, more confident set of word choices.",
+                    incorrect: "Not quite. Reducing top-p restricts the model to higher-probability tokens, making output more focused and predictable. It narrows the pool of candidate words the model considers."
+                }
+            },
+
+            // TOPIC 5: TOP-K CONCEPT (2 variants)
+            {
+                topic: "top-k-concept",
+                question: "How does top-k differ from temperature?",
+                options: [
+                    "Top-k and temperature are the same parameter with different names",
+                    "Top-k limits the NUMBER of candidate tokens considered, while temperature adjusts the probability distribution across all candidates",
+                    "Temperature limits candidates while top-k adjusts probabilities",
+                    "Top-k only works with certain AI models while temperature is universal"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Top-k limits the number of candidate tokens considered (e.g., only the top 40), while temperature adjusts the probability distribution across those candidates. They work together to shape output.",
+                    incorrect: "Not quite. Top-k limits the NUMBER of candidate tokens (e.g., top 40 only), while temperature adjusts the probability distribution across candidates. They control different aspects of token selection."
+                }
+            },
+            {
+                topic: "top-k-concept",
+                question: "Setting top-k to 1 would produce output that is:",
+                options: [
+                    "Maximally creative with one-word responses",
+                    "Randomly selected from the full vocabulary",
+                    "Completely deterministic — only the single most likely token is ever selected",
+                    "Identical to setting temperature to 1.0"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Setting top-k to 1 means only the single most likely token is ever selected, making output completely deterministic. There's no randomness because there's only one candidate.",
+                    incorrect: "Not quite. Top-k of 1 means only the single most likely token is ever selected, making output completely deterministic. With only one candidate, there's no room for variation."
+                }
+            },
+
+            // TOPIC 6: MAX TOKENS (2 variants)
+            {
+                topic: "max-tokens",
+                question: "What happens if the max output tokens setting is too low for a task?",
+                options: [
+                    "The AI automatically increases the limit to finish its response",
+                    "The response gets cut off mid-sentence — the model stops generating when it hits the limit",
+                    "The AI compresses its response to fit within the limit",
+                    "An error message is returned instead of any response"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The response gets cut off mid-sentence when it hits the max output tokens limit. The model simply stops generating, which can result in incomplete or truncated answers.",
+                    incorrect: "Not quite. When max output tokens is too low, the response gets cut off mid-sentence. The model stops generating at the limit — it doesn't compress, extend, or return an error."
+                }
+            },
+            {
+                topic: "max-tokens",
+                question: "For drafting customer email responses, a reasonable max output tokens setting would be approximately:",
+                options: [
+                    "10-50 tokens (a single sentence)",
+                    "200-400 tokens (a few paragraphs)",
+                    "10,000+ tokens (a full report)",
+                    "1 token (just a classification label)"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! 200-400 tokens (a few paragraphs) is reasonable for customer email responses. This allows enough space for a greeting, body, and closing without wasting tokens on unnecessarily long output.",
+                    incorrect: "Not quite. For customer email responses, 200-400 tokens (a few paragraphs) is appropriate. This covers a greeting, body, and closing — enough for a professional response without excess."
+                }
+            },
+
+            // TOPIC 7: PARAMETER INTERACTION (2 variants)
+            {
+                topic: "parameter-interaction",
+                question: "What's the likely result of setting temperature to 0 and asking AI to write a creative marketing tagline?",
+                options: [
+                    "The AI will produce highly creative and varied taglines",
+                    "You'll get the same predictable tagline every time — the settings conflict with the creative task",
+                    "The AI will refuse to complete the task",
+                    "Temperature 0 has no effect on creative tasks"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! You'll get the same predictable tagline every time because temperature 0 eliminates randomness. The settings conflict with the creative task — creative work benefits from higher temperature.",
+                    incorrect: "Not quite. Temperature 0 eliminates all randomness, so you'll get the same predictable tagline every time. This conflicts with a creative task — you'd want higher temperature for creative writing."
+                }
+            },
+            {
+                topic: "parameter-interaction",
+                question: "Why might identical prompts produce different results when temperature is above 0?",
+                options: [
+                    "The AI model is broken and producing errors",
+                    "Temperature introduces randomness into token selection, so the model may choose different words each time",
+                    "Different results mean the AI doesn't understand the prompt",
+                    "This only happens with certain AI providers, not others"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Temperature introduces randomness into token selection, so the model may choose different words each time even with the same prompt. This is by design, not a bug.",
+                    incorrect: "Not quite. When temperature is above 0, it introduces randomness into token selection. The model may choose different words each time, which is expected behavior — not an error."
+                }
+            },
+
+            // TOPIC 8: SYSTEM PROMPT DEFINITION (2 variants)
+            {
+                topic: "system-prompt-definition",
+                question: "What is a system prompt and how does it differ from a user prompt?",
+                options: [
+                    "A system prompt is the AI's response to the user; a user prompt is the question",
+                    "System prompts and user prompts are interchangeable terms",
+                    "A system prompt provides persistent instructions that shape every response, while user prompts are individual per-message inputs",
+                    "A system prompt is only used during AI model training, not during conversations"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! A system prompt provides persistent instructions that shape every response in the conversation, while user prompts are individual per-message inputs. The system prompt sets the AI's behavior for the entire session.",
+                    incorrect: "Not quite. A system prompt provides persistent instructions that shape every response, while user prompts are individual inputs per message. The system prompt is the foundation that governs all interactions."
+                }
+            },
+            {
+                topic: "system-prompt-definition",
+                question: "In AI Studio, where do you place instructions that should apply to EVERY response in a conversation?",
+                options: [
+                    "At the beginning of each individual message",
+                    "In the model's training data",
+                    "In the System Instructions pane — these persist across the entire conversation",
+                    "In the output format settings"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! The System Instructions pane in AI Studio is where you place instructions that persist across the entire conversation. Every response the AI generates will follow these instructions.",
+                    incorrect: "Not quite. Instructions that should apply to every response go in the System Instructions pane in AI Studio. These persist across the entire conversation, unlike individual messages."
+                }
+            },
+
+            // TOPIC 9: SYSTEM PROMPT COMPONENTS (2 variants)
+            {
+                topic: "system-prompt-components",
+                question: "Which is NOT a typical component of a business system prompt?",
+                options: [
+                    "Role definition and behavioral rules",
+                    "Output format specifications and escalation procedures",
+                    "The user's personal preferences such as favorite color or hobbies",
+                    "Tone guidelines and topic boundaries"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Personal preferences like favorite color don't belong in a business system prompt. System prompts define role, rules, format, escalation procedures, tone, and boundaries — all focused on business behavior.",
+                    incorrect: "Not quite. Personal preferences (like favorite color) are not typical system prompt components. Business system prompts focus on role, rules, format, escalation, tone, and boundaries."
+                }
+            },
+            {
+                topic: "system-prompt-components",
+                question: "A well-designed system prompt for email triage should include all EXCEPT:",
+                options: [
+                    "Clear category definitions and classification rules",
+                    "The AI's subjective opinions about the company's products and competitors",
+                    "Escalation criteria for edge cases",
+                    "Output format specifications"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! System prompts define behavior, not personality. The AI's personal opinions about the company have no place in a business system prompt — it should include categories, rules, escalation criteria, and format specs.",
+                    incorrect: "Not quite. The AI's personal opinions about the company don't belong in a system prompt. System prompts define behavior: categories, classification rules, escalation criteria, and output format."
+                }
+            },
+
+            // TOPIC 10: SYSTEM PROMPT ITERATION (2 variants)
+            {
+                topic: "system-prompt-iteration",
+                question: "Why do system prompts need iterative testing?",
+                options: [
+                    "Because AI models change their behavior randomly over time",
+                    "Edge cases reveal gaps — a prompt that works for simple emails may fail with multi-category or non-English messages",
+                    "Iterative testing is optional and only needed for complex systems",
+                    "System prompts work perfectly on the first attempt if written correctly"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Edge cases reveal gaps in system prompts. A prompt that works for simple emails may fail with multi-category messages, non-English content, or ambiguous requests. Iterative testing catches these issues.",
+                    incorrect: "Not quite. System prompts need iterative testing because edge cases reveal gaps. What works for simple inputs may fail with multi-category, non-English, or ambiguous messages."
+                }
+            },
+            {
+                topic: "system-prompt-iteration",
+                question: "After deploying a system prompt, Beacon discovers it misclassifies refund requests as complaints. What should they do?",
+                options: [
+                    "Switch to a completely different AI model",
+                    "Accept the misclassifications as an unavoidable limitation",
+                    "Iterate the system prompt — add clearer definitions for each category, test with more edge cases, and version the changes",
+                    "Remove the refund category entirely"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! The right approach is to iterate the system prompt — add clearer definitions for each category, test with more edge cases, and version the changes. System prompts improve through testing and refinement.",
+                    incorrect: "Not quite. The solution is to iterate the system prompt: add clearer category definitions, test with more edge cases, and version the changes. Switching models or accepting errors isn't the answer."
+                }
+            },
+
+            // TOPIC 11: SYSTEM PROMPT GOVERNANCE (2 variants)
+            {
+                topic: "system-prompt-governance",
+                question: "How do system prompts serve as AI governance tools?",
+                options: [
+                    "They replace the need for company policies and compliance departments",
+                    "They define what the AI can/cannot discuss, when to escalate to humans, and how to handle sensitive information",
+                    "They automatically ensure legal compliance in all jurisdictions",
+                    "They only control the formatting of AI responses"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! System prompts serve as governance tools by defining what the AI can and cannot discuss, when to escalate to humans, and how to handle sensitive information. They encode business rules into AI behavior.",
+                    incorrect: "Not quite. System prompts serve as governance tools by defining what the AI can/cannot discuss, when to escalate to humans, and how to handle sensitive information. They don't replace compliance but enforce rules."
+                }
+            },
+            {
+                topic: "system-prompt-governance",
+                question: "A bank wants to ensure its AI never gives investment advice. The best approach is:",
+                options: [
+                    "Train employees to monitor every AI conversation in real time",
+                    "Only use AI for non-financial topics",
+                    "Include a clear rule in the system prompt: \"Never provide investment advice. Direct investment questions to a licensed advisor.\"",
+                    "Hope the AI knows not to give investment advice on its own"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Including a clear rule in the system prompt is the best approach. It provides consistent, automated enforcement across every conversation without requiring real-time human monitoring.",
+                    incorrect: "Not quite. The best approach is a clear system prompt rule: 'Never provide investment advice. Direct investment questions to a licensed advisor.' This provides automated, consistent enforcement."
+                }
+            },
+
+            // TOPIC 12: TOKEN DEFINITION (2 variants)
+            {
+                topic: "token-definition",
+                question: "Approximately how many tokens is a 200-word email?",
+                options: [
+                    "About 50 tokens (0.25 tokens per word)",
+                    "Exactly 200 tokens (1 token per word)",
+                    "About 260-270 tokens — roughly 1.3 tokens per English word",
+                    "About 1,000 tokens (5 tokens per word)"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! A 200-word email is approximately 260-270 tokens, using the rule of thumb of roughly 1.3 tokens per English word. Common words may be single tokens while longer words get split into multiple tokens.",
+                    incorrect: "Not quite. English text averages roughly 1.3 tokens per word, so a 200-word email would be about 260-270 tokens. Common words are single tokens, while longer or rarer words get split."
+                }
+            },
+            {
+                topic: "token-definition",
+                question: "Why is the system prompt's token count especially important for cost estimation?",
+                options: [
+                    "System prompts are charged at a higher rate per token",
+                    "The system prompt is sent with EVERY request, so its tokens multiply across all interactions",
+                    "System prompts don't use tokens — they're free",
+                    "Token counting only applies to user messages, not system prompts"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The system prompt is sent with every single request, so its tokens multiply across all interactions. A 500-token system prompt sent 6,000 times/month adds 3 million tokens to your total.",
+                    incorrect: "Not quite. The system prompt is sent with EVERY request, so its tokens multiply across all interactions. This makes it the most important component to optimize for cost."
+                }
+            },
+
+            // TOPIC 13: TOKEN COST FACTORS (2 variants)
+            {
+                topic: "token-cost-factors",
+                question: "Which factor MOST increases the cost of an AI text processing deployment?",
+                options: [
+                    "Using longer system prompts",
+                    "Volume of requests — processing 10,000 emails/day costs 50x more than 200/day regardless of model choice",
+                    "Choosing a model with a larger context window",
+                    "Processing emails during peak business hours"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Volume of requests is the biggest cost driver. Processing 10,000 emails/day costs roughly 50x more than 200/day, regardless of which model you choose. Volume scales linearly with cost.",
+                    incorrect: "Not quite. Volume is the biggest cost driver. Processing 10,000 emails/day costs ~50x more than 200/day regardless of model choice. While other factors matter, volume has the largest impact."
+                }
+            },
+            {
+                topic: "token-cost-factors",
+                question: "What is typically more expensive per token — input or output?",
+                options: [
+                    "Input tokens are always more expensive",
+                    "They cost exactly the same",
+                    "Output tokens are typically 3-5x more expensive than input tokens",
+                    "Cost depends entirely on the time of day"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Output tokens are typically 3-5x more expensive than input tokens. This is because generating output requires more computation than processing input. This affects how you design your system.",
+                    incorrect: "Not quite. Output tokens are typically 3-5x more expensive than input tokens because generation requires more computation than processing. This cost difference should inform system design."
+                }
+            },
+
+            // TOPIC 14: MODEL TIER SELECTION (2 variants)
+            {
+                topic: "model-tier-selection",
+                question: "When should a business choose Gemini 3 Pro over Gemini 3 Flash?",
+                options: [
+                    "Always — Pro is always better than Flash",
+                    "When output quality and nuance matter more than speed and cost — complex analysis, high-stakes decisions",
+                    "Only when processing more than 100 documents",
+                    "When the business has a large AI budget to spend"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Choose Gemini 3 Pro when output quality and nuance matter more than speed and cost — for complex analysis and high-stakes decisions. Flash is better for routine, high-volume tasks.",
+                    incorrect: "Not quite. Choose Pro when quality and nuance matter more than speed and cost — complex analysis, high-stakes decisions. For routine tasks, Flash offers better speed and cost efficiency."
+                }
+            },
+            {
+                topic: "model-tier-selection",
+                question: "Beacon needs to process 200 routine email classifications daily. Which model tier makes more sense?",
+                options: [
+                    "Gemini 3 Pro for maximum accuracy on every email",
+                    "The most expensive model available to ensure quality",
+                    "Gemini 3 Flash — it's faster, cheaper, and classification is a routine task that doesn't need Pro's nuance",
+                    "A custom fine-tuned model built from scratch"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Gemini 3 Flash is the right choice — it's faster, cheaper, and email classification is a routine task that doesn't need Pro's nuance. Smart model selection matches capability to task complexity.",
+                    incorrect: "Not quite. For 200 routine email classifications daily, Gemini 3 Flash is the smart choice. It's faster and cheaper, and classification doesn't require the nuance that Pro offers for complex analysis."
+                }
+            },
+
+            // TOPIC 15: COST ESTIMATION (2 variants)
+            {
+                topic: "cost-estimation",
+                question: "Beacon processes 6,000 emails/month. System prompt is 500 tokens, average email is 200 tokens input, 300 tokens output. Using Gemini 3 Flash at ~$0.50/1M input and ~$3.00/1M output, approximately what's the monthly cost?",
+                options: [
+                    "About $50/month",
+                    "About $100/month",
+                    "About $7.50/month",
+                    "About $0.50/month"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Input: 6,000 \u00d7 (500 + 200) = 4.2M tokens \u00d7 $0.50/1M = $2.10. Output: 6,000 \u00d7 300 = 1.8M tokens \u00d7 $3.00/1M = $5.40. Total: ~$7.50/month.",
+                    incorrect: "Not quite. The math: Input = 6,000 \u00d7 700 tokens = 4.2M \u00d7 $0.50/1M = $2.10. Output = 6,000 \u00d7 300 = 1.8M \u00d7 $3.00/1M = $5.40. Total: ~$7.50/month."
+                }
+            },
+            {
+                topic: "cost-estimation",
+                question: "Which component contributes most to Beacon's per-email token cost?",
+                options: [
+                    "The email body content (200 tokens)",
+                    "The system prompt (500 tokens), because it accompanies every single email processed",
+                    "The output response (300 tokens)",
+                    "The email subject line"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The system prompt at 500 tokens is the largest single component per email — bigger than the email body (200 tokens) or the output (300 tokens). It's sent with every single request.",
+                    incorrect: "Not quite. The system prompt (500 tokens) contributes the most per email because it's sent with every request and is larger than the average email body (200 tokens) or output (300 tokens)."
+                }
+            },
+
+            // TOPIC 16: ROI CALCULATION (2 variants)
+            {
+                topic: "roi-calculation",
+                question: "What's the primary driver of AI ROI for email processing?",
+                options: [
+                    "The speed improvement in response time",
+                    "The reduction in software licensing costs",
+                    "Human labor cost displaced — the gap between manual processing cost ($600+/month) and AI cost (~$7.50/month)",
+                    "The improvement in email formatting quality"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! The primary ROI driver is human labor cost displaced. When manual processing costs $600+/month and AI costs ~$7.50/month, the savings represent roughly 80x — a compelling ROI.",
+                    incorrect: "Not quite. The primary ROI driver is human labor cost displaced — the gap between manual processing cost ($600+/month) and AI cost (~$7.50/month). Speed and quality matter, but cost savings drive ROI."
+                }
+            },
+            {
+                topic: "roi-calculation",
+                question: "Beacon's manual email triage costs $600/month. Their Gemini 3 Flash deployment costs ~$7.50/month. What's the approximate annual savings?",
+                options: [
+                    "About $600/year",
+                    "About $7,100/year ($592.50/month \u00d7 12)",
+                    "About $1,200/year",
+                    "About $72,000/year"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Monthly savings: $600 - $7.50 = $592.50. Annual savings: $592.50 \u00d7 12 = approximately $7,100/year. That's roughly 80x savings — a compelling ROI.",
+                    incorrect: "Not quite. Monthly savings = $600 - $7.50 = $592.50. Annual savings = $592.50 \u00d7 12 = approximately $7,100/year. The low AI cost makes the ROI extremely attractive."
+                }
+            },
+
+            // TOPIC 17: REUSABLE CONFIGURATIONS (2 variants)
+            {
+                topic: "reusable-configurations",
+                question: "What components make up a reusable AI Studio configuration?",
+                options: [
+                    "Only the system prompt text",
+                    "System prompt + model selection + parameter settings — saved as a template that can be shared and reused",
+                    "Only the model selection and API key",
+                    "The conversation history from previous sessions"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! A reusable configuration includes the system prompt, model selection, and parameter settings — all saved as a template that can be shared across team members for consistent results.",
+                    incorrect: "Not quite. A reusable configuration includes all three: system prompt + model selection + parameter settings. Together they form a template that ensures consistency across users and sessions."
+                }
+            },
+            {
+                topic: "reusable-configurations",
+                question: "Why is saving an AI Studio configuration as a template valuable for a business?",
+                options: [
+                    "It reduces the AI subscription cost",
+                    "It ensures consistency — everyone uses the same system prompt, parameters, and model, producing reliable results",
+                    "Templates make the AI respond faster",
+                    "It's required by AI Studio's terms of service"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Templates ensure consistency — everyone uses the same system prompt, parameters, and model. This produces reliable, repeatable results regardless of who runs the configuration.",
+                    incorrect: "Not quite. The primary value is consistency. When everyone uses the same template (system prompt + parameters + model), the organization gets reliable, repeatable results regardless of who runs it."
+                }
+            },
+
+            // TOPIC 18: EMAIL CLASSIFICATION (2 variants)
+            {
+                topic: "email-classification",
+                question: "What makes email classification a good use case for low temperature?",
+                options: [
+                    "Low temperature makes the AI read emails faster",
+                    "Classification needs consistency — the same type of email should always get the same category, not a different one each time",
+                    "Low temperature produces more detailed classifications",
+                    "Email classification doesn't work at high temperature"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Classification needs consistency. The same type of email should always get the same category. Low temperature ensures deterministic, repeatable results — essential for reliable business automation.",
+                    incorrect: "Not quite. The key reason is consistency. Classification tasks need the same type of email to always receive the same category. Low temperature ensures this deterministic behavior."
+                }
+            },
+            {
+                topic: "email-classification",
+                question: "High temperature in an email classification system could cause:",
+                options: [
+                    "Faster processing of emails",
+                    "More accurate classifications overall",
+                    "Inconsistent classifications — the same complaint email might be categorized differently each time it's processed",
+                    "The system to crash or produce errors"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! High temperature introduces randomness, which could cause the same complaint email to be categorized differently each time. This inconsistency undermines the reliability of automated classification.",
+                    incorrect: "Not quite. High temperature causes inconsistent classifications — the same complaint email might be categorized differently each time due to the randomness temperature introduces into token selection."
+                }
+            },
+
+            // TOPIC 19: EDGE CASE HANDLING (2 variants)
+            {
+                topic: "edge-case-handling",
+                question: "How should a well-designed system prompt handle emails that don't fit any category?",
+                options: [
+                    "Force the email into the closest matching category",
+                    "Delete the email from the queue",
+                    "Include an \"other/unknown\" category with instructions to flag for human review — never force a bad classification",
+                    "Ignore the email and process the next one"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! A well-designed system should include an 'other/unknown' category with instructions to flag for human review. Forcing a bad classification is worse than admitting uncertainty.",
+                    incorrect: "Not quite. The best approach is an 'other/unknown' category with instructions to flag for human review. Never force a bad classification — it's better to escalate uncertain cases to humans."
+                }
+            },
+            {
+                topic: "edge-case-handling",
+                question: "An email arrives in Spanish. A well-designed Beacon triage system should:",
+                options: [
+                    "Attempt to classify it using English categories anyway",
+                    "Delete it as an invalid input",
+                    "Have a rule in the system prompt for non-English emails — classify as escalation and route to a bilingual agent",
+                    "Translate it automatically and hope the translation is accurate"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! The system prompt should include a rule for non-English emails: classify as escalation and route to a bilingual agent. Planning for edge cases like language differences prevents silent failures.",
+                    incorrect: "Not quite. A well-designed system should have a rule in the system prompt for non-English emails — classify as escalation and route to a bilingual agent. This prevents mishandling of edge cases."
+                }
+            },
+
+            // TOPIC 20: DAY 5 TO DAY 6 CONNECTION (2 variants)
+            {
+                topic: "day5-day6-connection",
+                question: "Why is testing important after configuring an AI system?",
+                options: [
+                    "Testing is only needed for software, not AI configurations",
+                    "Configuration defines intended behavior, but testing reveals where the system actually fails — edge cases, adversarial inputs, bias",
+                    "Testing is optional if the system prompt is well-written",
+                    "AI systems don't need testing because they self-correct"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Configuration defines intended behavior, but testing reveals where the system actually fails. Edge cases, adversarial inputs, and bias can all cause unexpected behavior that only testing uncovers.",
+                    incorrect: "Not quite. Testing is essential because configuration defines intended behavior, but testing reveals actual failures — edge cases, adversarial inputs, and bias that only emerge through systematic testing."
+                }
+            },
+            {
+                topic: "day5-day6-connection",
+                question: "After building Beacon's email triage system in AI Studio, what should the team do next?",
+                options: [
+                    "Deploy it immediately to production",
+                    "Test it with adversarial and edge case emails (red-teaming) to find failure modes before deployment",
+                    "Wait for the next AI model update before testing",
+                    "Have the CEO approve it without testing"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The next step is testing with adversarial and edge case emails (red-teaming) to find failure modes before deployment. This is the Day 5 to Day 6 connection — build then break.",
+                    incorrect: "Not quite. Before deploying, the team should test with adversarial and edge case emails (red-teaming). This finds failure modes before they affect real customers — the build-then-break approach."
+                }
+            },
+
+            // TOPIC 21: USER VS CONFIGURER (2 variants)
+            {
+                topic: "user-vs-configurer",
+                question: "What distinguishes an AI 'configurer' from an AI 'user'?",
+                options: [
+                    "Configurers use more expensive AI models",
+                    "A configurer sets system prompts, tunes parameters, and designs reusable configurations; a user simply types prompts and accepts defaults",
+                    "There is no meaningful difference between the two roles",
+                    "Configurers need a computer science degree while users don't"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! A configurer sets system prompts, tunes parameters, and designs reusable configurations, while a user simply types prompts and accepts defaults. Day 5 is about leveling up from user to configurer.",
+                    incorrect: "Not quite. A configurer sets system prompts, tunes parameters, and designs reusable configurations. A user just types prompts and accepts defaults. The distinction is about skill level, not credentials."
+                }
+            },
+            {
+                topic: "user-vs-configurer",
+                question: "Which activity represents the 'configurer' level of AI skill?",
+                options: [
+                    "Asking ChatGPT to summarize an article",
+                    "Writing a system prompt and selecting optimal temperature for a specific business task",
+                    "Copying and pasting AI responses into a document",
+                    "Using the default settings in Gemini Chat"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Writing a system prompt and selecting optimal temperature for a specific business task is configurer-level work. It involves deliberately shaping AI behavior, not just using defaults.",
+                    incorrect: "Not quite. Configurer-level work means writing system prompts and selecting optimal parameters for specific tasks. Simple chatting, copying responses, or using defaults are user-level activities."
+                }
+            },
+
+            // TOPIC 22: SYSTEM PROMPT VS FINE-TUNING (2 variants)
+            {
+                topic: "system-prompt-vs-finetuning",
+                question: "How does a system prompt differ from fine-tuning?",
+                options: [
+                    "They are the same thing — both modify the model's behavior",
+                    "System prompts are more powerful than fine-tuning",
+                    "System prompts shape behavior through instructions without changing the model; fine-tuning modifies the model's weights through additional training",
+                    "Fine-tuning is free while system prompts cost extra"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! System prompts shape behavior through instructions without changing the model itself. Fine-tuning actually modifies the model's weights through additional training. System prompts are like giving directions; fine-tuning is like rewiring the brain.",
+                    incorrect: "Not quite. System prompts shape behavior through instructions without changing the model, while fine-tuning modifies the model's actual weights through additional training. They're fundamentally different approaches."
+                }
+            },
+            {
+                topic: "system-prompt-vs-finetuning",
+                question: "A colleague says they 'trained' their Custom GPT by adding detailed instructions. What actually happened?",
+                options: [
+                    "They performed actual fine-tuning on the GPT-4 model",
+                    "They configured behavioral instructions (a system prompt), not actual training/fine-tuning — the base model weights remained unchanged",
+                    "They created a new AI model from scratch",
+                    "They modified the neural network architecture"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! They configured behavioral instructions (a system prompt), not actual training or fine-tuning. The base model weights remained completely unchanged. This is a common misconception about Custom GPTs and Gems.",
+                    incorrect: "Not quite. Adding instructions to a Custom GPT is configuring a system prompt, not training or fine-tuning. The base model weights remain unchanged — it's behavioral configuration, not model modification."
+                }
+            }
+        ];
+
+        // Quiz state
+        let selectedQuestions = [];
+        let answered = 0;
+        let correct = 0;
+
+        // Initialize quiz
+        function initQuiz() {
+            // Get all unique topics and randomly select QUESTIONS_PER_QUIZ of them
+            const allTopics = shuffleArray([...new Set(questionBank.map(q => q.topic))]);
+            const selectedTopics = allTopics.slice(0, QUESTIONS_PER_QUIZ);
+            selectedQuestions = [];
+
+            selectedTopics.forEach(topic => {
+                const topicQuestions = questionBank.filter(q => q.topic === topic);
+                const randomQ = topicQuestions[Math.floor(Math.random() * topicQuestions.length)];
+                selectedQuestions.push({...randomQ});
+            });
+
+            // Shuffle the selected questions
+            selectedQuestions = shuffleArray(selectedQuestions);
+
+            // Generate HTML for questions
+            const container = document.getElementById('questions-container');
+            container.innerHTML = selectedQuestions.map((q, index) => generateQuestionHTML(q, index + 1)).join('');
+
+            // Generate progress dots
+            const dotsContainer = document.getElementById('progress-dots');
+            dotsContainer.innerHTML = selectedQuestions.map((_, i) =>
+                `<span class="dot ${i === 0 ? 'current' : ''}"></span>`
+            ).join('');
+
+            // Add event listeners
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function generateQuestionHTML(q, num) {
+            // Shuffle options while tracking correct answer
+            const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, wasIndex: i }));
+            const shuffledOptions = shuffleArray(optionsWithIndex);
+            const newCorrectIndex = shuffledOptions.findIndex(o => o.wasIndex === q.correct);
+
+            // Store the new correct index
+            selectedQuestions[num - 1].correctShuffled = newCorrectIndex;
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const optionsHTML = shuffledOptions.map((opt, i) => `
+                <label class="option">
+                    <input type="radio" name="q${num}" value="${i}">
+                    <span class="option-marker">${letters[i]}</span>
+                    <span class="option-text">${opt.text}</span>
+                </label>
+            `).join('');
+
+            return `
+                <div class="question-card" data-question="${num}" data-correct="${newCorrectIndex}">
+                    <div class="question-number">Question ${num}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">${optionsHTML}</div>
+                    <div class="feedback">
+                        <div class="feedback-header"></div>
+                        <div class="feedback-text"></div>
+                    </div>
+                    <button class="submit-btn" disabled onclick="checkAnswer(${num})">Check Answer</button>
+                </div>
+            `;
+        }
+
+        function handleOptionClick(e) {
+            const option = e.currentTarget;
+            const questionCard = option.closest('.question-card');
+
+            if (questionCard.classList.contains('answered-correct') ||
+                questionCard.classList.contains('answered-wrong')) {
+                return;
+            }
+
+            questionCard.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            option.querySelector('input').checked = true;
+            questionCard.querySelector('.submit-btn').disabled = false;
+        }
+
+        function checkAnswer(questionNum) {
+            const card = document.querySelector(`[data-question="${questionNum}"]`);
+            const correctAnswer = parseInt(card.dataset.correct);
+            const selectedOption = card.querySelector('input:checked');
+            const questionData = selectedQuestions[questionNum - 1];
+
+            if (!selectedOption) return;
+
+            const selected = parseInt(selectedOption.value);
+            const isCorrect = selected === correctAnswer;
+
+            // Disable further interaction
+            card.querySelectorAll('.option').forEach((o, i) => {
+                o.classList.add('disabled');
+                if (parseInt(o.querySelector('input').value) === correctAnswer) {
+                    o.classList.add('correct');
+                }
+                if (parseInt(o.querySelector('input').value) === selected && !isCorrect) {
+                    o.classList.add('incorrect');
+                }
+            });
+            card.querySelector('.submit-btn').disabled = true;
+            card.querySelector('.submit-btn').textContent = isCorrect ? '\u2713 Correct' : '\u2717 Incorrect';
+
+            // Show feedback
+            const feedbackDiv = card.querySelector('.feedback');
+            feedbackDiv.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+            feedbackDiv.querySelector('.feedback-header').textContent = isCorrect ? '\u2713 Correct!' : '\u2717 Not quite right';
+            feedbackDiv.querySelector('.feedback-text').textContent = questionData.feedback[isCorrect ? 'correct' : 'incorrect'];
+
+            // Update card styling
+            card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+            // Update progress
+            answered++;
+            if (isCorrect) correct++;
+            updateProgress();
+
+            // Check if quiz complete
+            if (answered === selectedQuestions.length) {
+                setTimeout(showResults, 1000);
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('progress-label').textContent =
+                `Question ${Math.min(answered + 1, selectedQuestions.length)} of ${selectedQuestions.length}`;
+
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                dot.classList.remove('current', 'correct', 'incorrect');
+                const card = document.querySelector(`[data-question="${i + 1}"]`);
+                if (card.classList.contains('answered-correct')) {
+                    dot.classList.add('correct');
+                } else if (card.classList.contains('answered-wrong')) {
+                    dot.classList.add('incorrect');
+                } else if (i === answered) {
+                    dot.classList.add('current');
+                }
+            });
+        }
+
+        function showResults() {
+            document.getElementById('questions-container').style.display = 'none';
+            document.querySelector('.quiz-progress').style.display = 'none';
+
+            const results = document.getElementById('results');
+            results.classList.add('show');
+            document.getElementById('final-score').textContent = `${correct}/${selectedQuestions.length}`;
+
+            let message = '';
+            const percentage = (correct / selectedQuestions.length) * 100;
+            if (percentage === 100) {
+                message = "Perfect Score! You've mastered AI Studio, model parameters, system prompts, and token economics.";
+            } else if (percentage >= 80) {
+                message = "Excellent! You passed with a strong understanding of AI configuration concepts.";
+            } else if (percentage >= 70) {
+                message = "Good work! You passed. Review any missed questions to solidify your understanding.";
+            } else {
+                message = "Keep studying! Review the lecture materials and try again. You need 70%+ to pass.";
+            }
+            document.getElementById('results-message').textContent = message;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+
+</body>
+</html>

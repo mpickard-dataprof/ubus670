@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 7 Quiz: Knowledge Check</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Navigation with Breadcrumb */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* Quiz header */
+        .quiz-header {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white;
+            padding: 50px 40px;
+            margin: -40px -30px 40px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+        }
+        .quiz-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px;
+            font-size: 2.2rem;
+        }
+        .quiz-header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Question card */
+        .question-card {
+            background: white;
+            padding: 30px 35px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 5px solid #C8102E;
+        }
+        .question-card.answered-correct {
+            border-left-color: #43B02A;
+            background: #f8fff8;
+        }
+        .question-card.answered-wrong {
+            border-left-color: #E35205;
+            background: #fff8f5;
+        }
+
+        .question-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        /* Answer options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option:hover:not(.disabled) {
+            background: #f0f0f0;
+            border-color: #ccc;
+        }
+        .option.selected {
+            border-color: #C8102E;
+            background: rgba(200, 16, 46, 0.05);
+        }
+        .option.correct {
+            border-color: #43B02A;
+            background: rgba(67, 176, 42, 0.1);
+        }
+        .option.incorrect {
+            border-color: #E35205;
+            background: rgba(227, 82, 5, 0.1);
+        }
+        .option.disabled {
+            cursor: default;
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        .option-marker {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .option.selected .option-marker {
+            border-color: #C8102E;
+            background: #C8102E;
+            color: white;
+        }
+        .option.correct .option-marker {
+            border-color: #43B02A;
+            background: #43B02A;
+            color: white;
+        }
+        .option.incorrect .option-marker {
+            border-color: #E35205;
+            background: #E35205;
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback.correct {
+            background: rgba(67, 176, 42, 0.1);
+            border-left: 4px solid #43B02A;
+        }
+        .feedback.incorrect {
+            background: rgba(227, 82, 5, 0.1);
+            border-left: 4px solid #E35205;
+        }
+        .feedback-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .feedback.correct .feedback-header { color: #43B02A; }
+        .feedback.incorrect .feedback-header { color: #E35205; }
+
+        /* Submit button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 30px;
+            background: #C8102E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 15px;
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: #a00d24;
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Results */
+        .results {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .results.show {
+            display: block;
+        }
+        .results h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+        }
+        .score {
+            font-size: 4rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #C8102E;
+            margin: 20px 0;
+        }
+        .score-label {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .retry-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #1D428A;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+        .retry-btn:hover {
+            background: #152d5e;
+        }
+
+        /* Progress indicator */
+        .quiz-progress {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+        }
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+        .dot.current { background: #C8102E; }
+        .dot.correct { background: #43B02A; }
+        .dot.incorrect { background: #E35205; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="../../../index.html">Week 3</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="index.html">Day 7</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Quiz</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab-adk.html" class="nav-pill">Lab (ADK)</a>
+            <a href="lab-mindstudio.html" class="nav-pill">Lab (MS)</a>
+            <a href="quiz.html" class="nav-pill active">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="quiz-container">
+
+        <!-- Quiz Header -->
+        <div class="quiz-header">
+            <h1>Day 7: Knowledge Check</h1>
+            <p>Test your understanding of agentic AI, agent anatomy, orchestration patterns, and multi-agent workflows</p>
+            <p style="font-size: 0.85em; opacity: 0.8; margin-top: 8px;">20 randomized questions &bull; Target: 70%+ (14/20) &bull; Retake with new questions anytime</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="quiz-progress">
+            <span id="progress-label">Question 1 of 20</span>
+            <div class="progress-dots" id="progress-dots">
+                <!-- Dots generated dynamically -->
+            </div>
+        </div>
+
+        <!-- Questions Container (dynamically generated) -->
+        <div id="questions-container">
+            <!-- Questions will be generated by JavaScript -->
+        </div>
+
+        <!-- Results -->
+        <div class="results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="final-score">0/20</div>
+            <p class="score-label">Questions Correct</p>
+            <p id="results-message"></p>
+            <button class="retry-btn" onclick="location.reload()">Try Again (New Questions)</button>
+            <a href="index.html" class="retry-btn" style="margin-left: 10px; background: #43B02A;">Back to Dashboard</a>
+        </div>
+
+    </div>
+
+    <script>
+        // Configuration
+        const QUESTIONS_PER_QUIZ = 20;
+
+        // Question Bank - 20 topics x 2 variants = 40 questions
+        const questionBank = [
+
+            // TOPIC 1: AGENT VS. LLM CALL (2 variants)
+            {
+                topic: "agent-vs-llm",
+                question: "What is the most important distinction between an AI agent and a simple LLM call?",
+                options: [
+                    "An agent has a defined role, persistent memory, tool access, and can collaborate with other agents",
+                    "An agent uses a more powerful AI model than an LLM call",
+                    "An agent always produces longer and more detailed responses",
+                    "An agent requires specialized hardware to run"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! An AI agent goes beyond a simple LLM call by having a defined role, persistent memory, tool access, and the ability to collaborate with other agents. These capabilities make it a persistent, specialized worker.",
+                    incorrect: "Not quite. The key distinction is that an agent has a defined role, persistent memory, tool access, and can collaborate with other agents. It's not about model power, response length, or hardware requirements."
+                }
+            },
+            {
+                topic: "agent-vs-llm",
+                question: "A company's chatbot answers questions but forgets every conversation and can't look up order status. This is best described as:",
+                options: [
+                    "A simple LLM call \u2014 it lacks memory, tools, and a persistent role",
+                    "An AI agent with limited capabilities",
+                    "A multi-agent system with one agent",
+                    "An agentic workflow in early development"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! A chatbot that forgets conversations and can't access external systems is a simple LLM call. It lacks the memory, tools, and persistent role that define an AI agent.",
+                    incorrect: "Not quite. This is a simple LLM call \u2014 it lacks memory, tools, and a persistent role. An AI agent would remember past conversations and be able to look up order status through tool access."
+                }
+            },
+
+            // TOPIC 2: AGENT PERSISTENCE/STATE (2 variants)
+            {
+                topic: "agent-persistence",
+                question: "Why do AI agents maintain state across interactions?",
+                options: [
+                    "To remember context from previous tasks and build on prior work \u2014 like an employee who remembers your last conversation",
+                    "To reduce API costs by caching all previous responses",
+                    "Because regulations require all AI interactions to be logged",
+                    "To prevent users from asking the same question twice"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Agents maintain state to remember context from previous tasks and build on prior work. Like a good employee, they recall past conversations and use that knowledge to be more effective over time.",
+                    incorrect: "Not quite. Agents maintain state to remember context from previous tasks and build on prior work \u2014 like an employee who remembers your last conversation. It's about continuity and effectiveness, not cost or compliance."
+                }
+            },
+            {
+                topic: "agent-persistence",
+                question: "An AI triage agent processes 50 emails per day. Which capability requires state persistence?",
+                options: [
+                    "Recognizing that the same customer has emailed three times this week about the same issue",
+                    "Classifying a single email into the correct category",
+                    "Generating a draft response to a customer complaint",
+                    "Formatting output as JSON"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Recognizing repeat contacts from the same customer requires state persistence \u2014 the agent must remember previous emails to detect the pattern. Single-email tasks don't need memory.",
+                    incorrect: "Not quite. Recognizing that the same customer has emailed three times this week requires state persistence. The agent must remember previous interactions to detect this pattern. The other tasks can be done without memory."
+                }
+            },
+
+            // TOPIC 3: PERCEPTION IN AGENT ANATOMY (2 variants)
+            {
+                topic: "perception-component",
+                question: "In the perception-reasoning-action framework, what does 'perception' mean?",
+                options: [
+                    "The agent receives and understands its input \u2014 reading an email, parsing a document, or observing data",
+                    "The agent generates creative ideas based on its training data",
+                    "The agent executes actions in the real world",
+                    "The agent stores its output for future reference"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Perception is the first step in agent anatomy \u2014 the agent receives and understands its input, whether that's reading an email, parsing a document, or observing data from sensors.",
+                    incorrect: "Not quite. Perception means the agent receives and understands its input \u2014 reading an email, parsing a document, or observing data. It's the intake phase, not generation, action, or storage."
+                }
+            },
+            {
+                topic: "perception-component",
+                question: "When Beacon's Triage Agent reads a customer email, which agent component is active?",
+                options: [
+                    "Perception \u2014 the agent is receiving and understanding its input",
+                    "Reasoning \u2014 the agent is analyzing the classification",
+                    "Action \u2014 the agent is producing a response",
+                    "Collaboration \u2014 the agent is communicating with other agents"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Reading the email is perception \u2014 the agent is receiving and understanding its input. Reasoning (classification) and action (output) come after perception.",
+                    incorrect: "Not quite. Reading a customer email activates perception \u2014 the agent is receiving and understanding its input. Reasoning and action happen after the agent has perceived the input."
+                }
+            },
+
+            // TOPIC 4: REASONING IN AGENT ANATOMY (2 variants)
+            {
+                topic: "reasoning-component",
+                question: "How does the reasoning component work in an AI agent?",
+                options: [
+                    "It analyzes the perceived input and makes decisions \u2014 classifying, evaluating, comparing, or planning the next step",
+                    "It stores the agent's memories in a database for future retrieval",
+                    "It translates the agent's internal state into human-readable text",
+                    "It manages the connection between multiple agents in a pipeline"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! The reasoning component analyzes perceived input and makes decisions \u2014 classifying, evaluating, comparing, or planning the next step. It's the 'thinking' phase between perception and action.",
+                    incorrect: "Not quite. Reasoning analyzes the perceived input and makes decisions \u2014 classifying, evaluating, comparing, or planning the next step. It's the decision-making core of the agent, not storage or translation."
+                }
+            },
+            {
+                topic: "reasoning-component",
+                question: "Beacon's Triage Agent determines that an email is a 'complaint' with 'high' urgency. This is an example of:",
+                options: [
+                    "Reasoning \u2014 the agent is analyzing input and making a classification decision",
+                    "Perception \u2014 the agent is reading the email content",
+                    "Action \u2014 the agent is producing output",
+                    "Orchestration \u2014 the agent is coordinating with other agents"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Classifying an email as a 'complaint' with 'high' urgency is reasoning \u2014 the agent has analyzed the input and made a classification decision based on its understanding.",
+                    incorrect: "Not quite. Making a classification decision is reasoning \u2014 the agent is analyzing input and deciding on category and urgency. Perception is reading the email; action is producing the output."
+                }
+            },
+
+            // TOPIC 5: ACTION IN AGENT ANATOMY (2 variants)
+            {
+                topic: "action-component",
+                question: "What types of actions can AI agents take?",
+                options: [
+                    "Produce structured output, call APIs, update databases, send notifications, or hand off to other agents",
+                    "Only generate text responses \u2014 agents cannot interact with external systems",
+                    "Only internal reasoning \u2014 agents never produce visible output",
+                    "Only classification \u2014 agents cannot generate creative content"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! AI agents can take a wide range of actions: producing structured output, calling APIs, updating databases, sending notifications, and handing off to other agents. Action is where agents interact with the world.",
+                    incorrect: "Not quite. AI agents can produce structured output, call APIs, update databases, send notifications, and hand off to other agents. They are not limited to text generation, internal reasoning, or classification alone."
+                }
+            },
+            {
+                topic: "action-component",
+                question: "After classifying an email, the Triage Agent outputs a JSON object and passes it to the Quality Checker. Which components are involved?",
+                options: [
+                    "Action (producing structured JSON output) and collaboration (passing to another agent)",
+                    "Perception (reading the email) and reasoning (classifying it)",
+                    "Only reasoning \u2014 the output is part of the classification process",
+                    "Only action \u2014 collaboration is not a component of agent anatomy"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Outputting JSON is action (producing structured output) and passing it to the Quality Checker is collaboration (handing off to another agent). Both components are active at this stage.",
+                    incorrect: "Not quite. This involves action (producing structured JSON output) and collaboration (passing to another agent). Perception and reasoning happened earlier when the agent read and classified the email."
+                }
+            },
+
+            // TOPIC 6: AGENT INSTRUCTIONS VS. SYSTEM PROMPTS (2 variants)
+            {
+                topic: "instructions-vs-prompts",
+                question: "How do agent instructions differ from the system prompts you wrote on Day 5?",
+                options: [
+                    "Agent instructions include everything in a system prompt PLUS collaboration rules, tool access, and awareness of other agents",
+                    "Agent instructions replace system prompts entirely with a new format",
+                    "Agent instructions are shorter and simpler than system prompts",
+                    "There is no difference \u2014 agent instructions and system prompts are the same thing"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Agent instructions build on system prompts by adding collaboration rules, tool access, and awareness of other agents. Everything from Day 5 carries forward, plus new multi-agent capabilities.",
+                    incorrect: "Not quite. Agent instructions include everything in a system prompt PLUS collaboration rules, tool access, and awareness of other agents. They extend system prompts, not replace or simplify them."
+                }
+            },
+            {
+                topic: "instructions-vs-prompts",
+                question: "Your Day 5 Beacon system prompt becomes Agent 1's instructions when you add:",
+                options: [
+                    "Collaboration rules (hand off to Quality Checker), tool access, and awareness of the pipeline",
+                    "A longer and more detailed role description",
+                    "Additional output format requirements",
+                    "More hardening techniques from Day 6"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! The Day 5 system prompt becomes agent instructions when you add collaboration rules (hand off to Quality Checker), tool access, and awareness of the pipeline. These are the uniquely 'agentic' additions.",
+                    incorrect: "Not quite. The key additions that transform a system prompt into agent instructions are collaboration rules (hand off to Quality Checker), tool access, and awareness of the pipeline \u2014 not just more detail or hardening."
+                }
+            },
+
+            // TOPIC 7: TOOL USE (2 variants)
+            {
+                topic: "tool-use",
+                question: "What capability most distinguishes AI agents from simple chatbots?",
+                options: [
+                    "Tool use \u2014 agents can access databases, call APIs, send emails, and interact with external systems",
+                    "Better grammar \u2014 agents produce more polished text than chatbots",
+                    "Faster responses \u2014 agents process requests more quickly",
+                    "Larger vocabulary \u2014 agents know more words than chatbots"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Tool use is the key distinguishing capability. Agents can access databases, call APIs, send emails, and interact with external systems \u2014 taking real actions in the world, not just generating text.",
+                    incorrect: "Not quite. Tool use most distinguishes agents from chatbots \u2014 agents can access databases, call APIs, send emails, and interact with external systems. It's about capabilities, not grammar, speed, or vocabulary."
+                }
+            },
+            {
+                topic: "tool-use",
+                question: "A customer service agent that can check order status in a database, process refunds, and send confirmation emails is using:",
+                options: [
+                    "Tool use \u2014 the agent accesses external systems to take real-world actions",
+                    "Advanced reasoning \u2014 the agent is thinking harder about the problem",
+                    "Enhanced perception \u2014 the agent can see more data than usual",
+                    "Loop orchestration \u2014 the agent is iterating until the task is complete"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Checking databases, processing refunds, and sending emails are all tool use \u2014 the agent accesses external systems to take real-world actions beyond text generation.",
+                    incorrect: "Not quite. This is tool use \u2014 the agent accesses external systems (database, payment processor, email) to take real-world actions. It's not about reasoning harder or perceiving more."
+                }
+            },
+
+            // TOPIC 8: SEQUENTIAL ORCHESTRATION (2 variants)
+            {
+                topic: "sequential-pattern",
+                question: "What is sequential orchestration?",
+                options: [
+                    "Agents process work in order, like an assembly line \u2014 each agent's output becomes the next agent's input",
+                    "Multiple agents process the same input simultaneously and vote on the best answer",
+                    "A single agent repeats the same task until the output meets a quality threshold",
+                    "Agents are randomly assigned tasks from a shared queue"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Sequential orchestration processes work in order, like an assembly line. Each agent's output becomes the next agent's input, creating a clear chain of handoffs.",
+                    incorrect: "Not quite. Sequential orchestration means agents process work in order, like an assembly line \u2014 each agent's output becomes the next agent's input. It's not parallel voting, iterative looping, or random assignment."
+                }
+            },
+            {
+                topic: "sequential-pattern",
+                question: "In Beacon's triage pipeline, the email goes to Agent 1 (Triage) then Agent 2 (Quality Checker). This is:",
+                options: [
+                    "Sequential orchestration \u2014 agents process in order with clear handoffs",
+                    "Parallel orchestration \u2014 two agents are working at the same time",
+                    "Loop orchestration \u2014 the agents keep trying until they agree",
+                    "No orchestration \u2014 two independent agents that don't interact"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! This is sequential orchestration \u2014 Agent 1 processes first, then hands off to Agent 2. The clear order and handoff define the sequential pattern.",
+                    incorrect: "Not quite. This is sequential orchestration \u2014 agents process in order with clear handoffs. Agent 1 (Triage) completes its work before Agent 2 (Quality Checker) begins."
+                }
+            },
+
+            // TOPIC 9: WHEN TO USE SEQUENTIAL (2 variants)
+            {
+                topic: "sequential-use-case",
+                question: "When should you use sequential orchestration?",
+                options: [
+                    "When tasks have natural dependencies \u2014 Agent B needs Agent A's output to do its job",
+                    "When you need maximum processing speed and minimal latency",
+                    "When all tasks are completely independent of each other",
+                    "When you want the cheapest possible system with the fewest API calls"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Sequential orchestration is best when tasks have natural dependencies \u2014 when Agent B needs Agent A's output to do its job. The dependency chain dictates the order.",
+                    incorrect: "Not quite. Sequential orchestration is used when tasks have natural dependencies \u2014 Agent B needs Agent A's output to do its job. For speed or independent tasks, parallel would be better."
+                }
+            },
+            {
+                topic: "sequential-use-case",
+                question: "A quality checker agent needs the triage classification before it can verify it. This dependency means you should use:",
+                options: [
+                    "Sequential \u2014 because the quality check depends on the triage output",
+                    "Parallel \u2014 because both agents should work at the same time for speed",
+                    "Loop \u2014 because the agents need to iterate until they agree",
+                    "No pattern \u2014 just run both agents independently"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Sequential is the right choice because the quality check depends on the triage output. The Quality Checker can't verify a classification that doesn't exist yet.",
+                    incorrect: "Not quite. Sequential is correct because the quality check depends on the triage output. You can't verify a classification before it exists \u2014 the dependency requires sequential ordering."
+                }
+            },
+
+            // TOPIC 10: PARALLEL ORCHESTRATION (2 variants)
+            {
+                topic: "parallel-pattern",
+                question: "What is parallel orchestration?",
+                options: [
+                    "Multiple agents process different inputs simultaneously, then results are merged \u2014 like multiple checkout lanes",
+                    "One agent processes the same input multiple times and averages the results",
+                    "Agents take turns processing inputs in a round-robin fashion",
+                    "Two agents argue about the correct answer until they reach consensus"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Parallel orchestration has multiple agents processing different inputs simultaneously, then merging results \u2014 like multiple checkout lanes at a grocery store, maximizing throughput.",
+                    incorrect: "Not quite. Parallel orchestration means multiple agents process different inputs simultaneously, then results are merged \u2014 like multiple checkout lanes. It's about concurrent processing, not repetition or debate."
+                }
+            },
+            {
+                topic: "parallel-pattern",
+                question: "Beacon needs to classify 500 emails overnight. Each email is independent. The best approach is:",
+                options: [
+                    "Parallel orchestration \u2014 multiple triage agents process emails simultaneously for speed",
+                    "Sequential \u2014 process each email one after another for consistency",
+                    "Loop \u2014 reclassify each email multiple times for accuracy",
+                    "Single agent \u2014 one agent can handle 500 emails without orchestration"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Parallel orchestration is ideal here \u2014 since each email is independent, multiple agents can process them simultaneously for maximum speed and throughput.",
+                    incorrect: "Not quite. Parallel orchestration is best because each email is independent. Multiple triage agents can process emails simultaneously, dramatically reducing the time to classify all 500."
+                }
+            },
+
+            // TOPIC 11: WHEN TO USE PARALLEL (2 variants)
+            {
+                topic: "parallel-use-case",
+                question: "When should you use parallel orchestration?",
+                options: [
+                    "When tasks are independent and don't need each other's output \u2014 speed is the priority",
+                    "When tasks must be completed in a specific order",
+                    "When output quality matters more than processing speed",
+                    "When you need agents to share context about each other's work"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Parallel orchestration is best when tasks are independent and don't need each other's output. Speed is the priority \u2014 why wait for one task to finish before starting another?",
+                    incorrect: "Not quite. Parallel orchestration is used when tasks are independent and don't need each other's output \u2014 speed is the priority. For ordered tasks or shared context, sequential is better."
+                }
+            },
+            {
+                topic: "parallel-use-case",
+                question: "A company needs to summarize 100 different news articles. None depends on any other. Which pattern fits?",
+                options: [
+                    "Parallel \u2014 each article can be summarized independently, so multiple agents work simultaneously",
+                    "Sequential \u2014 articles should be summarized in publication order",
+                    "Loop \u2014 each summary should be reviewed and revised multiple times",
+                    "Sequential with verification \u2014 each summary needs a quality check before the next"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Parallel is the right pattern because each article can be summarized independently. Multiple agents working simultaneously will complete the task much faster than one-at-a-time processing.",
+                    incorrect: "Not quite. Parallel is correct because each article is independent \u2014 no summary depends on any other. Multiple agents working simultaneously is the fastest approach for independent tasks."
+                }
+            },
+
+            // TOPIC 12: LOOP ORCHESTRATION (2 variants)
+            {
+                topic: "loop-pattern",
+                question: "What is loop orchestration?",
+                options: [
+                    "An agent produces output, a reviewer checks it, and if it doesn't meet the threshold, the agent tries again \u2014 iterative refinement",
+                    "An agent processes the same input using multiple different models simultaneously",
+                    "Multiple agents take turns being the 'lead' on a rotating schedule",
+                    "An agent runs continuously 24/7 without stopping"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Loop orchestration is iterative refinement \u2014 an agent produces output, a reviewer checks it, and if it doesn't meet the threshold, the agent tries again. Each iteration improves the result.",
+                    incorrect: "Not quite. Loop orchestration means an agent produces output, a reviewer checks it, and if it doesn't meet the threshold, the agent tries again. It's iterative refinement with a quality gate."
+                }
+            },
+            {
+                topic: "loop-pattern",
+                question: "A legal compliance agent drafts a report, a reviewer finds errors, so the agent revises. This repeats until approved. This is:",
+                options: [
+                    "Loop orchestration \u2014 iterative refinement with a quality gate until the output meets the standard",
+                    "Sequential orchestration \u2014 agents process in a fixed order",
+                    "Parallel orchestration \u2014 multiple agents work simultaneously",
+                    "Human-in-the-loop \u2014 a human is doing the reviewing"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! This is loop orchestration \u2014 iterative refinement with a quality gate. The draft-review-revise cycle repeats until the output meets the approval standard.",
+                    incorrect: "Not quite. This is loop orchestration \u2014 iterative refinement with a quality gate until the output meets the standard. The key indicator is the repeated cycle: draft, review, revise, repeat."
+                }
+            },
+
+            // TOPIC 13: WHEN TO USE LOOP (2 variants)
+            {
+                topic: "loop-use-case",
+                question: "When should you use a loop pattern?",
+                options: [
+                    "When output quality matters more than speed or cost \u2014 each iteration improves the result",
+                    "When tasks are completely independent of each other",
+                    "When you need the fastest possible processing time",
+                    "When there's only one agent in the system"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! The loop pattern is best when output quality matters more than speed or cost. Each iteration improves the result, but at the expense of additional time and API calls.",
+                    incorrect: "Not quite. The loop pattern is used when output quality matters more than speed or cost \u2014 each iteration improves the result. For speed or independent tasks, other patterns are better."
+                }
+            },
+            {
+                topic: "loop-use-case",
+                question: "A marketing team needs a pitch-perfect press release. An agent drafts, an editor agent revises, and they iterate until the editor approves. The tradeoff is:",
+                options: [
+                    "Higher quality output, but higher cost \u2014 each loop iteration uses more API calls",
+                    "Faster output, but lower quality \u2014 loops sacrifice accuracy for speed",
+                    "No tradeoff \u2014 loops are always better than sequential",
+                    "Lower cost \u2014 loops reduce the number of agents needed"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! The tradeoff is higher quality but higher cost \u2014 each loop iteration uses more API calls. You're paying for refinement, which is worthwhile when the output must be pitch-perfect.",
+                    incorrect: "Not quite. The tradeoff is higher quality output but higher cost \u2014 each loop iteration uses more API calls. Loops prioritize quality over speed and cost."
+                }
+            },
+
+            // TOPIC 14: PATTERN SELECTION (2 variants)
+            {
+                topic: "pattern-selection",
+                question: "A bank needs to (1) extract data from a loan application, (2) check the applicant's credit score, then (3) generate an approval decision. Which pattern?",
+                options: [
+                    "Sequential \u2014 each step depends on the previous one's output",
+                    "Parallel \u2014 all three steps should run simultaneously",
+                    "Loop \u2014 the application should be re-evaluated until approved",
+                    "No pattern needed \u2014 a single agent can handle all three steps"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Sequential is the right pattern because each step depends on the previous one's output. You can't check credit without extracted data, and you can't approve without a credit score.",
+                    incorrect: "Not quite. Sequential is correct because each step depends on the previous one's output. The credit check needs extracted data, and the approval needs the credit score \u2014 a clear dependency chain."
+                }
+            },
+            {
+                topic: "pattern-selection",
+                question: "A hospital needs to: analyze a patient's lab results, check drug interactions, and generate a treatment summary. Steps 1 and 2 can run at the same time, but step 3 needs both outputs. Which approach?",
+                options: [
+                    "Hybrid \u2014 parallel for steps 1-2 (independent), then sequential to step 3 (depends on both)",
+                    "Pure sequential \u2014 all three steps must run in order",
+                    "Pure parallel \u2014 all three steps run simultaneously",
+                    "Loop \u2014 iterate until the treatment plan is optimal"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! A hybrid approach is best \u2014 parallel for steps 1-2 (they're independent) then sequential to step 3 (it depends on both outputs). This maximizes speed while respecting dependencies.",
+                    incorrect: "Not quite. A hybrid approach is correct \u2014 parallel for steps 1 and 2 (independent), then sequential to step 3 (depends on both). Real-world systems often combine patterns."
+                }
+            },
+
+            // TOPIC 15: VERIFICATION PATTERN (2 variants)
+            {
+                topic: "verification-pattern",
+                question: "Why add a second agent to check the first agent's work?",
+                options: [
+                    "To catch errors before they reach customers \u2014 automated quality assurance that creates an audit trail",
+                    "Because a single agent is never accurate enough to be useful",
+                    "To double the cost and processing time of every request",
+                    "Because regulations require two AI systems to agree before any output"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Adding a second agent catches errors before they reach customers \u2014 it's automated quality assurance that creates an audit trail. The cost of catching mistakes is less than the cost of mistakes.",
+                    incorrect: "Not quite. A second agent catches errors before they reach customers \u2014 automated quality assurance that creates an audit trail. It's not about single-agent inadequacy or regulatory requirements."
+                }
+            },
+            {
+                topic: "verification-pattern",
+                question: "Beacon's Quality Checker disagrees with the Triage Agent on 3 out of 50 emails. This suggests:",
+                options: [
+                    "The verification pattern is working \u2014 catching the 6% of cases where the first agent may be wrong",
+                    "The Triage Agent is failing and should be replaced",
+                    "The Quality Checker is too aggressive and should be removed",
+                    "Both agents are unreliable and a human should handle all 50 emails"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! A 6% disagreement rate suggests the verification pattern is working as designed \u2014 catching the small percentage of cases where the first agent may be wrong. This is the whole point of the pattern.",
+                    incorrect: "Not quite. The verification pattern is working \u2014 catching the 6% of cases where the first agent may be wrong. Some disagreement is expected and healthy; it means the quality check is doing its job."
+                }
+            },
+
+            // TOPIC 16: MULTI-AGENT COST TRADEOFF (2 variants)
+            {
+                topic: "multi-agent-cost",
+                question: "What is the primary cost tradeoff of multi-agent systems compared to single-agent systems?",
+                options: [
+                    "More API calls and higher per-request cost, but fewer errors reaching customers \u2014 the cost of catching mistakes vs. the cost of mistakes",
+                    "Multi-agent systems are always cheaper because they use smaller models",
+                    "Multi-agent systems have no cost tradeoff \u2014 they are strictly better in every way",
+                    "Multi-agent systems are too expensive for any real business use case"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Multi-agent systems have more API calls and higher per-request cost, but fewer errors reaching customers. The tradeoff is the cost of catching mistakes vs. the cost of mistakes themselves.",
+                    incorrect: "Not quite. The primary tradeoff is more API calls and higher per-request cost, but fewer errors reaching customers. It's about weighing the cost of catching mistakes against the cost of mistakes."
+                }
+            },
+            {
+                topic: "multi-agent-cost",
+                question: "Beacon's CTO asks: 'Why should I pay for two agents when one can classify emails?' The best response is:",
+                options: [
+                    "The cost of a second agent is far less than the cost of misclassified emails reaching customers \u2014 one missed complaint could cost more than a month of quality checking",
+                    "Two agents are always faster than one agent",
+                    "You shouldn't \u2014 a single well-tuned agent is always sufficient",
+                    "Regulations require dual-agent verification for all customer-facing AI"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! The cost of a second agent is far less than the cost of misclassified emails reaching customers. One missed complaint could cost more than a month of quality checking \u2014 it's a sound business investment.",
+                    incorrect: "Not quite. The best response is that the cost of a second agent is far less than the cost of misclassified emails reaching customers. One missed complaint could cost more than a month of quality checking."
+                }
+            },
+
+            // TOPIC 17: HUMAN-IN-THE-LOOP (2 variants)
+            {
+                topic: "human-in-the-loop",
+                question: "When should AI agents escalate to a human?",
+                options: [
+                    "When agents disagree, when confidence is low, when the decision involves legal/financial risk, or when the situation is outside the agent's scope",
+                    "Never \u2014 the purpose of agents is to eliminate human involvement entirely",
+                    "Only when the customer explicitly requests a human",
+                    "After every single interaction as a mandatory quality check"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Agents should escalate when they disagree, when confidence is low, when decisions involve legal/financial risk, or when the situation is outside scope. Knowing when to ask for help is a sign of good design.",
+                    incorrect: "Not quite. Agents should escalate when they disagree, when confidence is low, when decisions involve legal/financial risk, or when the situation is outside scope. Human escalation is a feature, not a failure."
+                }
+            },
+            {
+                topic: "human-in-the-loop",
+                question: "The Quality Checker flags an email as DISAGREE with flag_for_human = true. What should happen next?",
+                options: [
+                    "A human reviews the disagreement and makes the final classification decision \u2014 the agent identifies the issue, the human resolves it",
+                    "The system automatically accepts the Quality Checker's classification",
+                    "The email is deleted because the agents couldn't agree",
+                    "Both agents re-process the email in a loop until they agree"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! A human reviews the disagreement and makes the final classification decision. The agent identifies the issue, the human resolves it \u2014 this is the human-in-the-loop pattern working as designed.",
+                    incorrect: "Not quite. A human should review the disagreement and make the final classification decision. The agent identifies the issue, the human resolves it. This is the core of human-in-the-loop design."
+                }
+            },
+
+            // TOPIC 18: DAY 5-6-7 CONNECTION (2 variants)
+            {
+                topic: "day-connection",
+                question: "How does Day 7's agentic approach extend the email triage system from Days 5-6?",
+                options: [
+                    "Day 5's system prompt becomes Agent 1's instructions, and Day 6's red teaming insights inform Agent 2's quality checking criteria",
+                    "Day 7 replaces everything from Days 5-6 with a completely new system",
+                    "Day 7 only adds visual improvements to the same single-agent system",
+                    "Day 7 focuses on a different company scenario unrelated to Beacon"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Day 5's system prompt becomes Agent 1's instructions, and Day 6's red teaming insights inform Agent 2's quality checking criteria. Each day builds on the last \u2014 a cumulative learning arc.",
+                    incorrect: "Not quite. Day 7 extends Days 5-6: the system prompt becomes Agent 1's instructions, and red teaming insights inform Agent 2's quality checking. It's evolution, not replacement."
+                }
+            },
+            {
+                topic: "day-connection",
+                question: "The evolution from Day 5 \u2192 Day 6 \u2192 Day 7 follows the pattern:",
+                options: [
+                    "Build (create the system) \u2192 Break (test and harden) \u2192 Scale (add verification through multi-agent architecture)",
+                    "Theory \u2192 Practice \u2192 Theory again",
+                    "Simple \u2192 Complex \u2192 Simple again",
+                    "Individual \u2192 Team \u2192 Individual again"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! The pattern is Build (Day 5: create the system) \u2192 Break (Day 6: test and harden) \u2192 Scale (Day 7: add verification through multi-agent architecture). Each phase prepares for the next.",
+                    incorrect: "Not quite. The evolution follows Build (create the system) \u2192 Break (test and harden) \u2192 Scale (add verification through multi-agent architecture). Each day's lessons feed directly into the next."
+                }
+            },
+
+            // TOPIC 19: REAL-WORLD BUSINESS SCENARIOS (2 variants)
+            {
+                topic: "real-world-example",
+                question: "Which business scenario is best suited for a multi-agent AI system?",
+                options: [
+                    "Processing insurance claims: one agent extracts data, another checks policy coverage, a third calculates the payout",
+                    "Generating a single social media post",
+                    "Looking up a phone number in a directory",
+                    "Converting a temperature from Fahrenheit to Celsius"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Insurance claim processing is ideal for multi-agent systems \u2014 it has multiple specialized steps (extract, check, calculate) that benefit from dedicated agents with clear handoffs.",
+                    incorrect: "Not quite. Processing insurance claims is best suited for multi-agent systems because it has multiple specialized steps: extracting data, checking coverage, and calculating payouts. Simple tasks don't need multiple agents."
+                }
+            },
+            {
+                topic: "real-world-example",
+                question: "A hiring process uses agents to: parse resumes, score candidates, and rank them. This multi-agent approach is valuable because:",
+                options: [
+                    "Each agent specializes in one task, making the system more reliable and auditable than a single agent doing everything",
+                    "Using more agents always makes AI smarter",
+                    "Agents can work without any human oversight",
+                    "Each agent uses a different AI model, which improves diversity of thought"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Specialization makes each agent more reliable and the system more auditable. You can trace exactly which agent made which decision \u2014 critical for hiring where bias must be monitored.",
+                    incorrect: "Not quite. The value is that each agent specializes in one task, making the system more reliable and auditable than a single agent doing everything. Specialization and auditability are the key benefits."
+                }
+            },
+
+            // TOPIC 20: AGENT GOVERNANCE (2 variants)
+            {
+                topic: "agent-governance",
+                question: "What governance considerations apply specifically to multi-agent systems?",
+                options: [
+                    "Trust boundaries for each agent, monitoring inter-agent communication, audit trails of agent decisions, and human escalation protocols",
+                    "Only the same governance as single-agent systems \u2014 no additional considerations needed",
+                    "Multi-agent systems are self-governing and don't need human oversight",
+                    "Governance only matters for agents that interact with customers, not internal agents"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! Multi-agent systems require trust boundaries for each agent, monitoring inter-agent communication, audit trails of decisions, and human escalation protocols. More agents means more governance surface area.",
+                    incorrect: "Not quite. Multi-agent systems need trust boundaries for each agent, monitoring inter-agent communication, audit trails of agent decisions, and human escalation protocols. Governance scales with system complexity."
+                }
+            },
+            {
+                topic: "agent-governance",
+                question: "Beacon deploys a 3-agent pipeline. Which governance measure is most important?",
+                options: [
+                    "An audit trail that logs each agent's input, output, and decisions \u2014 so you can trace why any classification was made",
+                    "Limiting the system to process only 10 emails per day",
+                    "Requiring all agents to use the same model",
+                    "Removing the human escalation path to reduce costs"
+                ],
+                correct: 0,
+                feedback: {
+                    correct: "Correct! An audit trail is the most important governance measure \u2014 it logs each agent's input, output, and decisions so you can trace why any classification was made. Traceability is foundational.",
+                    incorrect: "Not quite. An audit trail that logs each agent's input, output, and decisions is most important \u2014 so you can trace why any classification was made. Without traceability, you can't govern the system."
+                }
+            }
+        ];
+
+        // Quiz state
+        let selectedQuestions = [];
+        let answered = 0;
+        let correct = 0;
+
+        // Initialize quiz
+        function initQuiz() {
+            // Get all unique topics and randomly select QUESTIONS_PER_QUIZ of them
+            const allTopics = shuffleArray([...new Set(questionBank.map(q => q.topic))]);
+            const selectedTopics = allTopics.slice(0, QUESTIONS_PER_QUIZ);
+            selectedQuestions = [];
+
+            selectedTopics.forEach(topic => {
+                const topicQuestions = questionBank.filter(q => q.topic === topic);
+                const randomQ = topicQuestions[Math.floor(Math.random() * topicQuestions.length)];
+                selectedQuestions.push({...randomQ});
+            });
+
+            // Shuffle the selected questions
+            selectedQuestions = shuffleArray(selectedQuestions);
+
+            // Generate HTML for questions
+            const container = document.getElementById('questions-container');
+            container.innerHTML = selectedQuestions.map((q, index) => generateQuestionHTML(q, index + 1)).join('');
+
+            // Generate progress dots
+            const dotsContainer = document.getElementById('progress-dots');
+            dotsContainer.innerHTML = selectedQuestions.map((_, i) =>
+                `<span class="dot ${i === 0 ? 'current' : ''}"></span>`
+            ).join('');
+
+            // Add event listeners
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function generateQuestionHTML(q, num) {
+            // Shuffle options while tracking correct answer
+            const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, wasIndex: i }));
+            const shuffledOptions = shuffleArray(optionsWithIndex);
+            const newCorrectIndex = shuffledOptions.findIndex(o => o.wasIndex === q.correct);
+
+            // Store the new correct index
+            selectedQuestions[num - 1].correctShuffled = newCorrectIndex;
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const optionsHTML = shuffledOptions.map((opt, i) => `
+                <label class="option">
+                    <input type="radio" name="q${num}" value="${i}">
+                    <span class="option-marker">${letters[i]}</span>
+                    <span class="option-text">${opt.text}</span>
+                </label>
+            `).join('');
+
+            return `
+                <div class="question-card" data-question="${num}" data-correct="${newCorrectIndex}">
+                    <div class="question-number">Question ${num}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">${optionsHTML}</div>
+                    <div class="feedback">
+                        <div class="feedback-header"></div>
+                        <div class="feedback-text"></div>
+                    </div>
+                    <button class="submit-btn" disabled onclick="checkAnswer(${num})">Check Answer</button>
+                </div>
+            `;
+        }
+
+        function handleOptionClick(e) {
+            const option = e.currentTarget;
+            const questionCard = option.closest('.question-card');
+
+            if (questionCard.classList.contains('answered-correct') ||
+                questionCard.classList.contains('answered-wrong')) {
+                return;
+            }
+
+            questionCard.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            option.querySelector('input').checked = true;
+            questionCard.querySelector('.submit-btn').disabled = false;
+        }
+
+        function checkAnswer(questionNum) {
+            const card = document.querySelector(`[data-question="${questionNum}"]`);
+            const correctAnswer = parseInt(card.dataset.correct);
+            const selectedOption = card.querySelector('input:checked');
+            const questionData = selectedQuestions[questionNum - 1];
+
+            if (!selectedOption) return;
+
+            const selected = parseInt(selectedOption.value);
+            const isCorrect = selected === correctAnswer;
+
+            // Disable further interaction
+            card.querySelectorAll('.option').forEach((o, i) => {
+                o.classList.add('disabled');
+                if (parseInt(o.querySelector('input').value) === correctAnswer) {
+                    o.classList.add('correct');
+                }
+                if (parseInt(o.querySelector('input').value) === selected && !isCorrect) {
+                    o.classList.add('incorrect');
+                }
+            });
+            card.querySelector('.submit-btn').disabled = true;
+            card.querySelector('.submit-btn').textContent = isCorrect ? '\u2713 Correct' : '\u2717 Incorrect';
+
+            // Show feedback
+            const feedbackDiv = card.querySelector('.feedback');
+            feedbackDiv.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+            feedbackDiv.querySelector('.feedback-header').textContent = isCorrect ? '\u2713 Correct!' : '\u2717 Not quite right';
+            feedbackDiv.querySelector('.feedback-text').textContent = questionData.feedback[isCorrect ? 'correct' : 'incorrect'];
+
+            // Update card styling
+            card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+            // Update progress
+            answered++;
+            if (isCorrect) correct++;
+            updateProgress();
+
+            // Check if quiz complete
+            if (answered === selectedQuestions.length) {
+                setTimeout(showResults, 1000);
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('progress-label').textContent =
+                `Question ${Math.min(answered + 1, selectedQuestions.length)} of ${selectedQuestions.length}`;
+
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                dot.classList.remove('current', 'correct', 'incorrect');
+                const card = document.querySelector(`[data-question="${i + 1}"]`);
+                if (card.classList.contains('answered-correct')) {
+                    dot.classList.add('correct');
+                } else if (card.classList.contains('answered-wrong')) {
+                    dot.classList.add('incorrect');
+                } else if (i === answered) {
+                    dot.classList.add('current');
+                }
+            });
+        }
+
+        function showResults() {
+            document.getElementById('questions-container').style.display = 'none';
+            document.querySelector('.quiz-progress').style.display = 'none';
+
+            const results = document.getElementById('results');
+            results.classList.add('show');
+            document.getElementById('final-score').textContent = `${correct}/${selectedQuestions.length}`;
+
+            let message = '';
+            const percentage = (correct / selectedQuestions.length) * 100;
+            if (percentage === 100) {
+                message = "Perfect Score! You've mastered agentic AI, agent anatomy, orchestration patterns, and multi-agent workflows.";
+            } else if (percentage >= 80) {
+                message = "Excellent! You passed with a strong understanding of agentic AI and multi-agent system concepts.";
+            } else if (percentage >= 70) {
+                message = "Good work! You passed. Review any missed questions to solidify your understanding.";
+            } else {
+                message = "Keep studying! Review the lecture materials and try again. You need 70%+ to pass.";
+            }
+            document.getElementById('results-message').textContent = message;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+
+</body>
+</html>

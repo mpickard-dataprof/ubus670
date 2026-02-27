@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 3 Quiz: Knowledge Check</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Navigation with Breadcrumb */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* Quiz header */
+        .quiz-header {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white;
+            padding: 50px 40px;
+            margin: -40px -30px 40px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+        }
+        .quiz-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px;
+            font-size: 2.2rem;
+        }
+        .quiz-header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Question card */
+        .question-card {
+            background: white;
+            padding: 30px 35px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 5px solid #C8102E;
+        }
+        .question-card.answered-correct {
+            border-left-color: #43B02A;
+            background: #f8fff8;
+        }
+        .question-card.answered-wrong {
+            border-left-color: #E35205;
+            background: #fff8f5;
+        }
+
+        .question-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        /* Answer options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option:hover:not(.disabled) {
+            background: #f0f0f0;
+            border-color: #ccc;
+        }
+        .option.selected {
+            border-color: #C8102E;
+            background: rgba(200, 16, 46, 0.05);
+        }
+        .option.correct {
+            border-color: #43B02A;
+            background: rgba(67, 176, 42, 0.1);
+        }
+        .option.incorrect {
+            border-color: #E35205;
+            background: rgba(227, 82, 5, 0.1);
+        }
+        .option.disabled {
+            cursor: default;
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        .option-marker {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .option.selected .option-marker {
+            border-color: #C8102E;
+            background: #C8102E;
+            color: white;
+        }
+        .option.correct .option-marker {
+            border-color: #43B02A;
+            background: #43B02A;
+            color: white;
+        }
+        .option.incorrect .option-marker {
+            border-color: #E35205;
+            background: #E35205;
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback.correct {
+            background: rgba(67, 176, 42, 0.1);
+            border-left: 4px solid #43B02A;
+        }
+        .feedback.incorrect {
+            background: rgba(227, 82, 5, 0.1);
+            border-left: 4px solid #E35205;
+        }
+        .feedback-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .feedback.correct .feedback-header { color: #43B02A; }
+        .feedback.incorrect .feedback-header { color: #E35205; }
+
+        /* Submit button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 30px;
+            background: #C8102E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 15px;
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: #a00d24;
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Results */
+        .results {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .results.show {
+            display: block;
+        }
+        .results h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+        }
+        .score {
+            font-size: 4rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #C8102E;
+            margin: 20px 0;
+        }
+        .score-label {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .retry-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #1D428A;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+        .retry-btn:hover {
+            background: #152d5e;
+        }
+
+        /* Progress indicator */
+        .quiz-progress {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+        }
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+        .dot.current { background: #C8102E; }
+        .dot.correct { background: #43B02A; }
+        .dot.incorrect { background: #E35205; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="../../../index.html">Week 1</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="index.html">Day 3</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Quiz</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="quiz.html" class="nav-pill active">Quiz</a>
+        </div>
+    </nav>
+
+    <div class="quiz-container">
+
+        <!-- Quiz Header -->
+        <div class="quiz-header">
+            <h1>Day 3: Knowledge Check</h1>
+            <p>Test your understanding of context engineering concepts</p>
+            <p style="font-size: 0.85em; opacity: 0.8; margin-top: 8px;">20 randomized questions &bull; Target: 70%+ (14/20) &bull; Retake with new questions anytime</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="quiz-progress">
+            <span id="progress-label">Question 1 of 20</span>
+            <div class="progress-dots" id="progress-dots">
+                <!-- Dots generated dynamically -->
+            </div>
+        </div>
+
+        <!-- Questions Container (dynamically generated) -->
+        <div id="questions-container">
+            <!-- Questions will be generated by JavaScript -->
+        </div>
+
+        <!-- Results -->
+        <div class="results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="final-score">0/20</div>
+            <p class="score-label">Questions Correct</p>
+            <p id="results-message"></p>
+            <button class="retry-btn" onclick="location.reload()">Try Again (New Questions)</button>
+            <a href="index.html" class="retry-btn" style="margin-left: 10px; background: #43B02A;">Back to Dashboard</a>
+        </div>
+
+    </div>
+
+    <script>
+        // Configuration
+        const QUESTIONS_PER_QUIZ = 20;
+
+        // Question Bank - organized by topic with variants
+        const questionBank = [
+            // TOPIC 1: CONTEXT ENGINEERING DEFINITION (2 variants)
+            {
+                topic: "context-definition",
+                question: "What is context engineering?",
+                options: [
+                    "Writing longer prompts to get better AI responses",
+                    "Preparing all the information AI needs beyond just the prompt (documents, instructions, examples, constraints)",
+                    "Training AI models on company-specific data",
+                    "A method for reducing AI hallucinations by 100%"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Context engineering is about preparing all the information AI needs beyond just the prompt, including documents, instructions, examples, and constraints. It's the foundation for reliable, company-specific AI responses.",
+                    incorrect: "Not quite. Context engineering is about preparing all the information AI needs beyond just the prompt, including documents, instructions, examples, and constraints. It goes beyond just writing longer prompts."
+                }
+            },
+            {
+                topic: "context-definition",
+                question: "How does context engineering differ from prompt engineering?",
+                options: [
+                    "They are exactly the same thing with different names",
+                    "Context engineering is only for advanced users; prompt engineering is for beginners",
+                    "Prompt engineering focuses on crafting the question; context engineering focuses on preparing ALL the supporting information",
+                    "Context engineering replaces prompt engineering completely"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Prompt engineering focuses on crafting the question itself, while context engineering focuses on preparing all the supporting information the AI needs to answer accurately. They work together for best results.",
+                    incorrect: "Not quite. Prompt engineering focuses on crafting the question, while context engineering focuses on preparing all the supporting information. They're complementary skills, not the same or mutually exclusive."
+                }
+            },
+
+            // TOPIC 2: STRUCTURED FORMATS (2 variants)
+            {
+                topic: "structured-formats",
+                question: "Which format uses key-value pairs (like \"name\": \"Beacon\") and is commonly used by APIs and AI tools?",
+                options: [
+                    "Markdown",
+                    "JSON",
+                    "XML",
+                    "CSV"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! JSON (JavaScript Object Notation) uses key-value pairs and is the most common format for APIs and AI tools. It's lightweight and easy for machines to parse.",
+                    incorrect: "Not quite. JSON uses key-value pairs like \"name\": \"Beacon\". Markdown uses # headers and **bold**, XML uses <tags>, and CSV uses comma-separated columns."
+                }
+            },
+            {
+                topic: "structured-formats",
+                question: "When is adding Markdown structure (headers, bullet points) to a document MOST helpful for AI?",
+                options: [
+                    "Short casual questions in a chat",
+                    "Long reports with multiple sections and complex data",
+                    "Single-paragraph emails",
+                    "Simple yes/no questions"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Structure helps most with long, complex documents. Markdown headers and bullet points help AI navigate sections and find specific information. For short, simple text, structure adds little value.",
+                    incorrect: "Structure provides the most benefit for long, complex documents. Headers and bullet points help AI navigate multi-section reports. Short messages and simple questions don't need additional structure."
+                }
+            },
+
+            // TOPIC 3: CONTEXT WINDOW LIMITATIONS (2 variants)
+            {
+                topic: "context-window",
+                question: "Why can't you simply upload an entire 500-page manual to an AI?",
+                options: [
+                    "It would take too long to upload the file",
+                    "AI context windows have token limits — you need to select the most relevant portions",
+                    "AI can only read PDF files under 100 pages",
+                    "Large documents crash the AI system"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! AI context windows have token limits. Most AI models can only process a certain amount of text at once, so you need to select and provide the most relevant portions of large documents.",
+                    incorrect: "Not quite. The issue is context window token limits. AI models can only process a certain amount of text at once, so you need to select the most relevant portions rather than uploading everything."
+                }
+            },
+            {
+                topic: "context-window",
+                question: "What strategy helps when your documents exceed the AI's context window?",
+                options: [
+                    "Delete all the extra content permanently",
+                    "Send multiple prompts without any document context",
+                    "Chunking — breaking documents into smaller, relevant sections and providing the most important ones first",
+                    "Wait for a future AI model with unlimited context"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Chunking is the solution. Break documents into smaller, relevant sections and provide the most important chunks for the current question. You can swap chunks as topics change.",
+                    incorrect: "Not quite. Chunking is the answer — breaking documents into smaller, relevant sections and providing the most important ones for the current question. You don't need to delete content or wait for future AI."
+                }
+            },
+
+            // TOPIC 4: RAG CONCEPT (2 variants)
+            {
+                topic: "rag-concept",
+                question: "What does RAG stand for and what does it do?",
+                options: [
+                    "Rapid AI Generation — it speeds up AI response time",
+                    "Retrieval-Augmented Generation — it retrieves relevant information from a document store before the AI generates its response",
+                    "Random Answer Generator — it creates random variations of responses",
+                    "Read-And-Generate — the AI reads your prompt and generates output"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! RAG stands for Retrieval-Augmented Generation. It retrieves relevant information from a document store before generating a response, allowing AI to access specific company data dynamically.",
+                    incorrect: "Not quite. RAG stands for Retrieval-Augmented Generation. It retrieves relevant information from a document store before generating a response, ensuring the AI uses current, accurate company data."
+                }
+            },
+            {
+                topic: "rag-concept",
+                question: "Which analogy best describes RAG?",
+                options: [
+                    "A closed-book exam — relying only on memorized knowledge",
+                    "An open-book exam — looking up specific information rather than relying only on training",
+                    "Flash cards — memorizing facts one at a time",
+                    "A textbook — reading everything in order from start to finish"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! RAG is like an open-book exam. The AI can look up specific information from documents rather than relying only on its training. This makes responses more accurate and current.",
+                    incorrect: "Not quite. RAG is best compared to an open-book exam. The AI can look up specific information from documents rather than relying only on what it learned during training."
+                }
+            },
+
+            // TOPIC 5: RAG VS FINE-TUNING (2 variants)
+            {
+                topic: "rag-vs-finetuning",
+                question: "When should a company use RAG instead of fine-tuning?",
+                options: [
+                    "When they need to teach the AI a completely new language",
+                    "When they need the AI to access current, frequently changing company data",
+                    "Never — fine-tuning is always better than RAG",
+                    "Only when the AI is too slow"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! RAG is ideal when you need AI to access current, frequently changing data. Fine-tuning is better for teaching new skills or behaviors, but RAG handles dynamic data better without retraining.",
+                    incorrect: "Not quite. Use RAG when you need AI to access current, frequently changing data. Fine-tuning teaches new behaviors or skills, but RAG is better for dynamic, up-to-date information."
+                }
+            },
+            {
+                topic: "rag-vs-finetuning",
+                question: "A company wants their AI to use the latest product catalog that changes weekly. Which approach is better?",
+                options: [
+                    "Fine-tuning the model every week with the new catalog",
+                    "RAG — because the data changes frequently and RAG can access the latest version without retraining",
+                    "Neither — AI can't handle changing data",
+                    "Just ask the AI to guess based on old training data"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! RAG is the better choice because it can access the latest version of frequently changing data without retraining. Fine-tuning every week would be impractical and expensive.",
+                    incorrect: "Not quite. RAG is better for frequently changing data. It can access the latest product catalog without retraining the model, making it ideal for data that updates weekly or even daily."
+                }
+            },
+
+            // TOPIC 6: CONTEXT QUALITY (2 variants)
+            {
+                topic: "context-quality",
+                question: "What happens when you provide AI with poorly formatted, contradictory documents?",
+                options: [
+                    "The AI automatically fixes all formatting and contradictions",
+                    "Garbage in, garbage out — the AI's answers will be unreliable because the source context is flawed",
+                    "The AI refuses to generate any response",
+                    "The AI ignores the documents and uses only its training data"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Garbage in, garbage out. If you provide poorly formatted or contradictory documents, the AI's answers will be unreliable because it's working from flawed source material. Context quality matters.",
+                    incorrect: "Not quite. The principle is 'garbage in, garbage out.' If you provide poorly formatted or contradictory documents, the AI's answers will be unreliable. The AI doesn't automatically fix problems in source documents."
+                }
+            },
+            {
+                topic: "context-quality",
+                question: "Beacon uploads their financial summary but it contains outdated numbers from 2023. What's the main risk?",
+                options: [
+                    "The AI will automatically update the numbers to current values",
+                    "The AI will refuse to answer any financial questions",
+                    "The AI will confidently cite the outdated numbers as current, potentially leading to bad business decisions",
+                    "The AI will warn the user that the data is outdated"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! The main risk is that the AI will confidently cite outdated 2023 numbers as current, potentially leading to bad business decisions. The AI doesn't know the data is old unless you tell it.",
+                    incorrect: "Not quite. The AI will confidently cite the outdated numbers as if they're current. The AI doesn't automatically detect that data is old, which is why providing accurate, current context is critical."
+                }
+            },
+
+            // TOPIC 7: CROSS-REFERENCING (2 variants)
+            {
+                topic: "cross-referencing",
+                question: "What is a key advantage of giving AI multiple related documents instead of just one?",
+                options: [
+                    "It makes the AI respond faster by having more options",
+                    "The AI can cross-reference information across documents to provide more comprehensive, connected answers",
+                    "It confuses the AI so responses are more creative",
+                    "Multiple documents reduce the chance of hallucination to zero"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! When you provide multiple related documents, the AI can cross-reference information across them to provide more comprehensive, connected answers. This reveals insights that wouldn't be visible from a single document.",
+                    incorrect: "Not quite. The key advantage is cross-referencing. The AI can connect information across multiple documents to provide more comprehensive, integrated insights than it could from a single document."
+                }
+            },
+            {
+                topic: "cross-referencing",
+                question: "You upload Beacon's org chart and strategic plan. Why is this more useful than uploading just one?",
+                options: [
+                    "It makes the files larger so the AI works harder",
+                    "The AI can map strategic initiatives to responsible leaders, connecting organizational structure to business goals",
+                    "Two documents always produce better results regardless of content",
+                    "It prevents the AI from asking follow-up questions"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! With both documents, the AI can map strategic initiatives to the leaders responsible for them, connecting organizational structure to business goals. This cross-referencing reveals relationships between documents.",
+                    incorrect: "Not quite. The value is in cross-referencing. With both the org chart and strategic plan, the AI can map initiatives to responsible leaders, connecting structure to strategy in useful ways."
+                }
+            },
+
+            // TOPIC 8: SYSTEM PROMPTS WITH CONTEXT (2 variants)
+            {
+                topic: "system-prompts",
+                question: "Why should you include a system prompt when using uploaded documents with AI?",
+                options: [
+                    "System prompts make the AI run faster",
+                    "It tells the AI HOW to use the documents — what role to play, what format to use, and when to say 'I don't know'",
+                    "System prompts are optional and don't affect output quality",
+                    "They automatically fact-check all documents for accuracy"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! System prompts tell the AI HOW to use the documents — what role to play, what format to use, and importantly, when to say 'I don't know' if information isn't in the documents.",
+                    incorrect: "Not quite. System prompts are critical for telling the AI HOW to use the documents — setting role, format, and boundaries like when to say 'I don't know' instead of guessing."
+                }
+            },
+            {
+                topic: "system-prompts",
+                question: "Which system prompt instruction is MOST important when building a knowledge assistant?",
+                options: [
+                    "'Make your responses as long as possible'",
+                    "'Use creative language and metaphors'",
+                    "'If the answer is not in the provided documents, say so' — to prevent hallucination",
+                    "'Always provide an answer even if you're unsure'"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Instructing the AI to say 'I don't know' when information isn't in the documents is critical for preventing hallucination. It's better to admit uncertainty than to confidently state false information.",
+                    incorrect: "Not quite. The most important instruction is 'If the answer is not in the provided documents, say so.' This prevents hallucination by ensuring the AI admits when it doesn't have the information."
+                }
+            },
+
+            // TOPIC 9: BUSINESS VALUE (2 variants)
+            {
+                topic: "business-value",
+                question: "What is the primary business benefit of context engineering over basic prompting?",
+                options: [
+                    "It makes AI respond 10 times faster",
+                    "It enables AI to give company-specific, accurate answers grounded in real organizational data instead of generic responses",
+                    "It eliminates the need for human employees",
+                    "It reduces the cost of AI tools to zero"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The primary benefit is enabling AI to give company-specific, accurate answers grounded in real organizational data. This transforms AI from a generic assistant into a knowledgeable company expert.",
+                    incorrect: "Not quite. The primary benefit is enabling company-specific, accurate answers grounded in real organizational data. It's about quality and relevance, not speed, replacing people, or cost."
+                }
+            },
+            {
+                topic: "business-value",
+                question: "Beacon's CEO wants to reduce hallucinations in AI responses about company finances. What's the best approach?",
+                options: [
+                    "Switch to a different AI model entirely",
+                    "Ask the AI politely not to hallucinate",
+                    "Provide the AI with verified company financial documents and instruct it to only cite information from those sources",
+                    "Stop using AI for financial questions completely"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Providing verified financial documents and instructing the AI to only cite information from those sources is the best approach. This grounds responses in real data and sets clear boundaries.",
+                    incorrect: "Not quite. The best approach is to provide verified financial documents and instruct the AI to only cite information from those sources. This grounds responses in real data rather than relying on training data."
+                }
+            },
+
+            // TOPIC 10: PRACTICAL APPLICATION (2 variants)
+            {
+                topic: "practical",
+                question: "A new employee at Beacon wants to use AI to understand company policies. What's the best first step?",
+                options: [
+                    "Just ask the AI generic questions and hope for accurate answers",
+                    "Gather and upload relevant policy documents to the AI tool, then set context with a system prompt explaining the AI's role",
+                    "Ask other employees instead of using AI",
+                    "Wait for the AI to automatically learn about Beacon's policies"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The best first step is to gather and upload relevant policy documents, then set context with a system prompt. This ensures the AI has accurate information and knows how to use it appropriately.",
+                    incorrect: "Not quite. The best first step is to gather and upload relevant policy documents, then set context with a system prompt. Without these documents, the AI is just guessing about Beacon's specific policies."
+                }
+            },
+            {
+                topic: "practical",
+                question: "You're building a Beacon knowledge assistant. You have 10 documents but the AI only handles 5 at a time. What do you do?",
+                options: [
+                    "Give up and don't build the assistant",
+                    "Randomly select 5 documents and always use those",
+                    "Prioritize the most relevant documents for the current question and upload those first; swap documents as topics change",
+                    "Merge all 10 documents into one giant file"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Prioritize the most relevant documents for the current question and upload those first. Swap documents as topics change. This strategic chunking ensures the AI always has the most relevant context.",
+                    incorrect: "Not quite. The best approach is to prioritize the most relevant documents for the current question and swap them as topics change. This strategic approach maximizes the value of limited context window space."
+                }
+            },
+            // TOPIC 11: SEMANTIC SEARCH (2 variants)
+            {
+                topic: "semantic-search",
+                question: "How does a RAG system's retrieval step find relevant document chunks?",
+                options: [
+                    "It searches for exact keyword matches, like Ctrl+F",
+                    "It converts text into mathematical representations (embeddings) that capture meaning, then finds chunks with similar meaning",
+                    "It reads every document from start to finish each time",
+                    "It uses the document's table of contents to navigate"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! RAG uses semantic search via embeddings — mathematical representations that capture meaning. This lets it find relevant chunks even when different words are used (e.g., 'returns' and 'refunds').",
+                    incorrect: "Not quite. RAG uses semantic search, which converts text into embeddings (mathematical representations of meaning). This is much more powerful than keyword matching because it understands that 'returns' and 'refunds' are related concepts."
+                }
+            },
+            {
+                topic: "semantic-search",
+                question: "Why is semantic search more effective than keyword search for business documents?",
+                options: [
+                    "It's faster at processing large files",
+                    "It finds content based on meaning, so 'return policy' matches chunks about 'refunds' and 'exchanges' even without those exact words",
+                    "It only works with English-language documents",
+                    "It automatically corrects spelling errors in documents"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Semantic search matches by meaning, not keywords. A question about 'return policy' will find chunks mentioning 'refunds,' 'exchanges,' or 'money back' because the meaning is similar.",
+                    incorrect: "The key advantage of semantic search is matching by meaning. A query about 'return policy' finds chunks about 'refunds' and 'exchanges' because embeddings capture semantic similarity, not just keyword overlap."
+                }
+            },
+            // TOPIC 12: CHUNKING STRATEGIES (2 variants)
+            {
+                topic: "chunking",
+                question: "What is the recommended approach for chunking a well-structured employee handbook?",
+                options: [
+                    "Upload the entire handbook as one chunk",
+                    "Split by semantic section — each policy (vacation, sick leave, remote work) becomes its own chunk",
+                    "Split every 100 words regardless of content boundaries",
+                    "Only upload the first 5 pages"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! For well-structured documents, splitting by semantic section (natural topic boundaries) keeps related ideas together and produces the best retrieval results.",
+                    incorrect: "For structured documents like handbooks, the best approach is splitting by semantic section — keeping each policy or topic together as a coherent chunk. This preserves meaning and improves retrieval accuracy."
+                }
+            },
+            {
+                topic: "chunking",
+                question: "When chunking documents by fixed size (e.g., 500 tokens), what technique prevents losing context at chunk boundaries?",
+                options: [
+                    "Making chunks as large as possible",
+                    "Adding overlap — repeating the last 100 tokens of each chunk in the next",
+                    "Numbering each chunk sequentially",
+                    "Adding a summary at the top of each chunk"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Adding overlap between chunks ensures that ideas split at a boundary aren't lost. The repeated tokens provide continuity.",
+                    incorrect: "The correct technique is overlap — repeating a portion (e.g., 100 tokens) of each chunk at the start of the next chunk, so ideas aren't lost at boundaries."
+                }
+            },
+            // TOPIC 13: GEMINI GEMS (2 variants)
+            {
+                topic: "gemini-gems",
+                question: "What is the key advantage of a Gemini Gem over uploading documents to a regular Gemini chat?",
+                options: [
+                    "Gems process documents faster than regular chat",
+                    "Gem Knowledge persists across conversations; chat uploads disappear when you close the chat",
+                    "Gems can read more documents than regular chat",
+                    "Gems are only available on the paid tier"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! The key advantage of Gems is persistence. Documents uploaded to a Gem's Knowledge stay available across every conversation, while documents in a regular chat are lost when you close it.",
+                    incorrect: "The key difference is persistence. A Gem's Knowledge stays available across all conversations, while regular chat uploads disappear when you close the chat. This makes Gems ideal for ongoing knowledge assistants."
+                }
+            },
+            {
+                topic: "gemini-gems",
+                question: "What happens to uploaded documents when you close a normal Gemini chat and start a new one?",
+                options: [
+                    "They transfer to the new chat automatically",
+                    "They're no longer available — you must re-upload them",
+                    "They're saved to your Google Drive",
+                    "They remain in a shared document library"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Documents uploaded to a regular Gemini chat are temporary — they're lost when you close the chat. This is why Gems with persistent Knowledge are better for ongoing business use.",
+                    incorrect: "Regular chat uploads are temporary. When you close a Gemini chat, the uploaded documents are gone. You'd need to re-upload them in a new chat. Gems solve this with persistent Knowledge storage."
+                }
+            },
+            // TOPIC 14: DECISION MATRIX (2 variants)
+            {
+                topic: "decision-matrix",
+                question: "When is context engineering NOT the best approach?",
+                options: [
+                    "When you have frequently changing internal policies to reference",
+                    "When you're asking a one-off question using publicly available knowledge",
+                    "When you need the AI to reference 50+ pages of company documents",
+                    "When multiple people need consistent answers about the same policies"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! For one-off questions using public knowledge, a simple prompt is sufficient. Context engineering is most valuable when you need AI to reference proprietary documents repeatedly.",
+                    incorrect: "Context engineering is overkill for one-off questions about public knowledge. A simple prompt works fine. Context engineering shines when you need repeated, accurate answers from proprietary documents."
+                }
+            },
+            {
+                topic: "decision-matrix",
+                question: "If you find yourself pasting the same background information into multiple AI prompts, what does that signal?",
+                options: [
+                    "You should use shorter prompts",
+                    "It's time to invest in context engineering — set up documents once and reuse",
+                    "You should switch to a different AI tool",
+                    "The AI isn't smart enough for your task"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Repeatedly pasting the same context is a clear signal that context engineering would save time. Upload documents once, set up instructions, and reuse across many conversations.",
+                    incorrect: "Repeatedly pasting background info is the classic signal to invest in context engineering. Instead of pasting context every time, upload documents once and set up reusable instructions."
+                }
+            },
+            // TOPIC 15: ROI & BUSINESS VALUE (2 variants)
+            {
+                topic: "roi-calculation",
+                question: "Beacon's HR team answers 200 policy questions/month (10 min each, $30/hr). AI costs $0.15/query. What's the approximate annual savings?",
+                options: [
+                    "About $360 (AI is barely cheaper)",
+                    "About $1,000 per year",
+                    "About $11,640 per year (manual: $1,000/mo vs AI: $30/mo)",
+                    "About $50,000 per year"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Manual cost: 200 × 10min × $0.50/min = $1,000/month. AI cost: 200 × $0.15 = $30/month. Savings: $970/month × 12 = $11,640/year. A compelling ROI.",
+                    incorrect: "Manual cost: 200 questions × 10 min × ($30/60) = $1,000/month. AI cost: 200 × $0.15 = $30/month. Monthly savings: $970. Annual savings: ~$11,640."
+                }
+            },
+            {
+                topic: "roi-calculation",
+                question: "When calculating ROI for context engineering, which costs should you include beyond the AI subscription?",
+                options: [
+                    "Only the monthly AI subscription fee",
+                    "Setup time (document preparation, testing), ongoing maintenance (updating documents), and training staff to use the system",
+                    "Just the electricity to run the computers",
+                    "Only the cost of the documents themselves"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Total cost of ownership includes setup (document prep, testing), ongoing maintenance (keeping docs current), and training. These hidden costs can significantly affect ROI calculations.",
+                    incorrect: "A complete ROI calculation includes setup time (document preparation, system testing), ongoing maintenance (keeping documents updated), and staff training — not just the AI subscription fee."
+                }
+            },
+            // TOPIC 16: CITATION & SOURCE ATTRIBUTION (2 variants)
+            {
+                topic: "citations",
+                question: "Why is source citation important when using AI for business decisions?",
+                options: [
+                    "It makes AI responses look more professional",
+                    "It allows verification — you can check the AI's answer against the original source document",
+                    "It's only required for academic papers, not business",
+                    "Citations make the AI run faster"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Citation enables verification. When AI cites a specific document (e.g., 'According to the Q3 Financial Summary...'), you can check the original source to confirm accuracy. This is essential for business trust.",
+                    incorrect: "The key value of citations is verification. When AI cites its source, you can check the original document to confirm the answer is accurate. This is critical for business decisions where incorrect data could be costly."
+                }
+            },
+            {
+                topic: "citations",
+                question: "What should an AI knowledge assistant do when asked about information NOT in its uploaded documents?",
+                options: [
+                    "Give its best guess based on general knowledge",
+                    "Acknowledge the gap honestly (e.g., 'This information isn't in the provided documents')",
+                    "Refuse to respond entirely and shut down",
+                    "Make up a plausible answer to be helpful"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! A reliable knowledge assistant should acknowledge gaps honestly rather than guessing or hallucinating. This is why system prompts often include instructions like 'If the answer isn't in the documents, say so.'",
+                    incorrect: "The best response is honest acknowledgment: 'This information isn't in the provided documents.' Making up answers (hallucination) is the biggest risk in business AI. Good context engineering includes instructions to admit gaps."
+                }
+            },
+            // TOPIC 17: PRIORITY ORDERING (2 variants)
+            {
+                topic: "priority-ordering",
+                question: "Why should you put critical rules and constraints at the BEGINNING of your context documents?",
+                options: [
+                    "It looks more professional",
+                    "AI attention fades over long documents — information at the beginning is weighted more heavily",
+                    "The AI reads documents alphabetically",
+                    "Critical rules are always shorter than other content"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! AI models give more attention to information at the beginning and end of context. Placing critical rules first (inverted pyramid) ensures they're weighted most heavily in responses.",
+                    incorrect: "AI attention fades over long documents. The 'inverted pyramid' approach — critical rules first, background last — ensures the most important constraints get the most attention from the model."
+                }
+            },
+            {
+                topic: "priority-ordering",
+                question: "The 'inverted pyramid' approach to document ordering places what at the top?",
+                options: [
+                    "Background information and company history",
+                    "Examples and reference cases",
+                    "Critical rules and must-follow constraints",
+                    "A table of contents"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! The inverted pyramid starts with critical rules (most important), then core procedures, examples, background, and extras at the bottom. This ensures AI prioritizes what matters most.",
+                    incorrect: "The inverted pyramid places critical rules and must-follow constraints at the top, followed by core procedures, examples, background, and supplementary information at the bottom."
+                }
+            },
+            // TOPIC 18: CONTEXT ACCUMULATION (2 variants)
+            {
+                topic: "context-accumulation",
+                question: "What is 'context accumulation' in a business AI conversation?",
+                options: [
+                    "When the AI forgets previous messages",
+                    "When new information is added mid-conversation and the AI integrates it with existing context",
+                    "When you upload the same document multiple times",
+                    "When the AI makes up additional context on its own"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Context accumulation is when new information (like a new memo) is added during a conversation and the AI integrates it with the existing document context, building a richer knowledge base.",
+                    incorrect: "Context accumulation refers to the AI integrating new information added mid-conversation with its existing context. For example, pasting a new memo and having the AI consider it alongside previously uploaded documents."
+                }
+            },
+            {
+                topic: "context-accumulation",
+                question: "You've uploaded Beacon's 5 documents and now receive a new urgent memo from the VP of Operations. What should you do?",
+                options: [
+                    "Start a completely new chat and re-upload everything plus the memo",
+                    "Paste the new memo into your existing chat — the AI should integrate it with the uploaded documents",
+                    "Ignore it until the next conversation",
+                    "Delete the old documents and only upload the memo"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Paste the new memo into the existing chat. The AI should integrate it with the previously uploaded documents, combining all context for richer, more informed answers.",
+                    incorrect: "The most efficient approach is to paste the new memo into your existing chat. The AI should be able to integrate the new information with the previously uploaded documents — this is context accumulation in action."
+                }
+            },
+            // TOPIC 19: CONTEXT APPROACHES — THREE-WAY COMPARISON (2 variants)
+            {
+                topic: "context-approaches",
+                question: "In a three-way comparison (no context, chat upload, Gem), which approach provides PERSISTENT knowledge that survives across conversations?",
+                options: [
+                    "No context (fresh chat)",
+                    "Chat upload (documents added to a single conversation)",
+                    "Gemini Gem (documents in Knowledge section)",
+                    "All three provide persistent knowledge"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! Only the Gemini Gem provides persistent knowledge. Documents in a Gem's Knowledge section stay available across every conversation. Chat uploads are temporary (lost when you close the chat), and fresh chats have no context at all.",
+                    incorrect: "Only the Gemini Gem provides persistent knowledge. Chat uploads are temporary — they disappear when you close the conversation. Fresh chats have no company-specific context at all. Gems solve the persistence problem."
+                }
+            },
+            {
+                topic: "context-approaches",
+                question: "Why might asking Gemini about your company in a fresh chat (no document uploads) give inaccurate or generic answers?",
+                options: [
+                    "Gemini doesn't work without uploaded files",
+                    "The AI has no access to your company-specific information and will rely on general knowledge or guess",
+                    "Fresh chats are slower than Gems",
+                    "Gemini blocks company-related questions in fresh chats"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Without uploaded documents, the AI has no access to your company-specific data. It can only use its general training knowledge, which likely doesn't include details about your specific company.",
+                    incorrect: "Without uploaded documents, the AI has no company-specific information. It will either give generic answers based on general knowledge or potentially hallucinate specific details. This is why context engineering matters."
+                }
+            },
+            // TOPIC 20: AMBIGUITY IN AI (2 variants)
+            {
+                topic: "ambiguity",
+                question: "When a business question has no single right answer (like 'Should we prioritize Electronics or AI?'), how should you use context engineering?",
+                options: [
+                    "Don't use AI for ambiguous questions — it can only give one answer",
+                    "Provide context from multiple stakeholder perspectives and ask the AI to present trade-offs rather than a single recommendation",
+                    "Only ask simple factual questions",
+                    "Remove all ambiguous information from the context"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! For ambiguous business questions, provide diverse context and ask the AI to present multiple perspectives and trade-offs. Humans make the final call, but AI can surface relevant evidence from each viewpoint.",
+                    incorrect: "AI can handle ambiguous questions when you provide context from multiple stakeholder perspectives. The key is asking it to present trade-offs rather than forcing a single recommendation. Humans remain the decision-makers."
+                }
+            },
+            {
+                topic: "ambiguity",
+                question: "Why do two classmates often get different AI responses to the same ambiguous question with the same documents?",
+                options: [
+                    "One of them has a broken AI",
+                    "AI responses to ambiguous questions depend on subtle differences in phrasing, context setup, and the model's random sampling — this is called non-determinism",
+                    "They must be using different documents",
+                    "The AI only gives accurate answers to the first person who asks"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! AI models are non-deterministic — subtle differences in phrasing, context setup, and random sampling during generation produce different (but often equally valid) answers to ambiguous questions.",
+                    incorrect: "AI is non-deterministic. Even with identical documents and similar questions, subtle differences in phrasing and the model's random sampling produce different responses. This is expected and is why human judgment remains essential."
+                }
+            },
+
+            // TOPIC 21: BEHAVIORAL CONFIGURATION vs FINE-TUNING (2 variants)
+            {
+                topic: "behavioral-config",
+                question: "In the 'Accidental Fine-Tuner' story, what did the accounting professor actually configure when she 'trained' her Custom GPT?",
+                options: [
+                    "She modified the model's neural network weights",
+                    "She created a fine-tuned version of GPT-4",
+                    "Instructions and behavioral patterns (system prompt, memory, conversation style) — not model weights",
+                    "A completely new AI model from scratch"
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "Correct! The professor configured instructions, memory, and behavioral patterns — not model weights. Custom GPTs (and Gemini Gems) shape AI behavior through configuration, not by changing the underlying model. This is called behavioral configuration.",
+                    incorrect: "Custom GPTs don't modify model weights. The professor actually configured instructions, memory, and behavioral patterns — the outer shell of the AI. The base model underneath stayed the same as everyone else's. This distinction matters!"
+                }
+            },
+            {
+                topic: "behavioral-config",
+                question: "Do Custom GPTs (or Gemini Gems) modify the underlying model weights when you customize their behavior?",
+                options: [
+                    "Yes — that's how they learn your preferences",
+                    "No — they use instructions, memory, and uploaded knowledge to shape behavior while the base model stays unchanged",
+                    "Only if you use the paid tier",
+                    "Only after 100+ conversations"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Custom GPTs and Gems do NOT modify model weights. They use instructions (system prompts), memory, and uploaded knowledge to shape behavior. The base model is the same for everyone — this is behavioral configuration, not fine-tuning.",
+                    incorrect: "Custom GPTs and Gems do NOT modify weights, regardless of tier or conversation count. They shape behavior through instructions, memory, and knowledge. This is good news — it means anyone can customize AI without being a developer."
+                }
+            },
+
+            // TOPIC 22: EMBEDDINGS & VECTOR DATABASES (2 variants)
+            {
+                topic: "embeddings-types",
+                question: "What is a vector database used for in AI systems?",
+                options: [
+                    "Storing regular spreadsheet data",
+                    "Storing and searching embeddings (mathematical representations of meaning) for semantic retrieval",
+                    "Encrypting sensitive documents",
+                    "Running AI model training"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Vector databases store embeddings — mathematical representations of meaning — and enable semantic search. Products like Pinecone, Weaviate, and Chroma power the retrieval step in RAG systems.",
+                    incorrect: "Vector databases store embeddings — mathematical representations of text meaning — and enable semantic search. They power the retrieval step in RAG systems, finding content by meaning rather than just keywords."
+                }
+            },
+            {
+                topic: "embeddings-types",
+                question: "What's the key difference between dense and sparse embeddings?",
+                options: [
+                    "Dense embeddings are larger files; sparse are smaller",
+                    "Dense embeddings capture semantic meaning; sparse embeddings match keywords",
+                    "Dense embeddings are for text; sparse are for images",
+                    "There is no difference — they're the same thing"
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "Correct! Dense embeddings capture semantic meaning (so 'customer complaints' matches 'client grievances'), while sparse embeddings focus on keyword matching. Most modern AI systems use dense embeddings for better understanding.",
+                    incorrect: "Dense embeddings capture semantic meaning — they understand that 'returns' and 'refunds' are related concepts. Sparse embeddings match keywords more literally. Modern AI search typically uses dense embeddings."
+                }
+            }
+        ];
+
+        // Quiz state
+        let selectedQuestions = [];
+        let answered = 0;
+        let correct = 0;
+
+        // Initialize quiz
+        function initQuiz() {
+            // Get all unique topics and randomly select QUESTIONS_PER_QUIZ of them
+            const allTopics = shuffleArray([...new Set(questionBank.map(q => q.topic))]);
+            const selectedTopics = allTopics.slice(0, QUESTIONS_PER_QUIZ);
+            selectedQuestions = [];
+
+            selectedTopics.forEach(topic => {
+                const topicQuestions = questionBank.filter(q => q.topic === topic);
+                const randomQ = topicQuestions[Math.floor(Math.random() * topicQuestions.length)];
+                selectedQuestions.push({...randomQ});
+            });
+
+            // Shuffle the selected questions
+            selectedQuestions = shuffleArray(selectedQuestions);
+
+            // Generate HTML for questions
+            const container = document.getElementById('questions-container');
+            container.innerHTML = selectedQuestions.map((q, index) => generateQuestionHTML(q, index + 1)).join('');
+
+            // Generate progress dots
+            const dotsContainer = document.getElementById('progress-dots');
+            dotsContainer.innerHTML = selectedQuestions.map((_, i) =>
+                `<span class="dot ${i === 0 ? 'current' : ''}"></span>`
+            ).join('');
+
+            // Add event listeners
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function generateQuestionHTML(q, num) {
+            // Shuffle options while tracking correct answer
+            const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, wasIndex: i }));
+            const shuffledOptions = shuffleArray(optionsWithIndex);
+            const newCorrectIndex = shuffledOptions.findIndex(o => o.wasIndex === q.correct);
+
+            // Store the new correct index
+            selectedQuestions[num - 1].correctShuffled = newCorrectIndex;
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const optionsHTML = shuffledOptions.map((opt, i) => `
+                <label class="option">
+                    <input type="radio" name="q${num}" value="${i}">
+                    <span class="option-marker">${letters[i]}</span>
+                    <span class="option-text">${opt.text}</span>
+                </label>
+            `).join('');
+
+            return `
+                <div class="question-card" data-question="${num}" data-correct="${newCorrectIndex}">
+                    <div class="question-number">Question ${num}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">${optionsHTML}</div>
+                    <div class="feedback">
+                        <div class="feedback-header"></div>
+                        <div class="feedback-text"></div>
+                    </div>
+                    <button class="submit-btn" disabled onclick="checkAnswer(${num})">Check Answer</button>
+                </div>
+            `;
+        }
+
+        function handleOptionClick(e) {
+            const option = e.currentTarget;
+            const questionCard = option.closest('.question-card');
+
+            if (questionCard.classList.contains('answered-correct') ||
+                questionCard.classList.contains('answered-wrong')) {
+                return;
+            }
+
+            questionCard.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            option.querySelector('input').checked = true;
+            questionCard.querySelector('.submit-btn').disabled = false;
+        }
+
+        function checkAnswer(questionNum) {
+            const card = document.querySelector(`[data-question="${questionNum}"]`);
+            const correctAnswer = parseInt(card.dataset.correct);
+            const selectedOption = card.querySelector('input:checked');
+            const questionData = selectedQuestions[questionNum - 1];
+
+            if (!selectedOption) return;
+
+            const selected = parseInt(selectedOption.value);
+            const isCorrect = selected === correctAnswer;
+
+            // Disable further interaction
+            card.querySelectorAll('.option').forEach((o, i) => {
+                o.classList.add('disabled');
+                if (parseInt(o.querySelector('input').value) === correctAnswer) {
+                    o.classList.add('correct');
+                }
+                if (parseInt(o.querySelector('input').value) === selected && !isCorrect) {
+                    o.classList.add('incorrect');
+                }
+            });
+            card.querySelector('.submit-btn').disabled = true;
+            card.querySelector('.submit-btn').textContent = isCorrect ? '\u2713 Correct' : '\u2717 Incorrect';
+
+            // Show feedback
+            const feedbackDiv = card.querySelector('.feedback');
+            feedbackDiv.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+            feedbackDiv.querySelector('.feedback-header').textContent = isCorrect ? '\u2713 Correct!' : '\u2717 Not quite right';
+            feedbackDiv.querySelector('.feedback-text').textContent = questionData.feedback[isCorrect ? 'correct' : 'incorrect'];
+
+            // Update card styling
+            card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+            // Update progress
+            answered++;
+            if (isCorrect) correct++;
+            updateProgress();
+
+            // Check if quiz complete
+            if (answered === selectedQuestions.length) {
+                setTimeout(showResults, 1000);
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('progress-label').textContent =
+                `Question ${Math.min(answered + 1, selectedQuestions.length)} of ${selectedQuestions.length}`;
+
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                dot.classList.remove('current', 'correct', 'incorrect');
+                const card = document.querySelector(`[data-question="${i + 1}"]`);
+                if (card.classList.contains('answered-correct')) {
+                    dot.classList.add('correct');
+                } else if (card.classList.contains('answered-wrong')) {
+                    dot.classList.add('incorrect');
+                } else if (i === answered) {
+                    dot.classList.add('current');
+                }
+            });
+        }
+
+        function showResults() {
+            document.getElementById('questions-container').style.display = 'none';
+            document.querySelector('.quiz-progress').style.display = 'none';
+
+            const results = document.getElementById('results');
+            results.classList.add('show');
+            document.getElementById('final-score').textContent = `${correct}/${selectedQuestions.length}`;
+
+            let message = '';
+            const percentage = (correct / selectedQuestions.length) * 100;
+            if (percentage === 100) {
+                message = "Perfect Score! You've mastered context engineering concepts.";
+            } else if (percentage >= 80) {
+                message = "Excellent! You passed with a strong understanding of context engineering.";
+            } else if (percentage >= 70) {
+                message = "Good work! You passed. Review any missed questions to solidify your understanding.";
+            } else {
+                message = "Keep studying! Review the lecture materials and try again. You need 70%+ to pass.";
+            }
+            document.getElementById('results-message').textContent = message;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+
+</body>
+</html>

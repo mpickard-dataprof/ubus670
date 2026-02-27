@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UBUS 670: Day 1 - What is Generative AI?</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Reveal.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- NIU Theme -->
+    <link rel="stylesheet" href="../../_shared/reveal-theme-niu.css">
+
+    <style>
+        /* ============================================
+           PERSISTENT NAVIGATION & BREADCRUMB
+           ============================================ */
+        .global-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.98);
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-links a {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-links a.primary {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-links a.primary:hover { background: #a00d24; }
+        .nav-links a.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-links a.secondary:hover { background: #e0e0e0; }
+
+        /* Adjust slides to account for fixed nav */
+        .reveal .slides { margin-top: 30px; }
+
+        /* Shrink background images for breathing room.
+           border-box makes padding shrink the content area inward.
+           contain then calculates within the smaller content-box.
+           3% vertical clears nav bar (~45px on 1920w) + bottom margin.
+           Scales proportionally on any screen size.
+           Background-color is unaffected by background-origin. */
+        .reveal .slide-background-content {
+            box-sizing: border-box;
+            padding: 3% 2%;
+            background-origin: content-box;
+        }
+
+        /* ============================================
+           INTERACTIVE CHECKPOINT QUIZ (light style)
+           ============================================ */
+        .quiz-container {
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: left;
+            color: #333;
+        }
+        .quiz-container h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #1D428A;
+        }
+        .quiz-container .quiz-question {
+            font-size: 1.05em;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .quiz-option {
+            padding: 18px 22px;
+            background: #ffffff;
+            border: 2px solid #d0d5dd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            color: #333;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .quiz-option:hover {
+            border-color: #1D428A;
+            background: #f0f4fa;
+        }
+        .quiz-option.correct {
+            border-color: #43B02A;
+            background: rgba(67, 176, 42, 0.12);
+            color: #2d7a1e;
+        }
+        .quiz-option.incorrect {
+            border-color: #C8102E;
+            background: rgba(200, 16, 46, 0.12);
+            color: #a00d24;
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct-fb {
+            background: rgba(67, 176, 42, 0.1);
+            color: #2d7a1e;
+            border: 1px solid rgba(67, 176, 42, 0.3);
+        }
+        .quiz-feedback.incorrect-fb {
+            background: rgba(200, 16, 46, 0.1);
+            color: #a00d24;
+            border: 1px solid rgba(200, 16, 46, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Persistent Navigation -->
+    <div class="global-nav">
+        <div class="breadcrumb">
+            <a href="index.html">Day 1</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Lecture</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="secondary">Dashboard</a>
+            <a href="lab.html" class="secondary">Lab</a>
+            <a href="quiz.html" class="secondary">Quiz</a>
+            <a href="day1-lecture.pdf" class="primary" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title — What is Generative AI? -->
+            <section data-background-image="images/slide-01.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Welcome to Day 1. Today we explore what Generative AI actually is, how it works under the hood, and why it matters for business.</aside>
+            </section>
+
+            <!-- Slide 2: Learning Objectives -->
+            <section data-background-image="images/slide-02.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Four objectives: Explain LLMs conceptually, Define tokens/context/temperature, Identify hallucination risks, Navigate Google Gemini.</aside>
+            </section>
+
+            <!-- Slide 3: Your Mission — Beacon Retail Group -->
+            <section data-background-image="images/slide-03.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Beacon Retail Group: regional chain founded 1987, 25 stores, 1200 employees, $312M revenue. Competing with Amazon, Walmart, Target. Students are the AI Strategy Task Force advising CEO Pat Holloway.</aside>
+            </section>
+
+            <!-- Slide 4: Three Strategic Challenges -->
+            <section data-background-image="images/slide-04.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">HR: 4200 apps/year, 6 weeks to screen (Volume). Marketing: 850 emails/week, 60% routine (Repetition). Finance: 1200 reports/month, 4% errors (Accuracy). Can AI help? Let's find out.</aside>
+            </section>
+
+            <!-- Slide 5: The Evolution of Software -->
+            <section data-background-image="images/slide-05.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Three eras: Traditional software follows rules, ML finds patterns in data, GenAI creates novel content from prompts. The key shift is from recognition to creation.</aside>
+            </section>
+
+            <!-- Slide 6: The Key Mental Model — A Synthesis Engine -->
+            <section data-background-image="images/slide-06.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Not a database retrieval — a prediction. AI synthesizes new content from learned patterns. Think of it as an extremely well-read assistant writing new content based on billions of documents.</aside>
+            </section>
+
+            <!-- Slide 7: What is a Large Language Model? -->
+            <section data-background-image="images/slide-07.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">LLM definition: deep learning model trained on massive text to generate human-like language. Scale: 300B+ training words, 1T+ parameters. A human reads ~1B words in a lifetime.</aside>
+            </section>
+
+            <!-- Slide 8: The Currency of AI — Tokens -->
+            <section data-background-image="images/slide-08.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">1 token ≈ 0.75 words (4 characters). Beacon email case: 850 emails/week × 470 tokens = 1.6M tokens/month. Gemini Pro: ~$2/month vs GPT-4: ~$47/month. Efficiency saves money.</aside>
+            </section>
+
+            <!-- Slide 9: How Words Become Numbers (Embeddings) -->
+            <section data-background-image="images/slide-09.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Tokenizer breaks text into tokens, Embedder converts each token into a vector of numbers. "Unicorn" becomes [0.9, 0.1, 0.5...]. This math represents meaning.</aside>
+            </section>
+
+            <!-- Slide 10: The Galaxy of Meaning -->
+            <section data-background-image="images/slide-10.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Words cluster by meaning in vector space: Food words together, royalty words together, service sentiment words together. For Beacon: "This service is trash" is mathematically close to "I want a refund" — enabling semantic search.</aside>
+            </section>
+
+            <!-- Slide 11: Attention — Understanding Context -->
+            <section data-background-image="images/slide-11.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Same word "bank" means different things: "bank was crowded...ATM" = financial institution. "bank was muddy...boat" = river edge. Attention mechanism connects all words simultaneously to resolve ambiguity.</aside>
+            </section>
+
+            <!-- Slide 12: Autocomplete on Steroids -->
+            <section data-background-image="images/slide-12.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">LLMs predict the next token like a slot machine: "revenue..." → increased (34%), decreased (28%), grew (15%), fell (12%). Temperature dial: Low (0.1) = precise/factual, High (0.9) = creative/random. For Beacon expense reports: use low temperature.</aside>
+            </section>
+
+            <!-- Slide 13: The Context Window — Short-Term Memory -->
+            <section data-background-image="images/slide-13.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Context window includes: your prompt, uploaded PDFs, and chat history. NO memory beyond current session. GPT-4 Turbo: 128K tokens (~1 novel). Gemini 1.5 Pro: 2M tokens (~20 novels). Larger context = higher cost.</aside>
+            </section>
+
+            <!-- INTERACTIVE: Checkpoint Quiz — Token Calculation -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz1">
+                    <h3>Checkpoint: The Cost of Automation</h3>
+                    <p class="quiz-question">You are estimating the cost for Beacon's new chatbot. If an average customer interaction is <strong>1,000 words</strong>, approximately how many tokens is that?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">A) 750 tokens</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">B) 1,000 tokens</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', true)">C) 1,333 tokens</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">D) 500 tokens</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback-correct">
+                        <strong>Correct!</strong> 1 token &asymp; 0.75 words, so 1,000 words &divide; 0.75 = ~1,333 tokens. Understanding this ratio is essential for cost estimation.
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback-incorrect">
+                        <strong>Not quite.</strong> Remember: 1 token &asymp; 0.75 words. So 1,000 &divide; 0.75 = ~1,333 tokens. Try again!
+                    </div>
+                </div>
+            </section>
+
+            <!-- INTERACTIVE: Checkpoint Quiz — Context Window -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz2">
+                    <h3>Checkpoint: Managing Memory</h3>
+                    <p class="quiz-question">You uploaded Beacon's Q3 financial PDF to Gemini yesterday. Today, you start a <em>new chat</em> and ask, &ldquo;What was revenue in that PDF?&rdquo; Gemini says it doesn't know. Why?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">A) The PDF had a formatting error</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">B) Gemini deleted the data for privacy</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', true)">C) New chats start with an empty Context Window</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">D) You need to upgrade to Gemini Pro</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz2-feedback-correct">
+                        <strong>Correct!</strong> Each new chat starts with a blank context window. The AI has no memory of previous sessions. Always re-upload documents in a new chat.
+                    </div>
+                    <div class="quiz-feedback" id="quiz2-feedback-incorrect">
+                        <strong>Not quite.</strong> The context window resets with every new chat. Gemini has no memory of previous sessions. Try again!
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 14: Fact or Fiction? -->
+            <section data-background-image="images/slide-14.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Engagement check: Fiction (Gemini remembers PDFs from last session — context resets), Fact (lowering temperature reduces hallucination risk), Fiction (200 words ≠ 200 tokens — 1 token ≈ 0.75 words).</aside>
+            </section>
+
+            <!-- Slide 15: The Hallucination Problem -->
+            <section data-background-image="images/slide-15.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Anatomy of a Lie: AI doesn't know Beacon's CEO, but CEO names "usually sound like" certain patterns → generates "James Robertson" as a statistically plausible but fabricated answer. Walk through this slowly.</aside>
+            </section>
+
+            <!-- Slide 16: When Hallucinations Cost Money -->
+            <section data-background-image="images/slide-16.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Air Canada: chatbot invented a refund policy, tribunal ruled airline had to pay. NYC Lawyers: used ChatGPT for a brief, AI invented 6 fake cases, $5K fine + sanctions. Confidence does not equal accuracy.</aside>
+            </section>
+
+            <!-- Slide 17: Mitigation Strategies -->
+            <section data-background-image="images/slide-17.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Four strategies: 1) Ground It — upload source docs, 2) Lower Temperature — set to 0.1 for factual tasks, 3) Ask for Citations — "Quote the section where you found this", 4) The Golden Rule — human verification, never copy-paste without reading.</aside>
+            </section>
+
+            <!-- Slide 18: What AI Cannot Do (Yet) -->
+            <section data-background-image="images/slide-18.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Four limitations: No true reasoning (simulates logic, fails at complex planning), No real-time knowledge (training cutoff), No secret keeping (don't upload PII to public models), No accountability (you are responsible for output).</aside>
+            </section>
+
+            <!-- Slide 19: Meet Your Co-Pilot — Google Gemini -->
+            <section data-background-image="images/slide-19.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Why Gemini: Multimodal native (text, images, code), Ecosystem (integrated with Google Workspace), Massive context (2M tokens). Hub-and-spoke model.</aside>
+            </section>
+
+            <!-- Slide 20: The Interface Tour -->
+            <section data-background-image="images/slide-20.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Four key areas: 1) The Prompt Bar, 2) Upload (PDFs/Excel), 3) Export to Google Docs, 4) Model Selector (Flash vs Pro). Master these tools before the lab.</aside>
+            </section>
+
+            <!-- Slide 21: Up Next — Hands-On Lab -->
+            <section data-background-image="images/slide-21.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Key takeaways: LLMs are prediction machines not truth machines, context windows are limited, hallucinations are a feature not a bug — verify everything. Lab: set up Gemini, do Beacon tasks, trigger a hallucination.</aside>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/notes/notes.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            progress: true,
+            controls: true,
+            controlsTutorial: false,
+            transition: 'slide',
+            plugins: [ RevealNotes ]
+        });
+
+        // Interactive checkpoint quiz handler
+        function checkQuiz(element, quizId, isCorrect) {
+            var container = document.getElementById(quizId);
+            var options = container.querySelectorAll('.quiz-option');
+            var feedbackCorrect = document.getElementById(quizId + '-feedback-correct');
+            var feedbackIncorrect = document.getElementById(quizId + '-feedback-incorrect');
+
+            // Reset all options
+            options.forEach(function(opt) {
+                opt.classList.remove('correct', 'incorrect');
+            });
+
+            // Hide both feedbacks
+            feedbackCorrect.style.display = 'none';
+            feedbackCorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+            feedbackIncorrect.style.display = 'none';
+            feedbackIncorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedbackCorrect.style.display = 'block';
+                feedbackCorrect.classList.add('correct-fb', 'show');
+            } else {
+                element.classList.add('incorrect');
+                feedbackIncorrect.style.display = 'block';
+                feedbackIncorrect.classList.add('incorrect-fb', 'show');
+            }
+        }
+    </script>
+</body>
+</html>
