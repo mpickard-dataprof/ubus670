@@ -11,7 +11,7 @@ Goal: Establish the format and complete rubrics for the first week.
     - [x] Day 3: Context Engineering
 - [x] Task: Conductor - User Manual Verification 'Week 1 Rubrics' (Protocol in workflow.md)
 
-## Phase 2: Week 2 Rubrics
+## Phase 2: Week 2 Rubrics [checkpoint: 04d471f]
 
 Goal: Complete rubrics for the multimodal and control modules.
 
@@ -19,13 +19,13 @@ Goal: Complete rubrics for the multimodal and control modules.
     - [x] Day 4: Multimodal AI
     - [x] Day 5: The AI Cockpit
     - [x] Day 6: Red Teaming & Safety
-- [~] Task: Conductor - User Manual Verification 'Week 2 Rubrics' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Week 2 Rubrics' (Protocol in workflow.md)
 
 ## Phase 3: Week 3 & Final Integration
 
 Goal: Complete the final lab rubric and link artifacts.
 
-- [ ] Task: Implement Rubric for Week 3.
-    - [ ] Day 7: Agentic Workflows
-- [ ] Task: Audit all rubrics for cross-day consistency.
-- [ ] Task: Conductor - User Manual Verification 'Final Integration' (Protocol in workflow.md)
+- [x] Task: Implement Rubric for Week 3.
+    - [x] Day 7: Agentic Workflows
+- [x] Task: Audit all rubrics for cross-day consistency.
+- [x] Task: Conductor - User Manual Verification 'Final Integration' (Protocol in workflow.md)
