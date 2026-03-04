@@ -927,51 +927,46 @@
         panel.className = 'submission-panel show';
         panel.id = 'submission-panel';
 
+        var errorClass = hasError ? ' error' : '';
+        var icon = hasError ? '&#9888;' : '&#9989;';
+        var title, details, errorNote, verificationHtml;
+
         if (info.type === 'quiz') {
-            var errorNote = hasError
-                ? '<p class="submission-detail" style="color:#C8102E;font-size:0.85em;">' + info.errorMessage + '</p>'
+            title = hasError ? 'Submission Issue' : 'Quiz Submitted!';
+            errorNote = hasError
+                ? '<p class="submission-detail" style="color:#C8102E;">' + info.errorMessage + '</p>'
                 : '';
-            var verificationHtml = info.verification && info.verification !== 'OFFLINE' && info.verification !== 'ERROR'
+            verificationHtml = info.verification && info.verification !== 'OFFLINE' && info.verification !== 'ERROR'
                 ? '<div class="verification-code">Verification: ' + info.verification + '</div>'
                 : '';
-
-            panel.innerHTML =
-                '<h3>&#9989; Quiz Complete</h3>' +
+            details =
                 '<p class="submission-detail">Score: <strong>' + info.score + '</strong> (' + info.percentage + '%)</p>' +
-                (info.attempt !== 'N/A' ? '<p class="submission-detail">Attempt ' + info.attempt + ' of ' + info.maxAttempts + '</p>' : '') +
-                errorNote +
-                verificationHtml +
-                '<br>' +
-                '<button class="download-receipt-btn" id="download-receipt-btn">&#128196; Download PDF Receipt</button>' +
-                '<p class="submission-detail" style="margin-top:12px;font-size:0.85em;color:#888;">Upload this PDF to Blackboard to complete your submission.</p>';
+                (info.attempt && info.attempt !== 'N/A' ? '<p class="submission-detail">Attempt ' + info.attempt + ' of ' + info.maxAttempts + '</p>' : '');
         } else {
-            var errorNote2 = hasError
-                ? '<p class="submission-detail" style="color:#C8102E;font-size:0.85em;">' + info.errorMessage + '</p>'
+            title = hasError ? 'Submission Issue' : 'Lab Submitted!';
+            errorNote = hasError
+                ? '<p class="submission-detail" style="color:#C8102E;">' + info.errorMessage + '</p>'
                 : '';
-            var verificationHtml2 = info.verification && info.verification !== 'OFFLINE' && info.verification !== 'ERROR'
+            verificationHtml = info.verification && info.verification !== 'OFFLINE' && info.verification !== 'ERROR'
                 ? '<div class="verification-code">Verification: ' + info.verification + '</div>'
                 : '';
-
-            panel.innerHTML =
-                '<h3>&#9989; Lab Submitted</h3>' +
-                '<p class="submission-detail">Steps completed: <strong>' + info.stepsCompleted + '</strong></p>' +
-                errorNote2 +
-                verificationHtml2 +
-                '<br>' +
-                '<button class="download-receipt-btn" id="download-receipt-btn">&#128196; Download PDF Receipt</button>' +
-                '<p class="submission-detail" style="margin-top:12px;font-size:0.85em;color:#888;">Upload this PDF to Blackboard to complete your submission.</p>';
+            details =
+                '<p class="submission-detail">Steps completed: <strong>' + info.stepsCompleted + '</strong></p>';
         }
 
-        // Insert after results div (quiz) or at end of container (lab)
-        var results = document.getElementById('results');
-        var container = document.querySelector('.quiz-container') ||
-            document.querySelector('.lab-container');
+        panel.innerHTML =
+            '<div class="submission-panel-content' + errorClass + '">' +
+            '  <div class="submission-icon">' + icon + '</div>' +
+            '  <h3>' + title + '</h3>' +
+            details +
+            errorNote +
+            verificationHtml +
+            '  <hr class="submission-divider">' +
+            '  <button class="download-receipt-btn" id="download-receipt-btn">&#128196; Download PDF Receipt</button>' +
+            '  <p class="submission-detail" style="margin-top:16px;font-size:0.85em;color:#888;">Upload this PDF to Blackboard to complete your submission.</p>' +
+            '</div>';
 
-        if (results && results.parentNode) {
-            results.parentNode.insertBefore(panel, results.nextSibling);
-        } else if (container) {
-            container.appendChild(panel);
-        }
+        document.body.appendChild(panel);
 
         // Attach PDF download handler
         setTimeout(function () {
@@ -1009,15 +1004,7 @@
         spinner.id = 'submitting-spinner';
         spinner.innerHTML = '<div class="spinner"></div><span>Submitting...</span>';
 
-        var results = document.getElementById('results');
-        var container = document.querySelector('.quiz-container') ||
-            document.querySelector('.lab-container');
-
-        if (results && results.parentNode) {
-            results.parentNode.insertBefore(spinner, results.nextSibling);
-        } else if (container) {
-            container.appendChild(spinner);
-        }
+        document.body.appendChild(spinner);
     }
 
     function hideSubmittingSpinner() {
