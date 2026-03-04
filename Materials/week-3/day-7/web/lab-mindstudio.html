@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 
     <!-- Base Styles -->
-    <link rel="stylesheet" href="../../_shared/styles.css">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
 
     <style>
         /* Lab-specific styles */
@@ -494,8 +494,26 @@
             }
         }
     </style>
+
+    <!-- Submission Tracking -->
+    <link rel="stylesheet" href="../../../_shared/submission-tracker.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script>
+    window.SUBMISSION_CONFIG = {
+        type: 'lab', day: 7, title: 'Day 7 Lab (MindStudio): Two-Agent Email Triage Quality Checker',
+        maxAttempts: 1, labVariant: 'lab-mindstudio',
+        googleClientId: '237879300598-8s8phtegebb3hslfnrhgsucvi7m8r5ev.apps.googleusercontent.com',
+        appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwtN4re0Y8Kx7GNRp3Z_bQIr2xSum1sSyt6KPFkCr0FXDbaJ9pkxsZZ8wQ0qrOj4MSSTQ/exec',
+        allowedDomains: null
+    };
+    </script>
+    <script src="../../../_shared/submission-tracker.js"></script>
 </head>
 <body>
+
+    <!-- Auth Gate -->
+    <div id="auth-gate"></div>
 
     <!-- Navigation -->
     <nav class="global-nav">
@@ -1183,7 +1201,7 @@ TRIAGE AGENT CLASSIFICATION:
                     <label for="step10-2">Click <strong>"Download as PDF"</strong> below. A new window will open with your responses, and a print dialog will appear automatically.</label>
                 </div>
 
-                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="downloadPDF()">Download as PDF</button>
+                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="submitLab()">Submit Lab</button>
 
                 <div class="tip-box" style="margin-bottom: 15px;">
                     <strong>Saving as PDF:</strong> In the print dialog, select <strong>"Save as PDF"</strong> or <strong>"Microsoft Print to PDF"</strong> as your printer, then click <strong>Save</strong>. On Mac, look for the <strong>"PDF"</strong> dropdown in the bottom-left corner.
@@ -1295,83 +1313,27 @@ TRIAGE AGENT CLASSIFICATION:
 
         // Initialize progress
         updateProgress();
+        if (window.SubmissionTracker) {
+            SubmissionTracker.init();
+        }
 
         // =============================================
-        // Download lab report as PDF
-        // =============================================
-        function downloadPDF() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            const totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
+        // Submit lab to tracking backend
+        function submitLab() {
+            const reflections = [...document.querySelectorAll('.reflection-area textarea')].map(ta => ({
+                prompt: ta.previousElementSibling ? ta.previousElementSibling.textContent.trim() : '',
+                response: ta.value.trim() || '[No response]'
+            }));
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked');
 
-            // Gather all reflection textareas
-            const textareas = document.querySelectorAll('.reflection-area textarea');
-            const reflectionLabels = [
-                'Task 4: Quality Checker Intentional Error Test',
-                'Task 6a: Pipeline Analysis — Email #4 (Adversarial Trap)',
-                'Task 6b: Pipeline Analysis — Email #5 (Ambiguous)',
-                'Task 7: Architecture Description',
-                'Task 8: CTO Pitch — Why 2 Agents > 1',
-                'Task 9: Day 8 Prep Notes'
-            ];
-
-            // Gather result tables
-            let tableResultsHTML = '';
-            const resultTables = document.querySelectorAll('.result-table');
-            const tableLabels = [
-                'Task 2: Triage Agent Test Results (3 Emails)',
-                'Task 6: End-to-End Pipeline Results (5 Emails)'
-            ];
-
-            resultTables.forEach((table, tableIdx) => {
-                const headers = [];
-                table.querySelectorAll('th').forEach(th => headers.push(th.textContent.trim()));
-
-                let rows = '';
-                table.querySelectorAll('tbody tr').forEach(row => {
-                    const cells = [];
-                    row.querySelectorAll('td').forEach(td => {
-                        const input = td.querySelector('input[type="text"]');
-                        const select = td.querySelector('select');
-                        if (input) {
-                            cells.push(input.value || '---');
-                        } else if (select) {
-                            cells.push(select.value || '---');
-                        } else {
-                            cells.push(td.textContent.trim());
-                        }
-                    });
-                    rows += '<tr>' + cells.map(c => '<td>' + c + '</td>').join('') + '</tr>';
+            if (window.SubmissionTracker) {
+                SubmissionTracker.submitLab({
+                    stepsCompleted: checked.length,
+                    stepsTotal: checkboxes.length,
+                    reflections: reflections
                 });
-
-                const label = tableLabels[tableIdx] || 'Results Table ' + (tableIdx + 1);
-                tableResultsHTML += '<div style="margin-bottom:20px;page-break-inside:avoid;"><h3 style="font-family:Montserrat,sans-serif;font-size:13px;color:#1D428A;margin:0 0 8px;border-bottom:1px solid #e0e0e0;padding-bottom:6px;">' + label + '</h3><table>' +
-                    '<thead><tr>' + headers.map(h => '<th>' + h + '</th>').join('') + '</tr></thead>' +
-                    '<tbody>' + rows + '</tbody></table></div>';
-            });
-
-            // Build reflection sections
-            let sections = '';
-            textareas.forEach((textarea, index) => {
-                const label = reflectionLabels[index] || 'Response ' + (index + 1);
-                const response = textarea.value.trim() || '[No response provided]';
-                sections += '<div style="margin-bottom:24px;page-break-inside:avoid;"><h3 style="font-family:Montserrat,sans-serif;font-size:13px;color:#1D428A;margin:0 0 8px;border-bottom:1px solid #e0e0e0;padding-bottom:6px;">' + label + '</h3><p style="font-family:Georgia,serif;font-size:12px;line-height:1.6;color:#333;white-space:pre-wrap;margin:0;">' + response.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</p></div>';
-            });
-
-            const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>UBUS 670 - Day 7 Lab Report (MindStudio)</title><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"><style>@media print{body{margin:0}@page{margin:0.75in}}body{font-family:Georgia,serif;max-width:700px;margin:0 auto;padding:40px;color:#333}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:11px}th,td{padding:5px 8px;border:1px solid #ddd;text-align:left}th{background:#f0f0f0;font-family:Montserrat,sans-serif;font-weight:600}</style></head><body>' +
-                '<div style="border-bottom:3px solid #C8102E;padding-bottom:15px;margin-bottom:25px;">' +
-                '<h1 style="font-family:Montserrat,sans-serif;font-size:20px;color:#C8102E;margin:0;">UBUS 670: AI for Business Leaders</h1>' +
-                '<h2 style="font-family:Montserrat,sans-serif;font-size:16px;color:#333;margin:8px 0 0;">Day 7 Lab: Two-Agent Email Triage Quality Checker (MindStudio)</h2>' +
-                '<p style="font-size:12px;color:#666;margin:10px 0 0;">Student Name: _____________________________ &nbsp;&nbsp; Date: ' + new Date().toLocaleDateString() + ' &nbsp;&nbsp; Progress: ' + checkboxes.length + '/' + totalCheckboxes + ' steps</p></div>' +
-                '<h2 style="font-family:Montserrat,sans-serif;font-size:15px;color:#C8102E;margin:25px 0 15px;border-bottom:2px solid #C8102E;padding-bottom:8px;">Test Results</h2>' +
-                tableResultsHTML +
-                '<h2 style="font-family:Montserrat,sans-serif;font-size:15px;color:#C8102E;margin:25px 0 15px;border-bottom:2px solid #C8102E;padding-bottom:8px;">Reflections &amp; Deliverables</h2>' +
-                sections +
-                '</body></html>';
-
-            const win = window.open('', '_blank');
-            win.document.write(html);
-            win.document.close();
-            setTimeout(() => win.print(), 500);
+            }
         }
     </script>
 

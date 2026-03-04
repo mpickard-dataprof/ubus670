@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 
     <!-- Base Styles -->
-    <link rel="stylesheet" href="../../_shared/styles.css">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
 
     <style>
         /* Lab-specific styles */
@@ -673,8 +673,26 @@
             }
         }
     </style>
+
+    <!-- Submission Tracking -->
+    <link rel="stylesheet" href="../../../_shared/submission-tracker.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script>
+    window.SUBMISSION_CONFIG = {
+        type: 'lab', day: 5, title: 'Day 5 Lab: Beacon\'s Customer Email Triage System',
+        maxAttempts: 1, labVariant: 'lab',
+        googleClientId: '237879300598-8s8phtegebb3hslfnrhgsucvi7m8r5ev.apps.googleusercontent.com',
+        appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwtN4re0Y8Kx7GNRp3Z_bQIr2xSum1sSyt6KPFkCr0FXDbaJ9pkxsZZ8wQ0qrOj4MSSTQ/exec',
+        allowedDomains: null
+    };
+    </script>
+    <script src="../../../_shared/submission-tracker.js"></script>
 </head>
 <body>
+
+    <!-- Auth Gate -->
+    <div id="auth-gate"></div>
 
     <!-- Navigation -->
     <nav class="global-nav">
@@ -1687,7 +1705,7 @@ Main weakness I found: ..."></textarea>
                     <label for="step-sub-2">Click <strong>"Download as PDF"</strong> below. A new window will open with your responses, and a print dialog will appear automatically.</label>
                 </div>
 
-                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="downloadPDF()">Download as PDF</button>
+                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="submitLab()">Submit Lab</button>
 
                 <div class="tip-box" style="margin-bottom: 15px;">
                     <strong>Saving as PDF:</strong> In the print dialog, select <strong>"Save as PDF"</strong> or <strong>"Microsoft Print to PDF"</strong> as your printer, then click <strong>Save</strong>. On Mac, look for the <strong>"PDF"</strong> dropdown in the bottom-left corner.
@@ -1795,132 +1813,28 @@ Main weakness I found: ..."></textarea>
 
         // Initialize progress
         updateProgress();
+        if (window.SubmissionTracker) {
+            SubmissionTracker.init();
+        }
 
         // =============================================
-        // Download lab report as PDF
+        // Submit lab to tracking backend
         // =============================================
-        function downloadPDF() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            const totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
+        function submitLab() {
+            const reflections = [...document.querySelectorAll('.reflection-area textarea')].map(ta => ({
+                prompt: ta.previousElementSibling ? ta.previousElementSibling.textContent.trim() : '',
+                response: ta.value.trim() || '[No response]'
+            }));
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked');
 
-            // Gather all reflection textareas
-            const textareas = document.querySelectorAll('.reflection-area textarea');
-            const reflectionLabels = [
-                'Task 3: System Prompt Iteration Log',
-                'Task 5: Response Drafting Temperature Comparison',
-                'Task 9: CFO Pitch (3 sentences)',
-                'Task 10: Final Configuration Test Results',
-                'Task 11: Edge Case Results',
-                'Reflection 1: Parameter Effects',
-                'Reflection 2: System Prompt Evolution',
-                'Reflection 3: Additional Edge Cases for Production'
-            ];
-
-            // Gather result table data (Task 2)
-            let task2Rows = '';
-            const resultTable = document.querySelector('.result-table');
-            if (resultTable) {
-                const rows = resultTable.querySelectorAll('tbody tr');
-                rows.forEach(row => {
-                    const cells = row.querySelectorAll('td');
-                    const emailName = cells[0].textContent.trim();
-                    const expected = cells[1].textContent.trim();
-                    const aiCat = cells[2].querySelector('input') ? cells[2].querySelector('input').value : '';
-                    const expUrg = cells[3].textContent.trim();
-                    const aiUrg = cells[4].querySelector('input') ? cells[4].querySelector('input').value : '';
-                    const correct = cells[5].querySelector('select') ? cells[5].querySelector('select').value : '';
-                    task2Rows += '<tr><td>' + emailName + '</td><td>' + expected + '</td><td>' + (aiCat || '---') + '</td><td>' + expUrg + '</td><td>' + (aiUrg || '---') + '</td><td>' + (correct || '---') + '</td></tr>';
+            if (window.SubmissionTracker) {
+                SubmissionTracker.submitLab({
+                    stepsCompleted: checked.length,
+                    stepsTotal: checkboxes.length,
+                    reflections: reflections
                 });
             }
-
-            // Gather temperature table data (Task 4)
-            let task4Rows = '';
-            const tempTables = document.querySelectorAll('.result-table');
-            if (tempTables.length > 1) {
-                const rows = tempTables[1].querySelectorAll('tbody tr');
-                rows.forEach(row => {
-                    const inputs = row.querySelectorAll('input[type="text"]');
-                    const sel = row.querySelector('select');
-                    const email = inputs[0] ? inputs[0].value : '';
-                    const t01 = inputs[1] ? inputs[1].value : '';
-                    const t07 = inputs[2] ? inputs[2].value : '';
-                    const t15 = inputs[3] ? inputs[3].value : '';
-                    const consistent = sel ? sel.value : '';
-                    task4Rows += '<tr><td>' + (email || '---') + '</td><td>' + (t01 || '---') + '</td><td>' + (t07 || '---') + '</td><td>' + (t15 || '---') + '</td><td>' + (consistent || '---') + '</td></tr>';
-                });
-            }
-
-            // Gather config card data (Task 6)
-            const configInputs = document.querySelectorAll('.config-card input[type="text"]');
-            let configData = '';
-            const configLabelsArr = [
-                'System prompt tokens', 'Avg email input tokens', 'Avg classification output tokens', 'Avg response draft output tokens',
-                'Classification temperature', 'Response drafting temperature', 'Max tokens (classification)', 'Max tokens (response draft)', 'Reasoning',
-                'AI triage cost (Flash)', 'Monthly savings', 'Annual savings'
-            ];
-            configInputs.forEach((input, i) => {
-                const label = configLabelsArr[i] || 'Setting ' + (i + 1);
-                const val = input.value || '[not filled]';
-                configData += '<p style="margin:4px 0;font-size:12px;"><strong>' + label + ':</strong> ' + val + '</p>';
-            });
-
-            // Gather cost table data (Task 8)
-            let costRows = '';
-            const costTable = document.querySelector('.cost-table');
-            if (costTable) {
-                const rows = costTable.querySelectorAll('tbody tr');
-                const rowLabels = ['System prompt (input)', 'Email body (input)', 'Classification (output)', 'Response draft (output)', 'TOTAL'];
-                rows.forEach((row, i) => {
-                    const inputs = row.querySelectorAll('input[type="text"]');
-                    const vals = [];
-                    inputs.forEach(inp => vals.push(inp.value || '---'));
-                    const label = rowLabels[i] || '';
-                    if (i < 4) {
-                        costRows += '<tr><td>' + label + '</td><td>' + vals[0] + '</td><td>' + vals[1] + '</td><td>' + vals[2] + '</td><td>' + vals[3] + '</td></tr>';
-                    } else {
-                        costRows += '<tr style="font-weight:700;border-top:2px solid #1D428A;"><td>' + label + '</td><td></td><td></td><td>' + vals[0] + '</td><td>' + vals[1] + '</td></tr>';
-                    }
-                });
-            }
-
-            // Build reflection sections
-            let sections = '';
-            textareas.forEach((textarea, index) => {
-                const label = reflectionLabels[index] || 'Response ' + (index + 1);
-                const response = textarea.value.trim() || '[No response provided]';
-                sections += '<div style="margin-bottom:24px;page-break-inside:avoid;"><h3 style="font-family:Montserrat,sans-serif;font-size:13px;color:#1D428A;margin:0 0 8px;border-bottom:1px solid #e0e0e0;padding-bottom:6px;">' + label + '</h3><p style="font-family:Georgia,serif;font-size:12px;line-height:1.6;color:#333;white-space:pre-wrap;margin:0;">' + response.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</p></div>';
-            });
-
-            const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>UBUS 670 - Day 5 Lab Report</title><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"><style>@media print{body{margin:0}@page{margin:0.75in}}body{font-family:Georgia,serif;max-width:700px;margin:0 auto;padding:40px;color:#333}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:11px}th,td{padding:5px 8px;border:1px solid #ddd;text-align:left}th{background:#f0f0f0;font-family:Montserrat,sans-serif;font-weight:600}</style></head><body>' +
-                '<div style="border-bottom:3px solid #C8102E;padding-bottom:15px;margin-bottom:25px;">' +
-                '<h1 style="font-family:Montserrat,sans-serif;font-size:20px;color:#C8102E;margin:0;">UBUS 670: AI for Business Leaders</h1>' +
-                '<h2 style="font-family:Montserrat,sans-serif;font-size:16px;color:#333;margin:8px 0 0;">Day 5 Lab: Beacon\'s Customer Email Triage System</h2>' +
-                '<p style="font-size:12px;color:#666;margin:10px 0 0;">Student Name: _____________________________ &nbsp;&nbsp; Date: ' + new Date().toLocaleDateString() + ' &nbsp;&nbsp; Progress: ' + checkboxes.length + '/' + totalCheckboxes + ' steps</p></div>' +
-
-                '<h3 style="font-family:Montserrat,sans-serif;font-size:14px;color:#C8102E;margin:20px 0 8px;">Task 2: Classification Results</h3>' +
-                '<table><thead><tr><th>Email</th><th>Expected</th><th>AI Category</th><th>Exp. Urgency</th><th>AI Urgency</th><th>Correct?</th></tr></thead><tbody>' + task2Rows + '</tbody></table>' +
-
-                '<h3 style="font-family:Montserrat,sans-serif;font-size:14px;color:#C8102E;margin:20px 0 8px;">Task 4: Temperature Experiment</h3>' +
-                '<table><thead><tr><th>Email</th><th>Temp 0.1</th><th>Temp 0.7</th><th>Temp 1.5</th><th>Consistent?</th></tr></thead><tbody>' + task4Rows + '</tbody></table>' +
-
-                '<h3 style="font-family:Montserrat,sans-serif;font-size:14px;color:#C8102E;margin:20px 0 8px;">Configuration &amp; Token Data</h3>' +
-                '<div style="background:#f8f9fa;padding:12px 16px;border-radius:6px;margin:10px 0;">' + configData + '</div>' +
-
-                '<h3 style="font-family:Montserrat,sans-serif;font-size:14px;color:#C8102E;margin:20px 0 8px;">Task 8: Monthly Cost Projection</h3>' +
-                '<table><thead><tr><th>Component</th><th>Tokens/Email</th><th>&times; 6,000</th><th>Flash Cost</th><th>Pro Cost</th></tr></thead><tbody>' + costRows + '</tbody></table>' +
-
-                sections +
-
-                '<div style="border-top:2px solid #e0e0e0;padding-top:12px;margin-top:30px;text-align:center;"><p style="font-size:11px;color:#888;">Generated: ' + new Date().toLocaleString() + ' | UBUS 670 - Northern Illinois University</p></div></body></html>';
-
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(html);
-            printWindow.document.close();
-            printWindow.onload = function() {
-                printWindow.print();
-            };
-
-            document.getElementById('download-pdf-btn').textContent = 'PDF Generated - Print/Save';
         }
     </script>
 

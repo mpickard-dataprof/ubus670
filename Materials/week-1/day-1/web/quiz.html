@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 
     <!-- Base Styles -->
-    <link rel="stylesheet" href="../../_shared/styles.css">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
 
     <style>
         body {
@@ -324,8 +324,26 @@
         .dot.correct { background: #43B02A; }
         .dot.incorrect { background: #E35205; }
     </style>
+
+    <!-- Submission Tracking -->
+    <link rel="stylesheet" href="../../../_shared/submission-tracker.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script>
+    window.SUBMISSION_CONFIG = {
+        type: 'quiz', day: 1, title: 'Day 1: Knowledge Check',
+        maxAttempts: 3,
+        googleClientId: '237879300598-8s8phtegebb3hslfnrhgsucvi7m8r5ev.apps.googleusercontent.com',
+        appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwtN4re0Y8Kx7GNRp3Z_bQIr2xSum1sSyt6KPFkCr0FXDbaJ9pkxsZZ8wQ0qrOj4MSSTQ/exec',
+        allowedDomains: null
+    };
+    </script>
+    <script src="../../../_shared/submission-tracker.js"></script>
 </head>
 <body>
+
+    <!-- Auth Gate -->
+    <div id="auth-gate"></div>
 
     <!-- Navigation -->
     <nav class="global-nav">
@@ -878,10 +896,37 @@
                 message = "You might want to review today's lecture before moving on. Understanding these fundamentals will help you succeed in the labs ahead.";
             }
             document.getElementById('results-message').textContent = message;
+
+            // Submit to tracking backend
+            if (window.SubmissionTracker) {
+                const letters = ['A', 'B', 'C', 'D'];
+                SubmissionTracker.submitQuiz({
+                    score: correct,
+                    total: selectedQuestions.length,
+                    questions: selectedQuestions.map((q, i) => {
+                        const card = document.querySelector(`[data-question="${i + 1}"]`);
+                        const selectedInput = card.querySelector('input:checked');
+                        const selectedIdx = selectedInput ? parseInt(selectedInput.value) : -1;
+                        const correctIdx = q.correctShuffled;
+                        const options = card.querySelectorAll('.option-text');
+                        return {
+                            question: q.question,
+                            selected: options[selectedIdx] ? options[selectedIdx].textContent.trim() : 'N/A',
+                            correct: options[correctIdx] ? options[correctIdx].textContent.trim() : 'N/A',
+                            isCorrect: selectedIdx === correctIdx
+                        };
+                    })
+                });
+            }
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', initQuiz);
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuiz();
+            if (window.SubmissionTracker) {
+                SubmissionTracker.init();
+            }
+        });
     </script>
 
 </body>

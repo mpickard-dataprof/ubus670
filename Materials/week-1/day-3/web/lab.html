@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 
     <!-- Base Styles -->
-    <link rel="stylesheet" href="../../_shared/styles.css">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
 
     <style>
         /* Lab-specific styles */
@@ -401,8 +401,26 @@
             text-decoration: none;
         }
     </style>
+
+    <!-- Submission Tracking -->
+    <link rel="stylesheet" href="../../../_shared/submission-tracker.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script>
+    window.SUBMISSION_CONFIG = {
+        type: 'lab', day: 3, title: 'Day 3 Lab: Building Beacon\'s Knowledge Assistant',
+        maxAttempts: 1, labVariant: 'lab',
+        googleClientId: '237879300598-8s8phtegebb3hslfnrhgsucvi7m8r5ev.apps.googleusercontent.com',
+        appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwtN4re0Y8Kx7GNRp3Z_bQIr2xSum1sSyt6KPFkCr0FXDbaJ9pkxsZZ8wQ0qrOj4MSSTQ/exec',
+        allowedDomains: null
+    };
+    </script>
+    <script src="../../../_shared/submission-tracker.js"></script>
 </head>
 <body>
+
+    <!-- Auth Gate -->
+    <div id="auth-gate"></div>
 
     <!-- Navigation -->
     <nav class="global-nav">
@@ -1258,7 +1276,7 @@ Please analyze whether this should be added as a 4th pilot area in our AI strate
                     <label for="step13-2">Click <strong>"Download as PDF"</strong> below. A new window will open showing your responses, and a print dialog will appear automatically.</label>
                 </div>
 
-                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="downloadPDF()">Download as PDF</button>
+                <button id="download-pdf-btn" class="btn-primary" style="margin: 20px 0; font-size: 1rem; padding: 14px 30px;" onclick="submitLab()">Submit Lab</button>
 
                 <div class="tip-box" style="margin-bottom: 15px;">
                     <strong>Saving as PDF:</strong> In the print dialog, select <strong>"Save as PDF"</strong> or <strong>"Microsoft Print to PDF"</strong> as your printer, then click <strong>Save</strong>. On Mac, look for the <strong>"PDF"</strong> dropdown in the bottom-left corner.
@@ -1374,81 +1392,29 @@ Please analyze whether this should be added as a 4th pilot area in our AI strate
             });
         });
 
-        // Initialize progress
+        // Initialize progress and submission tracker
         updateProgress();
+        if (window.SubmissionTracker) {
+            SubmissionTracker.init();
+        }
 
         // Download lab report as PDF
-        function downloadPDF() {
-            const textareas = document.querySelectorAll('.reflection-area textarea');
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            const totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
+        // Submit lab to tracking backend
+        function submitLab() {
+            const reflections = [...document.querySelectorAll('.reflection-area textarea')].map(ta => ({
+                prompt: ta.previousElementSibling ? ta.previousElementSibling.textContent.trim() : '',
+                response: ta.value.trim() || '[No response]'
+            }));
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked');
 
-            const reflectionLabels = [
-                'Task 1: Document Organization Observations',
-                'Task 4: Gem Test — Question 1 (Gross Margin)',
-                'Task 4: Gem Test — Question 2 (HR Department)',
-                'Task 4: Gem Test — Question 3 (AI Pilot Areas)',
-                'Task 5: Cross-Reference Question A (AI Budget % of Net Income)',
-                'Task 5: Cross-Reference Question B (VP Ownership)',
-                'Task 6: Boundary Detection Question C (Q2 Revenue)',
-                'Task 6: Boundary Detection Question D (Applicants)',
-                'Task 7: Ambiguity Handling Question E (Electronics vs AI)',
-                'Task 8: Three-Way Comparison — Approach A (No Context)',
-                'Task 8: Three-Way Comparison — Approach B (Chat Upload)',
-                'Task 8: Three-Way Comparison — Approach C (Gemini Gem)',
-                'Task 8: Three-Way Comparison Analysis',
-                'Task 9: Citation Test 1 — Single Source',
-                'Task 9: Citation Test 2 — Multi Source',
-                'Task 9: Citation Test 3 — Unanswerable',
-                'Task 9: Citation Comparison (Gem vs Upload)',
-                'Task 10: Adding Context Mid-Conversation',
-                'Task 11: ROI Calculation',
-                'Task 11: ROI Bonus — Reduced Time Savings',
-                'Final Reflection 1: Most Important Lesson',
-                'Final Reflection 2: When Context Beats Prompting',
-                'Final Reflection 3: Advice for Beacon CEO'
-            ];
-
-            let sections = '';
-            textareas.forEach((textarea, index) => {
-                const label = reflectionLabels[index] || `Response ${index + 1}`;
-                const response = textarea.value.trim() || '[No response provided]';
-                sections += `
-                    <div style="margin-bottom: 24px; page-break-inside: avoid;">
-                        <h3 style="font-family: Montserrat, sans-serif; font-size: 13px; color: #1D428A; margin: 0 0 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px;">${label}</h3>
-                        <p style="font-family: Georgia, serif; font-size: 12px; line-height: 1.6; color: #333; white-space: pre-wrap; margin: 0;">${response.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
-                    </div>`;
-            });
-
-            const html = `<!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<title>UBUS 670 - Day 3 Lab Report</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-    @media print { body { margin: 0; } @page { margin: 0.75in; } }
-    body { font-family: Georgia, serif; max-width: 700px; margin: 0 auto; padding: 40px; color: #333; }
-</style></head><body>
-<div style="border-bottom: 3px solid #C8102E; padding-bottom: 15px; margin-bottom: 25px;">
-    <h1 style="font-family: Montserrat, sans-serif; font-size: 20px; color: #C8102E; margin: 0;">UBUS 670: AI for Business Leaders</h1>
-    <h2 style="font-family: Montserrat, sans-serif; font-size: 16px; color: #333; margin: 8px 0 0;">Day 3 Lab: Building Beacon's Knowledge Assistant</h2>
-    <p style="font-size: 12px; color: #666; margin: 10px 0 0;">
-        Student Name: _____________________________ &nbsp;&nbsp; Date: ${new Date().toLocaleDateString()} &nbsp;&nbsp; Progress: ${checkboxes.length}/${totalCheckboxes} steps
-    </p>
-</div>
-${sections}
-<div style="border-top: 2px solid #e0e0e0; padding-top: 12px; margin-top: 30px; text-align: center;">
-    <p style="font-size: 11px; color: #888;">Generated: ${new Date().toLocaleString()} | UBUS 670 - Northern Illinois University</p>
-</div>
-</body></html>`;
-
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(html);
-            printWindow.document.close();
-            printWindow.onload = function() {
-                printWindow.print();
-            };
-
-            document.getElementById('download-pdf-btn').textContent = 'PDF Generated - Print/Save';
+            if (window.SubmissionTracker) {
+                SubmissionTracker.submitLab({
+                    stepsCompleted: checked.length,
+                    stepsTotal: checkboxes.length,
+                    reflections: reflections
+                });
+            }
         }
     </script>
 

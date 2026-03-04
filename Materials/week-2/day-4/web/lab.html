@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 
     <!-- Base Styles -->
-    <link rel="stylesheet" href="../../_shared/styles.css">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
 
     <style>
         body {
@@ -395,10 +395,25 @@
         }
     </style>
 
-    <!-- jsPDF for PDF generation -->
+    <!-- Submission Tracking -->
+    <link rel="stylesheet" href="../../../_shared/submission-tracker.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script>
+    window.SUBMISSION_CONFIG = {
+        type: 'lab', day: 4, title: 'Day 4 Lab: Beacon\'s Spring Marketing Campaign',
+        maxAttempts: 1, labVariant: 'lab',
+        googleClientId: '237879300598-8s8phtegebb3hslfnrhgsucvi7m8r5ev.apps.googleusercontent.com',
+        appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwtN4re0Y8Kx7GNRp3Z_bQIr2xSum1sSyt6KPFkCr0FXDbaJ9pkxsZZ8wQ0qrOj4MSSTQ/exec',
+        allowedDomains: null
+    };
+    </script>
+    <script src="../../../_shared/submission-tracker.js"></script>
 </head>
 <body>
+
+    <!-- Auth Gate -->
+    <div id="auth-gate"></div>
 
     <!-- Navigation -->
     <nav class="global-nav">
@@ -1023,7 +1038,7 @@ Present as a simple table.</div>
                 </div>
 
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn-primary" onclick="generatePDF()">Download Lab Summary (PDF)</button>
+                    <button class="btn-primary" onclick="submitLab()">Submit Lab</button>
                 </div>
 
                 <div class="step">
@@ -1087,77 +1102,26 @@ Present as a simple table.</div>
 
         // Initialize progress
         updateProgress();
+        if (window.SubmissionTracker) {
+            SubmissionTracker.init();
+        }
 
-        // PDF generation using jsPDF
-        function generatePDF() {
-            var jspdf = window.jspdf;
-            if (!jspdf) {
-                alert('PDF library is loading. Please try again in a moment.');
-                return;
+        // Submit lab to tracking backend
+        function submitLab() {
+            const reflections = [...document.querySelectorAll('.reflection-area textarea')].map(ta => ({
+                prompt: ta.previousElementSibling ? ta.previousElementSibling.textContent.trim() : '',
+                response: ta.value.trim() || '[No response]'
+            }));
+            const checkboxes = document.querySelectorAll('.step input[type="checkbox"]');
+            const checked = document.querySelectorAll('.step input[type="checkbox"]:checked');
+
+            if (window.SubmissionTracker) {
+                SubmissionTracker.submitLab({
+                    stepsCompleted: checked.length,
+                    stepsTotal: checkboxes.length,
+                    reflections: reflections
+                });
             }
-            var doc = new jspdf.jsPDF();
-            var y = 20;
-            var pageWidth = doc.internal.pageSize.getWidth();
-            var margin = 20;
-            var maxWidth = pageWidth - margin * 2;
-
-            // Title
-            doc.setFontSize(18);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(200, 16, 46); // NIU Red
-            doc.text('UBUS 670 - Day 4 Lab', margin, y);
-            y += 8;
-            doc.setFontSize(14);
-            doc.setTextColor(29, 66, 138); // NIU Navy
-            doc.text("Beacon's Spring Marketing Campaign", margin, y);
-            y += 10;
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(100);
-            doc.text('Student Submission | ' + new Date().toLocaleDateString(), margin, y);
-            y += 5;
-            doc.setDrawColor(200);
-            doc.line(margin, y, pageWidth - margin, y);
-            y += 10;
-
-            // Collect reflections
-            var reflections = document.querySelectorAll('.reflection-area textarea');
-            doc.setFontSize(11);
-            reflections.forEach(function(textarea, index) {
-                var labelEl = textarea.previousElementSibling;
-                var label = labelEl ? labelEl.textContent : 'Response ' + (index + 1);
-                var value = textarea.value || '[No response entered]';
-
-                // Check page break
-                if (y > 260) {
-                    doc.addPage();
-                    y = 20;
-                }
-
-                doc.setFont('helvetica', 'bold');
-                doc.setTextColor(29, 66, 138);
-                var labelLines = doc.splitTextToSize(label, maxWidth);
-                doc.text(labelLines, margin, y);
-                y += labelLines.length * 5 + 3;
-
-                doc.setFont('helvetica', 'normal');
-                doc.setTextColor(50);
-                var valueLines = doc.splitTextToSize(value, maxWidth);
-                doc.text(valueLines, margin, y);
-                y += valueLines.length * 5 + 8;
-            });
-
-            // Progress
-            if (y > 270) { doc.addPage(); y = 20; }
-            doc.setDrawColor(200);
-            doc.line(margin, y, pageWidth - margin, y);
-            y += 8;
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(67, 176, 42); // NIU Green
-            doc.text('Progress: ' + document.getElementById('progress-text').textContent, margin, y);
-
-            doc.save('Day4_Lab_Submission.pdf');
-            alert('PDF downloaded! Upload this file to the course LMS.');
         }
     </script>
 

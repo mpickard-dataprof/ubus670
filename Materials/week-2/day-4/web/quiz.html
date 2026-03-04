@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Day 4 Quiz: Multimodal AI Knowledge Check</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="../../_shared/styles.css">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
     <style>
         body { font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; background: #fafafa; }
         .quiz-container { max-width: 800px; margin: 0 auto; padding: 40px 30px; }
@@ -65,8 +65,28 @@
         .dot.correct { background: #43B02A; }
         .dot.incorrect { background: #E35205; }
     </style>
+
+    <!-- Submission Tracking -->
+    <link rel="stylesheet" href="../../../_shared/submission-tracker.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script>
+    window.SUBMISSION_CONFIG = {
+        type: 'quiz', day: 4, title: 'Day 4: Multimodal AI Knowledge Check',
+        maxAttempts: 3,
+        googleClientId: '237879300598-8s8phtegebb3hslfnrhgsucvi7m8r5ev.apps.googleusercontent.com',
+        appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwtN4re0Y8Kx7GNRp3Z_bQIr2xSum1sSyt6KPFkCr0FXDbaJ9pkxsZZ8wQ0qrOj4MSSTQ/exec',
+        allowedDomains: null
+    };
+    </script>
+    <script src="../../../_shared/submission-tracker.js"></script>
 </head>
 <body>
+
+    <!-- Auth Gate -->
+    <div id="auth-gate"></div>
+
+    <!-- Navigation -->
     <nav class="global-nav">
         <div class="breadcrumb">
             <a href="../../../index.html">UBUS 670</a>
@@ -891,9 +911,37 @@
             else if (percentage >= 70) message = "Good work! You passed. Review any missed questions to solidify your understanding.";
             else message = "Keep studying! Review the lecture materials and try again. You need 70%+ (14/20) to pass.";
             document.getElementById('results-message').textContent = message;
+
+            // Submit to tracking backend
+            if (window.SubmissionTracker) {
+                const letters = ['A', 'B', 'C', 'D'];
+                SubmissionTracker.submitQuiz({
+                    score: correct,
+                    total: selectedQuestions.length,
+                    questions: selectedQuestions.map((q, i) => {
+                        const card = document.querySelector(`[data-question="${i + 1}"]`);
+                        const selectedInput = card.querySelector('input:checked');
+                        const selectedIdx = selectedInput ? parseInt(selectedInput.value) : -1;
+                        const correctIdx = q.correctShuffled;
+                        const options = card.querySelectorAll('.option-text');
+                        return {
+                            question: q.question,
+                            selected: options[selectedIdx] ? options[selectedIdx].textContent.trim() : 'N/A',
+                            correct: options[correctIdx] ? options[correctIdx].textContent.trim() : 'N/A',
+                            isCorrect: selectedIdx === correctIdx
+                        };
+                    })
+                });
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', initQuiz);
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuiz();
+            if (window.SubmissionTracker) {
+                SubmissionTracker.init();
+            }
+        });
     </script>
 </body>
 </html>
