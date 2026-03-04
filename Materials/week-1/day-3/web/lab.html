@@ -1408,6 +1408,10 @@ Please analyze whether this should be added as a 4th pilot area in our AI strate
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             const checked = document.querySelectorAll('input[type="checkbox"]:checked');
 
+            // Disable button immediately to prevent double-clicks
+            var btn = document.getElementById('download-pdf-btn');
+            if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+
             if (window.SubmissionTracker) {
                 SubmissionTracker.submitLab({
                     stepsCompleted: checked.length,

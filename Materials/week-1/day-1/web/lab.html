@@ -812,6 +812,10 @@ Keep the tone professional but friendly.</div>
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             const checked = document.querySelectorAll('input[type="checkbox"]:checked');
 
+            // Disable button immediately to prevent double-clicks
+            var btn = document.getElementById('download-pdf-btn');
+            if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+
             if (window.SubmissionTracker) {
                 SubmissionTracker.submitLab({
                     stepsCompleted: checked.length,

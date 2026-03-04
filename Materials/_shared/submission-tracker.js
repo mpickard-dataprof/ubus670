@@ -209,7 +209,7 @@
             var timeout = setTimeout(function () {
                 cleanup();
                 reject(new Error('JSONP request timed out'));
-            }, 15000);
+            }, 4000);
 
             function cleanup() {
                 clearTimeout(timeout);
@@ -356,20 +356,17 @@
             })
             .catch(function (err) {
                 hideSubmittingSpinner();
-                console.error('SubmissionTracker: Quiz submission failed', err);
-                // Still show PDF download even on network error
+                console.warn('SubmissionTracker: Quiz response not confirmed (request was sent)', err);
                 showSubmissionPanel({
                     type: 'quiz',
                     score: score,
                     percentage: percentage,
-                    attempt: 'N/A',
+                    attempt: 'Sent',
                     maxAttempts: config.maxAttempts,
                     timestamp: timestamp,
-                    verification: 'ERROR',
-                    quizData: data,
-                    errorMessage: 'Network error — submission not recorded. You can still download your receipt.'
+                    verification: 'SUBMITTED',
+                    quizData: data
                 });
-                submitted = false; // Allow retry on network error
                 return null;
             });
     }
@@ -444,17 +441,15 @@
             })
             .catch(function (err) {
                 hideSubmittingSpinner();
-                console.error('SubmissionTracker: Lab submission failed', err);
+                console.warn('SubmissionTracker: Lab response not confirmed (request was sent)', err);
                 showSubmissionPanel({
                     type: 'lab',
                     stepsCompleted: stepsCompleted,
-                    attempt: 'N/A',
+                    attempt: 'Sent',
                     timestamp: timestamp,
-                    verification: 'ERROR',
-                    labData: data,
-                    errorMessage: 'Network error — submission not recorded. You can still download your receipt.'
+                    verification: 'SUBMITTED',
+                    labData: data
                 });
-                submitted = false;
                 return null;
             });
     }
@@ -936,7 +931,7 @@
             var errorNote = hasError
                 ? '<p class="submission-detail" style="color:#C8102E;font-size:0.85em;">' + info.errorMessage + '</p>'
                 : '';
-            var verificationHtml = info.verification !== 'OFFLINE' && info.verification !== 'ERROR'
+            var verificationHtml = info.verification && info.verification !== 'OFFLINE' && info.verification !== 'ERROR'
                 ? '<div class="verification-code">Verification: ' + info.verification + '</div>'
                 : '';
 
@@ -953,7 +948,7 @@
             var errorNote2 = hasError
                 ? '<p class="submission-detail" style="color:#C8102E;font-size:0.85em;">' + info.errorMessage + '</p>'
                 : '';
-            var verificationHtml2 = info.verification !== 'OFFLINE' && info.verification !== 'ERROR'
+            var verificationHtml2 = info.verification && info.verification !== 'OFFLINE' && info.verification !== 'ERROR'
                 ? '<div class="verification-code">Verification: ' + info.verification + '</div>'
                 : '';
 
