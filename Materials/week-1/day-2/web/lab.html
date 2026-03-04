@@ -1145,6 +1145,7 @@ Show your reasoning for each step.</div>
                 setTimeout(() => btn.textContent = 'Copy', 2000);
             });
         }
+        window.copyPrompt = copyPrompt;
 
         // Initialize progress and submission tracker
         updateProgress();
@@ -1169,6 +1170,7 @@ Show your reasoning for each step.</div>
                 });
             }
         }
+        window.submitLab = submitLab;
     </script>
 
 </body>
