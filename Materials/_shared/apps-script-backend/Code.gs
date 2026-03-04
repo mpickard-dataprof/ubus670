@@ -2,6 +2,7 @@
  * UBUS 670 — Quiz & Lab Submission Tracking Backend
  *
  * Deploy as: Web App → Execute as: Me → Access: Anyone
+ * Uses JSONP to bypass CORS restrictions on cross-origin requests.
  *
  * Google Sheet "UBUS 670 Submissions" is created automatically on first run.
  * Two tabs: "Quiz Submissions" and "Lab Submissions".
@@ -19,89 +20,75 @@
 // ═══════════════════════════════════════════════════════════════
 
 /** HMAC secret — change this to a random string. Keep it private. */
-const HMAC_SECRET = 'CHANGE_ME_TO_A_RANDOM_SECRET_STRING';
+var HMAC_SECRET = 'CHANGE_ME_TO_A_RANDOM_SECRET_STRING';
 
 /** Max attempts per type */
-const MAX_QUIZ_ATTEMPTS = 3;
-const MAX_LAB_ATTEMPTS = 1;
+var MAX_QUIZ_ATTEMPTS = 3;
+var MAX_LAB_ATTEMPTS = 1;
 
 /** Optional domain restriction (null = allow all, array = restrict) */
-const ALLOWED_DOMAINS = null;
-// const ALLOWED_DOMAINS = ['students.niu.edu', 'niu.edu'];
+var ALLOWED_DOMAINS = null;
+// var ALLOWED_DOMAINS = ['students.niu.edu', 'niu.edu'];
 
 /** Sheet name — created automatically if it doesn't exist */
-const SHEET_NAME = 'UBUS 670 Submissions';
-const QUIZ_TAB = 'Quiz Submissions';
-const LAB_TAB = 'Lab Submissions';
+var SHEET_NAME = 'UBUS 670 Submissions';
+var QUIZ_TAB = 'Quiz Submissions';
+var LAB_TAB = 'Lab Submissions';
+
+// Global JSONP callback name (set per-request)
+var _jsonpCallback = null;
 
 // ═══════════════════════════════════════════════════════════════
-// WEB APP ENTRY POINTS
+// WEB APP ENTRY POINT (GET only — JSONP for CORS)
 // ═══════════════════════════════════════════════════════════════
 
 function doGet(e) {
   var params = e.parameter;
+  _jsonpCallback = params.callback || null;
   var action = params.action;
 
   if (action === 'check') {
     return handleCheck(params);
   }
 
-  // Submit via GET to avoid CORS/redirect issues with POST
   if (action === 'submit') {
     var body;
     try {
       body = JSON.parse(params.payload);
     } catch (err) {
-      return jsonResponse({ error: 'Invalid payload JSON' }, 400);
+      return respond({ error: 'Invalid payload JSON' });
     }
     return handleSubmit(body);
   }
 
-  return jsonResponse({ error: 'Unknown action' }, 400);
-}
-
-function doPost(e) {
-  // Fallback POST handler (may not work due to CORS/redirect)
-  var body;
-  try {
-    body = JSON.parse(e.postData.contents);
-  } catch (err) {
-    return jsonResponse({ error: 'Invalid JSON' }, 400);
-  }
-
-  if (body.action === 'submit') {
-    return handleSubmit(body);
-  }
-
-  return jsonResponse({ error: 'Unknown action' }, 400);
+  return respond({ error: 'Unknown action' });
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CHECK ATTEMPTS (GET)
+// CHECK ATTEMPTS
 // ═══════════════════════════════════════════════════════════════
 
 function handleCheck(params) {
   var email = (params.email || '').toLowerCase().trim();
-  var type = params.type; // 'quiz' or 'lab'
+  var type = params.type;
   var day = parseInt(params.day, 10);
   var labVariant = params.labVariant || 'lab';
 
   if (!email || !type || isNaN(day)) {
-    return jsonResponse({ error: 'Missing required params: email, type, day' }, 400);
+    return respond({ error: 'Missing required params: email, type, day' });
   }
 
   if (!checkDomain(email)) {
-    return jsonResponse({ error: 'Email domain not allowed' }, 403);
+    return respond({ error: 'Email domain not allowed' });
   }
 
   var maxAttempts = type === 'quiz' ? MAX_QUIZ_ATTEMPTS : MAX_LAB_ATTEMPTS;
   var sheet = getOrCreateSheet(type);
   var rows = sheet.getDataRange().getValues();
 
-  // Find matching submissions
   var history = [];
-  for (var i = 1; i < rows.length; i++) { // skip header
-    var rowEmail = (rows[i][1] || '').toLowerCase().trim();
+  for (var i = 1; i < rows.length; i++) {
+    var rowEmail = (rows[i][1] || '').toString().toLowerCase().trim();
     var rowDay = parseInt(rows[i][3], 10);
 
     if (rowEmail === email && rowDay === day) {
@@ -114,8 +101,7 @@ function handleCheck(params) {
           verification: rows[i][8]
         });
       } else {
-        // For labs, also check variant
-        var rowVariant = rows[i][4] || 'lab';
+        var rowVariant = (rows[i][4] || 'lab').toString();
         if (rowVariant === labVariant) {
           history.push({
             attempt: 1,
@@ -129,11 +115,10 @@ function handleCheck(params) {
   }
 
   var attempts = history.length;
-
-  // Find best score for quizzes
   var bestScore = null;
   var bestPercentage = 0;
   var bestVerification = null;
+
   if (type === 'quiz') {
     for (var j = 0; j < history.length; j++) {
       var pct = parseFloat(history[j].percentage) || 0;
@@ -145,7 +130,7 @@ function handleCheck(params) {
     }
   }
 
-  return jsonResponse({
+  return respond({
     attempts: attempts,
     maxAttempts: maxAttempts,
     bestScore: bestScore,
@@ -156,38 +141,36 @@ function handleCheck(params) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// LOG SUBMISSION (POST)
+// LOG SUBMISSION
 // ═══════════════════════════════════════════════════════════════
 
 function handleSubmit(body) {
   var email = (body.email || '').toLowerCase().trim();
   var name = body.name || '';
-  var type = body.type; // 'quiz' or 'lab'
+  var type = body.type;
   var day = parseInt(body.day, 10);
   var data = body.data || {};
 
   if (!email || !type || isNaN(day)) {
-    return jsonResponse({ error: 'Missing required fields: email, type, day' }, 400);
+    return respond({ error: 'Missing required fields: email, type, day' });
   }
 
   if (!checkDomain(email)) {
-    return jsonResponse({ error: 'Email domain not allowed' }, 403);
+    return respond({ error: 'Email domain not allowed' });
   }
 
   var maxAttempts = type === 'quiz' ? MAX_QUIZ_ATTEMPTS : MAX_LAB_ATTEMPTS;
   var sheet = getOrCreateSheet(type);
-
-  // Count existing attempts (server-side enforcement)
   var rows = sheet.getDataRange().getValues();
   var attemptCount = 0;
 
   for (var i = 1; i < rows.length; i++) {
-    var rowEmail = (rows[i][1] || '').toLowerCase().trim();
+    var rowEmail = (rows[i][1] || '').toString().toLowerCase().trim();
     var rowDay = parseInt(rows[i][3], 10);
 
     if (rowEmail === email && rowDay === day) {
       if (type === 'lab') {
-        var rowVariant = rows[i][4] || 'lab';
+        var rowVariant = (rows[i][4] || 'lab').toString();
         if (rowVariant === (data.labVariant || 'lab')) {
           attemptCount++;
         }
@@ -198,11 +181,11 @@ function handleSubmit(body) {
   }
 
   if (attemptCount >= maxAttempts) {
-    return jsonResponse({
+    return respond({
       error: 'Maximum attempts reached',
       attempts: attemptCount,
       maxAttempts: maxAttempts
-    }, 403);
+    });
   }
 
   var timestamp = new Date().toISOString();
@@ -216,15 +199,8 @@ function handleSubmit(body) {
     verification = computeHMAC(email + '|' + day + '|' + score + '|' + timestamp);
 
     sheet.appendRow([
-      timestamp,
-      email,
-      name,
-      day,
-      attemptNum,
-      score,
-      percentage,
-      questionsJson,
-      verification
+      timestamp, email, name, day, attemptNum,
+      score, percentage, questionsJson, verification
     ]);
   } else {
     var stepsCompleted = data.stepsCompleted + '/' + data.stepsTotal;
@@ -233,18 +209,12 @@ function handleSubmit(body) {
     verification = computeHMAC(email + '|' + day + '|' + stepsCompleted + '|' + timestamp);
 
     sheet.appendRow([
-      timestamp,
-      email,
-      name,
-      day,
-      labVariant,
-      stepsCompleted,
-      reflectionsJson,
-      verification
+      timestamp, email, name, day, labVariant,
+      stepsCompleted, reflectionsJson, verification
     ]);
   }
 
-  return jsonResponse({
+  return respond({
     success: true,
     attempt: attemptNum,
     timestamp: timestamp,
@@ -256,6 +226,22 @@ function handleSubmit(body) {
 // HELPERS
 // ═══════════════════════════════════════════════════════════════
 
+/**
+ * Returns either JSONP (callback wrapper) or plain JSON.
+ * JSONP is used for all browser requests to bypass CORS.
+ */
+function respond(data) {
+  var json = JSON.stringify(data);
+  if (_jsonpCallback) {
+    var output = ContentService.createTextOutput(_jsonpCallback + '(' + json + ')');
+    output.setMimeType(ContentService.MimeType.JAVASCRIPT);
+    return output;
+  }
+  var output = ContentService.createTextOutput(json);
+  output.setMimeType(ContentService.MimeType.JSON);
+  return output;
+}
+
 function checkDomain(email) {
   if (!ALLOWED_DOMAINS || ALLOWED_DOMAINS.length === 0) return true;
   var domain = email.split('@')[1];
@@ -266,20 +252,17 @@ function computeHMAC(message) {
   var signature = Utilities.computeHmacSha256Signature(message, HMAC_SECRET);
   return signature.map(function(byte) {
     return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-  }).join('').substring(0, 16); // First 16 hex chars for brevity
+  }).join('').substring(0, 16);
 }
 
 function getOrCreateSheet(type) {
   var tabName = type === 'quiz' ? QUIZ_TAB : LAB_TAB;
-
-  // Try to find existing spreadsheet by name
   var files = DriveApp.getFilesByName(SHEET_NAME);
   var ss;
 
   if (files.hasNext()) {
     ss = SpreadsheetApp.open(files.next());
   } else {
-    // Create new spreadsheet
     ss = SpreadsheetApp.create(SHEET_NAME);
     initializeSheets(ss);
   }
@@ -300,34 +283,22 @@ function getOrCreateSheet(type) {
 }
 
 function initializeSheets(ss) {
-  // Create Quiz tab
   var quizSheet = ss.getActiveSheet();
   quizSheet.setName(QUIZ_TAB);
   quizSheet.appendRow(['Timestamp', 'Email', 'Name', 'Day', 'Attempt', 'Score', 'Percentage', 'Questions', 'Verification']);
   quizSheet.setFrozenRows(1);
   quizSheet.getRange(1, 1, 1, 9).setFontWeight('bold');
 
-  // Create Lab tab
   var labSheet = ss.insertSheet(LAB_TAB);
   labSheet.appendRow(['Timestamp', 'Email', 'Name', 'Day', 'Lab Variant', 'Steps Completed', 'Reflections', 'Verification']);
   labSheet.setFrozenRows(1);
   labSheet.getRange(1, 1, 1, 8).setFontWeight('bold');
 }
 
-function jsonResponse(data, code) {
-  var output = ContentService.createTextOutput(JSON.stringify(data));
-  output.setMimeType(ContentService.MimeType.JSON);
-  return output;
-}
-
 // ═══════════════════════════════════════════════════════════════
 // VERIFICATION UTILITY (run manually to verify a submission)
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Run this function from the Apps Script editor to verify a PDF's code.
- * Enter the parameters in the Logger or modify them here.
- */
 function verifySubmission() {
   var email = 'student@example.com';
   var day = '1';

@@ -192,6 +192,46 @@
     }
 
     // ═══════════════════════════════════════════════════════════
+    // JSONP — bypasses CORS by injecting a <script> tag
+    // ═══════════════════════════════════════════════════════════
+
+    var jsonpCounter = 0;
+
+    function jsonpRequest(url) {
+        return new Promise(function (resolve, reject) {
+            var callbackName = '_st_cb_' + (++jsonpCounter) + '_' + Date.now();
+            var separator = url.indexOf('?') === -1 ? '?' : '&';
+            var scriptUrl = url + separator + 'callback=' + callbackName;
+
+            var script = document.createElement('script');
+            script.src = scriptUrl;
+
+            var timeout = setTimeout(function () {
+                cleanup();
+                reject(new Error('JSONP request timed out'));
+            }, 15000);
+
+            function cleanup() {
+                clearTimeout(timeout);
+                delete window[callbackName];
+                if (script.parentNode) script.parentNode.removeChild(script);
+            }
+
+            window[callbackName] = function (data) {
+                cleanup();
+                resolve(data);
+            };
+
+            script.onerror = function () {
+                cleanup();
+                reject(new Error('JSONP script failed to load'));
+            };
+
+            document.head.appendChild(script);
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════
     // ATTEMPT CHECKING
     // ═══════════════════════════════════════════════════════════
 
@@ -213,8 +253,7 @@
             url += '&labVariant=' + encodeURIComponent(config.labVariant);
         }
 
-        fetch(url)
-            .then(function (res) { return res.json(); })
+        jsonpRequest(url)
             .then(function (data) {
                 attemptData = data;
                 onAttemptsLoaded(data);
@@ -286,8 +325,7 @@
         var submitUrl = config.appsScriptUrl +
             '?action=submit&payload=' + encodeURIComponent(JSON.stringify(payload));
 
-        return fetch(submitUrl)
-            .then(function (res) { return res.json(); })
+        return jsonpRequest(submitUrl)
             .then(function (result) {
                 hideSubmittingSpinner();
                 if (result.success) {
@@ -379,8 +417,7 @@
         var submitUrl = config.appsScriptUrl +
             '?action=submit&payload=' + encodeURIComponent(JSON.stringify(payload));
 
-        return fetch(submitUrl)
-            .then(function (res) { return res.json(); })
+        return jsonpRequest(submitUrl)
             .then(function (result) {
                 hideSubmittingSpinner();
                 if (result.success) {
