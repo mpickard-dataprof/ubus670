@@ -209,7 +209,7 @@
             var timeout = setTimeout(function () {
                 cleanup();
                 reject(new Error('JSONP request timed out'));
-            }, 4000);
+            }, 20000);
 
             function cleanup() {
                 clearTimeout(timeout);
@@ -309,6 +309,16 @@
 
         showSubmittingSpinner();
 
+        // Trim question data to keep URL under browser limits
+        var trimmedQuestions = (data.questions || []).map(function (q) {
+            return {
+                question: (q.question || '').substring(0, 80),
+                selected: (q.selected || '').substring(0, 60),
+                correct: (q.correct || '').substring(0, 60),
+                isCorrect: q.isCorrect
+            };
+        });
+
         var payload = {
             action: 'submit',
             email: currentUser.email,
@@ -318,7 +328,7 @@
             data: {
                 score: data.score,
                 total: data.total,
-                questions: data.questions
+                questions: trimmedQuestions
             }
         };
 
@@ -406,7 +416,6 @@
             data: {
                 stepsCompleted: data.stepsCompleted,
                 stepsTotal: data.stepsTotal,
-                reflections: data.reflections,
                 labVariant: config.labVariant || 'lab'
             }
         };
