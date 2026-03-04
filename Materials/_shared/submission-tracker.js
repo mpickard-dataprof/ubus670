@@ -232,6 +232,58 @@
     }
 
     // ═══════════════════════════════════════════════════════════
+    // FIRE-AND-FORGET SUBMIT + JSONP VERIFY
+    // ═══════════════════════════════════════════════════════════
+
+    // Sends the submit request via <img> tag (reliable, no CORS issues).
+    // The server processes it; we don't need the response from this call.
+    function fireSubmit(url) {
+        var img = new Image();
+        img.src = url;
+        // The browser sends the GET request, server processes it.
+        // onerror will fire (response isn't an image) but that's expected.
+    }
+
+    // After firing the submit, poll the check endpoint via JSONP
+    // (which is proven to work) to get the verification code.
+    function verifySubmission(type, retries) {
+        if (retries <= 0) {
+            return Promise.resolve(null);
+        }
+
+        var url = config.appsScriptUrl +
+            '?action=check' +
+            '&email=' + encodeURIComponent(currentUser.email) +
+            '&type=' + encodeURIComponent(type) +
+            '&day=' + encodeURIComponent(config.day);
+
+        if (type === 'lab' && config.labVariant) {
+            url += '&labVariant=' + encodeURIComponent(config.labVariant);
+        }
+
+        return jsonpRequest(url)
+            .then(function (data) {
+                if (data && data.attempts > 0 && data.history && data.history.length > 0) {
+                    return data; // Submission confirmed
+                }
+                // Not recorded yet — wait and retry
+                return new Promise(function (resolve) {
+                    setTimeout(function () {
+                        resolve(verifySubmission(type, retries - 1));
+                    }, 3000);
+                });
+            })
+            .catch(function () {
+                // JSONP check failed — wait and retry
+                return new Promise(function (resolve) {
+                    setTimeout(function () {
+                        resolve(verifySubmission(type, retries - 1));
+                    }, 3000);
+                });
+            });
+    }
+
+    // ═══════════════════════════════════════════════════════════
     // ATTEMPT CHECKING
     // ═══════════════════════════════════════════════════════════
 
@@ -335,49 +387,39 @@
         var submitUrl = config.appsScriptUrl +
             '?action=submit&payload=' + encodeURIComponent(JSON.stringify(payload));
 
-        return jsonpRequest(submitUrl)
-            .then(function (result) {
+        // Step 1: Fire the submit via <img> (reliable, no CORS)
+        fireSubmit(submitUrl);
+
+        // Step 2: Verify via JSONP check (proven to work)
+        return verifySubmission('quiz', 4)
+            .then(function (verifyData) {
                 hideSubmittingSpinner();
-                if (result.success) {
+                if (verifyData && verifyData.history && verifyData.history.length > 0) {
+                    var latest = verifyData.history[verifyData.history.length - 1];
                     showSubmissionPanel({
                         type: 'quiz',
                         score: score,
                         percentage: percentage,
-                        attempt: result.attempt,
+                        attempt: latest.attempt || verifyData.attempts,
                         maxAttempts: config.maxAttempts,
-                        timestamp: result.timestamp,
-                        verification: result.verification,
+                        timestamp: latest.timestamp || timestamp,
+                        verification: latest.verification || 'CONFIRMED',
                         quizData: data
                     });
                 } else {
+                    // Verification couldn't confirm, but submit was sent
                     showSubmissionPanel({
                         type: 'quiz',
                         score: score,
                         percentage: percentage,
-                        attempt: 'N/A',
+                        attempt: 'Sent',
                         maxAttempts: config.maxAttempts,
                         timestamp: timestamp,
-                        verification: 'ERROR',
-                        quizData: data,
-                        errorMessage: result.error || 'Submission failed. You can still download your receipt.'
+                        verification: 'PENDING',
+                        quizData: data
                     });
                 }
-                return result;
-            })
-            .catch(function (err) {
-                hideSubmittingSpinner();
-                console.warn('SubmissionTracker: Quiz response not confirmed (request was sent)', err);
-                showSubmissionPanel({
-                    type: 'quiz',
-                    score: score,
-                    percentage: percentage,
-                    attempt: 'Sent',
-                    maxAttempts: config.maxAttempts,
-                    timestamp: timestamp,
-                    verification: 'SUBMITTED',
-                    quizData: data
-                });
-                return null;
+                return verifyData;
             });
     }
 
@@ -423,43 +465,35 @@
         var submitUrl = config.appsScriptUrl +
             '?action=submit&payload=' + encodeURIComponent(JSON.stringify(payload));
 
-        return jsonpRequest(submitUrl)
-            .then(function (result) {
+        // Step 1: Fire the submit via <img> (reliable, no CORS)
+        fireSubmit(submitUrl);
+
+        // Step 2: Verify via JSONP check (proven to work)
+        return verifySubmission('lab', 4)
+            .then(function (verifyData) {
                 hideSubmittingSpinner();
-                if (result.success) {
+                if (verifyData && verifyData.history && verifyData.history.length > 0) {
+                    var latest = verifyData.history[verifyData.history.length - 1];
                     showSubmissionPanel({
                         type: 'lab',
                         stepsCompleted: stepsCompleted,
-                        attempt: result.attempt,
-                        timestamp: result.timestamp,
-                        verification: result.verification,
+                        attempt: latest.attempt || verifyData.attempts,
+                        timestamp: latest.timestamp || timestamp,
+                        verification: latest.verification || 'CONFIRMED',
                         labData: data
                     });
                 } else {
+                    // Verification couldn't confirm, but submit was sent
                     showSubmissionPanel({
                         type: 'lab',
                         stepsCompleted: stepsCompleted,
-                        attempt: 'N/A',
+                        attempt: 'Sent',
                         timestamp: timestamp,
-                        verification: 'ERROR',
-                        labData: data,
-                        errorMessage: result.error || 'Submission failed. You can still download your receipt.'
+                        verification: 'PENDING',
+                        labData: data
                     });
                 }
-                return result;
-            })
-            .catch(function (err) {
-                hideSubmittingSpinner();
-                console.warn('SubmissionTracker: Lab response not confirmed (request was sent)', err);
-                showSubmissionPanel({
-                    type: 'lab',
-                    stepsCompleted: stepsCompleted,
-                    attempt: 'Sent',
-                    timestamp: timestamp,
-                    verification: 'SUBMITTED',
-                    labData: data
-                });
-                return null;
+                return verifyData;
             });
     }
 

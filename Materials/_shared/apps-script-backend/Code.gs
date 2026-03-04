@@ -257,14 +257,22 @@ function computeHMAC(message) {
 
 function getOrCreateSheet(type) {
   var tabName = type === 'quiz' ? QUIZ_TAB : LAB_TAB;
-  var files = DriveApp.getFilesByName(SHEET_NAME);
+
+  // Use a specific spreadsheet ID to avoid name-collision issues
+  var SPREADSHEET_ID = '1vUvigwzATLDZz7IjCXkJRJUXP5EkTw0Q3y3s8W1-8PU';
   var ss;
 
-  if (files.hasNext()) {
-    ss = SpreadsheetApp.open(files.next());
-  } else {
-    ss = SpreadsheetApp.create(SHEET_NAME);
-    initializeSheets(ss);
+  try {
+    ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  } catch (e) {
+    // Fallback: search by name, then create
+    var files = DriveApp.getFilesByName(SHEET_NAME);
+    if (files.hasNext()) {
+      ss = SpreadsheetApp.open(files.next());
+    } else {
+      ss = SpreadsheetApp.create(SHEET_NAME);
+      initializeSheets(ss);
+    }
   }
 
   var sheet = ss.getSheetByName(tabName);
