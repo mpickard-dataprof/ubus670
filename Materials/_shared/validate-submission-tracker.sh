@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# v2 — updated for JSONP transport
 cd "/home/mpickard/Documents/NIU/Classes/2026/Spring/UBUS 670/Materials"
 
 PASS=0
