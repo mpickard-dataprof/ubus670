@@ -285,7 +285,8 @@
 
         return fetch(config.appsScriptUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            redirect: 'follow',
+            headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(body)
         })
             .then(function (res) { return res.json(); })
@@ -379,7 +380,8 @@
 
         return fetch(config.appsScriptUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            redirect: 'follow',
+            headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(body)
         })
             .then(function (res) { return res.json(); })
