@@ -46,10 +46,22 @@ function doGet(e) {
     return handleCheck(params);
   }
 
+  // Submit via GET to avoid CORS/redirect issues with POST
+  if (action === 'submit') {
+    var body;
+    try {
+      body = JSON.parse(params.payload);
+    } catch (err) {
+      return jsonResponse({ error: 'Invalid payload JSON' }, 400);
+    }
+    return handleSubmit(body);
+  }
+
   return jsonResponse({ error: 'Unknown action' }, 400);
 }
 
 function doPost(e) {
+  // Fallback POST handler (may not work due to CORS/redirect)
   var body;
   try {
     body = JSON.parse(e.postData.contents);

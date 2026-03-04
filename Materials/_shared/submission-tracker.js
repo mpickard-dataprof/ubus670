@@ -270,7 +270,7 @@
 
         showSubmittingSpinner();
 
-        var body = {
+        var payload = {
             action: 'submit',
             email: currentUser.email,
             name: currentUser.name,
@@ -283,12 +283,10 @@
             }
         };
 
-        return fetch(config.appsScriptUrl, {
-            method: 'POST',
-            redirect: 'follow',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(body)
-        })
+        var submitUrl = config.appsScriptUrl +
+            '?action=submit&payload=' + encodeURIComponent(JSON.stringify(payload));
+
+        return fetch(submitUrl)
             .then(function (res) { return res.json(); })
             .then(function (result) {
                 hideSubmittingSpinner();
@@ -364,7 +362,7 @@
 
         showSubmittingSpinner();
 
-        var body = {
+        var payload = {
             action: 'submit',
             email: currentUser.email,
             name: currentUser.name,
@@ -378,12 +376,10 @@
             }
         };
 
-        return fetch(config.appsScriptUrl, {
-            method: 'POST',
-            redirect: 'follow',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(body)
-        })
+        var submitUrl = config.appsScriptUrl +
+            '?action=submit&payload=' + encodeURIComponent(JSON.stringify(payload));
+
+        return fetch(submitUrl)
             .then(function (res) { return res.json(); })
             .then(function (result) {
                 hideSubmittingSpinner();
