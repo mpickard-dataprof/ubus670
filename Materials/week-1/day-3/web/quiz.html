@@ -324,26 +324,8 @@
         .dot.correct { background: #43B02A; }
         .dot.incorrect { background: #E35205; }
     </style>
-
-    <!-- Submission Tracking -->
-    <link rel="stylesheet" href="../../../_shared/submission-tracker.css?v=4">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script>
-    window.SUBMISSION_CONFIG = {
-        type: 'quiz', day: 3, title: 'Day 3: Knowledge Check',
-        maxAttempts: 3,
-        googleClientId: '237879300598-8s8phtegebb3hslfnrhgsucvi7m8r5ev.apps.googleusercontent.com',
-        appsScriptUrl: 'https://script.google.com/macros/s/AKfycbxP09xG_dp7QZN9vbQ6VVBp-DIY2GUvX2ubxiwXHgSwMNoJCk9Ld3hE7i-e7w5Hj82EvA/exec',
-        allowedDomains: null
-    };
-    </script>
-    <script src="../../../_shared/submission-tracker.js?v=4"></script>
 </head>
-<body>
-
-    <!-- Auth Gate -->
-    <div id="auth-gate"></div>
+<body data-quiz-id="day-3">
 
     <!-- Navigation -->
     <nav class="global-nav">
@@ -1275,37 +1257,10 @@
             }
             document.getElementById('results-message').textContent = message;
 
-            // Submit to tracking backend
-            if (window.SubmissionTracker) {
-                const letters = ['A', 'B', 'C', 'D'];
-                SubmissionTracker.submitQuiz({
-                    score: correct,
-                    total: selectedQuestions.length,
-                    questions: selectedQuestions.map((q, i) => {
-                        const card = document.querySelector(`[data-question="${i + 1}"]`);
-                        const selectedInput = card.querySelector('input:checked');
-                        const selectedIdx = selectedInput ? parseInt(selectedInput.value) : -1;
-                        const correctIdx = q.correctShuffled;
-                        const options = card.querySelectorAll('.option-text');
-                        return {
-                            question: q.question,
-                            selected: options[selectedIdx] ? options[selectedIdx].textContent.trim() : 'N/A',
-                            correct: options[correctIdx] ? options[correctIdx].textContent.trim() : 'N/A',
-                            isCorrect: selectedIdx === correctIdx
-                        };
-                    })
-                });
-            }
-        }
-
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            initQuiz();
-            if (window.SubmissionTracker) {
-                SubmissionTracker.init();
-            }
-        });
+        document.addEventListener('DOMContentLoaded', initQuiz);
     </script>
 
+    <script src="../../../_shared/quiz-firebase.js"></script>
 </body>
 </html>

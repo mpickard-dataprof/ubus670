@@ -648,26 +648,8 @@
             }
         }
     </style>
-
-    <!-- Submission Tracking -->
-    <link rel="stylesheet" href="../../../_shared/submission-tracker.css?v=4">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script>
-    window.SUBMISSION_CONFIG = {
-        type: 'lab', day: 6, title: 'Day 6 Lab: Red Teaming Beacon\'s Email Triage',
-        maxAttempts: 1, labVariant: 'lab',
-        googleClientId: '237879300598-8s8phtegebb3hslfnrhgsucvi7m8r5ev.apps.googleusercontent.com',
-        appsScriptUrl: 'https://script.google.com/macros/s/AKfycbxP09xG_dp7QZN9vbQ6VVBp-DIY2GUvX2ubxiwXHgSwMNoJCk9Ld3hE7i-e7w5Hj82EvA/exec',
-        allowedDomains: null
-    };
-    </script>
-    <script src="../../../_shared/submission-tracker.js?v=4"></script>
 </head>
-<body>
-
-    <!-- Auth Gate -->
-    <div id="auth-gate"></div>
+<body data-lab-id="day-6">
 
     <!-- Navigation -->
     <nav class="global-nav">
@@ -1883,5 +1865,6 @@ Email 3: [describe] - Classified as ___, urgency ___. Correct? ___"></textarea>
         window.submitLab = submitLab;
     </script>
 
+    <script src="../../../_shared/lab-firebase.js"></script>
 </body>
 </html>
