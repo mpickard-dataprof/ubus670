@@ -308,7 +308,7 @@ async function qfSaveAttempt(score, totalQuestions) {
     totalQuestions,
     percentage,
     verificationCode,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    timestamp: new Date().toISOString(),
     questionTopics
   };
 
@@ -325,7 +325,8 @@ async function qfSaveAttempt(score, totalQuestions) {
       attempts: newAttempts,
       bestScore,
       bestPercentage,
-      attemptsUsed: attemptNumber
+      attemptsUsed: attemptNumber,
+      lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
     }, { merge: true });
 
     qfAttemptsUsed = attemptNumber;
