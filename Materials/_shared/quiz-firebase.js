@@ -194,7 +194,7 @@ function qfShowQuizContent() {
 // ─── Auth Handlers ──────────────────────────────────────────────────────────
 async function qfSignIn() {
   const provider = new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({ hd: 'students.niu.edu' });
+  provider.setCustomParameters({ hd: 'niu.edu' });
 
   try {
     const result = await qfAuth.signInWithPopup(provider);
@@ -245,6 +245,9 @@ async function qfOnAuthChanged(user) {
     qfAttempts = [];
     qfRemoveLockedMsg();
     qfRemoveAttemptsUI();
+    // Hide results panel if it was showing (prevents verification code exposure after sign-out)
+    const results = document.getElementById('results');
+    if (results) results.classList.remove('show');
     qfInjectSignInGate();
   }
 }
@@ -296,44 +299,57 @@ async function qfSaveAttempt(score, totalQuestions) {
   const ref = qfGetDocRef();
   if (!ref) return null;
 
-  const attemptNumber = qfAttemptsUsed + 1;
-  const percentage = Math.round((score / totalQuestions) * 100);
-  const verificationCode = qfGenerateVerificationCode(attemptNumber, score);
-
-  const questionTopics = (window.selectedQuestions || []).map(q => q.topic || 'unknown');
-
-  const attempt = {
-    attemptNumber,
-    score,
-    totalQuestions,
-    percentage,
-    verificationCode,
-    timestamp: new Date().toISOString(),
-    questionTopics
-  };
-
-  const newAttempts = [...qfAttempts, attempt];
-  const bestScore = Math.max(score, ...qfAttempts.map(a => a.score));
-  const bestPercentage = Math.round((bestScore / totalQuestions) * 100);
-
   try {
-    await ref.set({
-      userId: qfUser.uid,
-      email: qfUser.email,
-      displayName: qfUser.displayName || '',
-      quizId: qfQuizId,
-      attempts: newAttempts,
-      bestScore,
-      bestPercentage,
-      attemptsUsed: attemptNumber,
-      lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
+    const result = await qfDb.runTransaction(async (tx) => {
+      const snap = await tx.get(ref);
+      const data = snap.exists ? snap.data() : { attempts: [], attemptsUsed: 0 };
 
-    qfAttemptsUsed = attemptNumber;
-    qfAttempts = newAttempts;
-    return { verificationCode, attemptNumber, percentage };
+      // Server-side attempt limit enforcement
+      if (data.attemptsUsed >= QF_MAX_ATTEMPTS) {
+        throw new Error('max_attempts_reached');
+      }
+
+      const attemptNumber = data.attemptsUsed + 1;
+      const percentage = Math.round((score / totalQuestions) * 100);
+      const verificationCode = qfGenerateVerificationCode(attemptNumber, score);
+
+      const attempt = {
+        attemptNumber,
+        score,
+        totalQuestions,
+        percentage,
+        verificationCode,
+        timestamp: new Date().toISOString()
+      };
+
+      const newAttempts = [...(data.attempts || []), attempt];
+      const bestScore = Math.max(score, ...(data.attempts || []).map(a => a.score));
+      const bestPercentage = Math.round((bestScore / totalQuestions) * 100);
+
+      tx.set(ref, {
+        userId: qfUser.uid,
+        email: qfUser.email,
+        displayName: qfUser.displayName || '',
+        quizId: qfQuizId,
+        attempts: newAttempts,
+        bestScore,
+        bestPercentage,
+        attemptsUsed: attemptNumber,
+        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      return { verificationCode, attemptNumber, percentage, newAttempts };
+    });
+
+    qfAttemptsUsed = result.attemptNumber;
+    qfAttempts = result.newAttempts;
+    return result;
   } catch (err) {
-    console.error('[quiz-firebase] Failed to save attempt:', err);
+    if (err.message === 'max_attempts_reached') {
+      console.warn('[quiz-firebase] Max attempts reached.');
+    } else {
+      console.error('[quiz-firebase] Failed to save attempt:', err);
+    }
     return null;
   }
 }
@@ -482,17 +498,26 @@ async function qfShowResultsWrapper() {
   // If not signed in, no tracking
   if (!qfUser) return;
 
-  // Get score from quiz globals
-  const score = window.correct || 0;
-  const total = (window.selectedQuestions || []).length || 10;
+  // Don't save if already at max attempts (prevents multi-tab bypass)
+  if (qfAttemptsUsed >= QF_MAX_ATTEMPTS) return;
 
-  // Save attempt to Firestore
-  const result = await qfSaveAttempt(score, total);
-  if (!result) return;
+  // Read score from DOM — quiz variables use `let` so aren't on `window`
+  const scoreText = document.getElementById('final-score')?.textContent || '';
+  const parts = scoreText.split('/');
+  const score = parseInt(parts[0], 10) || 0;
+  const total = parseInt(parts[1], 10) || 10;
 
-  qfInjectResultsExtras(result);
-  qfUpdateAttemptsUI();
-  qfUpdateRetryButtonAfterResults();
+  try {
+    // Save attempt to Firestore
+    const result = await qfSaveAttempt(score, total);
+    if (!result) return;
+
+    qfInjectResultsExtras(result);
+    qfUpdateAttemptsUI();
+    qfUpdateRetryButtonAfterResults();
+  } catch (err) {
+    console.error('[quiz-firebase] Failed to save/display results:', err);
+  }
 }
 
 function qfInjectResultsExtras(result) {
