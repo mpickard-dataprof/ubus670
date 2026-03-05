@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UBUS 670: Day 5 - Google AI Studio</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../_shared/styles.css">
+
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #f5f5f5;
+            margin: 0;
+        }
+
+        /* ============================================
+           NAVIGATION WITH BREADCRUMB
+           ============================================ */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
+            color: white;
+            padding: 70px 40px;
+        }
+        .hero-content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 0 15px;
+            letter-spacing: -1px;
+        }
+        .hero .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin: 0 0 20px;
+        }
+        .hero .meta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .hero .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .main-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* ============================================
+           OBJECTIVES BOX
+           ============================================ */
+        .objectives {
+            background: white;
+            padding: 35px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-left: 6px solid #1D428A;
+            margin: -40px 0 40px;
+            position: relative;
+        }
+        .objectives h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin: 0 0 20px;
+        }
+        .objectives ul {
+            margin: 0;
+            padding-left: 25px;
+        }
+        .objectives li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .objectives li strong {
+            color: #C8102E;
+        }
+
+        /* ============================================
+           CASE STUDY BANNER
+           ============================================ */
+        .case-study {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white;
+            padding: 35px 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .case-study .icon {
+            font-size: 3.5rem;
+            flex-shrink: 0;
+        }
+        .case-study h3 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 8px;
+            font-size: 1.4rem;
+        }
+        .case-study p {
+            margin: 0;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           MODULE CARDS
+           ============================================ */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+        @media (max-width: 900px) {
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+        .module-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            border-color: #e0e0e0;
+        }
+
+        .module-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .module-card .time {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #666;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 12px;
+        }
+
+        .module-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            margin: 0 0 10px;
+            color: #222;
+        }
+
+        .module-card p {
+            color: #666;
+            line-height: 1.6;
+            margin: 0 0 20px;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .module-card .cta {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #C8102E;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .module-card .cta::after {
+            content: '\2192';
+            transition: transform 0.2s;
+        }
+        .module-card:hover .cta::after {
+            transform: translateX(5px);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="../../../index.html">Week 2</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Day 5</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill active">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="quiz.html" class="nav-pill">Quiz</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Google AI Studio</h1>
+            <p class="subtitle">Day 5: Configuring AI for Business &mdash; Parameters, System Prompts, and Costs</p>
+            <div class="meta">
+                <span class="meta-item">&#x1F4C5; Wednesday, March 18, 2026</span>
+                <span class="meta-item">&#x23F1;&#xFE0F; 4 hours</span>
+                <span class="meta-item">&#x1F6E0;&#xFE0F; Google AI Studio (free tier)</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <!-- Learning Objectives -->
+        <section class="objectives">
+            <h2>Today's Learning Objectives</h2>
+            <ul>
+                <li><strong>Configure</strong> model parameters (temperature, top-p, top-k, max output tokens) and explain their effect on AI output</li>
+                <li><strong>Write</strong> effective system prompts that define consistent AI behavior for a business use case</li>
+                <li><strong>Estimate</strong> token costs for a real business deployment scenario</li>
+                <li><strong>Build</strong> a reusable AI configuration in Google AI Studio for Beacon's email triage</li>
+            </ul>
+        </section>
+
+        <!-- Case Study Banner -->
+        <section class="case-study">
+            <span class="icon">&#x1F4E7;</span>
+            <div>
+                <h3>Beacon's Email Triage Challenge</h3>
+                <p>Beacon's customer service team is drowning in 200+ emails daily. Today you'll build an AI-powered triage system that classifies urgency, drafts responses, and costs pennies. Welcome to the business side of AI.</p>
+            </div>
+        </section>
+
+        <!-- Module Cards -->
+        <section class="module-grid">
+
+            <a href="lecture.html" class="module-card">
+                <span class="icon">&#x1F3A4;</span>
+                <span class="time">~60 minutes</span>
+                <h3>Lecture: The AI Control Panel</h3>
+                <p>Interactive presentation covering Google AI Studio, model parameters (temperature, top-p, top-k), system prompts as "AI job descriptions," and token economics for business deployment.</p>
+                <span class="cta">Start Lecture</span>
+            </a>
+
+            <a href="lab.html" class="module-card">
+                <span class="icon">&#x1F9EA;</span>
+                <span class="time">~90-120 minutes</span>
+                <h3>Lab: Beacon's Email Triage System</h3>
+                <p>Hands-on exercise: Write system prompts for email classification, tune parameters for consistency, calculate token costs, and build a complete AI configuration.</p>
+                <span class="cta">Start Lab</span>
+            </a>
+
+            <a href="quiz.html" class="module-card">
+                <span class="icon">&#x2713;</span>
+                <span class="time">~15 minutes</span>
+                <h3>Knowledge Check</h3>
+                <p>Test your understanding of AI Studio, model parameters, system prompts, and token economics with immediate feedback on each question.</p>
+                <span class="cta">Take Quiz</span>
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Northern Illinois University &mdash; UBUS 670: AI for Business Leaders</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,592 @@
+/**
+ * UBUS 670 - Base Styles
+ * Based on NIU Communication Standards
+ * https://www.niu.edu/communication-standards/visual/
+ */
+
+/* ============================================
+   CSS CUSTOM PROPERTIES (Design Tokens)
+   ============================================ */
+
+:root {
+  /* Primary Colors */
+  --niu-red: #C8102E;
+  --niu-black: #000000;
+  --niu-gray: #A5A7A8;
+  --niu-white: #FFFFFF;
+
+  /* Secondary Colors */
+  --niu-orange: #E35205;
+  --niu-yellow: #FEDB00;
+  --niu-lime: #D0DF00;
+  --niu-green: #43B02A;
+  --niu-teal: #00968F;
+  --niu-blue: #00A9E0;
+  --niu-navy: #1D428A;
+
+  /* Semantic Colors */
+  --color-success: var(--niu-green);
+  --color-warning: var(--niu-orange);
+  --color-error: var(--niu-red);
+  --color-info: var(--niu-blue);
+
+  /* Background Colors */
+  --bg-primary: var(--niu-white);
+  --bg-secondary: #f5f5f5;
+  --bg-dark: #1a1a1a;
+  --bg-surface: #fafafa;
+
+  /* Text Colors */
+  --text-primary: var(--niu-black);
+  --text-secondary: #555555;
+  --text-muted: var(--niu-gray);
+  --text-inverse: var(--niu-white);
+
+  /* Typography */
+  --font-headline: 'Montserrat', Arial, sans-serif;
+  --font-body: Georgia, 'Times New Roman', serif;
+  --font-mono: 'Fira Code', 'Consolas', 'Monaco', monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 2rem;      /* 32px */
+  --text-4xl: 2.5rem;    /* 40px */
+
+  /* Font Weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Line Heights */
+  --leading-tight: 1.2;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* Spacing (8px grid) */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* Z-Index Scale */
+  --z-dropdown: 100;
+  --z-modal: 200;
+  --z-tooltip: 300;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: var(--text-4xl);
+}
+
+h2 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-semibold);
+}
+
+h3 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+}
+
+h4 {
+  font-size: var(--text-xl);
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+}
+
+a {
+  color: var(--niu-blue);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--niu-navy);
+  text-decoration: underline;
+}
+
+strong, b {
+  font-weight: var(--font-semibold);
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+code {
+  background: var(--bg-secondary);
+  padding: 0.2em 0.4em;
+  border-radius: var(--radius-sm);
+}
+
+pre {
+  background: var(--bg-dark);
+  color: var(--text-inverse);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* ============================================
+   LISTS
+   ============================================ */
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  padding-left: var(--space-6);
+}
+
+li {
+  margin-bottom: var(--space-2);
+}
+
+li::marker {
+  color: var(--niu-red);
+}
+
+/* ============================================
+   LAYOUT UTILITIES
+   ============================================ */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.section {
+  padding: var(--space-12) 0;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 { gap: var(--space-2); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* ============================================
+   COMPONENTS: CARDS
+   ============================================ */
+
+.card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+}
+
+.card-accent {
+  border-left: 4px solid var(--niu-red);
+}
+
+.card-header {
+  font-family: var(--font-headline);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--space-4);
+}
+
+/* ============================================
+   COMPONENTS: BUTTONS
+   ============================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-headline);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary {
+  background: var(--niu-red);
+  color: var(--text-inverse);
+  border-color: var(--niu-red);
+}
+
+.btn-primary:hover {
+  background: #a00d24;
+  border-color: #a00d24;
+  text-decoration: none;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--niu-red);
+  border-color: var(--niu-red);
+}
+
+.btn-secondary:hover {
+  background: var(--niu-red);
+  color: var(--text-inverse);
+  text-decoration: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--niu-gray);
+}
+
+.btn-ghost:hover {
+  background: var(--bg-secondary);
+  text-decoration: none;
+}
+
+/* ============================================
+   COMPONENTS: NIU BRAND FRAMES
+   ============================================ */
+
+/* Highlight Frame: Black bg + Red border */
+.highlight-frame {
+  background: var(--niu-black);
+  border: 4px solid var(--niu-red);
+  color: var(--text-inverse);
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+}
+
+.highlight-frame h1,
+.highlight-frame h2,
+.highlight-frame h3,
+.highlight-frame h4 {
+  color: var(--text-inverse);
+}
+
+/* Shield Frame: Gray border + White bg */
+.shield-frame {
+  background: var(--bg-primary);
+  border: 3px solid var(--niu-gray);
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+}
+
+/* Key Takeaway Box */
+.takeaway {
+  background: linear-gradient(135deg, var(--niu-red) 0%, #a00d24 100%);
+  color: var(--text-inverse);
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  margin: var(--space-6) 0;
+}
+
+.takeaway h3,
+.takeaway h4 {
+  color: var(--text-inverse);
+  margin-bottom: var(--space-2);
+}
+
+/* ============================================
+   COMPONENTS: ALERTS & FEEDBACK
+   ============================================ */
+
+.alert {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border-left: 4px solid;
+  margin-bottom: var(--space-4);
+}
+
+.alert-success {
+  background: rgba(67, 176, 42, 0.1);
+  border-color: var(--color-success);
+}
+
+.alert-warning {
+  background: rgba(227, 82, 5, 0.1);
+  border-color: var(--color-warning);
+}
+
+.alert-error {
+  background: rgba(200, 16, 46, 0.1);
+  border-color: var(--color-error);
+}
+
+.alert-info {
+  background: rgba(0, 169, 224, 0.1);
+  border-color: var(--color-info);
+}
+
+/* ============================================
+   COMPONENTS: TABLES
+   ============================================ */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-6);
+}
+
+th, td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  border-bottom: 1px solid var(--niu-gray);
+}
+
+th {
+  font-family: var(--font-headline);
+  font-weight: var(--font-semibold);
+  background: var(--bg-secondary);
+}
+
+tr:hover {
+  background: var(--bg-surface);
+}
+
+/* ============================================
+   COMPONENTS: NAVIGATION
+   ============================================ */
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-4) var(--space-6);
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--niu-gray);
+}
+
+.nav-brand {
+  font-family: var(--font-headline);
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--niu-red);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  font-family: var(--font-headline);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: var(--bg-secondary);
+  text-decoration: none;
+}
+
+.nav-link.active {
+  color: var(--niu-red);
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+:focus-visible {
+  outline: 3px solid var(--niu-blue);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-red { color: var(--niu-red); }
+.text-gray { color: var(--niu-gray); }
+.text-muted { color: var(--text-muted); }
+
+.bg-red { background-color: var(--niu-red); }
+.bg-black { background-color: var(--niu-black); }
+.bg-gray { background-color: var(--bg-secondary); }
+
+.font-headline { font-family: var(--font-headline); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+.font-bold { font-weight: var(--font-bold); }
+.font-semibold { font-weight: var(--font-semibold); }
+
+.mb-0 { margin-bottom: 0; }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+
+.mt-0 { margin-top: 0; }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }
+
+.p-4 { padding: var(--space-4); }
+.p-6 { padding: var(--space-6); }
+.p-8 { padding: var(--space-8); }
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  body {
+    font-size: 12pt;
+    color: #000;
+    background: #fff;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  .card, .highlight-frame, .shield-frame {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+}

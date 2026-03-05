@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UBUS 670: Day 5 - Google AI Studio</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Reveal.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- NIU Theme -->
+    <link rel="stylesheet" href="../../_shared/reveal-theme-niu.css">
+
+    <style>
+        /* ============================================
+           PERSISTENT NAVIGATION & BREADCRUMB
+           ============================================ */
+        .global-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.98);
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-links a {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-links a.primary {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-links a.primary:hover { background: #a00d24; }
+        .nav-links a.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-links a.secondary:hover { background: #e0e0e0; }
+
+        /* Adjust slides to account for fixed nav */
+        .reveal .slides { margin-top: 30px; }
+
+        /* Shrink background images for breathing room.
+           border-box makes padding shrink the content area inward.
+           contain then calculates within the smaller content-box.
+           3% vertical clears nav bar (~45px on 1920w) + bottom margin.
+           Scales proportionally on any screen size.
+           Background-color is unaffected by background-origin. */
+        .reveal .slide-background-content {
+            box-sizing: border-box;
+            padding: 3% 2%;
+            background-origin: content-box;
+        }
+
+        /* ============================================
+           INTERACTIVE CHECKPOINT QUIZ (light style)
+           ============================================ */
+        .quiz-container {
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: left;
+            color: #333;
+        }
+        .quiz-container h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #1D428A;
+        }
+        .quiz-container .quiz-question {
+            font-size: 1.05em;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .quiz-option {
+            padding: 18px 22px;
+            background: #ffffff;
+            border: 2px solid #d0d5dd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            color: #333;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .quiz-option:hover {
+            border-color: #1D428A;
+            background: #f0f4fa;
+        }
+        .quiz-option.correct {
+            border-color: #43B02A;
+            background: rgba(67, 176, 42, 0.12);
+            color: #2d7a1e;
+        }
+        .quiz-option.incorrect {
+            border-color: #C8102E;
+            background: rgba(200, 16, 46, 0.12);
+            color: #a00d24;
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct-fb {
+            background: rgba(67, 176, 42, 0.1);
+            color: #2d7a1e;
+            border: 1px solid rgba(67, 176, 42, 0.3);
+        }
+        .quiz-feedback.incorrect-fb {
+            background: rgba(200, 16, 46, 0.1);
+            color: #a00d24;
+            border: 1px solid rgba(200, 16, 46, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Persistent Navigation -->
+    <div class="global-nav">
+        <div class="breadcrumb">
+            <a href="index.html">Day 5</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Lecture</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="secondary">Dashboard</a>
+            <a href="lab.html" class="secondary">Lab</a>
+            <a href="quiz.html" class="secondary">Quiz</a>
+            <a href="day5-lecture.pdf" class="primary" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title — Google AI Studio: The AI Control Panel -->
+            <section data-background-image="images/slide-01.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Welcome to Day 5. You've been talking to AI for four days. Today you learn to configure it. We're moving from the showroom to the workshop — opening up the hood on Google AI Studio to control parameters, write system prompts, and understand token economics. By the end of today, you'll be an AI Configurer, not just a user.</aside>
+            </section>
+
+            <!-- Slide 2: The Showroom vs. The Workshop -->
+            <section data-background-image="images/slide-02.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Left side: Gemini Chat — the showroom. Simple chat interface, hidden parameters, no cost visibility. Right side: AI Studio — the workshop. Full parameter controls, custom system prompts, real-time token counter, and export to code. You've been buying cars in the showroom. Today, we open the hood. The key differences: AI Studio exposes temperature, top-p, top-k, max output tokens, and lets you write persistent system instructions.</aside>
+            </section>
+
+            <!-- Slide 3: The Configurer's Role — User → Configurer → Builder Pyramid -->
+            <section data-background-image="images/slide-03.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The AI skill pyramid. At the bottom: Users who type prompts into chatbots. In the middle: Configurers who set system prompts and parameters — that's today's goal. At the top: Builders who write code and deploy. Day 5 moves you from User to Configurer. You won't need to write code, but you will control the settings that determine how AI behaves in your organization. To lead in an AI-enabled org, you must be more than a User.</aside>
+            </section>
+
+            <!-- Slide 4: The Cockpit Layout — AI Studio Interface -->
+            <section data-background-image="images/slide-04.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The AI Studio interface has three key zones, like a cockpit. Top of central workspace: System Instructions — the rules that govern every response. Center: Chat Area — the testing ground where you send messages and see results. Right panel: Run Settings — temperature, top-p, top-k, max output tokens, and the real-time token counter. The model selector sits at the top of the page. When you open AI Studio in the lab, orient yourself to these three zones first.</aside>
+            </section>
+
+            <!-- Slide 5: Temperature — The Creativity Dial -->
+            <section data-background-image="images/slide-05.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Temperature is the most important parameter you'll learn today. It controls how random (stochastic) or deterministic the model's output is. The dial goes from 0.0 on the left — predictable, focused — to 1.0 on the right — creative, chaotic. Low temperature means the model always picks the highest-probability next token. High temperature means it's willing to pick less likely tokens, creating more varied and surprising outputs. Think of it as a creativity dial.</aside>
+            </section>
+
+            <!-- Slide 6: The Three Temperature Zones -->
+            <section data-background-image="images/slide-06.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Three zones you need to know. Focused (0.0-0.3): Use for classification, data extraction, triage — tasks where you need the same answer every time. Balanced (0.4-0.7): Use for summaries, professional writing, customer responses — tasks that need some natural variation but still need to be reliable. Creative (0.8-1.0): Use for brainstorming, marketing copy, product naming — tasks where you want variety and surprise. Rule of thumb: the more you need consistency, the lower the temperature. The more you need variety, the higher.</aside>
+            </section>
+
+            <!-- Slide 7: Quiz — What's the Temperature? (Visual matching exercise) -->
+            <section data-background-image="images/slide-07.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Quick visual check. Three tasks, three temperature settings. Extracting invoice numbers and dates from a PDF — that's Low (0.0-0.2), you need exact, consistent extraction every time. Drafting a polite response to a frustrated customer — that's Medium (0.5), you want natural language but professional consistency. Brainstorming names for a new sneaker line — that's High (0.9), you want creative variety. Ask students: which one would you get wrong if you guessed? Most people underestimate how low classification tasks should be set.</aside>
+            </section>
+
+            <!-- Slide 8: Fine Tuning — Top-P and Max Output Tokens -->
+            <section data-background-image="images/slide-08.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Temperature is the big knob. Top-p and max output tokens are the fine adjustments. Top-p (nucleus sampling): limits the pool of token choices. The model considers only the smallest set of tokens whose combined probability exceeds p. Lower top-p = more restricted, higher-probability tokens only. You rarely need to change this. Max output tokens: the cost and length ceiling. Sets how long the response can be. Longer is not always better — it costs more and can reduce quality. Set it to match your use case. For Beacon email classification, ~300 tokens is plenty.</aside>
+            </section>
+
+            <!-- INTERACTIVE: Checkpoint Quiz 1 — Parameter Knowledge -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz1">
+                    <h3>Checkpoint: The Right Temperature</h3>
+                    <p class="quiz-question">Beacon Retail needs to classify 6,000 customer emails per month into categories (Complaint, Order Status, Billing, etc.). The same type of email should <strong>always</strong> get the same classification. What temperature setting should they use?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', true)">A) Low (0.1) — Consistency is critical for reliable routing</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">B) Medium (0.5) — Balance creativity and consistency</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">C) High (0.9) — Let the AI be creative with classifications</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">D) Maximum (1.5) — More randomness means better coverage</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback-correct">
+                        <strong>Correct!</strong> Classification tasks need consistency — the same complaint email should always be classified as "Complaint." Temperature 0.1 ensures deterministic, repeatable outputs. Beacon learned this the hard way: setting temperature to 1.2 for classification caused inconsistent routing, broken SLAs, and angry customers.
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback-incorrect">
+                        <strong>Not quite.</strong> Think about what Beacon needs: the <em>same</em> email should always get the <em>same</em> classification. That means you need low randomness. High temperature creates variety — great for brainstorming, terrible for routing customer complaints. Try again!
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 9: System Prompts — The Job Description -->
+            <section data-background-image="images/slide-09.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Now we move from dials to rules. A user prompt is like a paper airplane — fleeting, one-time, gone after the conversation. A system prompt is like an anchor — persistent, permanent, active for every single response. The key insight: system prompts are the RCTFC framework from Day 2 made persistent. Role, Context, Task, Format, Constraints — all baked into instructions that apply to every message automatically. You write RCTFC once, and it governs every interaction.</aside>
+            </section>
+
+            <!-- Slide 10: Anatomy of a System Prompt — 6 Components -->
+            <section data-background-image="images/slide-10.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Six components radiate from the center — this is the anatomy of a great system prompt. Role: who the AI is. Rules: behavioral constraints. Format: output structure (JSON, categories, etc.). Escalation: when to involve humans. Tone: voice and style. Boundaries: what the AI must NOT do. Think of these as a complete job description for your AI employee. A vague system prompt is like a job description that says 'do stuff.' The more specific you are with each of these six components, the more reliable the AI becomes.</aside>
+            </section>
+
+            <!-- Slide 11: Case Study — Beacon Email Triage System Prompt -->
+            <section data-background-image="images/slide-11.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Here's the Beacon system prompt in action — the most important concrete example in this lecture. Role: You are Beacon Retail Group's email triage specialist. Rules: Classify every email into exactly ONE category — Complaint, Product Question, Order Status, Return/Exchange, Billing, Partnership Inquiry, Feedback/Praise. Format: Always respond with JSON containing Category, Priority, and Summary. Escalation: Legal threats go to Legal Team. Boundaries: Never share internal pricing margins. This is what you'll build in the lab — a complete, production-quality system prompt.</aside>
+            </section>
+
+            <!-- Slide 12: Specificity is Governance — Bad vs. Good Prompts -->
+            <section data-background-image="images/slide-12.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The contrast is dramatic. Left: 'You are a helpful assistant. Answer emails.' — vague, no structure, no boundaries. Risk: hallucinations, safety issues, inconsistent behavior. Right: The full Beacon prompt with all six components. Result: structured, safe, enforced behavior every time. This is why system prompts are governance — they're your first line of AI risk management. Scope control (what topics AI can discuss), escalation paths (when to route to humans), data protection (how to handle PII and sensitive info). In Day 6, we'll test how well these hold up under adversarial conditions.</aside>
+            </section>
+
+            <!-- INTERACTIVE: Checkpoint Quiz 2 — System Prompt Design -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz2">
+                    <h3>Checkpoint: The Missing Component</h3>
+                    <p class="quiz-question">A junior analyst writes this system prompt for Beacon's email triage: <em>"You are Beacon's email assistant. Classify emails into categories. Respond in JSON format."</em> This covers Role, Rules, and Format. Which missing component creates the <strong>biggest business risk</strong>?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">A) Tone — the AI might sound too formal</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', true)">B) Boundaries — the AI could promise refunds or share internal pricing</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">C) Escalation — emails will still get classified correctly</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">D) All components are equally risky to omit</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz2-feedback-correct">
+                        <strong>Correct!</strong> Without boundaries, the AI has no guardrails. It could promise specific refund amounts, share internal pricing or margins, or make up product information. Boundaries define what the AI must NOT do — and that's where the biggest business and legal risks live. Escalation is also critical (legal threats need human routing), but boundaries prevent the AI from actively causing harm in every single response.
+                    </div>
+                    <div class="quiz-feedback" id="quiz2-feedback-incorrect">
+                        <strong>Not quite.</strong> Think about risk: which missing component could cause the AI to actively harm the business? A wrong tone is awkward but manageable. Missing escalation means some emails don't reach the right team. But missing <em>boundaries</em> means the AI has no limits — it could promise anything to any customer. Try again!
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 13: Token Economics — Choosing Your Vehicle -->
+            <section data-background-image="images/slide-13.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Now we talk money. Two models, two price points — like choosing a car. Gemini 3 Flash (the Toyota): reliable, efficient, ~$0.50 input / $3.00 output per 1M tokens. Gemini 3 Pro (the Mercedes): complex reasoning, powerful, ~$2.00 input / $12.00 output per 1M tokens. Pro costs roughly 4x more per token than Flash. The business decision: don't drive the Mercedes to pick up groceries. Use Flash for high-volume, routine tasks like email classification. Save Pro for complex analysis that actually needs the extra reasoning power.</aside>
+            </section>
+
+            <!-- Slide 14: The ROI — Pennies vs. Dollars -->
+            <section data-background-image="images/slide-14.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">This is the emotional centerpiece. Monthly costs for 6,000 emails: Human triage at $600/month (1 hour per day at $20/hour). Gemini 3 Pro at $30/month. Gemini 3 Flash at just $7.50/month. That's roughly 80x savings with Flash. The math: 200 emails/day × 30 days = 6,000/month. Input per email ~700 tokens (400 system prompt + 300 email), output ~300 tokens. Monthly: 4.2M input tokens + 1.8M output tokens. Flash: $2.10 + $5.40 = $7.50. Important disclaimer: these are illustrative costs based on early 2026 rates. Real deployments have additional costs — development, testing, monitoring, human oversight. AI augments human work, it doesn't eliminate it.</aside>
+            </section>
+
+            <!-- Slide 15: Key Takeaways & Next Steps -->
+            <section data-background-image="images/slide-15.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Four takeaways to remember. Dials: Temperature controls creativity — low for consistency, high for variety. Top-p and top-k are fine adjustments. Rules: System prompts are persistent laws — the RCTFC framework set once, with six components: Role, Rules, Format, Escalation, Tone, Boundaries. Money: Flash at $7.50 vs. human at $600 = the business case for AI configuration. Role: You are now a Configurer, not just a user. System prompts + parameters + model choice = your AI configuration toolkit. Next up — Day 6: Red Teaming. We break what we just built. Save the system prompt you build in today's lab — we'll stress-test it on Day 6.</aside>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/notes/notes.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            progress: true,
+            controls: true,
+            controlsTutorial: false,
+            transition: 'slide',
+            plugins: [ RevealNotes ]
+        });
+
+        // Interactive checkpoint quiz handler
+        function checkQuiz(element, quizId, isCorrect) {
+            var container = document.getElementById(quizId);
+            var options = container.querySelectorAll('.quiz-option');
+            var feedbackCorrect = document.getElementById(quizId + '-feedback-correct');
+            var feedbackIncorrect = document.getElementById(quizId + '-feedback-incorrect');
+
+            // Reset all options
+            options.forEach(function(opt) {
+                opt.classList.remove('correct', 'incorrect');
+            });
+
+            // Hide both feedbacks
+            feedbackCorrect.style.display = 'none';
+            feedbackCorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+            feedbackIncorrect.style.display = 'none';
+            feedbackIncorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedbackCorrect.style.display = 'block';
+                feedbackCorrect.classList.add('correct-fb', 'show');
+            } else {
+                element.classList.add('incorrect');
+                feedbackIncorrect.style.display = 'block';
+                feedbackIncorrect.classList.add('incorrect-fb', 'show');
+            }
+        }
+    </script>
+</body>
+</html>
