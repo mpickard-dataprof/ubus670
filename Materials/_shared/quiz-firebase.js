@@ -236,6 +236,12 @@ async function qfOnAuthChanged(user) {
     if (qfAttemptsUsed >= QF_MAX_ATTEMPTS) {
       qfShowLockedMsg();
     } else {
+      // If quiz was already completed this session (sign-out/re-sign-in), reload for fresh state
+      const answeredCards = document.querySelectorAll('.question-card.answered-correct, .question-card.answered-wrong');
+      if (answeredCards.length > 0) {
+        location.reload();
+        return;
+      }
       qfShowQuizContent();
       qfUpdateAttemptsUI();
       qfSetupRetryButton();
@@ -462,7 +468,7 @@ function qfShowLockedMsg() {
   `;
 
   container.appendChild(msg);
-  document.getElementById('qf-locked-pdf-btn').addEventListener('click', qfDownloadPDF);
+  document.getElementById('qf-locked-pdf-btn').addEventListener('click', () => qfDownloadPDF(bestAttempt));
 }
 
 function qfRemoveLockedMsg() {
@@ -576,15 +582,15 @@ function qfUpdateRetryButtonAfterResults() {
 }
 
 // ─── PDF Generation ─────────────────────────────────────────────────────────
-function qfDownloadPDF() {
+function qfDownloadPDF(overrideAttempt) {
   const jspdf = window.jspdf;
   if (!jspdf) {
     alert('PDF library is still loading. Please try again in a moment.');
     return;
   }
 
-  // Use the most recent attempt by default
-  const attempt = qfAttempts[qfAttempts.length - 1];
+  // Use provided attempt (e.g., best attempt from locked screen) or most recent
+  const attempt = overrideAttempt || qfAttempts[qfAttempts.length - 1];
   if (!attempt) return;
 
   const doc = new jspdf.jsPDF();
