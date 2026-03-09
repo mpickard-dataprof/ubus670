@@ -21,7 +21,7 @@ const QF_CONFIG = {
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 const QF_ALLOWED_DOMAINS = ['niu.edu', 'students.niu.edu'];
-const QF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com'];
+const QF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com'];
 const QF_MAX_ATTEMPTS = 3;
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -590,7 +590,10 @@ function qfDownloadPDF(overrideAttempt) {
   }
 
   // Use provided attempt (e.g., best attempt from locked screen) or most recent
-  const attempt = overrideAttempt || qfAttempts[qfAttempts.length - 1];
+  // Guard against MouseEvent being passed when used as a click handler
+  const attempt = (overrideAttempt && !(overrideAttempt instanceof Event))
+    ? overrideAttempt
+    : qfAttempts[qfAttempts.length - 1];
   if (!attempt) return;
 
   const doc = new jspdf.jsPDF();
@@ -704,7 +707,20 @@ function qfDownloadPDF(overrideAttempt) {
 
   // ── Save ──
   const dayNum = qfQuizId.replace(/\D/g, '');
-  doc.save(`day-${dayNum}_quiz_score_report.pdf`);
+  const qfFilename = `day-${dayNum}_quiz_score_report.pdf`;
+  try {
+    doc.save(qfFilename);
+  } catch (e) {
+    // Fallback: open as data URI if blob download fails (Safari/Edge)
+    console.warn('[quiz-firebase] doc.save() failed, using fallback:', e);
+    const pdfData = doc.output('datauristring');
+    const link = document.createElement('a');
+    link.href = pdfData;
+    link.download = qfFilename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   // Button feedback
   const btn = document.getElementById('qf-download-pdf-btn') ||

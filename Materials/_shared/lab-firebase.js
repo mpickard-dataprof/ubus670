@@ -21,7 +21,7 @@ const FIREBASE_CONFIG = {
 // ─── Constants ──────────────────────────────────────────────────────────────
 const AUTOSAVE_DELAY_MS = 2000;
 const ALLOWED_DOMAINS = ['niu.edu', 'students.niu.edu'];
-const ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com'];
+const ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com'];
 
 // ─── State ──────────────────────────────────────────────────────────────────
 let db = null;
@@ -528,7 +528,19 @@ function generateLabPDF() {
 
   // ── Save ──
   const filename = labId ? `${labId.replace(/\s+/g, '_')}_lab_submission.pdf` : 'lab_submission.pdf';
-  doc.save(filename);
+  try {
+    doc.save(filename);
+  } catch (e) {
+    // Fallback: open as data URI if blob download fails (Safari/Edge)
+    console.warn('[lab-firebase] doc.save() failed, using fallback:', e);
+    const pdfData = doc.output('datauristring');
+    const link = document.createElement('a');
+    link.href = pdfData;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   // Update button text
   const dlBtn = document.getElementById('download-pdf-btn');
@@ -538,13 +550,16 @@ function generateLabPDF() {
   }
 }
 
-// ─── Override downloadPDF / generatePDF ─────────────────────────────────────
+// ─── Override downloadPDF / generatePDF / submitLab ─────────────────────────
 function overrideDownloadPDF() {
-  const fnNames = ['downloadPDF', 'generatePDF'];
+  const fnNames = ['downloadPDF', 'generatePDF', 'submitLab'];
 
   for (const fnName of fnNames) {
     if (typeof window[fnName] === 'function') {
+      const orig = window[fnName];
       window[fnName] = function () {
+        // Run the original function (e.g. submitLab's tracking logic)
+        orig.apply(this, arguments);
         // Generate the PDF directly
         generateLabPDF();
 
