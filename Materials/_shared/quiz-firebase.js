@@ -21,7 +21,7 @@ const QF_CONFIG = {
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 const QF_ALLOWED_DOMAINS = ['niu.edu', 'students.niu.edu'];
-const QF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com'];
+const QF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com'];
 const QF_MAX_ATTEMPTS = 3;
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -61,10 +61,38 @@ let qfOrigShowResults = null;
     qfInjectSignInGate();
     qfAuth.onAuthStateChanged(qfOnAuthChanged);
   } catch (err) {
-    console.warn('[quiz-firebase] Init failed — quiz works without tracking.', err);
-    if (qfOrigShowResults) window.showResults = qfOrigShowResults;
-    qfRemoveSignInGate();
-    qfShowQuizContent();
+    console.error('[quiz-firebase] Init failed:', err);
+    // Show error on the gate instead of falling back to unauthenticated access
+    const gate = document.getElementById('qf-sign-in-gate');
+    if (gate) {
+      gate.innerHTML = `
+        <div style="font-size:48px;margin-bottom:20px;">&#9888;&#65039;</div>
+        <h2 style="color:#C8102E;margin:0 0 15px;">Unable to Load Quiz</h2>
+        <p style="color:#666;margin:0 0 25px;max-width:400px;margin-left:auto;margin-right:auto;">
+          The quiz system failed to initialize. Please refresh the page or try a different browser.
+        </p>
+        <button onclick="location.reload()" style="
+          padding:12px 30px;border-radius:8px;border:none;
+          background:#1D428A;color:white;font-weight:600;font-size:15px;
+          cursor:pointer;font-family:'Montserrat',sans-serif;
+        ">Refresh Page</button>
+      `;
+    } else {
+      // Gate wasn't injected yet — inject error directly
+      qfHideQuizContent();
+      const container = document.querySelector('.quiz-container');
+      if (container) {
+        const errDiv = document.createElement('div');
+        errDiv.id = 'qf-sign-in-gate';
+        errDiv.style.cssText = 'background:white;padding:60px 40px;border-radius:12px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-top:30px;font-family:"Montserrat",sans-serif;';
+        errDiv.innerHTML = `
+          <h2 style="color:#C8102E;margin:0 0 15px;">Unable to Load Quiz</h2>
+          <p style="color:#666;">Please refresh the page or try a different browser.</p>
+          <button onclick="location.reload()" style="padding:12px 30px;border-radius:8px;border:none;background:#1D428A;color:white;font-weight:600;font-size:15px;cursor:pointer;">Refresh Page</button>
+        `;
+        container.appendChild(errDiv);
+      }
+    }
   }
 })();
 
@@ -187,8 +215,11 @@ function qfHideQuizContent() {
 function qfShowQuizContent() {
   const progress = document.querySelector('.quiz-progress');
   const questions = document.getElementById('questions-container');
+  const results = document.getElementById('results');
   if (progress) progress.style.display = '';
   if (questions) questions.style.display = '';
+  // Reset results display (may have been set to 'none' on sign-out)
+  if (results) results.style.display = '';
 }
 
 // ─── Auth Handlers ──────────────────────────────────────────────────────────
@@ -200,7 +231,7 @@ async function qfSignIn() {
     const result = await qfAuth.signInWithPopup(provider);
     if (!qfIsAllowedEmail(result.user.email || '')) {
       await qfAuth.signOut();
-      alert('Please sign in with your NIU email address (@niu.edu or @students.niu.edu).');
+      alert('This email is not authorized. Please sign in with your NIU email address (@niu.edu or @students.niu.edu).');
     }
   } catch (err) {
     if (err.code !== 'auth/popup-closed-by-user') {
@@ -251,9 +282,17 @@ async function qfOnAuthChanged(user) {
     qfAttempts = [];
     qfRemoveLockedMsg();
     qfRemoveAttemptsUI();
-    // Hide results panel if it was showing (prevents verification code exposure after sign-out)
+    // Hide results panel and extras (prevents verification code exposure after sign-out)
     const results = document.getElementById('results');
-    if (results) results.classList.remove('show');
+    if (results) {
+      results.classList.remove('show');
+      results.style.display = 'none';
+    }
+    const extras = document.getElementById('qf-results-extras');
+    if (extras) extras.remove();
+    // Disable all question interaction
+    document.querySelectorAll('.option').forEach(o => o.classList.add('disabled'));
+    document.querySelectorAll('.submit-btn').forEach(b => { b.disabled = true; });
     qfInjectSignInGate();
   }
 }
@@ -498,11 +537,14 @@ function qfHandleRetry(e) {
 
 // ─── Show Results Wrapper ───────────────────────────────────────────────────
 async function qfShowResultsWrapper() {
+  // Block results entirely if not signed in
+  if (!qfUser) {
+    alert('You must be signed in to see your quiz results. Please sign in and retake the quiz.');
+    return;
+  }
+
   // Call original showResults
   if (qfOrigShowResults) qfOrigShowResults();
-
-  // If not signed in, no tracking
-  if (!qfUser) return;
 
   // Don't save if already at max attempts (prevents multi-tab bypass)
   if (qfAttemptsUsed >= QF_MAX_ATTEMPTS) return;
@@ -590,7 +632,10 @@ function qfDownloadPDF(overrideAttempt) {
   }
 
   // Use provided attempt (e.g., best attempt from locked screen) or most recent
-  const attempt = overrideAttempt || qfAttempts[qfAttempts.length - 1];
+  // Guard against MouseEvent being passed when used as a click handler
+  const attempt = (overrideAttempt && !(overrideAttempt instanceof Event))
+    ? overrideAttempt
+    : qfAttempts[qfAttempts.length - 1];
   if (!attempt) return;
 
   const doc = new jspdf.jsPDF();
@@ -704,7 +749,20 @@ function qfDownloadPDF(overrideAttempt) {
 
   // ── Save ──
   const dayNum = qfQuizId.replace(/\D/g, '');
-  doc.save(`day-${dayNum}_quiz_score_report.pdf`);
+  const qfFilename = `day-${dayNum}_quiz_score_report.pdf`;
+  try {
+    doc.save(qfFilename);
+  } catch (e) {
+    // Fallback: open as data URI if blob download fails (Safari/Edge)
+    console.warn('[quiz-firebase] doc.save() failed, using fallback:', e);
+    const pdfData = doc.output('datauristring');
+    const link = document.createElement('a');
+    link.href = pdfData;
+    link.download = qfFilename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   // Button feedback
   const btn = document.getElementById('qf-download-pdf-btn') ||

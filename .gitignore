@@ -36,3 +36,4 @@ build/
 codev/.update-hashes.json
 
 Materials/_tools/.venv/
+.Rproj.user

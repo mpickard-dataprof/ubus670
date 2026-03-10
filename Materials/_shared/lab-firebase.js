@@ -21,7 +21,7 @@ const FIREBASE_CONFIG = {
 // ─── Constants ──────────────────────────────────────────────────────────────
 const AUTOSAVE_DELAY_MS = 2000;
 const ALLOWED_DOMAINS = ['niu.edu', 'students.niu.edu'];
-const ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com'];
+const ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com'];
 
 // ─── State ──────────────────────────────────────────────────────────────────
 let db = null;
@@ -45,13 +45,44 @@ let listenersAttached = false;
     await loadSDKs();
     initFirebase();
     injectAuthUI();
+    injectSignInGate();
     overrideDownloadPDF();
     auth.onAuthStateChanged(
       handleAuthStateChanged,
       (err) => console.error('[lab-firebase] Auth listener error:', err)
     );
   } catch (err) {
-    console.warn('[lab-firebase] Firebase init failed — labs will work without save/resume.', err);
+    console.error('[lab-firebase] Firebase init failed:', err);
+    // Show error on the gate instead of falling back to unauthenticated access
+    hideLabContent();
+    const gate = document.getElementById('lab-sign-in-gate');
+    if (gate) {
+      gate.innerHTML = `
+        <div style="font-size:48px;margin-bottom:20px;">&#9888;&#65039;</div>
+        <h2 style="color:#C8102E;margin:0 0 15px;">Unable to Load Lab</h2>
+        <p style="color:#666;margin:0 0 25px;max-width:400px;margin-left:auto;margin-right:auto;">
+          The lab system failed to initialize. Please refresh the page or try a different browser.
+        </p>
+        <button onclick="location.reload()" style="
+          padding:12px 30px;border-radius:8px;border:none;
+          background:#1D428A;color:white;font-weight:600;font-size:15px;
+          cursor:pointer;font-family:'Montserrat',sans-serif;
+        ">Refresh Page</button>
+      `;
+    } else {
+      const container = document.querySelector('.lab-container');
+      if (container) {
+        const errDiv = document.createElement('div');
+        errDiv.id = 'lab-sign-in-gate';
+        errDiv.style.cssText = 'background:white;padding:60px 40px;border-radius:12px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-top:30px;font-family:"Montserrat",sans-serif;';
+        errDiv.innerHTML = `
+          <h2 style="color:#C8102E;margin:0 0 15px;">Unable to Load Lab</h2>
+          <p style="color:#666;">Please refresh the page or try a different browser.</p>
+          <button onclick="location.reload()" style="padding:12px 30px;border-radius:8px;border:none;background:#1D428A;color:white;font-weight:600;font-size:15px;cursor:pointer;">Refresh Page</button>
+        `;
+        container.prepend(errDiv);
+      }
+    }
   }
 })();
 
@@ -117,6 +148,54 @@ function injectAuthUI() {
   document.getElementById('firebase-sign-out-btn').addEventListener('click', signOut);
 }
 
+// ─── Sign-In Gate ───────────────────────────────────────────────────────────
+function injectSignInGate() {
+  const container = document.querySelector('.lab-container');
+  if (!container || document.getElementById('lab-sign-in-gate')) return;
+
+  hideLabContent();
+
+  const gate = document.createElement('div');
+  gate.id = 'lab-sign-in-gate';
+  gate.style.cssText = `
+    background: white; padding: 60px 40px; border-radius: 12px;
+    text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin-top: 30px; font-family: 'Montserrat', sans-serif;
+  `;
+  gate.innerHTML = `
+    <div style="font-size:48px;margin-bottom:20px;">&#128274;</div>
+    <h2 style="color:#1D428A;margin:0 0 15px;">Sign In Required</h2>
+    <p style="color:#666;margin:0 0 25px;max-width:400px;margin-left:auto;margin-right:auto;">
+      Sign in with your NIU email to start this lab. Your progress will be saved automatically.
+    </p>
+    <button id="lab-gate-sign-in-btn" style="
+      padding:12px 30px;border-radius:8px;border:none;
+      background:#1D428A;color:white;font-weight:600;font-size:15px;
+      cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.2s;
+    ">Sign In with Google</button>
+  `;
+
+  container.prepend(gate);
+  document.getElementById('lab-gate-sign-in-btn').addEventListener('click', signIn);
+}
+
+function removeSignInGate() {
+  const gate = document.getElementById('lab-sign-in-gate');
+  if (gate) gate.remove();
+}
+
+function hideLabContent() {
+  document.querySelectorAll('.lab-section').forEach(s => { s.style.display = 'none'; });
+  const progressTracker = document.querySelector('.progress-tracker');
+  if (progressTracker) progressTracker.style.display = 'none';
+}
+
+function showLabContent() {
+  document.querySelectorAll('.lab-section').forEach(s => { s.style.display = ''; });
+  const progressTracker = document.querySelector('.progress-tracker');
+  if (progressTracker) progressTracker.style.display = '';
+}
+
 // ─── Save Status Indicator ──────────────────────────────────────────────────
 function showSaveStatus(message, isError = false) {
   let indicator = document.getElementById('firebase-save-status');
@@ -153,7 +232,7 @@ async function signIn() {
 
     if (!isAllowedEmail(email)) {
       await auth.signOut();
-      alert('Please sign in with your NIU email address (@niu.edu or @students.niu.edu).');
+      alert('This email is not authorized. Please sign in with your NIU email address (@niu.edu or @students.niu.edu).');
       return;
     }
   } catch (err) {
@@ -183,13 +262,20 @@ function handleAuthStateChanged(user) {
   currentUser = user;
   updateAuthUI(user);
 
-  // Always reset UI state on auth change (handles sign-out and user switch)
-  unlockLab();
-
   if (user) {
+    // Reset UI state (handles user switch — clear any previous submitted banner)
+    unlockLab();
+    removeSignInGate();
+    showLabContent();
     loadLabState();
   } else {
     isSubmitted = false;
+    // Disable all inputs so work can't be done while signed out
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.disabled = true; });
+    document.querySelectorAll('.reflection-area textarea').forEach(ta => { ta.readOnly = true; });
+    const dlBtn = document.getElementById('download-pdf-btn');
+    if (dlBtn) { dlBtn.disabled = true; }
+    injectSignInGate();
   }
 }
 
@@ -278,7 +364,13 @@ async function loadLabState() {
     showSaveStatus('Progress restored');
   } catch (err) {
     console.error('[lab-firebase] Failed to load state:', err);
-    showSaveStatus('Failed to load saved progress', true);
+    if (err.code === 'permission-denied' || (err.message && err.message.includes('permissions'))) {
+      showSaveStatus('Cloud save unavailable — your work will be saved when you submit', true);
+    } else {
+      showSaveStatus('Failed to load saved progress', true);
+    }
+    // Still let the student work and attach listeners so saves can retry
+    attachAutoSaveListeners();
   }
 }
 
@@ -528,7 +620,19 @@ function generateLabPDF() {
 
   // ── Save ──
   const filename = labId ? `${labId.replace(/\s+/g, '_')}_lab_submission.pdf` : 'lab_submission.pdf';
-  doc.save(filename);
+  try {
+    doc.save(filename);
+  } catch (e) {
+    // Fallback: open as data URI if blob download fails (Safari/Edge)
+    console.warn('[lab-firebase] doc.save() failed, using fallback:', e);
+    const pdfData = doc.output('datauristring');
+    const link = document.createElement('a');
+    link.href = pdfData;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   // Update button text
   const dlBtn = document.getElementById('download-pdf-btn');
@@ -538,13 +642,16 @@ function generateLabPDF() {
   }
 }
 
-// ─── Override downloadPDF / generatePDF ─────────────────────────────────────
+// ─── Override downloadPDF / generatePDF / submitLab ─────────────────────────
 function overrideDownloadPDF() {
-  const fnNames = ['downloadPDF', 'generatePDF'];
+  const fnNames = ['downloadPDF', 'generatePDF', 'submitLab'];
 
   for (const fnName of fnNames) {
     if (typeof window[fnName] === 'function') {
+      const orig = window[fnName];
       window[fnName] = function () {
+        // Run the original function (e.g. submitLab's tracking logic)
+        orig.apply(this, arguments);
         // Generate the PDF directly
         generateLabPDF();
 
