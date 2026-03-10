@@ -270,7 +270,7 @@ Preferred Qualifications:
             <h3>What the Parser Does</h3>
             <p>The Parser takes <strong>raw resume text</strong> and extracts structured data. It does NOT evaluate quality &mdash; it just organizes the information.</p>
 
-            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? '' : 'none'">
+            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
                 Scaffold Prompt (click to expand)
             </div>
             <div class="collapsible-content">
@@ -346,7 +346,7 @@ IMPORTANT:
             <h3>What the Evaluator Does</h3>
             <p>The Evaluator takes <strong>Parser output + the job posting</strong> and scores each candidate. This is where your team's judgment matters most.</p>
 
-            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? '' : 'none'">
+            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
                 Output Format Template (click to expand) &mdash; <em>You write the scoring criteria!</em>
             </div>
             <div class="collapsible-content">
@@ -509,7 +509,7 @@ The job posting for reference:
 
         <!-- Self-Check Answer Key -->
         <div class="lab-section">
-            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? '' : 'none'">
+            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
                 Self-Check Answer Key (expand after testing)
             </div>
             <div class="collapsible-content">
@@ -577,7 +577,7 @@ The job posting for reference:
             const card = document.createElement('div');
             card.className = 'resume-card';
             card.innerHTML = `
-                <div class="resume-card-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? '' : 'none'">
+                <div class="resume-card-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
                     <span class="rid">${r.id}</span>
                     <span class="rname">${r.name}</span>
                     <button class="rcopy" data-pcopy="${r.id}" onclick="event.stopPropagation(); copyResumeText('${r.id}')">Copy</button>

@@ -341,7 +341,7 @@ function cfScoreTop10(sub, gt) {
   // Position accuracy bonus for top 3
   let exactTop3 = 0;
   for (let rank = 1; rank <= 3; rank++) {
-    const subEntry = (sub.top_10_hire || []).find(e => e.rank === rank);
+    const subEntry = (sub.top_10_hire || []).find(e => Number(e.rank) === rank);
     if (subEntry && subEntry.id && subEntry.id.toUpperCase() === gt.t3[String(rank)].toUpperCase()) {
       exactTop3++;
     }
@@ -597,6 +597,12 @@ async function cfSubmitResults() {
   const submission = JSON.parse(previewEl.dataset.validJson);
 
   try {
+    // Check if competition is frozen
+    const settingsSnap = await cfDb.collection('settings').doc(CF_SETTINGS_DOC).get();
+    if (settingsSnap.exists && settingsSnap.data().competitionFrozen) {
+      throw new Error('Competition is closed. No more submissions are accepted.');
+    }
+
     const result = await cfDb.runTransaction(async (tx) => {
       const ref = cfDb.collection(CF_COLLECTION).doc(cfTeamId);
       const snap = await tx.get(ref);
@@ -782,6 +788,12 @@ function cfShowAdminPanel() {
         font-family:Montserrat,sans-serif;font-size:0.9rem;">
         View All Submissions
       </button>
+      <button onclick="cfToggleFreeze()" id="cf-freeze-btn" style="
+        padding:10px 20px;border:none;border-radius:6px;
+        background:#C8102E;color:white;font-weight:600;cursor:pointer;
+        font-family:Montserrat,sans-serif;font-size:0.9rem;">
+        Freeze Competition
+      </button>
     </div>
     <div id="cf-admin-output" style="margin-top:15px;"></div>
   `;
@@ -801,17 +813,37 @@ async function cfToggleCompetitionSet() {
   }
 }
 
+async function cfToggleFreeze() {
+  try {
+    const ref = cfDb.collection('settings').doc(CF_SETTINGS_DOC);
+    const snap = await ref.get();
+    const current = snap.exists ? (snap.data().competitionFrozen || false) : false;
+    await ref.set({ competitionFrozen: !current }, { merge: true });
+    cfCheckCompetitionVisibility();
+  } catch (err) {
+    console.error('[capstone] Freeze toggle failed:', err);
+  }
+}
+
 async function cfCheckCompetitionVisibility() {
   try {
     const ref = cfDb.collection('settings').doc(CF_SETTINGS_DOC);
     const snap = await ref.get();
-    const visible = snap.exists ? (snap.data().competitionVisible || false) : false;
+    const settings = snap.exists ? snap.data() : {};
+    const visible = settings.competitionVisible || false;
+    const frozen = settings.competitionFrozen || false;
 
     const resumeSection = document.getElementById('cf-competition-resumes');
     if (resumeSection) resumeSection.style.display = visible ? '' : 'none';
 
     const toggleBtn = document.getElementById('cf-toggle-comp-btn');
     if (toggleBtn) toggleBtn.textContent = visible ? 'Hide Competition Set' : 'Show Competition Set';
+
+    const freezeBtn = document.getElementById('cf-freeze-btn');
+    if (freezeBtn) {
+      freezeBtn.textContent = frozen ? 'Unfreeze Competition' : 'Freeze Competition';
+      freezeBtn.style.background = frozen ? '#28a745' : '#C8102E';
+    }
   } catch (err) {
     console.error('[capstone] Visibility check failed:', err);
   }
