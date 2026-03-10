@@ -166,6 +166,11 @@ def build_manifest(questions: list[dict], image_files: list[str]) -> bytes:
     resources = doc.createElement("resources")
     manifest.appendChild(resources)
 
+    # Track which images have already been declared to avoid duplicates.
+    # BB Ultra throws DuplicateFileException if the same image path appears
+    # in multiple <file> elements across the manifest.
+    declared_images: set[str] = set()
+
     for q in questions:
         qid = q["id"]
         filename = f"items/{qid.lower()}.xml"
@@ -179,26 +184,14 @@ def build_manifest(questions: list[dict], image_files: list[str]) -> bytes:
         file_el.setAttribute("href", filename)
         resource.appendChild(file_el)
 
-        # If this question references an image, declare it as a dependency
-        if q.get("image"):
+        # Declare image dependency only on the FIRST question that uses it
+        if q.get("image") and q["image"] not in declared_images:
             dep_file = doc.createElement("file")
             dep_file.setAttribute("href", f"images/{q['image']}")
             resource.appendChild(dep_file)
+            declared_images.add(q["image"])
 
         resources.appendChild(resource)
-
-    # Standalone image resources (optional, some LMS importers expect this)
-    for img_name in sorted(image_files):
-        img_res = doc.createElement("resource")
-        img_res.setAttribute("identifier", f"RES-IMG-{Path(img_name).stem.upper()}")
-        img_res.setAttribute("type", "webcontent")
-        img_res.setAttribute("href", f"images/{img_name}")
-
-        img_file = doc.createElement("file")
-        img_file.setAttribute("href", f"images/{img_name}")
-        img_res.appendChild(img_file)
-
-        resources.appendChild(img_res)
 
     xml_bytes = doc.toprettyxml(indent="  ", encoding="UTF-8")
     # Clean up blank lines
