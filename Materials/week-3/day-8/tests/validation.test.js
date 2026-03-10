@@ -216,6 +216,39 @@ describe('cfValidateSubmission — schema validation', () => {
     assert.equal(result.valid, false);
   });
 
+  it('rejects non-string pattern entries', () => {
+    const result = cfValidateSubmission(validSubmission({
+      patterns: [{ pattern: 'C-08 and C-19 share formatting', candidates: ['C-08', 'C-19'] }]
+    }));
+    assert.equal(result.valid, false);
+    assert.ok(result.error.includes('patterns[0]'));
+  });
+
+  it('rejects duplicate IDs in top_10_hire', () => {
+    const sub = JSON.parse(validSubmission());
+    sub.top_10_hire[1].id = sub.top_10_hire[0].id;
+    const result = cfValidateSubmission(JSON.stringify(sub));
+    assert.equal(result.valid, false);
+    assert.ok(result.error.includes('duplicate'));
+  });
+
+  it('rejects duplicate IDs in bottom_5', () => {
+    const sub = JSON.parse(validSubmission());
+    sub.bottom_5[1].id = sub.bottom_5[0].id;
+    const result = cfValidateSubmission(JSON.stringify(sub));
+    assert.equal(result.valid, false);
+    assert.ok(result.error.includes('duplicate'));
+  });
+
+  it('rejects case-insensitive duplicate IDs (C-01 and c-01)', () => {
+    const sub = JSON.parse(validSubmission());
+    sub.top_10_hire[0].id = 'C-01';
+    sub.top_10_hire[1].id = 'c-01';
+    const result = cfValidateSubmission(JSON.stringify(sub));
+    assert.equal(result.valid, false);
+    assert.ok(result.error.includes('duplicate'));
+  });
+
   it('reports multiple errors at once', () => {
     const result = cfValidateSubmission(JSON.stringify({
       top_10_hire: 'bad',

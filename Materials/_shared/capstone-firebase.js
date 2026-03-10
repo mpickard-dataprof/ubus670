@@ -487,8 +487,11 @@ function cfValidateSubmission(jsonStr) {
   if (!Array.isArray(data.top_10_hire) || data.top_10_hire.length !== 10) {
     errors.push('top_10_hire must be an array of exactly 10 entries');
   } else {
+    const t10Seen = new Set();
     data.top_10_hire.forEach((entry, i) => {
       if (!entry.id || !idPattern.test(entry.id)) errors.push(`top_10_hire[${i}]: invalid id (expected C-XX format)`);
+      else if (t10Seen.has(entry.id.toUpperCase())) errors.push(`top_10_hire[${i}]: duplicate id ${entry.id}`);
+      else t10Seen.add(entry.id.toUpperCase());
       if (entry.rank == null) errors.push(`top_10_hire[${i}]: missing rank`);
       if (!entry.reason) errors.push(`top_10_hire[${i}]: missing reason`);
     });
@@ -497,8 +500,11 @@ function cfValidateSubmission(jsonStr) {
   if (!Array.isArray(data.bottom_5) || data.bottom_5.length !== 5) {
     errors.push('bottom_5 must be an array of exactly 5 entries');
   } else {
+    const b5Seen = new Set();
     data.bottom_5.forEach((entry, i) => {
       if (!entry.id || !idPattern.test(entry.id)) errors.push(`bottom_5[${i}]: invalid id`);
+      else if (b5Seen.has(entry.id.toUpperCase())) errors.push(`bottom_5[${i}]: duplicate id ${entry.id}`);
+      else b5Seen.add(entry.id.toUpperCase());
       if (!entry.reason) errors.push(`bottom_5[${i}]: missing reason`);
     });
   }
@@ -528,6 +534,10 @@ function cfValidateSubmission(jsonStr) {
 
   if (!Array.isArray(data.patterns)) {
     errors.push('patterns must be an array');
+  } else {
+    data.patterns.forEach((entry, i) => {
+      if (typeof entry !== 'string') errors.push(`patterns[${i}]: must be a string, not ${typeof entry}`);
+    });
   }
 
   if (errors.length > 0) {
@@ -583,7 +593,7 @@ async function cfSubmitResults() {
   const submitBtn = document.getElementById('cf-submit-btn');
   if (!previewEl || !previewEl.dataset.validJson || !cfTeamId) return;
 
-  if (submitBtn) submitBtn.disabled = true;
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Submitting...'; }
   const submission = JSON.parse(previewEl.dataset.validJson);
 
   try {
@@ -637,7 +647,7 @@ async function cfSubmitResults() {
 
   } catch (err) {
     alert(err.message || 'Submission failed. Please try again.');
-    if (submitBtn) submitBtn.disabled = false;
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit (uses 1 attempt)'; }
   }
 }
 
