@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 620" font-family="Montserrat, Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrowRight" markerWidth="10" markerHeight="8" refX="5" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#333333"/>
+    </marker>
+    <marker id="arrowRightRed" markerWidth="10" markerHeight="8" refX="5" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#C8102E"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="440" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#1D428A">System Prompt: Six Essential Components</text>
+
+  <!-- Central header bar -->
+  <rect x="180" y="56" width="520" height="36" rx="8" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="1.5"/>
+  <text x="440" y="80" text-anchor="middle" font-size="12" fill="#666666">Every production system prompt should include these six elements</text>
+
+  <!-- ════════════ Row 1 ════════════ -->
+
+  <!-- Box 1: Role (Navy) -->
+  <g transform="translate(40, 110)">
+    <rect x="0" y="0" width="250" height="130" rx="12" fill="#FFFFFF" stroke="#1D428A" stroke-width="2" filter="url(#shadow)"/>
+    <!-- Header band -->
+    <rect x="0" y="0" width="250" height="40" rx="12" fill="#1D428A"/>
+    <rect x="0" y="20" width="250" height="20" fill="#1D428A"/>
+    <!-- Icon -->
+    <circle cx="24" cy="20" r="12" fill="#FFFFFF" opacity="0.2"/>
+    <text x="24" y="25" text-anchor="middle" font-size="14" fill="#FFFFFF">1</text>
+    <text x="42" y="26" font-size="14" font-weight="700" fill="#FFFFFF">Role</text>
+    <!-- Content -->
+    <text x="125" y="68" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">"You are Beacon's</text>
+    <text x="125" y="84" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">Customer Service AI"</text>
+    <!-- Tag -->
+    <rect x="60" y="100" width="130" height="20" rx="4" fill="#E8EDF5"/>
+    <text x="125" y="114" text-anchor="middle" font-size="9" font-weight="600" fill="#1D428A">WHO the model is</text>
+  </g>
+
+  <!-- Box 2: Rules (Teal) -->
+  <g transform="translate(315, 110)">
+    <rect x="0" y="0" width="250" height="130" rx="12" fill="#FFFFFF" stroke="#00968F" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="40" rx="12" fill="#00968F"/>
+    <rect x="0" y="20" width="250" height="20" fill="#00968F"/>
+    <circle cx="24" cy="20" r="12" fill="#FFFFFF" opacity="0.2"/>
+    <text x="24" y="25" text-anchor="middle" font-size="14" fill="#FFFFFF">2</text>
+    <text x="42" y="26" font-size="14" font-weight="700" fill="#FFFFFF">Rules</text>
+    <text x="125" y="68" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">"Never promise</text>
+    <text x="125" y="84" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">refunds over $50"</text>
+    <rect x="48" y="100" width="154" height="20" rx="4" fill="#E5F5F4"/>
+    <text x="125" y="114" text-anchor="middle" font-size="9" font-weight="600" fill="#00968F">CONSTRAINTS it must follow</text>
+  </g>
+
+  <!-- Box 3: Format (Red) -->
+  <g transform="translate(590, 110)">
+    <rect x="0" y="0" width="250" height="130" rx="12" fill="#FFFFFF" stroke="#C8102E" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="40" rx="12" fill="#C8102E"/>
+    <rect x="0" y="20" width="250" height="20" fill="#C8102E"/>
+    <circle cx="24" cy="20" r="12" fill="#FFFFFF" opacity="0.2"/>
+    <text x="24" y="25" text-anchor="middle" font-size="14" fill="#FFFFFF">3</text>
+    <text x="42" y="26" font-size="14" font-weight="700" fill="#FFFFFF">Format</text>
+    <text x="125" y="68" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">"Always respond</text>
+    <text x="125" y="84" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">in JSON format"</text>
+    <rect x="44" y="100" width="162" height="20" rx="4" fill="#FDE8EB"/>
+    <text x="125" y="114" text-anchor="middle" font-size="9" font-weight="600" fill="#C8102E">HOW output is structured</text>
+  </g>
+
+  <!-- ════════════ Row 2 ════════════ -->
+
+  <!-- Box 4: Escalation (Navy) -->
+  <g transform="translate(40, 270)">
+    <rect x="0" y="0" width="250" height="130" rx="12" fill="#FFFFFF" stroke="#1D428A" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="40" rx="12" fill="#1D428A"/>
+    <rect x="0" y="20" width="250" height="20" fill="#1D428A"/>
+    <circle cx="24" cy="20" r="12" fill="#FFFFFF" opacity="0.2"/>
+    <text x="24" y="25" text-anchor="middle" font-size="14" fill="#FFFFFF">4</text>
+    <text x="42" y="26" font-size="14" font-weight="700" fill="#FFFFFF">Escalation</text>
+    <text x="125" y="68" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">"If legal threat detected</text>
+    <text x="125" y="84" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">→ hand off to human"</text>
+    <rect x="40" y="100" width="170" height="20" rx="4" fill="#E8EDF5"/>
+    <text x="125" y="114" text-anchor="middle" font-size="9" font-weight="600" fill="#1D428A">WHEN to transfer control</text>
+  </g>
+
+  <!-- Box 5: Tone (Teal) -->
+  <g transform="translate(315, 270)">
+    <rect x="0" y="0" width="250" height="130" rx="12" fill="#FFFFFF" stroke="#00968F" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="40" rx="12" fill="#00968F"/>
+    <rect x="0" y="20" width="250" height="20" fill="#00968F"/>
+    <circle cx="24" cy="20" r="12" fill="#FFFFFF" opacity="0.2"/>
+    <text x="24" y="25" text-anchor="middle" font-size="14" fill="#FFFFFF">5</text>
+    <text x="42" y="26" font-size="14" font-weight="700" fill="#FFFFFF">Tone</text>
+    <text x="125" y="68" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">"Professional,</text>
+    <text x="125" y="84" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">empathetic"</text>
+    <rect x="38" y="100" width="174" height="20" rx="4" fill="#E5F5F4"/>
+    <text x="125" y="114" text-anchor="middle" font-size="9" font-weight="600" fill="#00968F">PERSONALITY of responses</text>
+  </g>
+
+  <!-- Box 6: Boundaries (Red) -->
+  <g transform="translate(590, 270)">
+    <rect x="0" y="0" width="250" height="130" rx="12" fill="#FFFFFF" stroke="#C8102E" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="40" rx="12" fill="#C8102E"/>
+    <rect x="0" y="20" width="250" height="20" fill="#C8102E"/>
+    <circle cx="24" cy="20" r="12" fill="#FFFFFF" opacity="0.2"/>
+    <text x="24" y="25" text-anchor="middle" font-size="14" fill="#FFFFFF">6</text>
+    <text x="42" y="26" font-size="14" font-weight="700" fill="#FFFFFF">Boundaries</text>
+    <text x="125" y="68" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">"Only discuss orders,</text>
+    <text x="125" y="84" text-anchor="middle" font-size="11" fill="#333333" font-style="italic">returns, store hours"</text>
+    <rect x="36" y="100" width="178" height="20" rx="4" fill="#FDE8EB"/>
+    <text x="125" y="114" text-anchor="middle" font-size="9" font-weight="600" fill="#C8102E">SCOPE of allowed topics</text>
+  </g>
+
+  <!-- ════════════ Bottom Section: Persistence Comparison ════════════ -->
+  <line x1="60" y1="430" x2="820" y2="430" stroke="#E0E0E0" stroke-width="1.5"/>
+
+  <text x="440" y="462" text-anchor="middle" font-size="14" font-weight="700" fill="#333333">System Prompt vs. User Prompt</text>
+
+  <!-- System Prompt bar -->
+  <rect x="60" y="480" width="710" height="44" rx="10" fill="#1D428A" filter="url(#shadow)"/>
+  <text x="80" y="507" font-size="12" font-weight="700" fill="#FFFFFF">System Prompt</text>
+  <!-- Conversation dots -->
+  <circle cx="280" cy="502" r="8" fill="#FFFFFF" opacity="0.25"/>
+  <text x="280" y="506" text-anchor="middle" font-size="8" fill="#FFFFFF">1</text>
+  <line x1="292" y1="502" x2="318" y2="502" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.4"/>
+  <circle cx="330" cy="502" r="8" fill="#FFFFFF" opacity="0.25"/>
+  <text x="330" y="506" text-anchor="middle" font-size="8" fill="#FFFFFF">2</text>
+  <line x1="342" y1="502" x2="368" y2="502" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.4"/>
+  <circle cx="380" cy="502" r="8" fill="#FFFFFF" opacity="0.25"/>
+  <text x="380" y="506" text-anchor="middle" font-size="8" fill="#FFFFFF">3</text>
+  <line x1="392" y1="502" x2="418" y2="502" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.4"/>
+  <circle cx="430" cy="502" r="8" fill="#FFFFFF" opacity="0.25"/>
+  <text x="430" y="506" text-anchor="middle" font-size="8" fill="#FFFFFF">4</text>
+  <line x1="442" y1="502" x2="468" y2="502" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.4"/>
+  <text x="490" y="506" font-size="10" fill="#FFFFFF" opacity="0.6">...</text>
+  <text x="580" y="507" font-size="11" fill="#FFFFFF" font-weight="600">Persists across ALL turns</text>
+
+  <!-- User Prompt bar (short) -->
+  <rect x="60" y="540" width="180" height="44" rx="10" fill="#00968F" filter="url(#shadow)"/>
+  <text x="80" y="567" font-size="12" font-weight="700" fill="#FFFFFF">User Prompt</text>
+  <!-- Single dot -->
+  <circle cx="200" cy="562" r="8" fill="#FFFFFF" opacity="0.25"/>
+  <text x="200" y="566" text-anchor="middle" font-size="8" fill="#FFFFFF">1</text>
+  <!-- Fade out -->
+  <rect x="240" y="540" width="180" height="44" rx="10" fill="none" stroke="#00968F" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.35"/>
+  <text x="330" y="567" text-anchor="middle" font-size="11" fill="#999999">Gone next turn</text>
+  <text x="460" y="567" font-size="11" fill="#00968F" font-weight="600">Single-use only</text>
+</svg>

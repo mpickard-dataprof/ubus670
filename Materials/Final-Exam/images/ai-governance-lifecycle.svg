@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" font-family="Montserrat, Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrowNav" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" fill="#1D428A">
+      <polygon points="0 0, 10 3.5, 0 7"/>
+    </marker>
+    <marker id="arrowTeal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" fill="#00968F">
+      <polygon points="0 0, 10 3.5, 0 7"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" fill="#999999">
+      <polygon points="0 0, 10 3.5, 0 7"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" fill="#C8102E">
+      <polygon points="0 0, 10 3.5, 0 7"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="700" fill="#FFFFFF" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-size="22" font-weight="700" fill="#333333">AI Governance Lifecycle</text>
+
+  <!-- Center circle and text -->
+  <circle cx="450" cy="360" r="80" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="1.5"/>
+  <text x="450" y="352" text-anchor="middle" font-size="13" font-weight="600" fill="#333333">Continuous</text>
+  <text x="450" y="372" text-anchor="middle" font-size="13" font-weight="600" fill="#333333">Cycle</text>
+
+  <!-- Stage positions (clockwise from top):
+       Build:   top center       (450, 120)
+       Test:    right            (700, 270)
+       Deploy:  bottom-right     (640, 520)
+       Monitor: bottom-left      (260, 520)
+       Respond: left             (200, 270)
+  -->
+
+  <!-- === BUILD (Navy, top) === -->
+  <g filter="url(#shadow)">
+    <rect x="375" y="90" width="150" height="64" rx="12" fill="#1D428A"/>
+  </g>
+  <!-- Gear icon -->
+  <circle cx="410" cy="115" r="10" fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
+  <line x1="410" y1="103" x2="410" y2="107" stroke="#FFFFFF" stroke-width="1.8"/>
+  <line x1="410" y1="123" x2="410" y2="127" stroke="#FFFFFF" stroke-width="1.8"/>
+  <line x1="398" y1="115" x2="402" y2="115" stroke="#FFFFFF" stroke-width="1.8"/>
+  <line x1="418" y1="115" x2="422" y2="115" stroke="#FFFFFF" stroke-width="1.8"/>
+  <line x1="401.5" y1="106.5" x2="404.3" y2="109.3" stroke="#FFFFFF" stroke-width="1.8"/>
+  <line x1="415.7" y1="120.7" x2="418.5" y2="123.5" stroke="#FFFFFF" stroke-width="1.8"/>
+  <line x1="418.5" y1="106.5" x2="415.7" y2="109.3" stroke="#FFFFFF" stroke-width="1.8"/>
+  <line x1="404.3" y1="120.7" x2="401.5" y2="123.5" stroke="#FFFFFF" stroke-width="1.8"/>
+  <text x="470" y="118" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">Build</text>
+  <text x="470" y="136" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">Design &amp; develop</text>
+
+  <!-- === TEST (Teal, right) — HIGHLIGHTED === -->
+  <g filter="url(#glow)">
+    <rect x="625" y="238" width="160" height="64" rx="12" fill="#00968F" stroke="#00C9BF" stroke-width="3"/>
+  </g>
+  <!-- Checkmark icon -->
+  <polyline points="656,263 664,273 680,255" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="722" y="268" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">Test</text>
+  <text x="722" y="286" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">Validate &amp; verify</text>
+
+  <!-- === DEPLOY (Gray, bottom-right) === -->
+  <g filter="url(#shadow)">
+    <rect x="565" y="488" width="150" height="64" rx="12" fill="#888888"/>
+  </g>
+  <!-- Rocket icon (simplified) -->
+  <path d="M598,525 L598,510 Q598,502 604,498 L604,498 Q610,502 610,510 L610,525 Z" fill="#FFFFFF" opacity="0.9"/>
+  <path d="M595,522 L598,518 L598,525 Z" fill="#FFFFFF" opacity="0.7"/>
+  <path d="M613,522 L610,518 L610,525 Z" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="604" cy="512" r="2" fill="#888888"/>
+  <text x="660" y="518" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">Deploy</text>
+  <text x="660" y="536" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">Release to production</text>
+
+  <!-- === MONITOR (Red, bottom-left) === -->
+  <g filter="url(#shadow)">
+    <rect x="185" y="488" width="150" height="64" rx="12" fill="#C8102E"/>
+  </g>
+  <!-- Eye icon -->
+  <ellipse cx="232" cy="516" rx="14" ry="9" fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
+  <circle cx="232" cy="516" r="4.5" fill="#FFFFFF"/>
+  <text x="290" y="518" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">Monitor</text>
+  <text x="290" y="536" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">Observe in the wild</text>
+
+  <!-- === RESPOND (Navy, left) === -->
+  <g filter="url(#shadow)">
+    <rect x="115" y="238" width="160" height="64" rx="12" fill="#1D428A"/>
+  </g>
+  <!-- Alert/bell icon -->
+  <path d="M165,258 Q165,250 172,250 Q179,250 179,258 L179,266 L185,270 L159,270 L165,266 Z" fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
+  <circle cx="172" cy="274" r="2.5" fill="#FFFFFF"/>
+  <text x="215" y="268" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">Respond</text>
+  <text x="215" y="286" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">Mitigate &amp; fix</text>
+
+  <!-- === CURVED ARROWS (clockwise) === -->
+
+  <!-- Build → Test -->
+  <path d="M525,135 Q620,140 670,238" fill="none" stroke="#1D428A" stroke-width="2.5" marker-end="url(#arrowNav)"/>
+
+  <!-- Test → Deploy -->
+  <path d="M730,302 Q750,420 715,488" fill="none" stroke="#00968F" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+
+  <!-- Deploy → Monitor -->
+  <path d="M565,535 Q450,590 335,535" fill="none" stroke="#999999" stroke-width="2.5" marker-end="url(#arrowGray)"/>
+
+  <!-- Monitor → Respond -->
+  <path d="M185,500 Q130,420 175,302" fill="none" stroke="#C8102E" stroke-width="2.5" marker-end="url(#arrowRed)"/>
+
+  <!-- Respond → Build (completing circle) -->
+  <path d="M225,238 Q220,160 375,125" fill="none" stroke="#1D428A" stroke-width="2.5" marker-end="url(#arrowNav)"/>
+
+  <!-- === CALLOUT pointing to Test === -->
+  <g>
+    <rect x="680" y="155" width="190" height="44" rx="10" fill="#FFFFFF" stroke="#00968F" stroke-width="2" filter="url(#shadow)"/>
+    <text x="775" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#00968F">Test before you trust</text>
+    <text x="775" y="190" text-anchor="middle" font-size="10" fill="#666666">Validation is non-negotiable</text>
+    <!-- Callout pointer line -->
+    <line x1="730" y1="199" x2="700" y2="238" stroke="#00968F" stroke-width="1.5" stroke-dasharray="4,3"/>
+  </g>
+
+  <!-- Bottom note -->
+  <text x="450" y="670" text-anchor="middle" font-size="11" fill="#999999">Governance is not a one-time event — it is a continuous commitment.</text>
+</svg>

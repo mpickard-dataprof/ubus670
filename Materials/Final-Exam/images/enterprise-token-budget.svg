@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="Montserrat, Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="#FFFFFF" rx="8"/>
+
+  <!-- Title -->
+  <text x="480" y="42" text-anchor="middle" font-size="22" font-weight="700" fill="#333333">Enterprise Token Budget</text>
+  <text x="480" y="64" text-anchor="middle" font-size="12" fill="#888888">Beacon Retail Group — Estimated Monthly Token Usage by Department</text>
+
+  <!-- Chart area -->
+  <!-- Y-axis labels and bars -->
+  <!-- Scale: 0 to ~9.3M → chart width 700px (from x=200 to x=900), so 1M ≈ 75.3px -->
+
+  <!-- Grid lines -->
+  <line x1="200" y1="100" x2="200" y2="400" stroke="#E0E0E0" stroke-width="1"/>
+  <line x1="200" y1="400" x2="900" y2="400" stroke="#333333" stroke-width="1.5"/>
+
+  <!-- Vertical grid lines at 1M intervals -->
+  <line x1="275" y1="100" x2="275" y2="405" stroke="#F0F0F0" stroke-width="1"/>
+  <text x="275" y="420" text-anchor="middle" font-size="10" fill="#999999">1M</text>
+
+  <line x1="350" y1="100" x2="350" y2="405" stroke="#F0F0F0" stroke-width="1"/>
+  <text x="350" y="420" text-anchor="middle" font-size="10" fill="#999999">2M</text>
+
+  <line x1="425" y1="100" x2="425" y2="405" stroke="#F0F0F0" stroke-width="1"/>
+  <text x="425" y="420" text-anchor="middle" font-size="10" fill="#999999">3M</text>
+
+  <line x1="500" y1="100" x2="500" y2="405" stroke="#F0F0F0" stroke-width="1"/>
+  <text x="500" y="420" text-anchor="middle" font-size="10" fill="#999999">4M</text>
+
+  <line x1="575" y1="100" x2="575" y2="405" stroke="#F0F0F0" stroke-width="1"/>
+  <text x="575" y="420" text-anchor="middle" font-size="10" fill="#999999">5M</text>
+
+  <line x1="650" y1="100" x2="650" y2="405" stroke="#F0F0F0" stroke-width="1"/>
+  <text x="650" y="420" text-anchor="middle" font-size="10" fill="#999999">6M</text>
+
+  <line x1="725" y1="100" x2="725" y2="405" stroke="#F0F0F0" stroke-width="1"/>
+  <text x="725" y="420" text-anchor="middle" font-size="10" fill="#999999">7M</text>
+
+  <line x1="800" y1="100" x2="800" y2="405" stroke="#F0F0F0" stroke-width="1"/>
+  <text x="800" y="420" text-anchor="middle" font-size="10" fill="#999999">8M</text>
+
+  <line x1="875" y1="100" x2="875" y2="405" stroke="#F0F0F0" stroke-width="1"/>
+  <text x="875" y="420" text-anchor="middle" font-size="10" fill="#999999">9M</text>
+
+  <!-- X-axis label -->
+  <text x="550" y="445" text-anchor="middle" font-size="12" font-weight="600" fill="#666666">Tokens (millions per month)</text>
+
+  <!-- ========== BAR 1: Customer Service — 6.0M tokens (Navy) ========== -->
+  <!-- 6.0M × 75.3 = 451.6px -->
+  <text x="190" y="160" text-anchor="end" font-size="13" font-weight="600" fill="#333333">Customer</text>
+  <text x="190" y="176" text-anchor="end" font-size="13" font-weight="600" fill="#333333">Service</text>
+  <g filter="url(#shadow)">
+    <rect x="200" y="140" width="452" height="50" rx="8" fill="#1D428A"/>
+  </g>
+  <text x="426" y="170" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">6.0M tokens</text>
+
+  <!-- Detail chips -->
+  <rect x="208" y="196" width="100" height="20" rx="4" fill="#E8EDF5"/>
+  <text x="258" y="210" text-anchor="middle" font-size="9" fill="#1D428A">5,000 tickets/day</text>
+  <rect x="316" y="196" width="100" height="20" rx="4" fill="#E8EDF5"/>
+  <text x="366" y="210" text-anchor="middle" font-size="9" fill="#1D428A">~1,200 tok/ticket</text>
+
+  <!-- ========== BAR 2: Marketing — 2.2M tokens (Teal) ========== -->
+  <!-- 2.2M × 75.3 = 165.6px -->
+  <text x="190" y="270" text-anchor="end" font-size="13" font-weight="600" fill="#333333">Marketing</text>
+  <g filter="url(#shadow)">
+    <rect x="200" y="248" width="166" height="50" rx="8" fill="#00968F"/>
+  </g>
+  <text x="283" y="278" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">2.2M tokens</text>
+
+  <!-- Detail chips -->
+  <rect x="208" y="304" width="108" height="20" rx="4" fill="#E5F5F4"/>
+  <text x="262" y="318" text-anchor="middle" font-size="9" fill="#00968F">Content generation</text>
+
+  <!-- ========== BAR 3: Finance — 0.48M tokens (Red) ========== -->
+  <!-- 0.48M × 75.3 = 36.1px -->
+  <text x="190" y="370" text-anchor="end" font-size="13" font-weight="600" fill="#333333">Finance</text>
+  <g filter="url(#shadow)">
+    <rect x="200" y="348" width="36" height="50" rx="6" fill="#C8102E"/>
+  </g>
+  <!-- Label outside bar since it's small -->
+  <text x="246" y="378" font-size="13" font-weight="700" fill="#C8102E">0.48M</text>
+
+  <!-- ========== BUFFER zone ========== -->
+  <!-- Show as an annotation on the right side -->
+  <!-- Total: 6.0 + 2.2 + 0.48 + 0.62 = 9.3M → 9.3 × 75.3 = 699.9px → ends at x=900 -->
+
+  <!-- Stacked total bar at the top for context -->
+  <rect x="200" y="100" width="700" height="26" rx="6" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="1"/>
+  <!-- Navy segment: 6.0M -->
+  <rect x="200" y="100" width="452" height="26" rx="6" fill="#1D428A" opacity="0.3"/>
+  <!-- Teal segment: 2.2M -->
+  <rect x="652" y="100" width="166" height="26" fill="#00968F" opacity="0.3"/>
+  <!-- Red segment: 0.48M -->
+  <rect x="818" y="100" width="36" height="26" fill="#C8102E" opacity="0.3"/>
+  <!-- Gray buffer: 0.62M → 46.7px -->
+  <rect x="854" y="100" width="46" height="26" rx="0" fill="#AAAAAA" opacity="0.3"/>
+  <!-- Round right corners on last segment -->
+  <rect x="894" y="100" width="6" height="26" rx="6" fill="#AAAAAA" opacity="0.3"/>
+
+  <!-- Total bar labels -->
+  <text x="426" y="117" text-anchor="middle" font-size="9" font-weight="600" fill="#1D428A">CS: 6.0M</text>
+  <text x="735" y="117" text-anchor="middle" font-size="9" font-weight="600" fill="#00968F">Mktg: 2.2M</text>
+  <text x="877" y="117" text-anchor="middle" font-size="8" font-weight="600" fill="#888888">Buffer</text>
+
+  <!-- Total line -->
+  <line x1="900" y1="95" x2="900" y2="435" stroke="#333333" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="900" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#333333">~9.3M total</text>
+
+  <!-- ========== COST COMPARISON ========== -->
+  <rect x="140" y="465" width="680" height="56" rx="10" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="1"/>
+
+  <!-- Flash cost -->
+  <rect x="165" y="475" width="280" height="36" rx="8" fill="#FFFFFF" stroke="#00968F" stroke-width="1.5"/>
+  <circle cx="188" cy="493" r="10" fill="#00968F"/>
+  <text x="188" y="497" text-anchor="middle" font-size="9" font-weight="700" fill="#FFFFFF">$</text>
+  <text x="220" y="490" font-size="12" font-weight="700" fill="#00968F">Gemini Flash</text>
+  <text x="350" y="490" font-size="12" font-weight="600" fill="#00968F">~$4.65/mo</text>
+  <text x="305" y="505" text-anchor="middle" font-size="9" fill="#888888">$0.50 per 1M tokens</text>
+
+  <!-- Pro cost -->
+  <rect x="470" y="475" width="280" height="36" rx="8" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <circle cx="493" cy="493" r="10" fill="#C8102E"/>
+  <text x="493" y="497" text-anchor="middle" font-size="9" font-weight="700" fill="#FFFFFF">$</text>
+  <text x="525" y="490" font-size="12" font-weight="700" fill="#C8102E">Gemini Pro</text>
+  <text x="660" y="490" font-size="12" font-weight="600" fill="#C8102E">~$88/mo</text>
+  <text x="610" y="505" text-anchor="middle" font-size="9" fill="#888888">$9.50 per 1M tokens</text>
+
+  <!-- Multiplier callout -->
+  <text x="480" y="535" text-anchor="middle" font-size="11" fill="#999999">Same workload, ~19x cost difference. Model selection matters.</text>
+</svg>
