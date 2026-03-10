@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UBUS 670: Day 8 - Capstone Launch Pad</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+    <link rel="stylesheet" href="../../../_shared/reveal-theme-niu.css">
+
+    <style>
+        /* Persistent Navigation */
+        .global-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255,255,255,0.98); border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px; display: flex;
+            justify-content: space-between; align-items: center;
+            font-family: 'Montserrat', sans-serif; font-size: 14px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #666; }
+        .breadcrumb a { color: #1D428A; text-decoration: none; font-weight: 500; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-links a {
+            padding: 8px 16px; border-radius: 6px;
+            text-decoration: none; font-weight: 600; transition: all 0.2s;
+        }
+        .nav-links a.primary { background: #C8102E; color: white; }
+        .nav-links a.primary:hover { background: #a00d24; }
+        .nav-links a.secondary { background: #f0f0f0; color: #333; }
+        .nav-links a.secondary:hover { background: #e0e0e0; }
+        .reveal .slides { margin-top: 30px; }
+        .reveal .slide-background-content {
+            box-sizing: border-box; padding: 3% 2%;
+            background-origin: content-box;
+        }
+
+        /* Custom slide styles */
+        .slide-content { max-width: 900px; margin: 0 auto; text-align: left; }
+        .slide-content h2 {
+            font-family: 'Montserrat', sans-serif; font-size: 2em;
+            color: #1D428A; margin-bottom: 0.5em;
+        }
+        .slide-content h3 {
+            font-family: 'Montserrat', sans-serif; font-size: 1.4em;
+            color: #C8102E;
+        }
+        .slide-content p, .slide-content li {
+            font-size: 0.85em; line-height: 1.7; color: #333;
+        }
+        .slide-content ul { padding-left: 1.5em; }
+        .slide-content li { margin-bottom: 0.5em; }
+
+        .highlight-box {
+            background: #EBF0F7; border-left: 5px solid #1D428A;
+            padding: 20px 25px; border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        .highlight-box.red {
+            background: #FDE8E8; border-left-color: #C8102E;
+        }
+        .highlight-box.green {
+            background: #E8F5E9; border-left-color: #2E7D32;
+        }
+
+        .pipeline-diagram {
+            display: flex; align-items: center; justify-content: center;
+            gap: 15px; margin: 30px 0; flex-wrap: wrap;
+        }
+        .pipeline-box {
+            background: white; border: 3px solid #1D428A; border-radius: 12px;
+            padding: 20px; text-align: center; min-width: 180px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .pipeline-box h4 {
+            font-family: 'Montserrat', sans-serif; color: #1D428A;
+            margin: 0 0 8px; font-size: 1.1em;
+        }
+        .pipeline-box p { font-size: 0.75em; margin: 0; color: #666; }
+        .pipeline-arrow {
+            font-size: 2em; color: #C8102E; font-weight: bold;
+        }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 20px 0; }
+        .col-box {
+            background: white; border-radius: 8px; padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .col-box h4 {
+            font-family: 'Montserrat', sans-serif; margin: 0 0 10px;
+            font-size: 0.95em;
+        }
+        .col-box p { font-size: 0.8em; }
+
+        .think-pair-share {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white; border-radius: 12px; padding: 30px;
+            text-align: center; margin: 25px 0;
+        }
+        .think-pair-share h3 {
+            font-family: 'Montserrat', sans-serif; color: white;
+            font-size: 1.2em; margin: 0 0 10px;
+        }
+        .think-pair-share p { font-size: 0.9em; opacity: 0.95; }
+
+        .json-preview {
+            background: #1E1E1E; color: #D4D4D4; border-radius: 8px;
+            padding: 20px; font-family: 'Courier New', monospace;
+            font-size: 0.7em; line-height: 1.6; text-align: left;
+            overflow-x: auto;
+        }
+        .json-key { color: #9CDCFE; }
+        .json-str { color: #CE9178; }
+        .json-num { color: #B5CEA8; }
+
+        .pitfall-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 15px; margin: 20px 0;
+        }
+        .pitfall {
+            background: white; border-radius: 8px; padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            font-size: 0.8em;
+        }
+        .pitfall strong { color: #C8102E; }
+
+        .score-bar { display: flex; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
+        .score-segment {
+            border-radius: 6px; padding: 10px 14px; text-align: center;
+            font-family: 'Montserrat', sans-serif; font-size: 0.75em;
+            font-weight: 600; color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="index.html">Day 8 &ndash; Capstone</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Launch Pad</span>
+        </div>
+        <div class="nav-links">
+            <a href="lab.html" class="primary">Start Lab &rarr;</a>
+            <a href="index.html" class="secondary">Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Title -->
+            <section>
+                <div class="slide-content" style="text-align:center;">
+                    <h2 style="font-size:2.5em;margin-bottom:0.3em;">Capstone: AI Resume Screening</h2>
+                    <p style="font-size:1.1em;color:#666;">Days 8 &amp; 9 &mdash; Design, Build, Compete</p>
+                    <div style="margin:30px 0;font-size:4em;">&#x1F4CB; &#x2192; &#x1F916; &#x2192; &#x1F3C6;</div>
+                    <p style="font-size:0.85em;color:#999;">UBUS 670: AI for Business Leaders &mdash; 20% of Course Grade</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 2: The Business Problem -->
+            <section>
+                <div class="slide-content">
+                    <h2>The Business Problem</h2>
+                    <div class="highlight-box">
+                        <p style="font-size:0.95em;margin:0;">
+                            <strong>Beacon Retail Group</strong> has received <strong>30 resumes</strong> for seasonal
+                            retail associate positions across 12 hiring locations. HR needs help screening candidates
+                            quickly and consistently &mdash; before the May hiring deadline.
+                        </p>
+                    </div>
+                    <p>Your mission: <strong>build an AI-powered screening pipeline</strong> that can:</p>
+                    <ul>
+                        <li><strong>Parse</strong> unstructured resumes into structured data</li>
+                        <li><strong>Evaluate</strong> each candidate against the job requirements</li>
+                        <li><strong>Rank</strong> all candidates and flag concerns</li>
+                    </ul>
+                    <p>This isn't just an exercise &mdash; it's how real companies are starting to use AI in hiring.</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Bridge Exercise -->
+            <section>
+                <div class="slide-content">
+                    <h2>Bridge: From Email Triage to Resume Screening</h2>
+                    <div class="think-pair-share">
+                        <h3>&#x1F4AD; Think &ndash; Pair &ndash; Share (2 minutes)</h3>
+                        <p>On Day 7 you built a <strong>2-agent email triage system</strong> (Classifier + Quality Checker).</p>
+                        <p style="font-size:1.1em;font-weight:700;margin-top:15px;">
+                            What would a <strong>3-agent resume screening pipeline</strong> look like?
+                        </p>
+                        <p style="opacity:0.8;font-size:0.85em;">
+                            Think about: What does each agent do? What data passes between them?
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Architecture Blueprint -->
+            <section>
+                <div class="slide-content">
+                    <h2>Your Pipeline Architecture</h2>
+                    <div class="pipeline-diagram">
+                        <div class="pipeline-box">
+                            <div style="font-size:2em;">&#x1F4C4;</div>
+                            <h4>Parser Agent</h4>
+                            <p><strong>Input:</strong> Raw resume text</p>
+                            <p><strong>Output:</strong> Structured JSON</p>
+                        </div>
+                        <div class="pipeline-arrow">&rarr;</div>
+                        <div class="pipeline-box">
+                            <div style="font-size:2em;">&#x2696;&#xFE0F;</div>
+                            <h4>Evaluator Agent</h4>
+                            <p><strong>Input:</strong> Parser JSON + Job Req</p>
+                            <p><strong>Output:</strong> Score + Concerns</p>
+                        </div>
+                        <div class="pipeline-arrow">&rarr;</div>
+                        <div class="pipeline-box">
+                            <div style="font-size:2em;">&#x1F4CA;</div>
+                            <h4>Ranker Agent</h4>
+                            <p><strong>Input:</strong> All evaluations</p>
+                            <p><strong>Output:</strong> Ranked list + Flags</p>
+                        </div>
+                    </div>
+                    <div class="highlight-box">
+                        <p style="margin:0;font-size:0.85em;">
+                            <strong>Key Insight:</strong> Each agent has ONE job. The Parser doesn't judge quality.
+                            The Evaluator doesn't parse resumes. The Ranker doesn't re-evaluate &mdash; it compares.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Pipeline Data Contract -->
+            <section>
+                <div class="slide-content">
+                    <h2>The Data Contract</h2>
+                    <p>The #1 failure mode is agents that talk past each other. Define what data flows between them:</p>
+                    <div class="json-preview">
+<span class="json-key">// Parser Output &rarr; Evaluator Input</span>
+{
+  <span class="json-key">"candidate_id"</span>: <span class="json-str">"C-12"</span>,
+  <span class="json-key">"name"</span>: <span class="json-str">"Maria Chen"</span>,
+  <span class="json-key">"experience"</span>: [
+    { <span class="json-key">"title"</span>: <span class="json-str">"Assistant Store Manager"</span>,
+      <span class="json-key">"company"</span>: <span class="json-str">"Lakeview Home"</span>,
+      <span class="json-key">"years"</span>: <span class="json-num">3.5</span> }
+  ],
+  <span class="json-key">"education"</span>: <span class="json-str">"AAS Business Admin"</span>,
+  <span class="json-key">"skills"</span>: [<span class="json-str">"POS"</span>, <span class="json-str">"inventory"</span>, <span class="json-str">"Mandarin"</span>],
+  <span class="json-key">"availability"</span>: <span class="json-str">"Full-time May-Aug, all shifts"</span>,
+  <span class="json-key">"certifications"</span>: [<span class="json-str">"CPR/First Aid"</span>]
+}
+                    </div>
+                    <p style="font-size:0.8em;color:#666;margin-top:10px;">
+                        This is a <em>suggested</em> schema. Your team can modify it &mdash; but Parser output
+                        MUST match what Evaluator expects. Agree on the contract before building.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Two-Phase Workflow -->
+            <section>
+                <div class="slide-content">
+                    <h2>Two-Phase Workflow</h2>
+                    <div class="two-col">
+                        <div class="col-box">
+                            <h4 style="color:#1D428A;">Phase 1: Prototype in AI Studio</h4>
+                            <ul style="font-size:0.8em;">
+                                <li>Test each agent's system prompt individually</li>
+                                <li>Paste one resume at a time</li>
+                                <li>Fast iteration &mdash; change prompt, re-run</li>
+                                <li>Familiar from Day 5</li>
+                            </ul>
+                            <p style="font-size:0.75em;color:#666;font-style:italic;">
+                                Goal: Get each agent working alone before connecting them.
+                            </p>
+                        </div>
+                        <div class="col-box">
+                            <h4 style="color:#C8102E;">Phase 2: Deploy in ADK</h4>
+                            <ul style="font-size:0.8em;">
+                                <li>Take your finalized prompts from AI Studio</li>
+                                <li>Create 3 agents in ADK Visual Builder</li>
+                                <li>Wire the pipeline (sequential flow)</li>
+                                <li>Run at scale &mdash; all 20 practice resumes</li>
+                            </ul>
+                            <p style="font-size:0.75em;color:#666;font-style:italic;">
+                                Goal: End-to-end pipeline processing multiple resumes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Common Pitfalls -->
+            <section>
+                <div class="slide-content">
+                    <h2>Pitfalls &amp; Pro Tips</h2>
+                    <div class="pitfall-grid">
+                        <div class="pitfall">
+                            <strong>&#x26A0; JSON Inconsistency</strong><br>
+                            Your Parser must output the SAME structure every time. Use low temperature (0.1-0.3) and include a JSON template in the prompt.
+                        </div>
+                        <div class="pitfall">
+                            <strong>&#x26A0; Missing the ID</strong><br>
+                            Each resume starts with [C-XX]. Your Parser MUST carry this ID through. Without it, your submission can't be scored.
+                        </div>
+                        <div class="pitfall">
+                            <strong>&#x2705; Start Simple</strong><br>
+                            Get a basic pipeline working first. A simple Evaluator that checks 3 criteria beats a sophisticated one that crashes.
+                        </div>
+                        <div class="pitfall">
+                            <strong>&#x2705; Test Incrementally</strong><br>
+                            Don't run all 20 practice resumes at once. Test with 3-5 first, verify output, then scale up.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Competition Rules -->
+            <section>
+                <div class="slide-content">
+                    <h2>Competition Scoring (Day 9)</h2>
+                    <div class="score-bar">
+                        <div class="score-segment" style="background:#1D428A;flex:3;">Top 10<br>30 pts</div>
+                        <div class="score-segment" style="background:#C8102E;flex:3;">Flags + Severity<br>30 pts</div>
+                        <div class="score-segment" style="background:#00A9E0;flex:1.5;">Bias Pairs<br>15 pts</div>
+                        <div class="score-segment" style="background:#2E7D32;flex:1.5;">Patterns<br>15 pts</div>
+                        <div class="score-segment" style="background:#666;flex:1;">Bottom 5<br>10 pts</div>
+                    </div>
+                    <ul>
+                        <li><strong>30 fresh resumes</strong> you've never seen &mdash; released on Day 9</li>
+                        <li><strong>3 attempts</strong> &mdash; submit, see your score, improve, resubmit</li>
+                        <li><strong>JSON submission</strong> &mdash; your Ranker agent produces the output, you paste it in</li>
+                        <li><strong>Hidden layers:</strong> red flags, bias pairs, and cross-resume patterns &mdash; the deeper you look, the more points you earn</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Go Build -->
+            <section>
+                <div class="slide-content" style="text-align:center;">
+                    <h2 style="font-size:2.2em;">Team Formation &amp; Go Build!</h2>
+                    <div style="margin:25px 0;">
+                        <div style="display:inline-block;background:#EBF0F7;padding:20px 30px;border-radius:12px;text-align:left;">
+                            <p style="margin:0 0 8px;font-size:0.9em;"><strong>1.</strong> Form teams of 2-3</p>
+                            <p style="margin:0 0 8px;font-size:0.9em;"><strong>2.</strong> Open the <a href="lab.html" style="color:#C8102E;font-weight:700;">Lab page</a></p>
+                            <p style="margin:0 0 8px;font-size:0.9em;"><strong>3.</strong> Start with Part 0: Architecture Planning (15 min)</p>
+                            <p style="margin:0;font-size:0.9em;"><strong>4.</strong> Then build your pipeline through Parts 1-5</p>
+                        </div>
+                    </div>
+                    <div class="highlight-box red" style="display:inline-block;max-width:600px;">
+                        <p style="margin:0;font-size:0.9em;">
+                            <strong>75-Minute Checkpoint:</strong> I'll check each team at 10:15 AM.
+                            If your Parser + Evaluator aren't working, you'll get a rescue package to catch up.
+                        </p>
+                    </div>
+                    <p style="margin-top:25px;font-size:1.5em;">&#x1F680; Go build something amazing.</p>
+                </div>
+            </section>
+
+        </div><!-- end slides -->
+    </div><!-- end reveal -->
+
+    <!-- Reveal.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            width: 1200,
+            height: 700,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+</html>

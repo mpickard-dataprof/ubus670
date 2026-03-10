@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UBUS 670: Capstone Competition</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
+
+    <style>
+        body { font-family: Georgia, 'Times New Roman', serif; background: #f5f5f5; margin: 0; }
+
+        /* Navigation */
+        .global-nav {
+            position: sticky; top: 0; z-index: 100;
+            background: white; border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px; display: flex;
+            justify-content: space-between; align-items: center;
+            font-family: 'Montserrat', sans-serif; font-size: 14px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #666; }
+        .breadcrumb a { color: #1D428A; text-decoration: none; font-weight: 500; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+        .nav-pills { display: flex; gap: 8px; }
+        .nav-pill {
+            padding: 8px 16px; border-radius: 6px; text-decoration: none;
+            font-weight: 600; font-size: 13px; transition: all 0.2s;
+        }
+        .nav-pill.active { background: #C8102E; color: white; }
+        .nav-pill:not(.active) { background: #f0f0f0; color: #333; }
+        .nav-pill:not(.active):hover { background: #e0e0e0; }
+
+        /* Main Content */
+        .main-content { max-width: 1100px; margin: 0 auto; padding: 30px; }
+
+        /* Sign-in Gate */
+        .sign-in-gate {
+            background: white; padding: 60px 40px; border-radius: 12px;
+            text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin: 40px auto; max-width: 500px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .sign-in-gate h2 { color: #1D428A; margin: 0 0 15px; }
+        .sign-in-gate p { color: #666; margin: 0 0 25px; }
+        .sign-in-gate button {
+            padding: 12px 30px; border-radius: 8px; border: none;
+            background: #1D428A; color: white; font-weight: 600; font-size: 15px;
+            cursor: pointer; font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Section Headers */
+        .section-title {
+            font-family: 'Montserrat', sans-serif; font-size: 1.3rem;
+            font-weight: 700; color: #1D428A;
+            border-bottom: 3px solid #1D428A; padding-bottom: 10px;
+            margin: 40px 0 20px;
+        }
+
+        /* Team Info Bar */
+        .team-bar {
+            background: white; padding: 15px 20px; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Resume Cards */
+        .resume-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px; margin-bottom: 30px;
+        }
+        .resume-card {
+            background: white; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden;
+        }
+        .resume-header {
+            padding: 12px 16px; cursor: pointer;
+            display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid #f0f0f0; transition: background 0.2s;
+        }
+        .resume-header:hover { background: #f8f8f8; }
+        .resume-id {
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 0.85rem; color: #1D428A;
+            background: #EBF0F7; padding: 3px 8px; border-radius: 4px;
+        }
+        .resume-name {
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 0.9rem; color: #333; flex-grow: 1;
+        }
+        .copy-btn {
+            padding: 4px 12px; border: 1px solid #ddd; border-radius: 4px;
+            background: white; color: #666; font-size: 0.75rem;
+            cursor: pointer; font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: #1D428A; color: white; border-color: #1D428A; }
+        .resume-text {
+            display: none; padding: 16px; margin: 0;
+            font-family: 'Courier New', monospace; font-size: 0.8rem;
+            line-height: 1.5; background: #FAFAFA; white-space: pre-wrap;
+            max-height: 500px; overflow-y: auto;
+        }
+
+        /* Submission Area */
+        .submission-area {
+            background: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 30px;
+        }
+        .json-textarea {
+            width: 100%; min-height: 200px; padding: 16px;
+            font-family: 'Courier New', monospace; font-size: 0.85rem;
+            border: 2px solid #e0e0e0; border-radius: 8px;
+            resize: vertical; line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .json-textarea:focus { border-color: #1D428A; outline: none; }
+
+        .btn-row { display: flex; gap: 12px; margin-top: 15px; }
+        .btn-primary {
+            padding: 12px 24px; border: none; border-radius: 6px;
+            background: #1D428A; color: white; font-weight: 600;
+            cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.9rem;
+        }
+        .btn-primary:hover { background: #163570; }
+        .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-submit {
+            background: #C8102E;
+        }
+        .btn-submit:hover:not(:disabled) { background: #a00d24; }
+
+        /* Score Breakdown */
+        .score-breakdown {
+            background: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 30px;
+        }
+
+        /* Leaderboard */
+        .leaderboard-section {
+            background: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 30px;
+        }
+        .timer {
+            font-family: 'Montserrat', sans-serif; font-size: 1.1rem;
+            font-weight: 700; color: #C8102E; text-align: center;
+            padding: 10px; margin-bottom: 15px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: #FFF3CD; padding: 25px; border-radius: 12px;
+            border: 2px solid #FFE083; margin-bottom: 30px;
+        }
+
+        /* Team Picker */
+        .team-picker {
+            background: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin: 30px 0;
+        }
+
+        /* Error */
+        .error-msg {
+            background: #f8d7da; color: #721c24; padding: 15px 20px;
+            border-radius: 8px; margin: 20px 0; display: none;
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+        }
+
+        footer {
+            text-align: center; padding: 40px 20px; color: #888;
+            font-size: 0.9rem; border-top: 1px solid #e0e0e0; background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="index.html">Day 8 &ndash; Capstone</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Competition</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="competition.html" class="nav-pill active">Competition</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+
+        <!-- Error Message -->
+        <div id="cf-error-msg" class="error-msg"></div>
+
+        <!-- Sign-in Gate -->
+        <div id="cf-sign-in-gate" class="sign-in-gate">
+            <div style="font-size:48px;margin-bottom:20px;">&#x1F3C6;</div>
+            <h2>Capstone Competition</h2>
+            <p>Sign in with your NIU email to access the competition, submit results, and see the leaderboard.</p>
+            <button onclick="cfSignIn()">Sign In with Google</button>
+        </div>
+
+        <!-- Team Picker (shown if signed in but not on a team) -->
+        <div id="cf-team-picker" class="team-picker" style="display:none;"></div>
+
+        <!-- Team Info Bar -->
+        <div id="cf-team-info" class="team-bar" style="display:none;"></div>
+
+        <!-- Main Competition Content (hidden until signed in + on team) -->
+        <div id="cf-competition-content" style="display:none;">
+
+            <!-- Admin Panel (instructor only) -->
+            <div id="cf-admin-panel" class="admin-panel" style="display:none;"></div>
+
+            <!-- Leaderboard -->
+            <h2 class="section-title">Leaderboard</h2>
+            <div class="leaderboard-section">
+                <div id="cf-timer" class="timer"></div>
+                <div id="cf-leaderboard"></div>
+            </div>
+
+            <!-- Competition Resumes -->
+            <div id="cf-competition-resumes" style="display:none;">
+                <h2 class="section-title">Competition Resumes (30 Candidates)</h2>
+                <p style="color:#666;margin-bottom:15px;">
+                    Click a candidate to expand their resume. Use the <strong>Copy</strong> button to copy the full resume text
+                    for pasting into your pipeline. Each resume begins with a <code>[C-XX]</code> ID tag &mdash; make sure your
+                    Parser carries this ID through the pipeline.
+                </p>
+                <div id="cf-resume-grid" class="resume-grid">
+                    <!-- Resume cards rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Submission -->
+            <h2 class="section-title">Submit Results</h2>
+            <div class="submission-area">
+                <p style="margin:0 0 12px;color:#666;">
+                    Paste your pipeline's JSON output below. Your Ranker agent should produce this JSON structure.
+                    See the <a href="rubric.html" style="color:#1D428A;">rubric</a> for scoring details.
+                </p>
+                <textarea id="cf-json-input" class="json-textarea" placeholder='{
+  "top_10_hire": [
+    {"rank": 1, "id": "C-XX", "reason": "..."},
+    {"rank": 2, "id": "C-XX", "reason": "..."}
+  ],
+  "bottom_5": [
+    {"id": "C-XX", "reason": "..."}
+  ],
+  "flags": [
+    {"candidate_id": "C-XX", "flag": "...", "severity": "minor"}
+  ],
+  "bias_pairs": [
+    {"candidate_ids": ["C-XX", "C-XX"], "observation": "..."}
+  ],
+  "patterns": [
+    "C-XX, C-XX, and C-XX share..."
+  ]
+}'></textarea>
+                <div class="btn-row">
+                    <button class="btn-primary" onclick="cfValidateAndPreview()">Validate &amp; Preview</button>
+                    <button id="cf-submit-btn" class="btn-primary btn-submit" onclick="cfSubmitResults()" disabled>Submit (uses 1 attempt)</button>
+                </div>
+                <div id="cf-submission-preview" style="margin-top:20px;"></div>
+            </div>
+
+            <!-- Score Breakdown -->
+            <div id="cf-score-breakdown" class="score-breakdown" style="display:none;"></div>
+
+        </div><!-- end cf-competition-content -->
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Northern Illinois University &mdash; UBUS 670: AI for Business Leaders</p>
+    </footer>
+
+    <!-- Resume Data + Firebase Engine -->
+    <script src="competition-resumes.js"></script>
+    <script src="../../../_shared/capstone-firebase.js"></script>
+
+    <!-- Render resume cards from data -->
+    <script>
+    (function renderResumeCards() {
+        const grid = document.getElementById('cf-resume-grid');
+        if (!grid || typeof COMP_RESUMES === 'undefined') return;
+
+        COMP_RESUMES.forEach(resume => {
+            const card = document.createElement('div');
+            card.className = 'resume-card';
+            card.innerHTML = `
+                <div class="resume-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? '' : 'none'">
+                    <span class="resume-id">${resume.id}</span>
+                    <span class="resume-name">${resume.name}</span>
+                    <button class="copy-btn" data-copy-id="${resume.id}"
+                        onclick="event.stopPropagation(); cfCopyResume('${resume.id}')">Copy</button>
+                </div>
+                <pre class="resume-text" id="resume-${resume.id}">${escHtml(resume.text)}</pre>
+            `;
+            grid.appendChild(card);
+        });
+
+        function escHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+    })();
+    </script>
+
+</body>
+</html>
