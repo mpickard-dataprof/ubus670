@@ -837,7 +837,7 @@ Works in Chrome, Firefox, Safari, Edge
 
 1. 
 **Sign in with your Google account**
-Personal account is fine—no upgrade needed
+Use your NIU Google account (students.niu.edu)—no upgrade needed
 
 1. 
 **Start typing in the message box**

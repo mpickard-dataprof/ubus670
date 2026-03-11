@@ -577,7 +577,7 @@ Missing info
 →
 Add more Context
 
-**Pro tip:** Use AI to improve your prompts! Paste your prompt into Gemini or ChatGPT and ask: "How can I improve this prompt to get better results?" AI is surprisingly good at writing prompts.
+**Pro tip:** Use AI to improve your prompts! Paste your prompt into Gemini and ask: "How can I improve this prompt to get better results?" AI is surprisingly good at writing prompts.
 
 > [Visual: SVG diagram]
 

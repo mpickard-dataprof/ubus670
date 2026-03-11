@@ -744,7 +744,7 @@ Good for: ad-hoc analysis, quick questions
 
 Good for: reusable assistants, team tools
 
-**Gems are free!** Available on personal Google accounts. No paid subscription required. This is no-code RAG in action.
+**Gems are free!** Available on Google accounts—no paid subscription required. This is no-code RAG in action.
 
 
 ---
