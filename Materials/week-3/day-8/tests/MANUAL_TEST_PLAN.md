@@ -124,7 +124,7 @@ Ensure the site is deployed to HTTPS (GitHub Pages, Firebase Hosting, etc.). The
 | 3 | Select `mpickard@niu.edu` (or `matthew.david.pickard@gmail.com`) | Sign-in succeeds. Sign-in gate disappears. User email shown in nav. Sign Out button appears. |
 | 4 | Open DevTools Console | No errors. Should see `[capstone]` log messages. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-10) — Console shows Firebase popup.ts COOP warnings + extension noise; all benign.
 
 ### Test 1.2 — Sign-in with non-NIU account blocked
 
@@ -134,7 +134,7 @@ Ensure the site is deployed to HTTPS (GitHub Pages, Firebase Hosting, etc.). The
 | 2 | Click **Sign In** | Google picker appears |
 | 3 | Select a non-NIU, non-allowed account (e.g., personal Gmail not in CF_ALLOWED_EMAILS) | Error message: domain not allowed. User is NOT signed in. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-10) — "Please sign in with your NIU email address" popup shown.
 
 ### Test 1.3 — Sign-out and re-sign-in
 
@@ -144,7 +144,7 @@ Ensure the site is deployed to HTTPS (GitHub Pages, Firebase Hosting, etc.). The
 | 2 | Click **Sign Out** | Sign-in gate reappears. Team info hidden. Competition content hidden. |
 | 3 | Click **Sign In** again, select same account | Signs in. Team info restored. Competition content visible. No duplicate auth UI elements. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-10) — Re-sign-in works, shows "No teams available yet" (expected without team docs).
 
 ---
 
