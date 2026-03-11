@@ -22,7 +22,7 @@ const CF_CONFIG = {
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 const CF_ALLOWED_DOMAINS = ['niu.edu', 'students.niu.edu'];
-const CF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com'];
+const CF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', 'nickcanady2025@gmail.com'];
 const CF_INSTRUCTOR_EMAILS = ['mpickard@niu.edu', 'matthew.david.pickard@gmail.com'];
 const CF_MAX_ATTEMPTS = 3;
 const CF_MAX_TEAM_SIZE = 3;

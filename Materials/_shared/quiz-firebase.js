@@ -21,7 +21,7 @@ const QF_CONFIG = {
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 const QF_ALLOWED_DOMAINS = ['niu.edu', 'students.niu.edu'];
-const QF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com'];
+const QF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com', 'nickcanady2025@gmail.com'];
 const QF_MAX_ATTEMPTS = 3;
 
 // ─── State ──────────────────────────────────────────────────────────────────

@@ -21,7 +21,7 @@ const FIREBASE_CONFIG = {
 // ─── Constants ──────────────────────────────────────────────────────────────
 const AUTOSAVE_DELAY_MS = 2000;
 const ALLOWED_DOMAINS = ['niu.edu', 'students.niu.edu'];
-const ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com'];
+const ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com', 'nickcanady2025@gmail.com'];
 
 // ─── State ──────────────────────────────────────────────────────────────────
 let db = null;
