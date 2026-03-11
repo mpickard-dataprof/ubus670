@@ -214,43 +214,13 @@ async function cfShowTeamPicker() {
   const container = document.getElementById('cf-team-picker');
   if (!container) return;
   container.style.display = '';
-  container.innerHTML = '<p style="text-align:center;color:#666;">Loading teams...</p>';
-
-  try {
-    const snap = await cfDb.collection(CF_COLLECTION).get();
-    const teams = [];
-    snap.forEach(doc => {
-      const d = doc.data();
-      teams.push({ id: doc.id, name: d.teamName, members: d.members || [], size: (d.members || []).length });
-    });
-
-    if (teams.length === 0) {
-      container.innerHTML = '<p style="text-align:center;color:#999;">No teams available yet. Check back soon.</p>';
-      return;
-    }
-
-    let html = '<h3 style="font-family:Montserrat,sans-serif;color:#1D428A;margin:0 0 15px;">Join a Team</h3>';
-    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">';
-    teams.forEach(t => {
-      const full = t.size >= CF_MAX_TEAM_SIZE;
-      html += `
-        <div style="background:white;border:2px solid ${full ? '#e0e0e0' : '#1D428A'};border-radius:8px;padding:16px;text-align:center;">
-          <div style="font-weight:700;font-family:Montserrat,sans-serif;font-size:1.1rem;margin-bottom:8px;">${cfEsc(t.name)}</div>
-          <div style="font-size:0.85rem;color:#666;margin-bottom:12px;">${t.size}/${CF_MAX_TEAM_SIZE} members</div>
-          ${full
-            ? '<span style="color:#999;font-size:0.85rem;">Full</span>'
-            : `<button onclick="cfJoinTeam('${t.id}')" style="
-                padding:8px 20px;border:none;border-radius:6px;background:#C8102E;color:white;
-                font-weight:600;cursor:pointer;font-family:Montserrat,sans-serif;font-size:0.85rem;">Join</button>`
-          }
-        </div>`;
-    });
-    html += '</div>';
-    container.innerHTML = html;
-  } catch (err) {
-    console.error('[capstone] Failed to load teams:', err);
-    container.innerHTML = '<p style="color:#C8102E;">Failed to load teams. Please refresh.</p>';
-  }
+  container.innerHTML = `
+    <div style="text-align:center;padding:20px;">
+      <p style="color:#C8102E;font-weight:600;font-family:Montserrat,sans-serif;">
+        Teams have already been assigned.</p>
+      <p style="color:#666;">If you don't see your team, make sure you're signed in with the same email
+        your instructor used to register you. Contact your instructor if you need help.</p>
+    </div>`;
 }
 
 async function cfJoinTeam(teamId) {
