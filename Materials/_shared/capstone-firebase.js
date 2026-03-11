@@ -155,11 +155,15 @@ async function cfOnAuthChanged(user) {
     const gate = document.getElementById('cf-sign-in-gate');
     if (gate) gate.style.display = 'none';
 
-    if (cfTeamId) {
+    if (cfIsInstructor) {
+      cfShowCompetitionContent();
+      cfStartLeaderboard();
+      cfShowAdminPanel();
+      if (cfTeamId) cfShowTeamUI();
+    } else if (cfTeamId) {
       cfShowTeamUI();
       cfShowCompetitionContent();
       cfStartLeaderboard();
-      if (cfIsInstructor) cfShowAdminPanel();
     } else {
       cfShowTeamPicker();
     }
