@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
-"""Build a QTI 2.1 ZIP package from questions.json for Blackboard Ultra import.
+"""Build a QTI 2.1 ZIP package from a questions JSON file for Blackboard Ultra.
+
+Images are served via GitHub Pages (absolute URLs), not bundled in the ZIP.
+BB Ultra does not support embedded images in QTI imports.
 
 Usage:
-    python3 Materials/Final-Exam/build_qti.py
+    python3 Materials/Final-Exam/build_qti.py [INPUT_JSON] [OUTPUT_ZIP] [MANIFEST_ID]
 
-Reads:  Materials/Final-Exam/questions.json
-Writes: Materials/Final-Exam/final-exam-pool.zip
+Defaults:
+    INPUT_JSON   = questions.json
+    OUTPUT_ZIP   = final-exam-pool.zip
+    MANIFEST_ID  = UBUS670-Final-Exam-Pool
+
+Examples:
+    python3 Materials/Final-Exam/build_qti.py
+    python3 Materials/Final-Exam/build_qti.py practice-questions.json practice-exam-pool.zip UBUS670-Practice-Exam
 """
 
 import json
-import os
-import shutil
 import sys
 import zipfile
 from pathlib import Path
@@ -22,12 +29,17 @@ from xml.etree.ElementTree import (
 )
 
 # ---------------------------------------------------------------------------
-# Paths
+# Config
 # ---------------------------------------------------------------------------
 SCRIPT_DIR = Path(__file__).resolve().parent
-QUESTIONS_JSON = SCRIPT_DIR / "questions.json"
-IMAGES_DIR = SCRIPT_DIR / "images"
-OUTPUT_ZIP = SCRIPT_DIR / "final-exam-pool.zip"
+
+# CLI args: [input_json] [output_zip] [manifest_id]
+QUESTIONS_JSON = SCRIPT_DIR / (sys.argv[1] if len(sys.argv) > 1 else "questions.json")
+OUTPUT_ZIP = SCRIPT_DIR / (sys.argv[2] if len(sys.argv) > 2 else "final-exam-pool.zip")
+MANIFEST_ID = sys.argv[3] if len(sys.argv) > 3 else "UBUS670-Final-Exam-Pool"
+
+# Images hosted on GitHub Pages — BB Ultra requires absolute URLs
+IMAGE_BASE_URL = "https://mpickard-dataprof.github.io/ubus670/Final-Exam/images"
 
 
 # ---------------------------------------------------------------------------
@@ -38,8 +50,6 @@ def _pretty_xml(root: Element) -> bytes:
     rough = tostring(root, encoding="unicode", xml_declaration=False)
     dom = parseString(rough)
     pretty = dom.toprettyxml(indent="  ", encoding="UTF-8")
-    # minidom adds an extra xml declaration; keep it.
-    # Remove blank lines minidom sometimes introduces.
     lines = [line for line in pretty.decode("utf-8").splitlines() if line.strip()]
     return "\n".join(lines).encode("utf-8")
 
@@ -65,7 +75,6 @@ def build_assessment_item(question: dict) -> bytes:
     if correct_key is None:
         raise ValueError(f"Question {qid} has no correct answer marked")
 
-    # Namespaces
     ns = "http://www.imsglobal.org/xsd/imsqti_v2p1"
 
     root = Element("assessmentItem", xmlns=ns)
@@ -95,15 +104,14 @@ def build_assessment_item(question: dict) -> bytes:
     # itemBody
     item_body = SubElement(root, "itemBody")
 
-    # Stem paragraph
     p_stem = SubElement(item_body, "p")
     p_stem.text = stem
 
-    # Optional image
+    # Image via absolute GitHub Pages URL
     if image:
         p_img = SubElement(item_body, "p")
         img_el = SubElement(p_img, "img")
-        img_el.set("src", f"images/{image}")
+        img_el.set("src", f"{IMAGE_BASE_URL}/{image}")
         img_el.set("alt", f"{topic} diagram")
 
     # choiceInteraction
@@ -130,21 +138,23 @@ def build_assessment_item(question: dict) -> bytes:
 # ---------------------------------------------------------------------------
 # Build imsmanifest.xml
 # ---------------------------------------------------------------------------
-def build_manifest(questions: list[dict], image_files: list[str]) -> bytes:
-    """Create the IMS Content Package manifest."""
+def build_manifest(questions: list[dict], manifest_id: str) -> bytes:
+    """Create the IMS Content Package manifest.
+
+    Images are external (GitHub Pages), so no image resources are declared.
+    """
 
     ns_cp = "http://www.imsglobal.org/xsd/imscp_v1p1"
     ns_md = "http://www.imsglobal.org/xsd/imsmd_v1p2"
     ns_qti = "http://www.imsglobal.org/xsd/imsqti_v2p1"
 
-    # We use minidom here so we can control namespace prefixes cleanly.
     impl = getDOMImplementation()
     doc = impl.createDocument(ns_cp, "manifest", None)
     manifest = doc.documentElement
     manifest.setAttribute("xmlns", ns_cp)
     manifest.setAttribute("xmlns:imsmd", ns_md)
     manifest.setAttribute("xmlns:imsqti", ns_qti)
-    manifest.setAttribute("identifier", "UBUS670-Final-Exam-Pool")
+    manifest.setAttribute("identifier", manifest_id)
 
     # metadata
     metadata = doc.createElement("metadata")
@@ -162,14 +172,9 @@ def build_manifest(questions: list[dict], image_files: list[str]) -> bytes:
     organizations = doc.createElement("organizations")
     manifest.appendChild(organizations)
 
-    # resources
+    # resources — items only, no bundled images
     resources = doc.createElement("resources")
     manifest.appendChild(resources)
-
-    # Track which images have already been declared to avoid duplicates.
-    # BB Ultra throws DuplicateFileException if the same image path appears
-    # in multiple <file> elements across the manifest.
-    declared_images: set[str] = set()
 
     for q in questions:
         qid = q["id"]
@@ -184,17 +189,9 @@ def build_manifest(questions: list[dict], image_files: list[str]) -> bytes:
         file_el.setAttribute("href", filename)
         resource.appendChild(file_el)
 
-        # Declare image dependency only on the FIRST question that uses it
-        if q.get("image") and q["image"] not in declared_images:
-            dep_file = doc.createElement("file")
-            dep_file.setAttribute("href", f"images/{q['image']}")
-            resource.appendChild(dep_file)
-            declared_images.add(q["image"])
-
         resources.appendChild(resource)
 
     xml_bytes = doc.toprettyxml(indent="  ", encoding="UTF-8")
-    # Clean up blank lines
     lines = [line for line in xml_bytes.decode("utf-8").splitlines() if line.strip()]
     return "\n".join(lines).encode("utf-8")
 
@@ -203,7 +200,6 @@ def build_manifest(questions: list[dict], image_files: list[str]) -> bytes:
 # Main
 # ---------------------------------------------------------------------------
 def main() -> None:
-    # Load questions
     if not QUESTIONS_JSON.exists():
         print(f"ERROR: {QUESTIONS_JSON} not found", file=sys.stderr)
         sys.exit(1)
@@ -214,46 +210,27 @@ def main() -> None:
     questions = data["questions"]
     print(f"Loaded {len(questions)} questions from {QUESTIONS_JSON.name}")
 
-    # Collect real image files
-    image_files: list[str] = []
-    if IMAGES_DIR.is_dir():
-        image_files = [
-            p.name
-            for p in IMAGES_DIR.iterdir()
-            if p.is_file() and not p.name.startswith(".")
-        ]
-    print(f"Found {len(image_files)} image file(s) in images/")
-
-    # Count questions that reference images
     items_with_images = sum(1 for q in questions if q.get("image"))
 
-    # Build ZIP
+    # Build ZIP — items only, no bundled images
     with zipfile.ZipFile(OUTPUT_ZIP, "w", zipfile.ZIP_DEFLATED) as zf:
-        # Write each assessmentItem
         for q in questions:
             xml_bytes = build_assessment_item(q)
             item_path = f"items/{q['id'].lower()}.xml"
             zf.writestr(item_path, xml_bytes)
 
-        # Copy image files into the ZIP
-        for img_name in image_files:
-            img_path = IMAGES_DIR / img_name
-            zf.write(img_path, f"images/{img_name}")
-
-        # Write manifest
-        manifest_bytes = build_manifest(questions, image_files)
+        manifest_bytes = build_manifest(questions, MANIFEST_ID)
         zf.writestr("imsmanifest.xml", manifest_bytes)
 
     zip_size = OUTPUT_ZIP.stat().st_size
 
-    # Summary
     print()
     print("=" * 50)
     print("QTI 2.1 Package Build Summary")
     print("=" * 50)
     print(f"  Total items:        {len(questions)}")
     print(f"  Items with images:  {items_with_images}")
-    print(f"  Image files:        {len(image_files)}")
+    print(f"  Image base URL:     {IMAGE_BASE_URL}")
     print(f"  Output:             {OUTPUT_ZIP.name}")
     print(f"  ZIP file size:      {zip_size:,} bytes ({zip_size / 1024:.1f} KB)")
     print("=" * 50)
