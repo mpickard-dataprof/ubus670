@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" font-family="Montserrat, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="450" height="350" font-family="Montserrat, Arial, sans-serif">
   <defs>
     <filter id="shadow">
       <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
@@ -10,18 +10,6 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <marker id="arrowNav" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" fill="#1D428A">
-      <polygon points="0 0, 10 3.5, 0 7"/>
-    </marker>
-    <marker id="arrowTeal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" fill="#00968F">
-      <polygon points="0 0, 10 3.5, 0 7"/>
-    </marker>
-    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" fill="#999999">
-      <polygon points="0 0, 10 3.5, 0 7"/>
-    </marker>
-    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" fill="#C8102E">
-      <polygon points="0 0, 10 3.5, 0 7"/>
-    </marker>
   </defs>
 
   <!-- Background -->
@@ -104,19 +92,24 @@
   <!-- === CURVED ARROWS (clockwise) === -->
 
   <!-- Build → Test -->
-  <path d="M525,135 Q620,140 670,238" fill="none" stroke="#1D428A" stroke-width="2.5" marker-end="url(#arrowNav)"/>
+  <path d="M525,135 Q620,140 670,238" fill="none" stroke="#1D428A" stroke-width="2.5"/>
+  <polygon points="0,0 -12,-5 -12,5" fill="#1D428A" transform="translate(670,238) rotate(63)"/>
 
   <!-- Test → Deploy -->
-  <path d="M730,302 Q750,420 715,488" fill="none" stroke="#00968F" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+  <path d="M730,302 Q750,420 715,488" fill="none" stroke="#00968F" stroke-width="2.5"/>
+  <polygon points="0,0 -12,-5 -12,5" fill="#00968F" transform="translate(715,488) rotate(117)"/>
 
   <!-- Deploy → Monitor -->
-  <path d="M565,535 Q450,590 335,535" fill="none" stroke="#999999" stroke-width="2.5" marker-end="url(#arrowGray)"/>
+  <path d="M565,535 Q450,590 335,535" fill="none" stroke="#999999" stroke-width="2.5"/>
+  <polygon points="0,0 -12,-5 -12,5" fill="#999999" transform="translate(335,535) rotate(206)"/>
 
   <!-- Monitor → Respond -->
-  <path d="M185,500 Q130,420 175,302" fill="none" stroke="#C8102E" stroke-width="2.5" marker-end="url(#arrowRed)"/>
+  <path d="M185,500 Q130,420 175,302" fill="none" stroke="#C8102E" stroke-width="2.5"/>
+  <polygon points="0,0 -12,-5 -12,5" fill="#C8102E" transform="translate(175,302) rotate(291)"/>
 
   <!-- Respond → Build (completing circle) -->
-  <path d="M225,238 Q220,160 375,125" fill="none" stroke="#1D428A" stroke-width="2.5" marker-end="url(#arrowNav)"/>
+  <path d="M225,238 Q220,160 375,125" fill="none" stroke="#1D428A" stroke-width="2.5"/>
+  <polygon points="0,0 -12,-5 -12,5" fill="#1D428A" transform="translate(375,125) rotate(347)"/>
 
   <!-- === CALLOUT pointing to Test === -->
   <g>
