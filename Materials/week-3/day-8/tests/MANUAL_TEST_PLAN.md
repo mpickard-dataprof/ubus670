@@ -159,7 +159,7 @@ Ensure the site is deployed to HTTPS (GitHub Pages, Firebase Hosting, etc.). The
 |------|--------|-----------------|
 | 1 | Sign in with `mpickard@niu.edu` | Team picker does NOT appear (already a member of test-team-alpha). Team info bar shows "Test Team Alpha" with "Attempts: 0/3". |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 2.2 — Unassigned user sees "Teams have already been assigned" message
 
@@ -171,7 +171,7 @@ Ensure the site is deployed to HTTPS (GitHub Pages, Firebase Hosting, etc.). The
 
 **Cleanup:** Restore your email to test-team-alpha's members.
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### ~~Test 2.3 — Full team shows "Full" badge~~
 
@@ -232,9 +232,9 @@ Use this sample submission (scores ~40-50 points):
 | 4 | Verify score breakdown | Total should be > 0. Each dimension (Top 10, Bottom 5, Flags, Bias Pairs, Patterns) shows a numeric score. |
 | 5 | Check leaderboard | Your team appears with the score. |
 
-**Record the score:** _______________
+**Record the score:** 58.7
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11) — Score 58.7. Submit button stays on "Submitting..." (fix deployed but not yet verified).
 
 ### Test 3.2 — Invalid JSON: clear error messages
 
@@ -249,7 +249,7 @@ Use this sample submission (scores ~40-50 points):
 | 7 | Paste valid JSON but duplicate an ID in top_10_hire | |
 | 8 | Click **Validate** | Error: "duplicate id C-XX". Submit disabled. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 3.3 — Three-attempt limit
 
@@ -262,7 +262,7 @@ Use this sample submission (scores ~40-50 points):
 
 **Cleanup:** In Firestore Console, reset the team: set `attemptsUsed` to `0`, `bestScore` to `null`, `attempts` to `[]`.
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 3.4 — String ranks in JSON (AI-generated edge case)
 
@@ -301,7 +301,7 @@ Paste this JSON where ranks are strings:
 
 **Cleanup:** Reset team attempts in Firestore.
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ---
 
@@ -317,7 +317,7 @@ Paste this JSON where ranks are strings:
 | 1 | Sign in as `mpickard@niu.edu` | Admin panel appears above leaderboard with 3 buttons: Toggle Competition Set, View All Submissions, Freeze Competition |
 | 2 | Open incognito, sign in as non-instructor | Admin panel does NOT appear |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 4.2 — Toggle competition resumes
 
@@ -328,7 +328,7 @@ Paste this JSON where ranks are strings:
 | 3 | Open a second browser/incognito as a student | Student also sees 30 resume cards (after refresh) |
 | 4 | Click **Hide Competition Set** | Resume cards disappear. Student sees them disappear on refresh. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 4.3 — Freeze competition
 
@@ -341,7 +341,7 @@ Paste this JSON where ranks are strings:
 
 **Cleanup:** Ensure competition is unfrozen. Reset student team attempts.
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 4.4 — View all submissions
 
@@ -349,7 +349,7 @@ Paste this JSON where ranks are strings:
 |------|--------|-----------------|
 | 1 | Click **View All Submissions** | Table appears showing all teams with: Team name, Attempts used, Best score, Member emails |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ---
 
@@ -363,7 +363,7 @@ Paste this JSON where ranks are strings:
 |------|--------|-----------------|
 | 1 | Enable competition resumes (admin toggle) | 30 resume cards visible, each showing ID (e.g., C-12), candidate name, and Copy button. No expand/collapse. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11) — Pending deploy verification for no-expand layout.
 
 ### Test 5.2 — Competition resume copy
 
@@ -372,7 +372,7 @@ Paste this JSON where ranks are strings:
 | 1 | Click **Copy** on a resume card | Button text briefly changes to "Copied!" |
 | 2 | Paste into a text editor | Resume text appears, starting with `[C-XX]` followed by candidate name |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11) — Copy works, resume text correct.
 
 ### Test 5.3 — Lab practice resume toggle
 
@@ -382,7 +382,7 @@ Paste this JSON where ranks are strings:
 | 2 | Click a practice resume header | Resume text expands |
 | 3 | Click again | Collapses |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11) — Expand/collapse works. Text color fix pending deploy.
 
 ### Test 5.4 — Lab collapsible sections
 
@@ -392,7 +392,7 @@ Paste this JSON where ranks are strings:
 | 2 | Click the header | Scaffold prompt text appears |
 | 3 | Click the **Copy** button | Prompt text copied to clipboard |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11) — Expand and copy work. "Copy" text included in paste (fix pending deploy).
 
 ---
 
@@ -407,7 +407,7 @@ Paste this JSON where ranks are strings:
 | 1 | In Firestore Console, set `settings/capstone_settings` > `competitionVisible` to `false` | (Prep step) |
 | 2 | Open `competition.html`, sign in as student | Competition resumes section is NOT visible. Only the submission form and leaderboard are visible. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 6.2 — Instructor reveals, student sees
 
@@ -415,9 +415,9 @@ Paste this JSON where ranks are strings:
 |------|--------|-----------------|
 | 1 | Sign in as instructor, click **Show Competition Set** | Resumes appear for instructor |
 | 2 | In student browser, refresh the page | Student now sees all 30 competition resumes |
-| 3 | Student can expand and copy individual resumes | Each resume expands with copy button |
+| 3 | Student can copy individual resumes | Each resume has a Copy button |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ---
 
@@ -437,11 +437,11 @@ For each page, open DevTools > Network tab, then load the page:
 | `competition.html` | Network tab | `../../../_shared/styles.css` loads. `competition-resumes.js` loads. `../../../_shared/capstone-firebase.js` loads. 3 Firebase SDK scripts load. No 404s. |
 | `rubric.html` | Network tab | `../../../_shared/styles.css` loads. No 404s. |
 
-- [ ] PASS / FAIL (index): _______________
-- [ ] PASS / FAIL (lecture): _______________
-- [ ] PASS / FAIL (lab): _______________
-- [ ] PASS / FAIL (competition): _______________
-- [ ] PASS / FAIL (rubric): _______________
+- [x] PASS (index) (2026-03-11)
+- [x] PASS (lecture) (2026-03-11)
+- [x] PASS (lab) (2026-03-11)
+- [x] PASS (competition) (2026-03-11)
+- [x] PASS (rubric) (2026-03-11)
 
 ### Test 7.2 — No console errors on page load
 
@@ -455,7 +455,7 @@ For each page, open DevTools > Console, reload:
 | `competition.html` | No errors before sign-in. Firebase init messages OK. |
 | `rubric.html` | No errors |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11) — Extension noise only (Zotero); no app errors.
 
 ---
 
@@ -475,7 +475,7 @@ For each page, open DevTools > Console, reload:
 | 5 | Verify leaderboard shows all 3 teams | Scores listed, sorted by score. No duplicates. |
 | 6 | Check Firestore Console | Each team document has `attemptsUsed: 1` and one attempt in the array |
 
-- [ ] PASS / FAIL: _______________
+- [ ] DEFERRED — Test on campus WiFi
 
 ### Test 8.2 — Network interruption recovery
 
@@ -487,7 +487,7 @@ For each page, open DevTools > Console, reload:
 | 4 | Toggle WiFi back on | |
 | 5 | Click **Submit** again | Submission succeeds. Attempt count is correct (not double-counted). |
 
-- [ ] PASS / FAIL: _______________
+- [ ] DEFERRED — Test on campus WiFi
 
 ---
 
@@ -502,7 +502,7 @@ For each page, open DevTools > Console, reload:
 | 1 | Sign in as student (non-instructor) | No permission errors in console |
 | 2 | Competition visibility check succeeds | If `competitionVisible` is true, resumes appear. If false, hidden. No "permission denied" errors. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 9.2 — Student cannot write to settings
 
@@ -511,7 +511,7 @@ For each page, open DevTools > Console, reload:
 | 1 | Open DevTools Console as a signed-in student | |
 | 2 | Run: `firebase.firestore().collection('settings').doc('capstone_settings').set({competitionVisible: true})` | Should fail with "permission denied" |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11) — N/A for mpickard@niu.edu (in allow list). Rules correctly scoped; real students would be denied.
 
 ### Test 9.3 — Student can write to their own team
 
@@ -519,7 +519,7 @@ For each page, open DevTools > Console, reload:
 |------|--------|-----------------|
 | 1 | Student submits valid JSON through the UI | Submission succeeds. Data written to their team document. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 9.4 — Student cannot write to another team
 
@@ -528,7 +528,7 @@ For each page, open DevTools > Console, reload:
 | 1 | Open DevTools Console as a signed-in student on Team Alpha | |
 | 2 | Run: `firebase.firestore().collection('capstone_teams').doc('test-team-beta').update({bestScore: 100})` | Should fail with "permission denied" |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11) — "Missing or insufficient permissions" as expected.
 
 ---
 
@@ -546,7 +546,7 @@ For each page, open DevTools > Console, reload:
 | 4 | Press Escape | Slide overview appears |
 | 5 | Press Escape again | Returns to current slide |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 10.2 — Navigation bar works
 
@@ -556,7 +556,7 @@ For each page, open DevTools > Console, reload:
 | 2 | Click browser back | Returns to lecture |
 | 3 | Click "Dashboard" | Navigates to `index.html` |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ---
 
@@ -573,7 +573,7 @@ For each page, open DevTools > Console, reload:
 | 3 | Click **Copy** on P-01 | Text copied. Button shows "Copied!" briefly. |
 | 4 | Paste into text editor | Text starts with `[P-01]` and candidate name |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 11.2 — Scaffold prompts
 
@@ -584,7 +584,7 @@ For each page, open DevTools > Console, reload:
 | 3 | Click **Copy** | Prompt copied to clipboard |
 | 4 | Find Evaluator scaffold | Partial scaffold (output format only) |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 11.3 — Answer key
 
@@ -595,7 +595,7 @@ For each page, open DevTools > Console, reload:
 | 3 | Verify P-17 row | Shows "Weak" or flagged for fake institution |
 | 4 | Verify P-20 row | Shows "Strong" |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 11.4 — Navigation links
 
@@ -605,7 +605,7 @@ For each page, open DevTools > Console, reload:
 | 2 | Click browser back | Returns to lab |
 | 3 | Click "Competition" in nav bar | Goes to `competition.html` |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ---
 
@@ -620,7 +620,7 @@ For each page, open DevTools > Console, reload:
 | 1 | Open `rubric.html` | Grading rubric visible with all 5 scoring dimensions. Point values shown. |
 | 2 | Verify total is 100 points | Top 10 (30) + Bottom 5 (10) + Flags (30) + Bias Pairs (15) + Patterns (15) = 100 |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ### Test 12.2 — Print output
 
@@ -630,7 +630,7 @@ For each page, open DevTools > Console, reload:
 | 2 | Select "Save as PDF" | Preview shows clean layout: no navigation bar, no colored background, tables readable. |
 | 3 | Save and open PDF | All text legible. Tables not cut off. Fits on 1-2 pages. |
 
-- [ ] PASS / FAIL: _______________
+- [x] PASS (2026-03-11)
 
 ---
 

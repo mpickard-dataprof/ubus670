@@ -17,7 +17,7 @@ const path = require('path');
 // ─── Service Account ────────────────────────────────────────────────────────
 const SERVICE_ACCOUNT_PATH = path.resolve(
   process.env.GOOGLE_APPLICATION_CREDENTIALS ||
-  path.join(process.env.HOME, 'Downloads/ubus-670-labs-firebase-adminsdk-fbsvc-6b2cd8782d.json')
+  path.join(process.env.HOME, 'Downloads/ubus-670-labs-firebase-adminsdk-fbsvc-1ffa49f34e.json')
 );
 
 // ─── Team Definitions ───────────────────────────────────────────────────────
@@ -77,6 +77,22 @@ const TEAMS = [
       'z2103770@students.niu.edu',
       'nickcanady2025@gmail.com'
     ]
+  },
+  // ─── Test Teams (for manual testing — see MANUAL_TEST_PLAN.md Part 0.3) ───
+  {
+    docId: 'test-team-alpha',
+    teamName: 'Test Team Alpha',
+    members: ['mpickard@niu.edu']
+  },
+  {
+    docId: 'test-team-beta',
+    teamName: 'Test Team Beta',
+    members: ['matthew.david.pickard@gmail.com']
+  },
+  {
+    docId: 'test-team-gamma',
+    teamName: 'Test Team Gamma',
+    members: []
   }
 ];
 
