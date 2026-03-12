@@ -161,30 +161,21 @@ Ensure the site is deployed to HTTPS (GitHub Pages, Firebase Hosting, etc.). The
 
 - [ ] PASS / FAIL: _______________
 
-### Test 2.2 — Team picker appears for unassigned user
+### Test 2.2 — Unassigned user sees "Teams have already been assigned" message
 
 | Step | Action | Expected Result |
 |------|--------|-----------------|
-| 1 | In Firestore Console, remove your email from test-team-alpha's `members` array | (Prep step) |
-| 2 | Refresh `competition.html`, sign in | Team picker appears showing available teams |
-| 3 | Verify all 3 test teams are listed | Team names, member counts, and Join buttons visible |
-| 4 | Click **Join** on Test Team Gamma | Team picker disappears. Team info bar shows "Test Team Gamma". Competition content appears. |
-| 5 | Check Firestore Console | `test-team-gamma` document `members` array now includes your email |
+| 1 | In Firestore, remove your email from test-team-alpha's `members` array | (Prep step) |
+| 2 | Refresh `competition.html`, sign in with `mpickard@niu.edu` | "Teams have already been assigned" message appears. No team picker or Join buttons. Submission form is NOT visible. |
+| 3 | Message includes guidance to contact instructor | Helpful text telling user to verify their email or contact instructor. |
 
-**Cleanup:** Restore your email to test-team-alpha's members. Remove from test-team-gamma.
+**Cleanup:** Restore your email to test-team-alpha's members.
 
 - [ ] PASS / FAIL: _______________
 
-### Test 2.3 — Full team shows "Full" badge
+### ~~Test 2.3 — Full team shows "Full" badge~~
 
-| Step | Action | Expected Result |
-|------|--------|-----------------|
-| 1 | In Firestore Console, set test-team-alpha `members` to 3 dummy emails | (Prep step) |
-| 2 | Sign in as a user not on any team | Team picker appears. Test Team Alpha shows "Full" badge. Join button disabled or absent. |
-
-**Cleanup:** Restore test-team-alpha members.
-
-- [ ] PASS / FAIL: _______________
+> **SKIPPED** — Self-join team picker was replaced with pre-assigned team model. Teams are assigned by instructor via Firestore; students cannot self-join. The `cfJoinTeam()` function is retained in code but never called from the UI.
 
 ---
 
@@ -362,18 +353,15 @@ Paste this JSON where ranks are strings:
 
 ---
 
-## PART 5: Resume Expand/Collapse and Copy
+## PART 5: Resume Cards and Copy
 
 **Pages:** `competition.html` and `lab.html`
 
-### Test 5.1 — Competition resume toggle
+### Test 5.1 — Competition resume cards display
 
 | Step | Action | Expected Result |
 |------|--------|-----------------|
-| 1 | Enable competition resumes (admin toggle) | 30 resume cards visible |
-| 2 | Click a resume header (e.g., C-12) | Resume text expands below the header |
-| 3 | Click the same header again | Resume text collapses |
-| 4 | Verify text starts with `[C-12]` | ID tag present at start of text |
+| 1 | Enable competition resumes (admin toggle) | 30 resume cards visible, each showing ID (e.g., C-12), candidate name, and Copy button. No expand/collapse. |
 
 - [ ] PASS / FAIL: _______________
 

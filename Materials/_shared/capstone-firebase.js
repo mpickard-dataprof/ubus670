@@ -23,7 +23,7 @@ const CF_CONFIG = {
 // ─── Constants ──────────────────────────────────────────────────────────────
 const CF_ALLOWED_DOMAINS = ['niu.edu', 'students.niu.edu'];
 const CF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com', 'nickcanady2025@gmail.com'];
-const CF_INSTRUCTOR_EMAILS = ['mpickard@niu.edu', 'matthew.david.pickard@gmail.com'];
+const CF_INSTRUCTOR_EMAILS = ['matthew.david.pickard@gmail.com'];
 const CF_MAX_ATTEMPTS = 3;
 const CF_MAX_TEAM_SIZE = 3;
 const CF_COLLECTION = 'capstone_teams';
@@ -624,6 +624,7 @@ async function cfSubmitResults() {
     cfTeamData.bestScore = Math.max(result.scores.total, cfTeamData.bestScore || 0);
     cfShowTeamUI();
     cfShowScoreBreakdown(result.scores, result.attemptNum);
+    if (submitBtn) { submitBtn.textContent = 'Submitted'; submitBtn.disabled = true; }
 
   } catch (err) {
     alert(err.message || 'Submission failed. Please try again.');
@@ -826,6 +827,7 @@ async function cfCheckCompetitionVisibility() {
 async function cfViewAllSubmissions() {
   const output = document.getElementById('cf-admin-output');
   if (!output) return;
+  if (output.innerHTML.trim()) { output.innerHTML = ''; return; }
   output.innerHTML = '<p>Loading...</p>';
 
   try {
