@@ -483,6 +483,16 @@ function cfValidateSubmission(jsonStr) {
     });
   }
 
+  // Cross-list check: no candidate in both top_10_hire and bottom_5
+  if (Array.isArray(data.top_10_hire) && Array.isArray(data.bottom_5)) {
+    const t10Ids = new Set(data.top_10_hire.map(e => (e.id || '').toUpperCase()));
+    data.bottom_5.forEach((entry, i) => {
+      if (t10Ids.has((entry.id || '').toUpperCase())) {
+        errors.push(`bottom_5[${i}]: ${entry.id} also appears in top_10_hire — a candidate cannot be in both lists`);
+      }
+    });
+  }
+
   if (!Array.isArray(data.flags)) {
     errors.push('flags must be an array');
   } else {
@@ -571,13 +581,14 @@ async function cfSubmitResults() {
   const submission = JSON.parse(previewEl.dataset.validJson);
 
   try {
-    // Check if competition is frozen
-    const settingsSnap = await cfDb.collection('settings').doc(CF_SETTINGS_DOC).get();
-    if (settingsSnap.exists && settingsSnap.data().competitionFrozen) {
-      throw new Error('Competition is closed. No more submissions are accepted.');
-    }
-
     const result = await cfDb.runTransaction(async (tx) => {
+      // Check frozen status inside the transaction to prevent race conditions
+      const settingsRef = cfDb.collection('settings').doc(CF_SETTINGS_DOC);
+      const settingsSnap = await tx.get(settingsRef);
+      if (settingsSnap.exists && settingsSnap.data().competitionFrozen) {
+        throw new Error('Competition is closed. No more submissions are accepted.');
+      }
+
       const ref = cfDb.collection(CF_COLLECTION).doc(cfTeamId);
       const snap = await tx.get(ref);
       if (!snap.exists) throw new Error('Team not found');
@@ -841,13 +852,13 @@ async function cfViewAllSubmissions() {
         <td style="padding:8px;font-weight:600;">${cfEsc(d.teamName)}</td>
         <td style="text-align:center;">${d.attemptsUsed || 0}</td>
         <td style="text-align:center;font-weight:700;color:#C8102E;">${(d.bestScore || 0).toFixed(1)}</td>
-        <td style="font-size:0.8rem;color:#666;">${(d.members || []).join(', ')}</td>
+        <td style="font-size:0.8rem;color:#666;">${cfEsc((d.members || []).join(', '))}</td>
       </tr>`;
     });
     html += '</table>';
     output.innerHTML = html;
   } catch (err) {
-    output.innerHTML = `<p style="color:#C8102E;">Error: ${err.message}</p>`;
+    output.innerHTML = `<p style="color:#C8102E;">Error: ${cfEsc(err.message)}</p>`;
   }
 }
 
@@ -913,5 +924,7 @@ function cfCopyResume(id) {
       btn.textContent = 'Copied!';
       setTimeout(() => { btn.textContent = orig; }, 1500);
     }
+  }).catch(() => {
+    alert('Copy failed — please select the resume text manually and use Ctrl+C.');
   });
 }

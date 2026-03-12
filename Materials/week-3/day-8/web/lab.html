@@ -545,17 +545,18 @@ The job posting for reference:
     function copyEl(id) {
         const el = document.getElementById(id);
         if (!el) return;
-        const btn = el.querySelector('.copy-btn');
-        if (btn) btn.hidden = true;
+        const copyBtn = el.querySelector('.copy-btn');
+        if (copyBtn) copyBtn.hidden = true;
         const text = el.textContent.trim();
-        if (btn) btn.hidden = false;
+        if (copyBtn) copyBtn.hidden = false;
         navigator.clipboard.writeText(text).then(() => {
-            const btn = el.querySelector('.copy-btn') || el.parentElement.querySelector('.copy-btn');
-            if (btn) {
-                const orig = btn.textContent;
-                btn.textContent = 'Copied!';
-                setTimeout(() => { btn.textContent = orig; }, 1500);
+            if (copyBtn) {
+                const orig = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => { copyBtn.textContent = orig; }, 1500);
             }
+        }).catch(() => {
+            alert('Copy failed — please select the text manually and use Ctrl+C.');
         });
     }
 
@@ -569,6 +570,8 @@ The job posting for reference:
                 btn.textContent = 'Copied!';
                 setTimeout(() => { btn.textContent = orig; }, 1500);
             }
+        }).catch(() => {
+            alert('Copy failed — please select the text manually and use Ctrl+C.');
         });
     }
 
