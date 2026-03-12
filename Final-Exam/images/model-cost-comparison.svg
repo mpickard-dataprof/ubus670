@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 660" font-family="Montserrat, Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <linearGradient id="flashGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00B3AA"/>
+      <stop offset="100%" stop-color="#00968F"/>
+    </linearGradient>
+    <linearGradient id="proGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2656A8"/>
+      <stop offset="100%" stop-color="#1D428A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Title -->
+  <text x="440" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#1D428A">Model Cost Comparison: Total Cost of Ownership</text>
+  <text x="440" y="60" text-anchor="middle" font-size="12" fill="#666666">Beacon Retail — 6,000 customer emails/month classification task</text>
+
+  <!-- ════════════ Column Headers ════════════ -->
+  <!-- Flash header -->
+  <rect x="60" y="80" width="360" height="52" rx="12" fill="url(#flashGrad)" filter="url(#shadow)"/>
+  <text x="240" y="112" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">Gemini Flash</text>
+
+  <!-- Pro header -->
+  <rect x="460" y="80" width="360" height="52" rx="12" fill="url(#proGrad)" filter="url(#shadow)"/>
+  <text x="640" y="112" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">Gemini Pro</text>
+
+  <!-- ════════════ Pricing Rows ════════════ -->
+  <!-- Row backgrounds -->
+  <rect x="60" y="146" width="360" height="36" rx="0" fill="#F5F5F5"/>
+  <rect x="460" y="146" width="360" height="36" rx="0" fill="#F5F5F5"/>
+
+  <rect x="60" y="218" width="360" height="36" rx="0" fill="#F5F5F5"/>
+  <rect x="460" y="218" width="360" height="36" rx="0" fill="#F5F5F5"/>
+
+  <!-- Row: Input Cost -->
+  <text x="80" y="168" font-size="12" fill="#333333">Input Cost</text>
+  <text x="400" y="168" text-anchor="end" font-size="13" font-weight="600" fill="#00968F">$0.50 / 1M tokens</text>
+  <text x="480" y="168" font-size="12" fill="#333333">Input Cost</text>
+  <text x="800" y="168" text-anchor="end" font-size="13" font-weight="600" fill="#1D428A">$2.00 / 1M tokens</text>
+
+  <!-- Row: Output Cost -->
+  <text x="80" y="200" font-size="12" fill="#333333">Output Cost</text>
+  <text x="400" y="200" text-anchor="end" font-size="13" font-weight="600" fill="#00968F">$3.00 / 1M tokens</text>
+  <text x="480" y="200" font-size="12" fill="#333333">Output Cost</text>
+  <text x="800" y="200" text-anchor="end" font-size="13" font-weight="600" fill="#1D428A">$12.00 / 1M tokens</text>
+
+  <!-- Row: Monthly API -->
+  <text x="80" y="238" font-size="12" fill="#333333">Monthly API (6K emails)</text>
+  <text x="400" y="238" text-anchor="end" font-size="13" font-weight="600" fill="#00968F">~$7.50</text>
+  <text x="480" y="238" font-size="12" fill="#333333">Monthly API (6K emails)</text>
+  <text x="800" y="238" text-anchor="end" font-size="13" font-weight="600" fill="#1D428A">~$30.00</text>
+
+  <!-- Row: Accuracy -->
+  <text x="80" y="270" font-size="12" fill="#333333">Accuracy</text>
+  <text x="400" y="270" text-anchor="end" font-size="13" font-weight="600" fill="#00968F">95%</text>
+  <text x="480" y="270" font-size="12" fill="#333333">Accuracy</text>
+  <text x="800" y="270" text-anchor="end" font-size="13" font-weight="600" fill="#1D428A">98%</text>
+
+  <!-- Divider -->
+  <line x1="60" y1="288" x2="420" y2="288" stroke="#E0E0E0" stroke-width="1.5"/>
+  <line x1="460" y1="288" x2="820" y2="288" stroke="#E0E0E0" stroke-width="1.5"/>
+
+  <!-- Row: Error Cost -->
+  <text x="80" y="312" font-size="12" fill="#333333">Error Cost (misclassification)</text>
+  <text x="400" y="312" text-anchor="end" font-size="13" font-weight="700" fill="#C8102E">$4,500/mo</text>
+  <text x="480" y="312" font-size="12" fill="#333333">Error Cost (misclassification)</text>
+  <text x="800" y="312" text-anchor="end" font-size="13" font-weight="700" fill="#2E7D32">$1,800/mo</text>
+
+  <!-- ════════════ TOTAL Boxes ════════════ -->
+  <!-- Flash total -->
+  <rect x="60" y="336" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#C8102E" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="80" y="370" font-size="14" font-weight="700" fill="#333333">TOTAL MONTHLY COST</text>
+  <text x="400" y="370" text-anchor="end" font-size="18" font-weight="700" fill="#C8102E">~$4,508</text>
+
+  <!-- Pro total -->
+  <rect x="460" y="336" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#2E7D32" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="480" y="370" font-size="14" font-weight="700" fill="#333333">TOTAL MONTHLY COST</text>
+  <text x="800" y="370" text-anchor="end" font-size="18" font-weight="700" fill="#2E7D32">~$1,830</text>
+
+  <!-- ════════════ Visual Bar Chart ════════════ -->
+  <text x="440" y="426" text-anchor="middle" font-size="14" font-weight="700" fill="#333333">Cost Breakdown Comparison</text>
+
+  <!-- Flash bars -->
+  <text x="200" y="452" text-anchor="middle" font-size="11" font-weight="600" fill="#00968F">Gemini Flash</text>
+  <!-- API cost bar (tiny) -->
+  <rect x="80" y="460" width="6" height="30" rx="3" fill="#00968F"/>
+  <!-- Error cost bar (massive) -->
+  <rect x="86" y="460" width="310" height="30" rx="3" fill="#C8102E" opacity="0.8"/>
+  <text x="240" y="480" text-anchor="middle" font-size="10" font-weight="600" fill="#FFFFFF">Error Cost: $4,500</text>
+  <text x="83" y="508" font-size="9" fill="#00968F">API: $7.50</text>
+
+  <!-- Pro bars -->
+  <text x="600" y="452" text-anchor="middle" font-size="11" font-weight="600" fill="#1D428A">Gemini Pro</text>
+  <!-- API cost bar (small) -->
+  <rect x="480" y="460" width="8" height="30" rx="3" fill="#1D428A"/>
+  <!-- Error cost bar (smaller) -->
+  <rect x="488" y="460" width="124" height="30" rx="3" fill="#C8102E" opacity="0.5"/>
+  <text x="550" y="480" text-anchor="middle" font-size="10" font-weight="600" fill="#FFFFFF">Error: $1,800</text>
+  <text x="483" y="508" font-size="9" fill="#1D428A">API: $30</text>
+
+  <!-- Scale reference -->
+  <text x="80" y="538" font-size="9" fill="#999999">$0</text>
+  <text x="400" y="538" text-anchor="end" font-size="9" fill="#999999">$4,500</text>
+  <line x1="80" y1="528" x2="396" y2="528" stroke="#E0E0E0" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- ════════════ Bottom Callout ════════════ -->
+  <rect x="140" y="560" width="600" height="80" rx="14" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" filter="url(#shadow)"/>
+  <!-- Warning icon -->
+  <circle cx="182" cy="600" r="22" fill="#FF9800"/>
+  <text x="182" y="607" text-anchor="middle" font-size="20" font-weight="700" fill="#FFFFFF">!</text>
+  <!-- Callout text -->
+  <text x="460" y="592" text-anchor="middle" font-size="16" font-weight="700" fill="#E65100">Cheapest API ≠ Lowest Total Cost</text>
+  <text x="460" y="614" text-anchor="middle" font-size="12" fill="#795548">Always calculate error costs when comparing models.</text>
+  <text x="460" y="630" text-anchor="middle" font-size="12" fill="#795548">A 3% accuracy gap cost Beacon $2,678/month extra.</text>
+</svg>

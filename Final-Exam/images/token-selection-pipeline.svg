@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700" font-family="Montserrat, Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrowDown" markerWidth="10" markerHeight="8" refX="5" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#333333"/>
+    </marker>
+    <marker id="arrowDownRed" markerWidth="10" markerHeight="8" refX="5" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#C8102E"/>
+    </marker>
+    <linearGradient id="grayGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8E8E8"/>
+      <stop offset="100%" stop-color="#D5D5D5"/>
+    </linearGradient>
+    <linearGradient id="navyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2656A8"/>
+      <stop offset="100%" stop-color="#1D428A"/>
+    </linearGradient>
+    <linearGradient id="tealGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00B3AA"/>
+      <stop offset="100%" stop-color="#00968F"/>
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E0243A"/>
+      <stop offset="100%" stop-color="#C8102E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#1D428A">Token Selection Pipeline</text>
+  <text x="400" y="62" text-anchor="middle" font-size="12" fill="#666666">How an LLM selects the next token</text>
+
+  <!-- ════════════ Level 1: Full Vocabulary ════════════ -->
+  <!-- Trapezoid shape — widest -->
+  <path d="M100,90 L700,90 L680,170 L120,170 Z" rx="8" fill="url(#grayGrad)" stroke="#BBBBBB" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="400" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="#333333">Full Vocabulary</text>
+  <text x="400" y="148" text-anchor="middle" font-size="12" fill="#555555">50,000+ tokens</text>
+
+  <!-- Token scatter icons in level 1 -->
+  <g opacity="0.3">
+    <rect x="160" y="100" width="24" height="16" rx="3" fill="#999"/>
+    <rect x="196" y="104" width="30" height="16" rx="3" fill="#999"/>
+    <rect x="238" y="98" width="20" height="16" rx="3" fill="#999"/>
+    <rect x="540" y="102" width="26" height="16" rx="3" fill="#999"/>
+    <rect x="578" y="98" width="22" height="16" rx="3" fill="#999"/>
+    <rect x="612" y="104" width="28" height="16" rx="3" fill="#999"/>
+  </g>
+
+  <!-- Arrow 1 -->
+  <line x1="400" y1="178" x2="400" y2="220" stroke="#333333" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <rect x="310" y="186" width="180" height="24" rx="6" fill="#FFFFFF" stroke="#1D428A" stroke-width="1.5"/>
+  <text x="400" y="203" text-anchor="middle" font-size="11" font-weight="600" fill="#1D428A">Top-K Filter (K=40)</text>
+
+  <!-- ════════════ Level 2: Top-K Candidates ════════════ -->
+  <path d="M160,230 L640,230 L620,310 L180,310 Z" fill="url(#navyGrad)" stroke="#153670" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="400" y="266" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">Top-K Candidates</text>
+  <text x="400" y="288" text-anchor="middle" font-size="12" fill="#FFFFFF" opacity="0.85">e.g., 40 most probable tokens</text>
+
+  <!-- Side annotation -->
+  <text x="660" y="275" font-size="10" fill="#666666" font-style="italic">Keeps only K</text>
+  <text x="660" y="288" font-size="10" fill="#666666" font-style="italic">highest-probability</text>
+  <text x="660" y="301" font-size="10" fill="#666666" font-style="italic">candidates</text>
+
+  <!-- Arrow 2 -->
+  <line x1="400" y1="318" x2="400" y2="360" stroke="#333333" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <rect x="310" y="326" width="180" height="24" rx="6" fill="#FFFFFF" stroke="#00968F" stroke-width="1.5"/>
+  <text x="400" y="343" text-anchor="middle" font-size="11" font-weight="600" fill="#00968F">Top-P Filter (P=0.9)</text>
+
+  <!-- ════════════ Level 3: Nucleus ════════════ -->
+  <path d="M210,370 L590,370 L570,450 L230,450 Z" fill="url(#tealGrad)" stroke="#007A74" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="400" y="406" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">Nucleus Set</text>
+  <text x="400" y="428" text-anchor="middle" font-size="12" fill="#FFFFFF" opacity="0.85">Cumulative probability &gt; P threshold</text>
+
+  <!-- Side annotation -->
+  <text x="118" y="405" text-anchor="end" font-size="10" fill="#666666" font-style="italic">Trims low-</text>
+  <text x="118" y="418" text-anchor="end" font-size="10" fill="#666666" font-style="italic">probability tail</text>
+
+  <!-- Arrow 3 -->
+  <line x1="400" y1="458" x2="400" y2="500" stroke="#333333" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <rect x="310" y="466" width="180" height="24" rx="6" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="400" y="483" text-anchor="middle" font-size="11" font-weight="600" fill="#C8102E">Temperature Scaling</text>
+
+  <!-- ════════════ Level 4: Selected Token ════════════ -->
+  <rect x="310" y="510" width="180" height="64" rx="12" fill="url(#redGrad)" stroke="#A00D24" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="400" y="540" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">Selected Token</text>
+  <text x="400" y="558" text-anchor="middle" font-size="11" fill="#FFFFFF" opacity="0.9">"delicious"</text>
+
+  <!-- Star accent -->
+  <g transform="translate(500, 530)" fill="#FFD700" opacity="0.8">
+    <polygon points="0,-10 3,-3 10,-3 5,2 7,10 0,5 -7,10 -5,2 -10,-3 -3,-3"/>
+  </g>
+
+  <!-- Temperature explanation bar -->
+  <rect x="130" y="608" width="540" height="72" rx="10" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="1.5"/>
+  <text x="400" y="630" text-anchor="middle" font-size="12" font-weight="700" fill="#333333">Temperature Effect</text>
+
+  <!-- Low temp -->
+  <rect x="155" y="640" width="100" height="26" rx="6" fill="#1D428A"/>
+  <text x="205" y="658" text-anchor="middle" font-size="10" font-weight="600" fill="#FFFFFF">Low (0.2)</text>
+  <text x="268" y="658" font-size="10" fill="#333333">= Deterministic</text>
+
+  <!-- High temp -->
+  <rect x="420" y="640" width="100" height="26" rx="6" fill="#C8102E"/>
+  <text x="470" y="658" text-anchor="middle" font-size="10" font-weight="600" fill="#FFFFFF">High (1.0)</text>
+  <text x="533" y="658" font-size="10" fill="#333333">= Creative</text>
+</svg>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UBUS 670: Capstone Lab - Build Your Pipeline</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
+
+    <style>
+        body { font-family: Georgia, 'Times New Roman', serif; background: #f5f5f5; margin: 0; }
+
+        /* Navigation */
+        .global-nav {
+            position: sticky; top: 0; z-index: 100;
+            background: white; border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px; display: flex;
+            justify-content: space-between; align-items: center;
+            font-family: 'Montserrat', sans-serif; font-size: 14px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #666; }
+        .breadcrumb a { color: #1D428A; text-decoration: none; font-weight: 500; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+        .nav-pills { display: flex; gap: 8px; }
+        .nav-pill {
+            padding: 8px 16px; border-radius: 6px; text-decoration: none;
+            font-weight: 600; font-size: 13px; transition: all 0.2s;
+        }
+        .nav-pill.active { background: #C8102E; color: white; }
+        .nav-pill:not(.active) { background: #f0f0f0; color: #333; }
+        .nav-pill:not(.active):hover { background: #e0e0e0; }
+
+        /* Main Content */
+        .lab-container { max-width: 900px; margin: 0 auto; padding: 30px; }
+
+        /* Part Headers */
+        .part-header {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white; padding: 25px 30px; border-radius: 12px;
+            margin: 40px 0 20px;
+        }
+        .part-header h2 {
+            font-family: 'Montserrat', sans-serif; margin: 0 0 5px; font-size: 1.4rem;
+        }
+        .part-header .time {
+            font-size: 0.85rem; opacity: 0.85;
+        }
+        .part-header:first-of-type { margin-top: 20px; }
+
+        /* Content Sections */
+        .lab-section {
+            background: white; padding: 25px 30px; border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px;
+        }
+        .lab-section h3 {
+            font-family: 'Montserrat', sans-serif; color: #1D428A;
+            font-size: 1.1rem; margin: 0 0 12px;
+        }
+        .lab-section p { line-height: 1.7; color: #333; }
+        .lab-section ol, .lab-section ul { line-height: 1.7; }
+
+        /* Job Posting */
+        .job-posting {
+            background: #FAFAFA; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 25px; position: relative;
+        }
+        .job-posting h4 {
+            font-family: 'Montserrat', sans-serif; color: #C8102E;
+            margin: 0 0 15px; font-size: 1rem;
+        }
+
+        /* Copy Button */
+        .copy-btn {
+            position: absolute; top: 12px; right: 12px;
+            padding: 6px 16px; border: 1px solid #ddd; border-radius: 4px;
+            background: white; color: #666; font-size: 0.8rem;
+            cursor: pointer; font-family: 'Montserrat', sans-serif;
+        }
+        .copy-btn:hover { background: #1D428A; color: white; border-color: #1D428A; }
+
+        /* Scaffold Prompt */
+        .scaffold-prompt {
+            background: #1E1E1E; color: #D4D4D4; border-radius: 8px;
+            padding: 20px; font-family: 'Courier New', monospace;
+            font-size: 0.8rem; line-height: 1.6; white-space: pre-wrap;
+            position: relative; margin: 15px 0;
+        }
+
+        /* Compare Box */
+        .compare-box {
+            background: #EBF0F7; border-radius: 8px; padding: 18px 22px;
+            margin: 20px 0; border-left: 4px solid #1D428A;
+        }
+        .compare-box h4 {
+            font-family: 'Montserrat', sans-serif; color: #1D428A;
+            margin: 0 0 8px; font-size: 0.9rem;
+        }
+        .compare-box p { font-size: 0.9rem; margin: 0; color: #555; }
+
+        /* Checkpoint */
+        .checkpoint {
+            background: #FDE8E8; border: 2px solid #C8102E; border-radius: 12px;
+            padding: 25px 30px; margin: 30px 0;
+        }
+        .checkpoint h3 {
+            font-family: 'Montserrat', sans-serif; color: #C8102E;
+            margin: 0 0 10px;
+        }
+
+        /* Collapsible */
+        .collapsible-header {
+            cursor: pointer; padding: 12px 16px;
+            background: #f0f0f0; border-radius: 8px;
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 0.9rem; color: #333;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .collapsible-header:hover { background: #e8e8e8; }
+        .collapsible-header::after { content: '\\25BC'; font-size: 0.7rem; }
+        .collapsible-content { display: none; padding: 15px 0; }
+
+        /* Resume Grid */
+        .resume-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 10px; margin: 15px 0;
+        }
+        .resume-card {
+            background: white; border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04); overflow: hidden;
+            border: 1px solid #e8e8e8;
+        }
+        .resume-card-header {
+            padding: 10px 14px; cursor: pointer;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .resume-card-header:hover { background: #f8f8f8; }
+        .rid { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem; color: #1D428A; }
+        .rname { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; flex-grow: 1; }
+        .rcopy {
+            padding: 3px 10px; border: 1px solid #ddd; border-radius: 4px;
+            background: white; color: #666; font-size: 0.7rem; cursor: pointer;
+        }
+        .rcopy:hover { background: #1D428A; color: white; }
+        .resume-text-lab {
+            display: none; padding: 12px; margin: 0;
+            font-family: 'Courier New', monospace; font-size: 0.75rem;
+            line-height: 1.4; background: #FAFAFA; color: #333; white-space: pre-wrap;
+            max-height: 400px; overflow-y: auto; border-top: 1px solid #f0f0f0;
+        }
+
+        /* Hint Box */
+        .hint-box {
+            background: #E8F5E9; border-left: 4px solid #2E7D32;
+            padding: 15px 20px; border-radius: 0 8px 8px 0; margin: 15px 0;
+        }
+        .hint-box strong { color: #2E7D32; }
+
+        /* Answer Key */
+        .answer-key {
+            background: #FFF8E1; border: 1px solid #FFE082; border-radius: 8px;
+            padding: 20px; margin: 20px 0;
+        }
+        .answer-key h4 { font-family: 'Montserrat', sans-serif; color: #F57F17; margin: 0 0 10px; }
+
+        footer {
+            text-align: center; padding: 40px 20px; color: #888;
+            font-size: 0.9rem; border-top: 1px solid #e0e0e0; background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="index.html">Day 8 &ndash; Capstone</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Lab</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill active">Lab</a>
+            <a href="competition.html" class="nav-pill">Competition</a>
+        </div>
+    </nav>
+
+    <main class="lab-container">
+
+        <!-- ==================== JOB POSTING ==================== -->
+        <div class="lab-section">
+            <h3>Beacon Retail Group &mdash; Job Posting</h3>
+            <p>Your Evaluator agent needs this job description to score candidates against. Copy it into your Evaluator's system prompt or context.</p>
+            <div class="job-posting" id="job-posting">
+                <button class="copy-btn" onclick="copyEl('job-posting-text')">Copy</button>
+                <h4>Seasonal Retail Associate</h4>
+                <pre id="job-posting-text" style="white-space:pre-wrap;font-family:Georgia,serif;margin:0;font-size:0.9rem;line-height:1.6;">Position: Seasonal Retail Associate
+Company: Beacon Retail Group
+Locations: Multiple stores across the region (12 hiring locations)
+Duration: May - August 2026 (with potential extension for strong performers)
+Hours: 25-40 hours/week, must be available weekends and at least 2 holidays
+Pay: $16-$19/hour based on experience
+
+Key Responsibilities:
+- Operate POS register and process customer transactions
+- Assist customers with product location, sizing, and recommendations
+- Stock shelves, maintain displays, and organize backroom inventory
+- Handle returns and exchanges per Beacon's return policy
+- Maintain clean and organized store environment
+- Support seasonal promotions and sale events
+
+Required Qualifications:
+- 18+ years old
+- Available for the full May-August season (partial availability considered for strong candidates)
+- Able to stand for extended periods, lift up to 30 lbs
+- Reliable transportation to assigned store location
+- High school diploma or equivalent
+
+Preferred Qualifications:
+- Previous retail or customer service experience
+- POS/cash register experience
+- Bilingual (English + Spanish, Mandarin, or other)
+- Open availability including evenings, weekends, and holidays
+- Experience with inventory management or visual merchandising
+- First aid or safety certification</pre>
+            </div>
+        </div>
+
+        <!-- ==================== PART 0 ==================== -->
+        <div class="part-header">
+            <h2>Part 0: Team Formation &amp; Architecture Planning</h2>
+            <span class="time">~15 minutes</span>
+        </div>
+
+        <div class="lab-section">
+            <h3>Form Your Team</h3>
+            <ol>
+                <li>Find 1-2 partners (teams of 2-3 people)</li>
+                <li>Go to the <a href="competition.html" style="color:#C8102E;font-weight:600;">Competition page</a>, sign in with your NIU email, and join a team</li>
+                <li>Discuss: Who will focus on which agent? (Parser, Evaluator, Ranker)</li>
+            </ol>
+        </div>
+
+        <div class="lab-section">
+            <h3>Plan Your Architecture (Before You Build!)</h3>
+            <p>Sketch your pipeline on paper or a whiteboard before touching any tools:</p>
+            <ol>
+                <li><strong>Define the data contract:</strong> What JSON fields does Parser output? What does Evaluator expect?</li>
+                <li><strong>Decide your scoring criteria:</strong> How will your Evaluator weight experience vs. availability vs. skills?</li>
+                <li><strong>Plan your output format:</strong> What should the Ranker produce that you can submit to the competition?</li>
+            </ol>
+            <div class="hint-box">
+                <strong>Hint:</strong> Look at the submission JSON format on the <a href="competition.html" style="color:#2E7D32;">Competition page</a>.
+                Design your Ranker to produce that structure directly.
+            </div>
+        </div>
+
+        <!-- ==================== PART 1 ==================== -->
+        <div class="part-header">
+            <h2>Part 1: Build the Parser Agent</h2>
+            <span class="time">~30 minutes | AI Studio</span>
+        </div>
+
+        <div class="lab-section">
+            <h3>What the Parser Does</h3>
+            <p>The Parser takes <strong>raw resume text</strong> and extracts structured data. It does NOT evaluate quality &mdash; it just organizes the information.</p>
+
+            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+                Scaffold Prompt (click to expand)
+            </div>
+            <div class="collapsible-content">
+                <div class="scaffold-prompt" id="parser-scaffold">
+                    <button class="copy-btn" style="position:absolute;top:8px;right:8px;" onclick="copyEl('parser-scaffold')">Copy</button>
+You are a resume parser for Beacon Retail Group's hiring pipeline.
+
+Your job: Extract structured data from raw resume text. Do NOT evaluate or judge the candidate — just extract the facts.
+
+For each resume, output a JSON object with these fields:
+{
+  "candidate_id": "[C-XX from the first line]",
+  "name": "[full name]",
+  "contact": {
+    "email": "[if provided]",
+    "phone": "[if provided]",
+    "city": "[city, state]"
+  },
+  "work_experience": [
+    {
+      "title": "[job title]",
+      "company": "[company name]",
+      "location": "[city, state]",
+      "start_date": "[start]",
+      "end_date": "[end or Present]",
+      "duties": ["[duty 1]", "[duty 2]"]
+    }
+  ],
+  "education": [
+    {
+      "degree": "[degree or diploma]",
+      "institution": "[school name]",
+      "graduation": "[date or expected]"
+    }
+  ],
+  "skills": ["[skill 1]", "[skill 2]"],
+  "certifications": ["[cert 1]"],
+  "availability": "[full text of availability statement]",
+  "references": "[what they said about references]"
+}
+
+IMPORTANT:
+- The resume ID is on the first line in [C-XX] format. ALWAYS include it.
+- Extract dates exactly as written (don't convert formats).
+- If a section is missing, use null or empty array.
+- Output valid JSON only — no commentary before or after.
+                </div>
+            </div>
+
+            <h3>Test Your Parser</h3>
+            <ol>
+                <li>Open <a href="https://aistudio.google.com" target="_blank" rel="noopener" style="color:#1D428A;">AI Studio</a></li>
+                <li>Paste the scaffold prompt (or write your own) as the system instruction</li>
+                <li>Set temperature to <strong>0.1-0.2</strong> (for consistent JSON output)</li>
+                <li>Copy a practice resume from below and paste it as user input</li>
+                <li>Verify the output is valid JSON with all expected fields</li>
+                <li>Test with 3-5 different practice resumes, including varied formats</li>
+            </ol>
+
+            <div class="compare-box">
+                <h4>Compare with Classmates</h4>
+                <p>Did your Parser extract the same fields? Did anyone find a resume that breaks the Parser? Share your trickiest edge case.</p>
+            </div>
+        </div>
+
+        <!-- ==================== PART 2 ==================== -->
+        <div class="part-header">
+            <h2>Part 2: Build the Evaluator Agent</h2>
+            <span class="time">~30 minutes | AI Studio</span>
+        </div>
+
+        <div class="lab-section">
+            <h3>What the Evaluator Does</h3>
+            <p>The Evaluator takes <strong>Parser output + the job posting</strong> and scores each candidate. This is where your team's judgment matters most.</p>
+
+            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+                Output Format Template (click to expand) &mdash; <em>You write the scoring criteria!</em>
+            </div>
+            <div class="collapsible-content">
+                <div class="scaffold-prompt" id="evaluator-scaffold">
+                    <button class="copy-btn" style="position:absolute;top:8px;right:8px;" onclick="copyEl('evaluator-scaffold')">Copy</button>
+You are a candidate evaluator for Beacon Retail Group's seasonal hiring.
+
+You will receive a parsed resume (JSON) and the job posting. Score the candidate and identify any concerns.
+
+Output this JSON structure for each candidate:
+{
+  "candidate_id": "[from input]",
+  "name": "[from input]",
+  "score": [0-100],
+  "category": "Strong" | "Moderate" | "Weak",
+  "evaluation": {
+    "experience_score": [0-25, your reasoning],
+    "availability_score": [0-20, your reasoning],
+    "customer_service_score": [0-15, your reasoning],
+    "reliability_score": [0-15, your reasoning],
+    "skills_match_score": [0-15, your reasoning]
+  },
+  "red_flags": [
+    {"flag": "[description]", "severity": "minor" | "disqualifying"}
+  ],
+  "strengths": ["[strength 1]", "[strength 2]"],
+  "concerns": ["[concern 1]"]
+}
+
+YOUR JOB: Define how you score each dimension. What makes a
+25/25 on experience vs. a 10/25? That's YOUR team's scoring rubric.
+
+The job posting for reference:
+[PASTE THE JOB POSTING HERE]
+                </div>
+                <p style="font-size:0.85rem;color:#666;margin-top:10px;">
+                    <strong>Note:</strong> Unlike the Parser, you only get the output format &mdash; not the scoring logic.
+                    Your team decides how to weight experience, availability, skills, etc. This is where your pipeline
+                    will differ from other teams.
+                </p>
+            </div>
+
+            <h3>Calibrate Your Evaluator</h3>
+            <ol>
+                <li>Run your Evaluator on 3 practice resumes (one strong, one moderate, one weak)</li>
+                <li>Check: Does the strong candidate score significantly higher than the weak one?</li>
+                <li>Adjust your scoring criteria until the results make sense</li>
+                <li>Test with a red-flag resume &mdash; does your Evaluator catch the issue?</li>
+            </ol>
+
+            <div class="compare-box">
+                <h4>Compare with Classmates</h4>
+                <p>Compare scores for the same candidate. If your Evaluator gives P-01 a 92 and theirs gives 75, discuss why &mdash; different rubrics produce different rankings.</p>
+            </div>
+        </div>
+
+        <!-- ==================== CHECKPOINT ==================== -->
+        <div class="checkpoint">
+            <h3>&#x23F0; 75-Minute Checkpoint (10:15 AM)</h3>
+            <p>The instructor will check each team's progress. At this point you should have:</p>
+            <ul>
+                <li><strong>Parser:</strong> Working &mdash; can extract structured JSON from any practice resume</li>
+                <li><strong>Evaluator:</strong> Working &mdash; produces scores and flags for parsed resumes</li>
+            </ul>
+            <p><strong>If you're stuck:</strong> The instructor will provide a rescue package with pre-built prompts so you can move on to Parts 3-5. Getting stuck on one agent shouldn't stop your whole pipeline.</p>
+        </div>
+
+        <!-- ==================== PART 3 ==================== -->
+        <div class="part-header">
+            <h2>Part 3: Build the Ranker Agent</h2>
+            <span class="time">~25 minutes | AI Studio</span>
+        </div>
+
+        <div class="lab-section">
+            <h3>What the Ranker Does</h3>
+            <p>The Ranker takes <strong>all Evaluator outputs</strong> (batch input) and produces a final ranked list, identifies patterns across candidates, and generates the competition submission JSON.</p>
+            <p><strong>No scaffold prompt for this one.</strong> By now you should be able to write it from scratch. Think about:</p>
+            <ul>
+                <li>What criteria does the Ranker use to break ties?</li>
+                <li>Should the Ranker look for patterns across resumes? (Hint: yes, for bonus points!)</li>
+                <li>Make sure the output matches the competition submission format</li>
+            </ul>
+
+            <div class="hint-box">
+                <strong>Pro Tip:</strong> Your Ranker should output the competition JSON structure directly.
+                Check the <a href="competition.html" style="color:#2E7D32;">Competition page</a> for the exact format &mdash;
+                <code>top_10_hire</code>, <code>bottom_5</code>, <code>flags</code>, <code>bias_pairs</code>, <code>patterns</code>.
+            </div>
+        </div>
+
+        <!-- ==================== PART 4 ==================== -->
+        <div class="part-header">
+            <h2>Part 4: Wire the Pipeline in ADK</h2>
+            <span class="time">~30 minutes | ADK Visual Builder</span>
+        </div>
+
+        <div class="lab-section">
+            <h3>Connect Your Agents</h3>
+            <ol>
+                <li>Open the <a href="https://adk.google.dev" target="_blank" rel="noopener" style="color:#1D428A;">ADK Visual Builder</a></li>
+                <li>Create 3 agents using your finalized prompts from AI Studio</li>
+                <li>Wire them in sequence: Parser &rarr; Evaluator &rarr; Ranker</li>
+                <li>Test with a <strong>single practice resume</strong> end-to-end</li>
+                <li>Then test with <strong>5+ practice resumes</strong> to verify consistency</li>
+            </ol>
+
+            <div class="hint-box">
+                <strong>Troubleshooting:</strong> If the pipeline breaks between agents, the data contract is usually the issue.
+                Check that your Parser output exactly matches what your Evaluator expects.
+            </div>
+
+            <div class="compare-box">
+                <h4>Compare with Classmates</h4>
+                <p>How long does your pipeline take per resume? Compare processing times. Faster pipelines will have more time for iteration on Day 9.</p>
+            </div>
+        </div>
+
+        <!-- ==================== PART 5 ==================== -->
+        <div class="part-header">
+            <h2>Part 5: Document &amp; Prepare for Day 9</h2>
+            <span class="time">~20 minutes</span>
+        </div>
+
+        <div class="lab-section">
+            <h3>Save Everything</h3>
+            <ul>
+                <li><strong>Save all 3 system prompts</strong> (Parser, Evaluator, Ranker) in a shared document</li>
+                <li><strong>Save your ADK pipeline configuration</strong> (screenshot or export)</li>
+                <li><strong>Note any issues or improvements</strong> you want to make on Day 9</li>
+            </ul>
+
+            <h3>Test the Submission Flow</h3>
+            <ol>
+                <li>Go to the <a href="competition.html" style="color:#C8102E;font-weight:600;">Competition page</a></li>
+                <li>Paste a sample JSON output from your Ranker into the submission box</li>
+                <li>Click <strong>Validate &amp; Preview</strong> to check formatting</li>
+                <li><strong>Do NOT click Submit</strong> &mdash; save your attempts for Day 9!</li>
+            </ol>
+
+            <div class="hint-box">
+                <strong>Day 9 Preview:</strong> You'll receive 30 brand-new resumes. Run them through your pipeline,
+                submit your results, and compete on the live leaderboard. You get 3 attempts &mdash; use your first
+                attempt to see where you stand, then iterate and improve.
+            </div>
+        </div>
+
+        <!-- ==================== PRACTICE RESUMES ==================== -->
+        <div class="part-header" style="background:linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);">
+            <h2>Practice Resumes (20 Candidates)</h2>
+            <span class="time">Use these throughout Parts 1-4 to test your pipeline</span>
+        </div>
+
+        <div class="lab-section">
+            <p>Click a candidate to expand their resume. Use <strong>Copy</strong> to paste into your pipeline.
+               Each resume starts with a <code>[P-XX]</code> ID tag.</p>
+            <div id="practice-resume-grid" class="resume-grid">
+                <!-- Rendered by JS from practice-resumes.js -->
+            </div>
+        </div>
+
+        <!-- Self-Check Answer Key -->
+        <div class="lab-section">
+            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+                Self-Check Answer Key (expand after testing)
+            </div>
+            <div class="collapsible-content">
+                <div class="answer-key">
+                    <h4>Expected Categories (approximate &mdash; your scores will vary based on your rubric)</h4>
+                    <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                        <thead>
+                            <tr style="background:#F57F17;color:white;">
+                                <th style="padding:8px;">ID</th>
+                                <th style="padding:8px;">Name</th>
+                                <th style="padding:8px;">Expected Category</th>
+                                <th style="padding:8px;">Key Signals</th>
+                            </tr>
+                        </thead>
+                        <tbody id="answer-key-body">
+                            <!-- Rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Northern Illinois University &mdash; UBUS 670: AI for Business Leaders</p>
+    </footer>
+
+    <!-- Practice Resume Data + Rendering -->
+    <script src="practice-resumes.js"></script>
+    <script>
+    // Copy helper
+    function copyEl(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const copyBtn = el.querySelector('.copy-btn');
+        if (copyBtn) copyBtn.hidden = true;
+        const text = el.textContent.trim();
+        if (copyBtn) copyBtn.hidden = false;
+        navigator.clipboard.writeText(text).then(() => {
+            if (copyBtn) {
+                const orig = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => { copyBtn.textContent = orig; }, 1500);
+            }
+        }).catch(() => {
+            alert('Copy failed — please select the text manually and use Ctrl+C.');
+        });
+    }
+
+    function copyResumeText(id) {
+        const el = document.getElementById('practice-' + id);
+        if (!el) return;
+        navigator.clipboard.writeText(el.textContent).then(() => {
+            const btn = document.querySelector(`[data-pcopy="${id}"]`);
+            if (btn) {
+                const orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => { btn.textContent = orig; }, 1500);
+            }
+        }).catch(() => {
+            alert('Copy failed — please select the text manually and use Ctrl+C.');
+        });
+    }
+
+    // Render practice resumes
+    (function() {
+        const grid = document.getElementById('practice-resume-grid');
+        if (!grid || typeof PRACTICE_RESUMES === 'undefined') return;
+
+        PRACTICE_RESUMES.forEach(r => {
+            const card = document.createElement('div');
+            card.className = 'resume-card';
+            card.innerHTML = `
+                <div class="resume-card-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+                    <span class="rid">${r.id}</span>
+                    <span class="rname">${r.name}</span>
+                    <button class="rcopy" data-pcopy="${r.id}" onclick="event.stopPropagation(); copyResumeText('${r.id}')">Copy</button>
+                </div>
+                <pre class="resume-text-lab" id="practice-${r.id}">${escHtml(r.text)}</pre>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Render answer key
+        const tbody = document.getElementById('answer-key-body');
+        if (tbody && typeof PRACTICE_ANSWER_KEY !== 'undefined') {
+            PRACTICE_ANSWER_KEY.forEach(entry => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #eee';
+                tr.innerHTML = `
+                    <td style="padding:8px;font-weight:600;">${entry.id}</td>
+                    <td style="padding:8px;">${entry.name}</td>
+                    <td style="padding:8px;font-weight:700;color:${
+                        entry.category === 'Strong' ? '#2E7D32' :
+                        entry.category === 'Weak' ? '#C8102E' :
+                        entry.category === 'Red Flag' ? '#D32F2F' :
+                        entry.category === 'Edge Case' ? '#F57F17' : '#1D428A'
+                    };">${entry.category}</td>
+                    <td style="padding:8px;font-size:0.85rem;color:#666;">${entry.signals}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function escHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+    })();
+    </script>
+
+</body>
+</html>

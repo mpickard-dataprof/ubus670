@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 400" font-family="Montserrat, Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1D428A"/>
+    </marker>
+    <marker id="arrowTeal" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#00968F"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="430" y="45" text-anchor="middle" font-size="20" font-weight="700" fill="#333333">Three Eras of Software</text>
+
+  <!-- Timeline line -->
+  <line x1="80" y1="310" x2="780" y2="310" stroke="#CCCCCC" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="80" y="340" text-anchor="middle" font-size="11" fill="#999999">1950s</text>
+  <text x="430" y="340" text-anchor="middle" font-size="11" fill="#999999">2010s</text>
+  <text x="780" y="340" text-anchor="middle" font-size="11" fill="#999999">2020s+</text>
+
+  <!-- Era 1: Traditional Software -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="100" width="200" height="160" rx="12" fill="#1D428A"/>
+    <!-- Gear icon -->
+    <g transform="translate(150, 155)">
+      <circle cx="0" cy="0" r="14" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <circle cx="0" cy="0" r="5" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <line x1="0" y1="-18" x2="0" y2="-12" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="0" y1="12" x2="0" y2="18" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="-18" y1="0" x2="-12" y2="0" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="12" y1="0" x2="18" y2="0" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="-12.7" y1="-12.7" x2="-8.5" y2="-8.5" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="8.5" y1="8.5" x2="12.7" y2="12.7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="12.7" y1="-12.7" x2="8.5" y2="-8.5" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="-8.5" y1="8.5" x2="-12.7" y2="12.7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    <text x="150" y="200" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF">Traditional</text>
+    <text x="150" y="218" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF">Software</text>
+    <text x="150" y="243" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.8)">Rule-Based</text>
+  </g>
+
+  <!-- Arrow 1 to 2 -->
+  <path d="M260,180 C290,180 300,180 320,180" stroke="#1D428A" stroke-width="2.5" fill="none" marker-end="url(#arrowBlue)"/>
+
+  <!-- Era 2: Machine Learning -->
+  <g filter="url(#shadow)">
+    <rect x="330" y="100" width="200" height="160" rx="12" fill="#00968F"/>
+    <!-- Chart icon -->
+    <g transform="translate(430, 150)">
+      <line x1="-16" y1="16" x2="-16" y2="-16" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      <line x1="-16" y1="16" x2="16" y2="16" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      <polyline points="-10,8 -2,-2 6,4 14,-10" stroke="#FFFFFF" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="14" cy="-10" r="3" fill="#FFFFFF"/>
+    </g>
+    <text x="430" y="200" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF">Machine</text>
+    <text x="430" y="218" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF">Learning</text>
+    <text x="430" y="243" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.8)">Pattern-Finding</text>
+  </g>
+
+  <!-- Arrow 2 to 3 -->
+  <path d="M540,180 C570,180 580,180 600,180" stroke="#00968F" stroke-width="2.5" fill="none" marker-end="url(#arrowTeal)"/>
+
+  <!-- Era 3: Generative AI -->
+  <g filter="url(#shadow)">
+    <rect x="610" y="100" width="200" height="160" rx="12" fill="#C8102E"/>
+    <!-- Sparkle icon -->
+    <g transform="translate(710, 150)">
+      <path d="M0,-16 L2,-6 L10,-10 L6,-2 L16,0 L6,2 L10,10 L2,6 L0,16 L-2,6 L-10,10 L-6,2 L-16,0 L-6,-2 L-10,-10 L-2,-6 Z" fill="#FFFFFF" opacity="0.95"/>
+      <circle cx="0" cy="0" r="3" fill="#FFFFFF"/>
+    </g>
+    <text x="710" y="200" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF">Generative</text>
+    <text x="710" y="218" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF">AI</text>
+    <text x="710" y="243" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.8)">Content Creation</text>
+  </g>
+
+  <!-- Timeline dots -->
+  <circle cx="150" cy="310" r="6" fill="#1D428A"/>
+  <circle cx="430" cy="310" r="6" fill="#00968F"/>
+  <circle cx="710" cy="310" r="6" fill="#C8102E"/>
+
+  <!-- Connector lines from boxes to timeline -->
+  <line x1="150" y1="260" x2="150" y2="304" stroke="#1D428A" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="430" y1="260" x2="430" y2="304" stroke="#00968F" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="710" y1="260" x2="710" y2="304" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Subtitle descriptions -->
+  <text x="150" y="370" text-anchor="middle" font-size="11" fill="#666666">IF-THEN rules written</text>
+  <text x="150" y="385" text-anchor="middle" font-size="11" fill="#666666">by programmers</text>
+  <text x="430" y="370" text-anchor="middle" font-size="11" fill="#666666">Learns patterns</text>
+  <text x="430" y="385" text-anchor="middle" font-size="11" fill="#666666">from data</text>
+  <text x="710" y="370" text-anchor="middle" font-size="11" fill="#666666">Creates new text,</text>
+  <text x="710" y="385" text-anchor="middle" font-size="11" fill="#666666">images, code</text>
+</svg>

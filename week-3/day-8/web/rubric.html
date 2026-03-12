@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UBUS 670: Capstone Grading Rubric</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
+
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #f5f5f5;
+            margin: 0;
+        }
+
+        /* Navigation */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a { color: #1D428A; text-decoration: none; font-weight: 500; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+        .nav-pills { display: flex; gap: 8px; }
+        .nav-pill {
+            padding: 8px 16px; border-radius: 6px; text-decoration: none;
+            font-weight: 600; font-size: 13px; transition: all 0.2s;
+        }
+        .nav-pill.active { background: #C8102E; color: white; }
+        .nav-pill:not(.active) { background: #f0f0f0; color: #333; }
+        .nav-pill:not(.active):hover { background: #e0e0e0; }
+
+        /* Print styles */
+        @media print {
+            .global-nav, .print-btn { display: none !important; }
+            body { background: white; }
+            .rubric-container { box-shadow: none; max-width: 100%; }
+        }
+
+        .print-btn-wrapper {
+            text-align: center;
+            padding: 20px;
+        }
+        .print-btn {
+            font-family: 'Montserrat', sans-serif;
+            background: #1D428A;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .print-btn:hover { background: #163570; }
+
+        /* Rubric Content */
+        .rubric-container {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .rubric-container h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: #1D428A;
+            margin: 0 0 5px;
+        }
+        .rubric-container .subtitle {
+            color: #666;
+            margin: 0 0 30px;
+            font-size: 1rem;
+        }
+
+        .section-header {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #C8102E;
+            border-bottom: 2px solid #C8102E;
+            padding-bottom: 8px;
+            margin: 35px 0 15px;
+        }
+
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .rubric-table th {
+            background: #1D428A;
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .rubric-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e8e8e8;
+            line-height: 1.5;
+        }
+        .rubric-table tr:last-child td { border-bottom: none; }
+        .rubric-table .points {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #C8102E;
+            white-space: nowrap;
+            text-align: center;
+        }
+        .rubric-table .total-row {
+            background: #f8f8f8;
+            font-weight: bold;
+        }
+        .rubric-table .total-row td {
+            border-top: 2px solid #1D428A;
+            padding-top: 12px;
+        }
+
+        .note {
+            background: #f9f9f9;
+            border-left: 4px solid #1D428A;
+            padding: 12px 16px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 6px 0 6px 28px;
+            position: relative;
+            line-height: 1.6;
+        }
+        .checklist li::before {
+            content: '\25A2';
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            color: #1D428A;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="index.html">Day 8 &ndash; Capstone</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Rubric</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="competition.html" class="nav-pill">Competition</a>
+        </div>
+    </nav>
+
+    <div class="print-btn-wrapper">
+        <button class="print-btn" onclick="window.print()">Print This Rubric</button>
+    </div>
+
+    <div class="rubric-container">
+
+        <h1>Capstone Grading Rubric</h1>
+        <p class="subtitle">Days 8-9: AI Resume Screening Competition &mdash; 20% of Course Grade</p>
+
+        <!-- ==================== COMPETITION ==================== -->
+        <h2 class="section-header">Part 1: Competition Score (100 points)</h2>
+
+        <p>Your team's best submission (out of 3 attempts) is auto-scored against the ground truth answer key.</p>
+
+        <table class="rubric-table">
+            <thead>
+                <tr>
+                    <th>Dimension</th>
+                    <th style="text-align:center">Points</th>
+                    <th>How It's Scored</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Top 10 Ranking</strong></td>
+                    <td class="points">30</td>
+                    <td>
+                        <strong>Set membership (25 pts):</strong> 2.5 pts per correct candidate in your top 10.<br>
+                        <strong>Position accuracy (5 pts):</strong> +5 if all top 3 exact, +2 if 2 exact, +1 if 1 exact.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Bottom 5 Identification</strong></td>
+                    <td class="points">10</td>
+                    <td>
+                        <strong>Strict (2 pts each):</strong> Candidate is in the true bottom 5.<br>
+                        <strong>Partial (1 pt each):</strong> Candidate is in positions 23-27 (close, but not bottom 5).<br>
+                        Max 10 pts.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Red Flag Detection + Severity</strong></td>
+                    <td class="points">30</td>
+                    <td>
+                        14 flags hidden across the resume set. For each:<br>
+                        <strong>Full credit (~2.1 pts):</strong> Correct candidate + flag described + correct severity.<br>
+                        <strong>Partial (1.0 pt):</strong> Correct candidate + flag described + wrong/missing severity.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Bias Pair Detection</strong></td>
+                    <td class="points">15</td>
+                    <td>
+                        5 candidate pairs with nearly identical qualifications. For each:<br>
+                        <strong>Full credit (3 pts):</strong> Both candidates identified + observation explaining similarity.<br>
+                        <strong>Partial (1 pt):</strong> One candidate + valid bias observation.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Pattern Discovery</strong></td>
+                    <td class="points">15</td>
+                    <td>
+                        3 hidden cross-resume patterns. For each:<br>
+                        <strong>Full credit (5 pts):</strong> At least 2 candidates identified + pattern described.<br>
+                        Must reference 2+ candidates to show the cross-resume connection.
+                    </td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Total</strong></td>
+                    <td class="points">100</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>Attempts:</strong> Each team gets 3 submission attempts. Only your highest score counts. Use early attempts to identify gaps, then refine your pipeline and resubmit.
+        </div>
+
+        <!-- ==================== VIDEO ==================== -->
+        <h2 class="section-header">Part 2: Video Presentation (Separate Grade)</h2>
+
+        <p>10-minute maximum team video, submitted to Blackboard by the posted deadline.</p>
+
+        <table class="rubric-table">
+            <thead>
+                <tr>
+                    <th>Section</th>
+                    <th style="text-align:center">Time</th>
+                    <th>What to Cover</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Architecture Overview</strong></td>
+                    <td class="points">~1.5 min</td>
+                    <td>Your 3-agent pipeline design. What does each agent do? How do they pass data?</td>
+                </tr>
+                <tr>
+                    <td><strong>Results Defense</strong></td>
+                    <td class="points">~3 min</td>
+                    <td>Your top 10 recommendations and why. Defend your rankings with specific evidence from resumes.</td>
+                </tr>
+                <tr>
+                    <td><strong>Obstacles + AI Help</strong></td>
+                    <td class="points">~2 min</td>
+                    <td>What problems did you hit? How did AI help you overcome them? Show iteration, not perfection.</td>
+                </tr>
+                <tr>
+                    <td><strong>Hidden Patterns</strong></td>
+                    <td class="points">~2 min</td>
+                    <td>What cross-resume patterns, bias pairs, or red flags did your team discover?</td>
+                </tr>
+                <tr>
+                    <td><strong>Lessons Learned</strong></td>
+                    <td class="points">~1.5 min</td>
+                    <td>Coolest thing you built or learned. What would you do differently with more time?</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ==================== SUBMISSION PACKAGE ==================== -->
+        <h2 class="section-header">Part 3: Submission Package (to Blackboard)</h2>
+
+        <ul class="checklist">
+            <li>Video presentation (10 min max, MP4 or link to recording)</li>
+            <li>All agent system prompts (your "code" &mdash; the prompts for Parser, Evaluator, Ranker, and any stretch agents)</li>
+            <li>Pipeline architecture diagram (screenshot or drawing showing how agents connect)</li>
+            <li>Competition results JSON (copy of your final submission from the competition page)</li>
+            <li>Reflection document: obstacles faced, iterations tried, what you would improve</li>
+        </ul>
+
+        <!-- ==================== RED FLAG TYPES ==================== -->
+        <h2 class="section-header">Reference: Red Flag Types</h2>
+
+        <table class="rubric-table">
+            <thead>
+                <tr>
+                    <th>Flag Type</th>
+                    <th style="text-align:center">Severity</th>
+                    <th>What to Look For</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Fake institution</td>
+                    <td class="points">Disqualifying</td>
+                    <td>Degree from a school/program that does not exist</td>
+                </tr>
+                <tr>
+                    <td>Fabricated employer</td>
+                    <td class="points">Disqualifying</td>
+                    <td>Work history at a company that does not exist (not just a small/closed business)</td>
+                </tr>
+                <tr>
+                    <td>Contradictory dates</td>
+                    <td class="points">Disqualifying</td>
+                    <td>Overlapping full-time employment at two jobs simultaneously</td>
+                </tr>
+                <tr>
+                    <td>Self-contradictory claims</td>
+                    <td class="points">Disqualifying</td>
+                    <td>Experience claims that are mathematically impossible given timeline</td>
+                </tr>
+                <tr>
+                    <td>Inflated title</td>
+                    <td class="points">Minor</td>
+                    <td>Impressive title at a very small operation (title doesn't match scope)</td>
+                </tr>
+                <tr>
+                    <td>Unexplained gap &gt;1 year</td>
+                    <td class="points">Minor</td>
+                    <td>Large gap in employment with no explanation on the resume</td>
+                </tr>
+                <tr>
+                    <td>Copy-paste work experience</td>
+                    <td class="points">Minor</td>
+                    <td>Word-for-word identical job descriptions across different candidates/employers</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>Severity matters:</strong> Correctly identifying the flag is worth partial credit. Getting both the flag AND the correct severity earns full credit.
+        </div>
+
+    </div>
+
+    <footer style="text-align:center; padding:40px 20px; color:#888; font-size:0.9rem; border-top:1px solid #e0e0e0; background:white;">
+        <p>&copy; 2026 Northern Illinois University &mdash; UBUS 670: AI for Business Leaders</p>
+    </footer>
+
+</body>
+</html>

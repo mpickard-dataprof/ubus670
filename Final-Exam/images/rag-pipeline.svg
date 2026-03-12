@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="Montserrat, Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrowNavy" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1D428A"/>
+    </marker>
+    <marker id="arrowTealM" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#00968F"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#888888"/>
+    </marker>
+    <marker id="arrowRedM" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#C8102E"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="500" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#333333">RAG (Retrieval-Augmented Generation) Pipeline</text>
+  <text x="500" y="58" text-anchor="middle" font-size="12" fill="#888888">How AI grounds answers in your actual data</text>
+
+  <!-- ========== TOP PATH: Query Flow ========== -->
+  <text x="60" y="100" font-size="13" font-weight="700" fill="#1D428A">QUERY PATH</text>
+  <line x1="60" y1="108" x2="940" y2="108" stroke="#1D428A" stroke-width="1" opacity="0.2"/>
+
+  <!-- User Question -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="130" width="150" height="70" rx="12" fill="#1D428A"/>
+    <!-- User icon -->
+    <circle cx="75" cy="155" r="10" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <path d="M60,175 Q75,168 90,175" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <text x="115" y="162" text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">User</text>
+    <text x="115" y="178" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.8)">Question</text>
+  </g>
+
+  <!-- Arrow to Retriever -->
+  <path d="M195,165 L235,165" stroke="#1D428A" stroke-width="2.5" fill="none" marker-end="url(#arrowNavy)"/>
+
+  <!-- Retriever -->
+  <g filter="url(#shadow)">
+    <rect x="245" y="130" width="160" height="70" rx="12" fill="#00968F"/>
+    <!-- Search icon -->
+    <circle cx="280" cy="158" r="9" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <line x1="287" y1="165" x2="294" y2="172" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    <text x="340" y="162" text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">Retriever</text>
+    <text x="325" y="178" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">Searches database</text>
+  </g>
+
+  <!-- Arrow to Relevant Chunks -->
+  <path d="M410,165 L450,165" stroke="#00968F" stroke-width="2.5" fill="none" marker-end="url(#arrowTealM)"/>
+
+  <!-- Relevant Chunks -->
+  <g filter="url(#shadow)">
+    <rect x="460" y="125" width="145" height="80" rx="12" fill="#FFFFFF" stroke="#00968F" stroke-width="2"/>
+    <text x="532" y="157" text-anchor="middle" font-size="13" font-weight="700" fill="#00968F">Relevant</text>
+    <text x="532" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#00968F">Chunks</text>
+    <text x="532" y="194" text-anchor="middle" font-size="10" fill="#888888">Top 3-5 matches</text>
+  </g>
+
+  <!-- Arrow to LLM -->
+  <path d="M610,165 L650,165" stroke="#888888" stroke-width="2.5" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- LLM + Chunks -->
+  <g filter="url(#shadow)">
+    <rect x="660" y="120" width="150" height="90" rx="12" fill="#C8102E"/>
+    <!-- Brain/sparkle icon -->
+    <g transform="translate(735, 150)">
+      <path d="M0,-10 L1.5,-4 L7,-7 L4,-1.5 L10,0 L4,1.5 L7,7 L1.5,4 L0,10 L-1.5,4 L-7,7 L-4,1.5 L-10,0 L-4,-1.5 L-7,-7 L-1.5,-4 Z" fill="#FFFFFF" opacity="0.5"/>
+    </g>
+    <text x="715" y="157" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">LLM</text>
+    <text x="735" y="178" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">+ Retrieved Context</text>
+    <text x="735" y="198" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">= Grounded Answer</text>
+  </g>
+
+  <!-- "Open-Book Exam" callout -->
+  <g filter="url(#shadow)">
+    <rect x="680" y="70" width="130" height="36" rx="10" fill="#FFF3CD" stroke="#F0AD4E" stroke-width="1.5"/>
+    <text x="745" y="93" text-anchor="middle" font-size="11" font-weight="700" fill="#856404">Open-Book Exam</text>
+    <!-- Callout pointer -->
+    <polygon points="730,106 745,118 740,106" fill="#FFF3CD" stroke="#F0AD4E" stroke-width="1"/>
+  </g>
+
+  <!-- Arrow to Grounded Answer -->
+  <path d="M815,165 L855,165" stroke="#C8102E" stroke-width="2.5" fill="none" marker-end="url(#arrowRedM)"/>
+
+  <!-- Grounded Answer -->
+  <g filter="url(#shadow)">
+    <rect x="865" y="125" width="110" height="80" rx="12" fill="#F5F5F5" stroke="#333333" stroke-width="2"/>
+    <!-- Checkmark -->
+    <circle cx="920" cy="153" r="12" fill="#00968F" opacity="0.15"/>
+    <path d="M912,153 L918,159 L930,147" fill="none" stroke="#00968F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="920" y="182" text-anchor="middle" font-size="12" font-weight="700" fill="#333333">Grounded</text>
+    <text x="920" y="197" text-anchor="middle" font-size="12" font-weight="700" fill="#333333">Answer</text>
+  </g>
+
+  <!-- ========== BOTTOM PATH: Ingestion Flow ========== -->
+  <text x="60" y="310" font-size="13" font-weight="700" fill="#00968F">INGESTION PATH (one-time setup)</text>
+  <line x1="60" y1="318" x2="630" y2="318" stroke="#00968F" stroke-width="1" opacity="0.2"/>
+
+  <!-- Documents -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="340" width="140" height="70" rx="12" fill="#FFFFFF" stroke="#555555" stroke-width="2"/>
+    <!-- Stack of docs icon -->
+    <rect x="62" y="356" width="28" height="34" rx="3" fill="#E0E0E0" stroke="#AAAAAA" stroke-width="1"/>
+    <rect x="68" y="351" width="28" height="34" rx="3" fill="#EEEEEE" stroke="#AAAAAA" stroke-width="1"/>
+    <rect x="74" y="346" width="28" height="34" rx="3" fill="#F8F8F8" stroke="#AAAAAA" stroke-width="1"/>
+    <text x="115" y="372" font-size="13" font-weight="700" fill="#333333">Your</text>
+    <text x="115" y="390" font-size="13" font-weight="700" fill="#333333">Docs</text>
+  </g>
+
+  <!-- Arrow to Chunking -->
+  <path d="M185,375 L215,375" stroke="#888888" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- Chunking -->
+  <g filter="url(#shadow)">
+    <rect x="225" y="340" width="140" height="70" rx="12" fill="#FFFFFF" stroke="#00968F" stroke-width="2"/>
+    <!-- Scissors / split icon -->
+    <g transform="translate(262, 370)">
+      <rect x="-12" y="-8" width="10" height="16" rx="2" fill="#00968F" opacity="0.3"/>
+      <rect x="-1" y="-8" width="10" height="16" rx="2" fill="#00968F" opacity="0.5"/>
+      <rect x="10" y="-8" width="10" height="16" rx="2" fill="#00968F" opacity="0.7"/>
+    </g>
+    <text x="315" y="372" text-anchor="middle" font-size="13" font-weight="700" fill="#00968F">Chunking</text>
+    <text x="295" y="396" text-anchor="middle" font-size="10" fill="#888888">Split into pieces</text>
+  </g>
+
+  <!-- Arrow to Embedding -->
+  <path d="M370,375 L400,375" stroke="#888888" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- Embedding -->
+  <g filter="url(#shadow)">
+    <rect x="410" y="340" width="140" height="70" rx="12" fill="#FFFFFF" stroke="#1D428A" stroke-width="2"/>
+    <!-- Numbers/vector icon -->
+    <text x="445" y="378" font-size="10" fill="#1D428A" opacity="0.7" font-family="monospace">[0.2, 0.8,</text>
+    <text x="445" y="392" font-size="10" fill="#1D428A" opacity="0.7" font-family="monospace"> 0.1, 0.5]</text>
+    <text x="520" y="372" text-anchor="middle" font-size="12" font-weight="700" fill="#1D428A">Embed-</text>
+    <text x="520" y="388" text-anchor="middle" font-size="12" font-weight="700" fill="#1D428A">ding</text>
+  </g>
+
+  <!-- Arrow to Vector DB -->
+  <path d="M555,375 L585,375" stroke="#888888" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- Vector Database -->
+  <g filter="url(#shadow)">
+    <rect x="595" y="330" width="170" height="90" rx="12" fill="#1D428A"/>
+    <!-- Database icon -->
+    <ellipse cx="680" cy="355" rx="18" ry="7" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <path d="M662,355 L662,380 Q662,387 680,387 Q698,387 698,380 L698,355" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <ellipse cx="680" cy="368" rx="18" ry="5" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.5"/>
+    <text x="680" y="408" text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">Vector Database</text>
+  </g>
+
+  <!-- Dashed line connecting Vector DB up to Retriever -->
+  <path d="M680,330 L680,280 Q680,260 500,260 Q325,260 325,205"
+        stroke="#1D428A" stroke-width="2" fill="none" stroke-dasharray="8,5" marker-end="url(#arrowNavy)"/>
+
+  <!-- Label on dashed line -->
+  <g transform="translate(520, 255)">
+    <rect x="-55" y="-12" width="110" height="20" rx="6" fill="#FFFFFF" stroke="#1D428A" stroke-width="1"/>
+    <text x="0" y="3" text-anchor="middle" font-size="10" font-weight="600" fill="#1D428A">Similarity Search</text>
+  </g>
+
+  <!-- Bottom legend/explanation -->
+  <g transform="translate(60, 470)">
+    <rect x="0" y="0" width="880" height="100" rx="12" fill="#F5F5F5" stroke="#DDDDDD" stroke-width="1" filter="url(#shadow)"/>
+    <text x="30" y="28" font-size="13" font-weight="700" fill="#333333">How RAG Works (The Analogy)</text>
+    <line x1="30" y1="38" x2="850" y2="38" stroke="#DDDDDD" stroke-width="1"/>
+
+    <circle cx="50" cy="58" r="4" fill="#1D428A"/>
+    <text x="62" y="62" font-size="11" fill="#555555"><tspan font-weight="600">Without RAG:</tspan> Like a closed-book exam — the AI can only use what it memorized during training</text>
+
+    <circle cx="50" cy="80" r="4" fill="#00968F"/>
+    <text x="62" y="84" font-size="11" fill="#555555"><tspan font-weight="600">With RAG:</tspan> Like an open-book exam — the AI looks up your actual documents before answering</text>
+  </g>
+</svg>

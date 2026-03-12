@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UBUS 670: Day 4 - Multimodal AI</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Reveal.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- NIU Theme -->
+    <link rel="stylesheet" href="../../_shared/reveal-theme-niu.css">
+
+    <style>
+        /* ============================================
+           PERSISTENT NAVIGATION & BREADCRUMB
+           ============================================ */
+        .global-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.98);
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-links a {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-links a.primary {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-links a.primary:hover { background: #a00d24; }
+        .nav-links a.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-links a.secondary:hover { background: #e0e0e0; }
+
+        /* Adjust slides to account for fixed nav */
+        .reveal .slides { margin-top: 30px; }
+
+        /* Shrink background images for breathing room.
+           border-box makes padding shrink the content area inward.
+           contain then calculates within the smaller content-box.
+           3% vertical clears nav bar (~45px on 1920w) + bottom margin.
+           Scales proportionally on any screen size.
+           Background-color is unaffected by background-origin. */
+        .reveal .slide-background-content {
+            box-sizing: border-box;
+            padding: 3% 2%;
+            background-origin: content-box;
+        }
+
+        /* ============================================
+           INTERACTIVE CHECKPOINT QUIZ (light style)
+           ============================================ */
+        .quiz-container {
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: left;
+            color: #333;
+        }
+        .quiz-container h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #1D428A;
+        }
+        .quiz-container .quiz-question {
+            font-size: 1.05em;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .quiz-option {
+            padding: 18px 22px;
+            background: #ffffff;
+            border: 2px solid #d0d5dd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            color: #333;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .quiz-option:hover {
+            border-color: #1D428A;
+            background: #f0f4fa;
+        }
+        .quiz-option.correct {
+            border-color: #43B02A;
+            background: rgba(67, 176, 42, 0.12);
+            color: #2d7a1e;
+        }
+        .quiz-option.incorrect {
+            border-color: #C8102E;
+            background: rgba(200, 16, 46, 0.12);
+            color: #a00d24;
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct-fb {
+            background: rgba(67, 176, 42, 0.1);
+            color: #2d7a1e;
+            border: 1px solid rgba(67, 176, 42, 0.3);
+        }
+        .quiz-feedback.incorrect-fb {
+            background: rgba(200, 16, 46, 0.1);
+            color: #a00d24;
+            border: 1px solid rgba(200, 16, 46, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Persistent Navigation -->
+    <div class="global-nav">
+        <div class="breadcrumb">
+            <a href="index.html">Day 4</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Lecture</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="secondary">Dashboard</a>
+            <a href="lab.html" class="secondary">Lab</a>
+            <a href="quiz.html" class="secondary">Quiz</a>
+            <a href="day4-lecture.pdf" class="primary" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title — Multimodal AI: When AI Has Eyes and Ears -->
+            <section data-background-image="images/slide-01.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Welcome to Day 4. We're moving beyond text — today AI gets eyes and ears. We'll explore how multimodal AI analyzes images, audio, and video, and how it can create visual content for business.</aside>
+            </section>
+
+            <!-- Slide 2: Learning Objectives -->
+            <section data-background-image="images/slide-02.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Four objectives today: 1) Explain how multimodal AI processes images, audio, and video. 2) Analyze business content across modalities using Gemini. 3) Generate marketing visuals with effective prompts. 4) Design a structured multimodal workflow combining analysis and generation. Key skill: going from text to images, audio, video.</aside>
+            </section>
+
+            <!-- Slide 3: The Invisible 80% — Iceberg Metaphor -->
+            <section data-background-image="images/slide-03.png" data-background-size="contain" data-background-color="#1a1a1a">
+                <aside class="notes">The iceberg metaphor: only 20% of business data is structured (databases, spreadsheets). The other 80% is unstructured — photos, audio recordings, video footage, PDFs, handwritten notes. Traditional AI only worked with the tip. Multimodal AI unlocks the submerged 80%.</aside>
+            </section>
+
+            <!-- Slide 4: The Multimodal Hub -->
+            <section data-background-image="images/slide-04.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The Multimodal Hub: text (documents and chat), images (photos and graphics), audio (voice and sound), and video (motion and time) all flow into a central AI core. The output is context — the same concept from Day 3, but now the context includes all modalities, not just text.</aside>
+            </section>
+
+            <!-- Slide 5: Structured Outputs from Unstructured Media -->
+            <section data-background-image="images/slide-05.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The core value proposition: unstructured inputs (audio recordings, photos, handwritten notes) go through AI processing and come out as structured, actionable data — tables, CSV, JSON. The modality changes, but the workflow stays the same. This is context engineering applied to multimodal data.</aside>
+            </section>
+
+            <!-- Slide 6: Real-World Multimodal Intelligence -->
+            <section data-background-image="images/slide-06.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Three real-world examples across modalities. Vision: Gather AI uses warehouse drones for 25x faster inventory counting. Audio: Observe.AI analyzes 100% of call center calls for sentiment — vs. 2-5% manual sampling. Video: RetailNext generates heatmaps from store footage to optimize layout. These are live, deployed systems generating ROI today.</aside>
+            </section>
+
+            <!-- Slide 7: Image Understanding — What AI Sees -->
+            <section data-background-image="images/slide-07.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">When you upload an image, AI identifies objects (spring seasonal apparel), reads text via OCR ("Sale 50% Off"), and understands context (this is a promotional retail setup). Three core capabilities: identify objects, read text, assess quality. A single store display photo becomes competitive intelligence.</aside>
+            </section>
+
+            <!-- Slide 8: Video Understanding — Motion and Time -->
+            <section data-background-image="images/slide-08.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Video adds a critical dimension: time. AI can track events sequentially — 12:30pm peak traffic detected, 12:35pm customer dwell time over 2 minutes, 12:42pm item selected. Video becomes a searchable database of events. Gemini can analyze YouTube videos directly — just paste the URL.</aside>
+            </section>
+
+            <!-- INTERACTIVE: Checkpoint Quiz 1 — The Multimodal Opportunity -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz1">
+                    <h3>Checkpoint: The Multimodal Opportunity</h3>
+                    <p class="quiz-question">Beacon Retail wants to understand why customers browse but don't buy. Which multimodal AI capability would provide the <strong>most actionable insight</strong> for this problem?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">A) OCR to read product labels in store photos</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', true)">B) Video analysis of customer behavior over time (dwell, browse, leave patterns)</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">C) Audio transcription of store announcements</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">D) Image generation of new store layouts</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback-correct">
+                        <strong>Correct!</strong> Video analysis tracks customer behavior over time — dwell time, browse patterns, and abandonment points. This turns raw footage into a searchable database of events, giving Beacon actionable data about the browse-to-buy gap.
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback-incorrect">
+                        <strong>Not quite.</strong> Think about which modality captures behavior <em>over time</em>. Understanding why customers browse but don't buy requires tracking their journey through the store — that's video's unique strength. Try again!
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 9: Image Generation — AI as Creator -->
+            <section data-background-image="images/slide-09.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">AI doesn't just analyze — it creates. This slide shows a detailed prompt for a Beacon spring marketing banner producing a polished, on-brand image. The prompt quality determines the result quality. This is Day 2's prompt engineering applied to visual content — RCTFC works for images too.</aside>
+            </section>
+
+            <!-- Slide 10: The Scenario — Beacon's Spring Campaign -->
+            <section data-background-image="images/slide-10.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Now we put it all together with Beacon's spring campaign. Four-step workflow: 1) Analyze competitor images, 2) Listen to customer voice audio, 3) Generate marketing visuals with AI, 4) Build a structured campaign brief. This is the same workflow real marketing teams use — but AI-accelerated.</aside>
+            </section>
+
+            <!-- Slide 11: Step 1 — Competitive Visual Analysis -->
+            <section data-background-image="images/slide-11.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Upload a competitor's marketing image to Gemini and extract structured intelligence: target audience (young professionals 25-35), color palette (coral, white, gold), messaging ("Fresh starts, new style"), and emotional appeal (optimism, renewal). One image becomes a structured competitive analysis table. You'll do this with real images in the lab.</aside>
+            </section>
+
+            <!-- Slide 12: Step 2 — Customer Voice Analysis -->
+            <section data-background-image="images/slide-12.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Upload customer feedback audio to Gemini. AI extracts sentiment (positive), themes (quality and style), and actual customer quotes. Day 3 connection: use structured formats to organize audio insights into a table — Theme, Sentiment, Quote, Marketing Action. The voice of the customer becomes structured, actionable data.</aside>
+            </section>
+
+            <!-- Slide 13: Step 3 — Generate Marketing Visuals -->
+            <section data-background-image="images/slide-13.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The iterative creative process: Draft 1 is your first attempt, then you refine the prompt and regenerate. Draft 2 gets closer, refine again for the final output. Minimum 3 iterations. The example prompt: "Professional spring marketing image for Beacon Retail: bright, airy store interior, pastel accent colors, natural light, sharp focus, well-organized displays." Each refinement gets more specific.</aside>
+            </section>
+
+            <!-- Slide 14: Step 4 — Structured Campaign Brief -->
+            <section data-background-image="images/slide-14.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The payoff: combine all multimodal inputs into one strategic deliverable. Competitor data from Step 1, customer insights from Step 2, and generated visuals from Step 3 flow into a campaign brief with competitive landscape, customer insights, visual concepts, recommended messaging, and next steps. This is multimodal context engineering — the Day 3 concept extended to all media types.</aside>
+            </section>
+
+            <!-- Slide 15: Capabilities and Limitations -->
+            <section data-background-image="images/slide-15.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Honest limitations: AI cannot reliably identify specific individuals (safety restriction), render perfect text inside images (note the extra finger in the illustration), guarantee factual accuracy (hallucinations in generated images), or replicate copyrighted characters. The rule: Trust but Verify. Always review AI-generated content before professional use.</aside>
+            </section>
+
+            <!-- INTERACTIVE: Checkpoint Quiz 2 — Capabilities and Limitations -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz2">
+                    <h3>Checkpoint: Trust but Verify</h3>
+                    <p class="quiz-question">Beacon's marketing team generates AI images for a spring campaign email. Before sending to 50,000 subscribers, what should they check <strong>first</strong>?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">A) Whether the image file size is under 1MB</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">B) Whether AI generated it in under 30 seconds</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', true)">C) Whether text in the image is spelled correctly and details are accurate</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">D) Whether the image uses exactly 16 million colors</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz2-feedback-correct">
+                        <strong>Correct!</strong> AI image generators still struggle with text rendering — words may be misspelled or garbled. They can also hallucinate details (wrong number of fingers, impossible physics). Always verify accuracy before publishing to customers.
+                    </div>
+                    <div class="quiz-feedback" id="quiz2-feedback-incorrect">
+                        <strong>Not quite.</strong> Remember the "Trust but Verify" rule. AI-generated images can contain misspelled text, hallucinated details, or anatomical errors. Human review for accuracy is the critical first step before publication. Try again!
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 16: Human-in-the-Loop -->
+            <section data-background-image="images/slide-16.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The human-in-the-loop workflow: AI generates a draft (images, copy, brief) → human reviews for brand, safety, and strategy → either approve (ready to publish) or revise (refine prompt, retry). Beacon's policy: all AI content must be reviewed for brand alignment before publication. AI generates drafts; humans curate and refine.</aside>
+            </section>
+
+            <!-- Slide 17: Beyond Marketing — Enterprise Applications -->
+            <section data-background-image="images/slide-17.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The same multimodal principles work everywhere. Operations: visual QC for defects. Finance: invoice photos become structured data. HR: interview audio becomes structured notes. Facilities: walkthrough video becomes compliance audits. The formula: Multimodal Input + AI + Structured Output = Business Intelligence. The modality changes; the workflow stays the same.</aside>
+            </section>
+
+            <!-- Slide 18: ROI — The Business Case -->
+            <section data-background-image="images/slide-18.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">The numbers: 10x faster concept art (minutes vs. days), 70% cost reduction (AI mockups + designer polish), 50+ variations per hour (vs. 2-3 manually). The shift: from creation constrained by budget to curation constrained by strategy. Be cautious with vendor ROI claims — calculate YOUR numbers based on your specific workflows.</aside>
+            </section>
+
+            <!-- Slide 19: Key Takeaways -->
+            <section data-background-image="images/slide-19.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Five takeaways: 1) Multimodal AI sees, hears, and creates — unlocking the 80% of unstructured data. 2) Value equals structure — turning images and audio into tables and insights. 3) Iterative prompting — image generation requires refinement loops. 4) Human-in-the-loop is essential for brand safety and strategic alignment. 5) Context engineering from Day 3 applies here, just with new data types.</aside>
+            </section>
+
+            <!-- Slide 20: Lab Preview — Beacon's Spring Campaign -->
+            <section data-background-image="images/slide-20.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">Time to build. In the lab you'll analyze real competitor images, listen to real customer audio, and generate campaign visuals — all with AI. Open the lab guide to get started. This brings together everything from Days 2, 3, and 4.</aside>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/notes/notes.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            progress: true,
+            controls: true,
+            controlsTutorial: false,
+            transition: 'slide',
+            plugins: [ RevealNotes ]
+        });
+
+        // Interactive checkpoint quiz handler
+        function checkQuiz(element, quizId, isCorrect) {
+            var container = document.getElementById(quizId);
+            var options = container.querySelectorAll('.quiz-option');
+            var feedbackCorrect = document.getElementById(quizId + '-feedback-correct');
+            var feedbackIncorrect = document.getElementById(quizId + '-feedback-incorrect');
+
+            // Reset all options
+            options.forEach(function(opt) {
+                opt.classList.remove('correct', 'incorrect');
+            });
+
+            // Hide both feedbacks
+            feedbackCorrect.style.display = 'none';
+            feedbackCorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+            feedbackIncorrect.style.display = 'none';
+            feedbackIncorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedbackCorrect.style.display = 'block';
+                feedbackCorrect.classList.add('correct-fb', 'show');
+            } else {
+                element.classList.add('incorrect');
+                feedbackIncorrect.style.display = 'block';
+                feedbackIncorrect.classList.add('incorrect-fb', 'show');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 820" font-family="Montserrat, Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrowDown" markerWidth="10" markerHeight="7" refX="5" refY="7" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="#1D428A"/>
+    </marker>
+    <marker id="arrowDownRed" markerWidth="10" markerHeight="7" refX="5" refY="7" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="#C8102E"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="300" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#333333">Token Cost Calculation</text>
+  <text x="300" y="58" text-anchor="middle" font-size="12" fill="#888888">Worked Example: Expense Report Processing</text>
+
+  <!-- Step 1: Volume -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="85" width="400" height="65" rx="12" fill="#1D428A"/>
+    <text x="130" y="110" font-size="11" font-weight="700" fill="rgba(255,255,255,0.7)">STEP 1 — VOLUME</text>
+    <text x="300" y="135" text-anchor="middle" font-size="16" font-weight="600" fill="#FFFFFF">1,200 expense reports / month</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <line x1="300" y1="150" x2="300" y2="178" stroke="#1D428A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
+
+  <!-- Step 2: Words per report -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="185" width="400" height="80" rx="12" fill="#FFFFFF" stroke="#1D428A" stroke-width="2"/>
+    <text x="130" y="210" font-size="11" font-weight="700" fill="#1D428A">STEP 2 — WORDS PER REPORT</text>
+    <text x="300" y="235" text-anchor="middle" font-size="14" fill="#333333">
+      <tspan font-weight="600">300</tspan> words input + <tspan font-weight="600">200</tspan> words output
+    </text>
+    <text x="300" y="255" text-anchor="middle" font-size="14" font-weight="700" fill="#1D428A">= 500 words per report</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <line x1="300" y1="265" x2="300" y2="293" stroke="#1D428A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
+
+  <!-- Step 3: Convert to tokens -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="300" width="400" height="80" rx="12" fill="#FFFFFF" stroke="#00968F" stroke-width="2"/>
+    <text x="130" y="325" font-size="11" font-weight="700" fill="#00968F">STEP 3 — CONVERT TO TOKENS</text>
+    <text x="300" y="350" text-anchor="middle" font-size="14" fill="#333333">500 words <tspan font-size="12" fill="#888888">(1 token ~ 0.75 words)</tspan></text>
+    <text x="300" y="372" text-anchor="middle" font-size="14" font-weight="700" fill="#00968F">500 / 0.75 = ~667 tokens / report</text>
+  </g>
+
+  <!-- Arrow 3 -->
+  <line x1="300" y1="380" x2="300" y2="408" stroke="#1D428A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
+
+  <!-- Step 4: Total tokens -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="415" width="400" height="80" rx="12" fill="#FFFFFF" stroke="#1D428A" stroke-width="2"/>
+    <text x="130" y="440" font-size="11" font-weight="700" fill="#1D428A">STEP 4 — TOTAL MONTHLY TOKENS</text>
+    <text x="300" y="466" text-anchor="middle" font-size="14" fill="#333333">1,200 reports x 667 tokens</text>
+    <text x="300" y="488" text-anchor="middle" font-size="14" font-weight="700" fill="#1D428A">= 800,000 tokens / month</text>
+  </g>
+
+  <!-- Arrow 4 -->
+  <line x1="300" y1="495" x2="300" y2="523" stroke="#C8102E" stroke-width="2.5" marker-end="url(#arrowDownRed)"/>
+
+  <!-- Step 5: Final cost (highlighted) -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="530" width="440" height="110" rx="12" fill="#C8102E"/>
+    <text x="120" y="558" font-size="11" font-weight="700" fill="rgba(255,255,255,0.7)">STEP 5 — MONTHLY COST</text>
+    <text x="300" y="588" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.9)">800,000 / 1,000,000 x $0.50 per 1M tokens</text>
+    <line x1="150" y1="600" x2="450" y2="600" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="300" y="628" text-anchor="middle" font-size="26" font-weight="700" fill="#FFFFFF">= $0.40 / month</text>
+  </g>
+
+  <!-- Key insight callout -->
+  <g filter="url(#shadow)">
+    <rect x="130" y="670" width="340" height="65" rx="12" fill="#F5F5F5" stroke="#00968F" stroke-width="1.5" stroke-dasharray="6,3"/>
+    <text x="300" y="695" text-anchor="middle" font-size="12" font-weight="700" fill="#00968F">KEY INSIGHT</text>
+    <text x="300" y="715" text-anchor="middle" font-size="12" fill="#555555">Processing 1,200 reports manually: ~$6,000+/month</text>
+    <text x="300" y="730" text-anchor="middle" font-size="12" font-weight="600" fill="#C8102E">AI cost: $0.40/month (99.99% savings)</text>
+  </g>
+
+  <!-- Formula reference -->
+  <rect x="160" y="755" width="280" height="36" rx="8" fill="#F0F0F0"/>
+  <text x="300" y="778" text-anchor="middle" font-size="11" fill="#888888">Formula: (Total Tokens / 1M) x Price per 1M Tokens</text>
+</svg>
