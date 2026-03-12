@@ -249,6 +249,22 @@ describe('cfValidateSubmission — schema validation', () => {
     assert.ok(result.error.includes('duplicate'));
   });
 
+  it('rejects candidate appearing in both top_10_hire and bottom_5', () => {
+    const sub = JSON.parse(validSubmission());
+    sub.bottom_5[0].id = sub.top_10_hire[0].id; // C-01 in both lists
+    const result = cfValidateSubmission(JSON.stringify(sub));
+    assert.equal(result.valid, false);
+    assert.ok(result.error.includes('also appears in top_10_hire'));
+  });
+
+  it('rejects cross-list overlap with case-insensitive IDs', () => {
+    const sub = JSON.parse(validSubmission());
+    sub.bottom_5[0].id = sub.top_10_hire[0].id.toLowerCase(); // c-01 vs C-01
+    const result = cfValidateSubmission(JSON.stringify(sub));
+    assert.equal(result.valid, false);
+    assert.ok(result.error.includes('also appears in top_10_hire'));
+  });
+
   it('reports multiple errors at once', () => {
     const result = cfValidateSubmission(JSON.stringify({
       top_10_hire: 'bad',
