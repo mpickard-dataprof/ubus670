@@ -37,3 +37,6 @@ codev/.update-hashes.json
 
 Materials/_tools/.venv/
 .Rproj.user
+
+# Student submissions (contains PII — never commit)
+**/lab_submissions/
