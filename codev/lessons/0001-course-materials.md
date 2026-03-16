@@ -277,3 +277,42 @@ After each day is approved, append an entry below:
 - Deployment checklist (`notebooklm-deployment.md`) catches the CSS pitfalls that cost hours on Day 1
 
 ---
+
+### Exam Question Pool & Image Refinement (Specs 0010 + 0011)
+**Completed:** 2026-03-12
+
+**What worked well:**
+- Templatization principle: designing questions with swappable parameters (model names, prices, department names) multiplied the pool without proportional authoring effort
+- MC evaluation rubric (15 dimensions) enabled systematic quality assessment by expert agents
+- Practice pool at 125 questions gives students comprehensive self-assessment across all 7 days and 6 Bloom's levels
+- SVG diagrams as source-of-truth with automated WebP conversion pipeline ensures consistent quality across formats
+- GitHub Pages hosting for exam images (`gh-pages` branch) provides reliable absolute URLs that BB Ultra can reference
+- HTML review page (`svg-review.html`) for visual verification of all 18 diagrams in one scrollable view — invaluable for catching rendering issues
+
+**What required significant revision:**
+- SVG `orient="auto"` on markers: rotates marker triangles to match path tangent direction. For downward-pointing triangles on vertical lines, this rotates them 90 degrees sideways. For curved paths, markers skew to match tangent angle, producing visually crooked arrowheads
+- SVG sizing script regex bug: `re.sub(r'\s+width="[^"]*"', '', content, count=1)` intended to strip width from `<svg>` tag, but no SVG had width on `<svg>` — instead it removed width from the first `<rect>` in each file, destroying internal element dimensions across all 18 SVGs. Required full `git restore`
+- WebP images rendered at SVG `width`/`height` attribute size (50% of viewBox) were too small in BB Ultra — BB renders at native pixel dimensions. Fixed by passing full viewBox dimensions to `cairosvg.svg2png(output_width=..., output_height=...)`
+- BB Ultra caches images at QTI import time — updating images on GitHub Pages has no effect until the pool is deleted and re-imported
+- P090 tested pure arithmetic instead of Gen AI understanding — rewritten to test model pricing tiers concept
+- Questions referencing diagrams with example numbers confused students — required disclaimer text
+
+**Patterns to apply to future exams:**
+- **SVG arrowheads on curves**: Never use `orient="auto"` markers on curved `<path>` elements. Calculate tangent angle at bezier endpoint using `atan2(ey-cy, ex-cx)` and place explicit `<polygon>` with `transform="translate(x,y) rotate(angle)"`
+- **SVG arrowheads on straight lines**: If the marker triangle is already drawn in the desired orientation, do NOT use `orient="auto"` — remove it entirely
+- **SVG sizing for raster conversion**: Use `width`/`height` on `<svg>` for browser display; pass explicit `output_width`/`output_height` to cairosvg for WebP generation at full resolution
+- **BB Ultra image pipeline**: SVG → cairosvg → PNG → Pillow → WebP@q85 → gh-pages → absolute URLs in QTI → import pool to BB. After image updates, pool must be deleted and re-imported
+- **Diagram/question number disclaimers**: Append "(Note: The diagram is for illustration purposes only; use the numbers provided in this question.)" when diagram contains worked examples with specific numbers
+- **Teaching images vs assessment images**: Teaching diagrams should be clear and labeled. Assessment diagrams must require interpretation — if a student can answer by reading the image alone, the question is broken
+- **Regex edits on SVG**: Never use blind regex substitution on SVG attributes — target the specific element or use an XML parser
+- **Answer length balance**: All 4 MC options must be within ~20% word count. Longest-answer-is-correct is a known test-taking hack
+- **Bloom's honesty**: If an image provides the answer directly, it's visual recognition — not even Remember level
+
+**Content or approach to avoid:**
+- SVG `orient="auto"` on any marker that isn't a simple right-pointing triangle on a horizontal line
+- Regex-based SVG attribute manipulation without element-level targeting
+- Assuming BB Ultra will fetch updated remote images without pool re-import
+- Questions that test arithmetic instead of Gen AI understanding
+- Relying on SVG `width`/`height` attributes to control raster conversion size
+
+---

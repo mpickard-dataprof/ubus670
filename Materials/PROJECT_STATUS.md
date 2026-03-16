@@ -1,7 +1,7 @@
 # Project Status: UBUS 670 Materials
 
-**Last Updated:** Monday, February 17, 2026
-**Current Focus:** Day 4 Rework (Spec 0004) - NOT YET IMPLEMENTED
+**Last Updated:** Thursday, March 12, 2026
+**Current Focus:** Exam pools complete (Specs 0010+0011). Days 6-7 content next.
 
 ---
 
@@ -12,14 +12,36 @@
 | 1 | W1/D1 | What is Generative AI? | Gemini Chat | COMPLETE (committed 2026-02-06) |
 | 2 | W1/D2 | Prompt Engineering | Gemini Chat | COMPLETE (committed 2026-02-10) |
 | 3 | W1/D3 | Context Engineering | Gemini + Gems | COMPLETE - Reworked (Spec 0002, committed 2026-02-11) |
-| 4 | W2/D4 | Multimodal AI | Gemini Multimodal + Nano Banana | SPEC+PLAN WRITTEN (Spec 0004), NOT IMPLEMENTED |
-| 5 | W2/D5 | Google AI Studio | AI Studio | SPEC+PLAN DRAFTED (Spec 0005), awaiting human review |
-| 6 | W2/D6 | Testing & Guardrails | AI Studio | NOT STARTED |
-| 7 | W3/D7 | Agentic AI Intro | ADK Visual Builder / MindStudio | NOT STARTED |
-| 8 | W3/D8 | Capstone Build | ADK / MindStudio | NOT STARTED |
-| 9 | W3/D9 | Capstone Evaluate | ADK / MindStudio | NOT STARTED |
+| 4 | W2/D4 | Multimodal AI | Gemini Multimodal + Nano Banana | COMPLETE (Spec 0004, committed 2026-02-18) |
+| 5 | W2/D5 | Google AI Studio | AI Studio | COMPLETE (Spec 0005, committed 2026-02-18) |
+| 6 | W2/D6 | Red Teaming & AI Safety | AI Studio | SPEC DRAFTED (Spec 0007), NOT IMPLEMENTED |
+| 7 | W3/D7 | Introduction to Agentic AI | TBD | SPEC DRAFTED (Spec 0008), NOT IMPLEMENTED |
+| 8 | W3/D8 | Capstone Build | Firebase + AI Studio | CODE COMPLETE (Spec 0009, 177 tests) |
+| 9 | W3/D9 | Capstone Evaluate | Firebase + AI Studio | CODE COMPLETE (Spec 0009, 177 tests) |
 
 **Class Dates:** Mon 3/9, Wed 3/11, Fri 3/13, Mon 3/16, Wed 3/18, Fri 3/20, Mon 3/23, Wed 3/25, Fri 3/27
+
+---
+
+## Exam Pools
+
+| Pool | Questions | Images | Status |
+|------|-----------|--------|--------|
+| Final Exam | 199 MC (Days 1-7) | 18 SVG/WebP diagrams | QTI built, imported to BB Ultra |
+| Practice Exam | 125 MC (Days 1-7) | Same 18 diagrams | QTI built, imported to BB Ultra |
+
+**Image pipeline:** SVG source → cairosvg → PNG → Pillow → WebP@q85 → GitHub Pages (`gh-pages` branch, `/exam-images/`)
+
+**Key files:**
+- `Materials/Final-Exam/questions.json` — 199 final exam questions (source of truth)
+- `Materials/Final-Exam/practice-questions.json` — 125 practice questions (source of truth)
+- `Materials/Final-Exam/final-exam-pool.zip` — QTI 2.1 for BB Ultra
+- `Materials/Final-Exam/practice-exam-pool.zip` — QTI 2.1 for BB Ultra
+- `Materials/Final-Exam/images/*.svg` — 18 SVG diagram sources
+- `Materials/Final-Exam/images/*.webp` — 18 WebP renders for BB Ultra
+- `Materials/Final-Exam/build_qti.py` — QTI package builder
+- `Materials/Final-Exam/practice-matrix.md` — Practice pool inventory
+- `Materials/Final-Exam/mc-evaluation-rubric.md` — 15-dimension MC quality rubric
 
 ---
 
@@ -27,165 +49,77 @@
 
 | ID | Title | Status | Notes |
 |----|-------|--------|-------|
-| 0001 | UBUS 670 Course Materials (master) | implementing | Days 1-3 complete, Days 4-9 remaining |
-| 0002 | Day 3 Context Engineering Rework | committed | Rework complete, committed 2026-02-11. Should be marked `integrated` by human. |
-| 0003 | AI Image Generation (Nano Banana) | implementing | Day 3 images done (4/4). Tool at `_tools/generate_image.py`. Days 1-2 retroactive + Days 4-9 pending. |
-| 0004 | Day 4 Multimodal AI Rework | planned | Spec + plan written. NOT YET IMPLEMENTED. Current Day 4 files still have old receipt-extraction prototype with partial uncommitted edits. |
-| 0005 | Day 5 Google AI Studio | planned | Spec + plan drafted. Awaiting human review/approval. |
+| 0001 | UBUS 670 Course Materials (master) | implementing | Days 1-5 complete, Days 6-7 remaining content. Days 8-9 + exams code complete. |
+| 0002 | Day 3 Context Engineering Rework | committed | Rework complete, committed 2026-02-11 |
+| 0003 | AI Image Generation (Nano Banana) | implementing | Tool at `_tools/generate_image.py`. Days 1-3 images done. |
+| 0004 | Day 4 Multimodal AI Rework | committed | Implemented and committed 2026-02-18 |
+| 0005 | Day 5 Google AI Studio | committed | Implemented and committed 2026-02-18 |
+| 0006 | NotebookLM Integration | implementing | Proven across Days 1-5. Days 6-7 remaining. |
+| 0007 | Day 6 Red Teaming & AI Safety | conceived | Spec drafted 2026-02-19. Not implemented. |
+| 0008 | Day 7 Introduction to Agentic AI | conceived | Spec drafted 2026-02-19. Not implemented. |
+| 0009 | Days 8-9 Capstone Competition | committed | Code complete, 177 tests. Firebase team setup pending BB sign-ups. |
+| 0010 | Final Exam Question Pool | implemented | 199 questions, 18 images, QTI built and imported to BB Ultra. |
+| 0011 | Practice Exam Pool | implemented | 125 questions (expanded from 100), QTI built and imported to BB Ultra. |
 
-**Next available project number:** 0006
-
----
-
-## Immediate Next Actions (Upon Resume)
-
-### 1. Approve and Implement Day 4 Rework (Spec 0004) - HIGHEST PRIORITY
-- **What changed:** Original Day 4 was narrowly focused on text-based receipt extraction (ironically not multimodal at all)
-- **New scenario:** "Beacon's Spring Marketing Campaign" combining image understanding, audio understanding, image generation (Nano Banana), and structured output
-- **Files to modify:** `Week 2/Day 4/web/` - lecture.html (~80% rework), lab.html (~90% rework), quiz.html (~70% rework), index.html
-- **Spec:** `codev/specs/0004-day4-rework.md`
-- **Plan:** `codev/plans/0004-day4-rework.md`
-- **Instructor feedback:** `Week 2/Day 4/feedback/slide_feedback.md` and `lab_feedback.md`
-- **STATUS:** Spec and plan are DRAFTED but NOT YET APPROVED by human. The spec needs human review before implementation begins.
-
-### 2. Approve Day 5 Spec (Spec 0005)
-- **Topic:** Google AI Studio - model parameters (temperature, top-p, top-k), system prompts, token economics
-- **Lab:** Beacon email triage system (produces a system Day 6 will red-team)
-- **Spec:** `codev/specs/0005-day5-ai-studio.md`
-- **Plan:** `codev/plans/0005-day5-ai-studio.md`
-
-### 3. Run Critic Reviews on Day 4 After Implementation
-- The 4-critic review board (UX, Education, Topic, Accuracy) should review Day 4 materials after the rework is implemented
-- Previous critic reviews of the old prototype are moot since the entire framing changed
-
-### 4. Days 6-9 Need Specs
-- Day 6: Testing & Guardrails (red-teaming the systems built in Days 4-5)
-- Days 7-9: Agentic AI + Capstone - need dual versions for Plan A (ADK Visual Builder) + Plan B (MindStudio backup)
+**Next available project number:** 0012
 
 ---
 
-## Uncommitted Changes (as of 2026-02-17)
+## Immediate Next Actions
 
-```
-D  "Week 2/Day 4/feeback/lab_feedback.md"           # old typo dir being deleted
-D  "Week 2/Day 4/feeback/lab_handwritten_damaged_receipt_feedback"
-D  "Week 2/Day 4/feeback/slide31"
-D  "Week 2/Day 4/feeback/slide_feedback.md"
-M  "Week 2/Day 4/web/lab.html"                      # partial edits from prior session
-M  "Week 2/Day 4/web/lecture.html"                   # partial edits from prior session
-?? "Week 2/Day 4/feedback/"                          # corrected spelling
-?? "Week 2/Day 4/web/generate_assets.sh"             # Nano Banana asset generation script
-```
+### 1. Implement Day 6 (Spec 0007) — Red Teaming & AI Safety
+- Red-team the email triage system built in Day 5
+- Five-layer defense model, four attack categories
+- Spec at `codev/specs/0007-day6-red-teaming.md`
 
-**Note:** The modified lab.html and lecture.html contain partial edits from a prior session that hit a rate limit. These are from the OLD receipt-extraction prototype and should be either committed as-is or reverted before starting the Spec 0004 rework.
+### 2. Implement Day 7 (Spec 0008) — Agentic AI
+- From single AI to AI teams
+- Orchestration patterns, perception-reasoning-action loop
+- Spec at `codev/specs/0008-day7-agentic-ai.md`
+
+### 3. Capstone Team Setup (before Day 8 — March 25)
+- Create Firestore `settings/capstone_settings` document
+- Create `capstone_teams` documents with real student emails from BB sign-ups
+- See: `Materials/week-3/day-8/tests/MANUAL_TEST_PLAN.md` Parts 0.2 and 0.3
 
 ---
 
 ## Architecture & Workflow
 
 ### Tech Stack
-- **Slides:** Reveal.js HTML presentations
+- **Slides:** Reveal.js HTML presentations with NotebookLM full-bleed images
 - **Diagrams:** Custom SVGs with NIU brand colors
-- **Images:** Nano Banana API (`gemini-2.5-flash-image`) via `google-genai` SDK, WebP format
-- **Image tool:** `Materials/_tools/generate_image.py`
+- **Images:** Nano Banana API (`gemini-2.5-flash-image`) for lab assets; NotebookLM for lecture slides
 - **AI ecosystem:** Gemini-focused (NOT ChatGPT), Gemini 2.5
+- **Exam images:** GitHub Pages absolute URLs (`mpickard-dataprof.github.io/ubus670/exam-images/`)
 - **Project management:** Codev workflow (specs, plans, reviews, lessons learned)
 
-### Generator-Critic Workflow
-1. **Input Analysis** - Read plan, lessons, templates, prior day files
-2. **Prototype Generation** - Generate index, lecture, lab, quiz
-3. **Review Board** - 4 critic personas in parallel:
-   - **UX Designer** (`_generator_system/prompts/critic_ux.md`)
-   - **Educational Expert** (`_generator_system/prompts/critic_edu.md`)
-   - **Topic Expert** (`_generator_system/prompts/critic_topic.md`)
-   - **Accuracy & Audience** (`_generator_system/prompts/critic_accuracy.md`)
-4. **Human Checkpoint** - Present synthesized critique, get approval
-5. **Apply Changes** - Implement approved feedback
-6. **Lessons Learned** - Document in `codev/lessons/0001-course-materials.md`
-
-### Session Management Rule
-**One day of content per session.** Generate Day N -> review -> approve -> commit -> start a NEW session for Day N+1. This prevents context overflow (sessions have hit context limits 4+ times).
-
-### Image Generation (Spec 0003 / Nano Banana)
-- **Model:** `gemini-2.5-flash-image` via `google-genai` SDK
-- **Cost:** ~$0.03/image, 2 images/minute free tier
-- **Two modes:**
-  - Mode A (Text-Free): Pure illustration, no text in image
-  - Mode B (Hybrid): AI character illustrations + HTML text overlays
-- **Rule:** NEVER rely on AI-generated text in images (consistent misspellings)
-- **Format:** WebP at q85 (60-100KB vs 1.2-1.5MB PNGs)
-- **Every image must teach, not just decorate**
-
----
-
-## Key Decisions & Preferences
-
-### Course Design
-- **Audience:** MBA students, no work experience, not tech-savvy
-- **Format:** Web Modules (HTML/JS) with Reveal.js, NOT PPTX/PDF
-- **Case Study:** Beacon Retail Group (25 stores, 1,200 employees, $312M revenue)
-- **No Google Workspace references** (NIU students don't have it)
-- **Google Opal is OK** (free beta, personal Google accounts)
-- **ChatGPT references removed** - focus on Gemini ecosystem
-- **RAG-first** (fine-tuning de-emphasized per 2026 consensus)
-
-### Pedagogical Patterns
-- Story-driven teaching creates emotional hooks ("Accidental Fine-Tuner" pattern)
-- Three-way comparisons as experiential learning format
-- Scenario-based > theory-based for MBA audience
-- Misconception-first pedagogy: surface the wrong belief, THEN correct it
-- Define all technical terms at first use with callout/tip boxes
-- "Compare with Classmates" boxes in labs highlight AI non-determinism
-
 ### Quality Standards
-- SVG: 12-14px labels, 9-10px subtitles (never below 9px), rounded rects, drop shadows, curved arrows, NIU colors
-- Quiz: 20+ questions, 2 variants per topic, randomized, 70%+ passing, formative feedback
-- Lab: PDF download + LMS upload, dedicated Tool Setup section, "Compare with Classmates" boxes
-- Breadcrumb: UBUS 670 > Week X > Day Y > [Component]
-- Git: NEVER use `git add -A` or `git add .` -- always add files explicitly
+- SVG: 12-14px labels, rounded rects, drop shadows, NIU colors
+- Quiz: 20+ questions, 2 variants per topic, 70%+ passing, formative feedback
+- Lab: PDF download + LMS upload, Tool Setup section, "Compare with Classmates" boxes
+- Exam: MC evaluation rubric (15 dimensions), Bloom's-honest, answer length balanced
+- Git: NEVER use `git add -A` or `git add .`
 
 ### NIU Brand Colors
 - Red: #C8102E
-- Navy: #1D428A (also #003366 used)
-- Blue: #00A9E0
+- Navy: #1D428A
+- Teal: #00968F
 - Orange: #E35205
 - Green: #43B02A
 - Fonts: Montserrat (headings), Georgia (body), Fira Code (code)
 
 ---
 
-## Session History
-
-| Date | Session | Key Work |
-|------|---------|----------|
-| Feb 4-6 | b22cbc91 | Initial course design, tool choices, Phase 0 foundation, Day 1 complete |
-| Feb 10-11 | 7037c886 | Day 2 complete, Day 3+4 prototypes generated (critic reviews collected but lost to context overflow) |
-| Feb 12-13 | c2b9cf08 | Day 3 rework (Spec 0002) complete, Nano Banana images (Spec 0003) done, Day 4+5 specs drafted, directory flattened |
-| Feb 12-13 | 680fc8e1 | (Materials folder) Day 4 partial edits, hit rate limit |
-
----
-
 ## Key File Locations
 
-- **Course materials:** `Materials/Week X/Day Y/web/`
+- **Course materials:** `Materials/week-X/day-Y/web/`
+- **Exam materials:** `Materials/Final-Exam/`
 - **Generator system:** `Materials/_generator_system/`
 - **Image generation tool:** `Materials/_tools/generate_image.py`
-- **Critic prompts:** `Materials/_generator_system/prompts/`
 - **Specs:** `codev/specs/`
 - **Plans:** `codev/plans/`
 - **Lessons learned:** `codev/lessons/0001-course-materials.md`
 - **Project list:** `codev/projectlist.md`
-- **Feedback files:** `Materials/Week X/Day Y/feedback/`
-
----
-
-## Datasets Still Needed
-
-| Dataset | For Day | Status |
-|---------|---------|--------|
-| Competitor ad images (2-3) | Day 4 | Not created (Nano Banana will generate) |
-| Audio clip (~1-2 min customer feedback) | Day 4 | Not created |
-| Customer emails (15+) | Day 5 | Not created |
-| Resumes (40-50 with hidden patterns) | Days 7-9 | Not created |
 
 ---

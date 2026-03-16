@@ -187,11 +187,76 @@ projects:
     dependencies: ["0001"]
     tags: [course, visuals, notebooklm, tooling]
     notes: "Proven across Days 1-5. Full-bleed image workflow established. Tools: html2md.py, extract_slides.py, /deploy-notebooklm skill, lecture template. Partially supersedes Spec 0003 (Nano Banana). Days 6-9 remaining."
+
+  - id: "0007"
+    title: "Day 6 — Red Teaming & AI Safety"
+    summary: "Day 6 materials: testing, breaking, and hardening AI systems with red teaming exercises on Day 5's email triage system"
+    status: conceived
+    priority: high
+    files:
+      spec: codev/specs/0007-day6-red-teaming.md
+      plan: null
+      review: null
+    dependencies: ["0001", "0005"]
+    tags: [course, day6, security, red-teaming]
+    notes: "Spec drafted 2026-02-19. Not yet implemented."
+
+  - id: "0008"
+    title: "Day 7 — Introduction to Agentic AI"
+    summary: "Day 7 materials: from single AI to AI teams, agentic concepts, orchestration patterns"
+    status: conceived
+    priority: high
+    files:
+      spec: codev/specs/0008-day7-agentic-ai.md
+      plan: null
+      review: null
+    dependencies: ["0001", "0007"]
+    tags: [course, day7, agentic-ai]
+    notes: "Spec drafted 2026-02-19. Not yet implemented."
+
+  - id: "0009"
+    title: "Days 8-9 Capstone — Resume Screening Competition"
+    summary: "Multi-agent resume screening competition with Firebase real-time leaderboard, team collaboration, and live scoring"
+    status: committed
+    priority: high
+    files:
+      spec: codev/specs/0009-capstone-days8-9.md
+      plan: codev/plans/0009-capstone-days8-9.md
+      review: null
+    dependencies: ["0001", "0008"]
+    tags: [course, day8, day9, capstone, firebase]
+    notes: "Code complete with 177 tests. Firebase security rules deployed. Team setup pending BB sign-ups. Resume dataset spec at 0010-resume-dataset.md."
+
+  - id: "0010"
+    title: "Final Exam Question Pool"
+    summary: "199 MC questions across Days 1-7, QTI 2.1 for BB Ultra, with 18 SVG/WebP diagrams deployed to GitHub Pages"
+    status: implemented
+    priority: high
+    files:
+      spec: codev/specs/0010-final-exam.md
+      plan: codev/plans/0010-final-exam.md
+      review: null
+    dependencies: ["0001"]
+    tags: [course, exam, assessment]
+    notes: "199 questions built. 18 SVG diagrams refined and deployed to gh-pages. QTI pool rebuilt and imported to BB Ultra. Note: 0010-resume-dataset.md is a separate spec sharing this ID (numbering collision)."
+
+  - id: "0011"
+    title: "Practice Exam Pool"
+    summary: "125 MC practice questions (20 reused + 105 new) mirroring the final exam structure, with image refinements and disclaimers"
+    status: implemented
+    priority: high
+    files:
+      spec: codev/specs/0011-practice-exam.md
+      plan: codev/plans/0011-practice-exam.md
+      review: null
+    dependencies: ["0010"]
+    tags: [course, exam, practice, assessment]
+    notes: "Expanded from 100 to 125 questions. SVG/WebP image pipeline refined. P090 rewritten from arithmetic to concept-based. Disclaimers added for diagram/question number mismatches."
 ```
 
 ## Next Available Number
 
-**0007** - Reserve this number for your next project
+**0012** - Reserve this number for your next project
 
 ---
 
