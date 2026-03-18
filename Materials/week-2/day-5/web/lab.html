@@ -377,10 +377,10 @@
             position: relative;
         }
         .email-card.cat-complaint { border-left-color: #C8102E; }
-        .email-card.cat-return { border-left-color: #E35205; }
-        .email-card.cat-inquiry { border-left-color: #00A9E0; }
-        .email-card.cat-compliment { border-left-color: #43B02A; }
-        .email-card.cat-escalation { border-left-color: #1D428A; }
+        .email-card.cat-return-exchange { border-left-color: #E35205; }
+        .email-card.cat-product-question { border-left-color: #00A9E0; }
+        .email-card.cat-billing { border-left-color: #1D428A; }
+        .email-card.cat-feedback-praise { border-left-color: #43B02A; }
         .email-card.cat-edge { border-left-color: #888; }
 
         .email-card-header {
@@ -418,10 +418,10 @@
             flex-shrink: 0;
         }
         .badge-complaint { background: #fce4e8; color: #C8102E; }
-        .badge-return { background: #fde8db; color: #E35205; }
-        .badge-inquiry { background: #d9f2fc; color: #0088b8; }
-        .badge-compliment { background: #e4f7e0; color: #2d8a1a; }
-        .badge-escalation { background: #dce3f0; color: #1D428A; }
+        .badge-return-exchange { background: #fde8db; color: #E35205; }
+        .badge-product-question { background: #d9f2fc; color: #0088b8; }
+        .badge-billing { background: #dce3f0; color: #1D428A; }
+        .badge-feedback-praise { background: #e4f7e0; color: #2d8a1a; }
 
         .email-body {
             font-size: 0.92rem;
@@ -786,14 +786,14 @@
 
             <details class="email-accordion" open>
             <summary class="email-summary">EMAIL #2 — James Wilson: "Return request - hiking boots"</summary>
-            <div class="email-card cat-return" id="email2">
+            <div class="email-card cat-return-exchange" id="email2">
                 <div class="email-number">EMAIL #2</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: James Wilson</div>
                         <div class="email-subject">Subject: "Return request - hiking boots"</div>
                     </div>
-                    <span class="email-badge badge-return">Return</span>
+                    <span class="email-badge badge-return-exchange">Return / Exchange</span>
                 </div>
                 <div class="email-body">Hi, I purchased a pair of hiking boots from your Schaumburg store last Saturday (receipt #RS-2847). They don't fit right &mdash; too narrow in the toe box. I'd like to return them for a full refund. They're unworn and still in the original box. What's the process?</div>
                 <button class="copy-email-btn" onclick="copyEmail('email2', this)">Copy to Clipboard</button>
@@ -802,14 +802,14 @@
 
             <details class="email-accordion" open>
             <summary class="email-summary">EMAIL #3 — Priya Patel: "Holiday hours question"</summary>
-            <div class="email-card cat-inquiry" id="email3">
+            <div class="email-card cat-product-question" id="email3">
                 <div class="email-number">EMAIL #3</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: Priya Patel</div>
                         <div class="email-subject">Subject: "Holiday hours question"</div>
                     </div>
-                    <span class="email-badge badge-inquiry">Inquiry</span>
+                    <span class="email-badge badge-product-question">Product Question</span>
                 </div>
                 <div class="email-body">Hello! I'm planning to visit your downtown location this weekend. Are you open on Sunday? If so, what time do you close? Also, do you have a parking garage nearby? I'll be coming from the suburbs and I'm not familiar with the area. Thanks!</div>
                 <button class="copy-email-btn" onclick="copyEmail('email3', this)">Copy to Clipboard</button>
@@ -818,14 +818,14 @@
 
             <details class="email-accordion" open>
             <summary class="email-summary">EMAIL #4 — Robert Kim: "Amazing service from David!"</summary>
-            <div class="email-card cat-compliment" id="email4">
+            <div class="email-card cat-feedback-praise" id="email4">
                 <div class="email-number">EMAIL #4</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: Robert Kim</div>
                         <div class="email-subject">Subject: "Amazing service from David!"</div>
                     </div>
-                    <span class="email-badge badge-compliment">Compliment</span>
+                    <span class="email-badge badge-feedback-praise">Feedback / Praise</span>
                 </div>
                 <div class="email-body">I just wanted to let you know that David at your Evanston location went above and beyond today. I was looking for a specific camping stove that was out of stock online, and he called three other stores to find one for me, then had it shipped to my house at no extra charge. That's the kind of service that keeps me coming back. Please give him a raise!</div>
                 <button class="copy-email-btn" onclick="copyEmail('email4', this)">Copy to Clipboard</button>
@@ -834,14 +834,14 @@
 
             <details class="email-accordion" open>
             <summary class="email-summary">EMAIL #5 — Thomas Wright: "URGENT - Defective product caused injury"</summary>
-            <div class="email-card cat-escalation" id="email5">
+            <div class="email-card cat-complaint" id="email5">
                 <div class="email-number">EMAIL #5</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: Thomas Wright</div>
                         <div class="email-subject">Subject: "URGENT - Defective product caused injury"</div>
                     </div>
-                    <span class="email-badge badge-escalation">Escalation</span>
+                    <span class="email-badge badge-complaint">Complaint</span>
                 </div>
                 <div class="email-body">Your defective space heater (model BH-450) malfunctioned last night and nearly started a fire in my living room. The unit began smoking and the plastic housing melted. I have photos and video documentation. If I don't hear from a manager within 24 hours, I will be contacting my attorney and filing a complaint with the Consumer Product Safety Commission. This is a serious safety hazard.</div>
                 <button class="copy-email-btn" onclick="copyEmail('email5', this)">Copy to Clipboard</button>
@@ -870,14 +870,14 @@
 
             <details class="email-accordion">
             <summary class="email-summary">EMAIL #7 — David Park: "Charged twice for same order"</summary>
-            <div class="email-card cat-complaint" id="email7">
+            <div class="email-card cat-billing" id="email7">
                 <div class="email-number">EMAIL #7</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: David Park</div>
                         <div class="email-subject">Subject: "Charged twice for same order"</div>
                     </div>
-                    <span class="email-badge badge-complaint">Complaint</span>
+                    <span class="email-badge badge-billing">Billing</span>
                 </div>
                 <div class="email-body">I just noticed two identical charges of $89.99 on my credit card statement from February 12th, both from Beacon online. Order #BO-7793. I only placed one order. Please refund the duplicate charge immediately.</div>
                 <button class="copy-email-btn" onclick="copyEmail('email7', this)">Copy to Clipboard</button>
@@ -886,14 +886,14 @@
 
             <details class="email-accordion">
             <summary class="email-summary">EMAIL #8 — Lisa Chang: "Can I still return this?"</summary>
-            <div class="email-card cat-return" id="email8">
+            <div class="email-card cat-return-exchange" id="email8">
                 <div class="email-number">EMAIL #8</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: Lisa Chang</div>
                         <div class="email-subject">Subject: "Can I still return this?"</div>
                     </div>
-                    <span class="email-badge badge-return">Return</span>
+                    <span class="email-badge badge-return-exchange">Return / Exchange</span>
                 </div>
                 <div class="email-body">I bought a winter jacket in November but never wore it because winter was mild this year. I know it's been over 90 days, but the tags are still on and it's in perfect condition. Is there any way you can make an exception? I have the receipt.</div>
                 <button class="copy-email-btn" onclick="copyEmail('email8', this)">Copy to Clipboard</button>
@@ -902,14 +902,14 @@
 
             <details class="email-accordion">
             <summary class="email-summary">EMAIL #9 — Michael Brown: "Coffee maker broke after 2 weeks"</summary>
-            <div class="email-card cat-return" id="email9">
+            <div class="email-card cat-return-exchange" id="email9">
                 <div class="email-number">EMAIL #9</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: Michael Brown</div>
                         <div class="email-subject">Subject: "Coffee maker broke after 2 weeks"</div>
                     </div>
-                    <span class="email-badge badge-return">Return</span>
+                    <span class="email-badge badge-return-exchange">Return / Exchange</span>
                 </div>
                 <div class="email-body">The Beacon Premium coffee maker I bought two weeks ago stopped working. It powers on but no water flows through. The carafe also has a small chip on the rim that I didn't notice at purchase. Can I get a replacement or refund?</div>
                 <button class="copy-email-btn" onclick="copyEmail('email9', this)">Copy to Clipboard</button>
@@ -918,14 +918,14 @@
 
             <details class="email-accordion">
             <summary class="email-summary">EMAIL #10 — Sarah Johnson: "Do you carry the NovaTech 3000?"</summary>
-            <div class="email-card cat-inquiry" id="email10">
+            <div class="email-card cat-product-question" id="email10">
                 <div class="email-number">EMAIL #10</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: Sarah Johnson</div>
                         <div class="email-subject">Subject: "Do you carry the NovaTech 3000?"</div>
                     </div>
-                    <span class="email-badge badge-inquiry">Inquiry</span>
+                    <span class="email-badge badge-product-question">Product Question</span>
                 </div>
                 <div class="email-body">My neighbor recommended the NovaTech 3000 air purifier and said she bought it at Beacon. I checked your website but couldn't find it. Do you still carry it? If so, which stores have it in stock? I need it for my daughter's nursery.</div>
                 <button class="copy-email-btn" onclick="copyEmail('email10', this)">Copy to Clipboard</button>
@@ -934,14 +934,14 @@
 
             <details class="email-accordion">
             <summary class="email-summary">EMAIL #11 — Kevin Nguyen: "Gift card balance check"</summary>
-            <div class="email-card cat-inquiry" id="email11">
+            <div class="email-card cat-billing" id="email11">
                 <div class="email-number">EMAIL #11</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: Kevin Nguyen</div>
                         <div class="email-subject">Subject: "Gift card balance check"</div>
                     </div>
-                    <span class="email-badge badge-inquiry">Inquiry</span>
+                    <span class="email-badge badge-billing">Billing</span>
                 </div>
                 <div class="email-body">I received a Beacon gift card for Christmas and I've used it a couple of times. Can you tell me the remaining balance? The card number is BGC-5522-8891-3347. Also, do gift cards expire?</div>
                 <button class="copy-email-btn" onclick="copyEmail('email11', this)">Copy to Clipboard</button>
@@ -950,14 +950,14 @@
 
             <details class="email-accordion">
             <summary class="email-summary">EMAIL #12 — Emily Rodriguez: "Love the Beacon Signature blanket!"</summary>
-            <div class="email-card cat-compliment" id="email12">
+            <div class="email-card cat-feedback-praise" id="email12">
                 <div class="email-number">EMAIL #12</div>
                 <div class="email-card-header">
                     <div class="email-meta">
                         <div class="email-from">From: Emily Rodriguez</div>
                         <div class="email-subject">Subject: "Love the Beacon Signature blanket!"</div>
                     </div>
-                    <span class="email-badge badge-compliment">Compliment</span>
+                    <span class="email-badge badge-feedback-praise">Feedback / Praise</span>
                 </div>
                 <div class="email-body">I just have to say &mdash; the Beacon Signature weighted blanket is the best purchase I've made all year. The quality is incredible, it's so cozy, and it arrived beautifully packaged. I've already recommended it to three friends. Keep making great products!</div>
                 <button class="copy-email-btn" onclick="copyEmail('email12', this)">Copy to Clipboard</button>
@@ -1156,7 +1156,7 @@ Respond with a JSON object:
                         </tr>
                         <tr>
                             <td>#2 James Wilson</td>
-                            <td>return</td>
+                            <td>return_exchange</td>
                             <td><input type="text" placeholder="..."></td>
                             <td>low</td>
                             <td><input type="text" placeholder="..."></td>
@@ -1164,7 +1164,7 @@ Respond with a JSON object:
                         </tr>
                         <tr>
                             <td>#3 Priya Patel</td>
-                            <td>inquiry</td>
+                            <td>product_question</td>
                             <td><input type="text" placeholder="..."></td>
                             <td>low</td>
                             <td><input type="text" placeholder="..."></td>
@@ -1172,7 +1172,7 @@ Respond with a JSON object:
                         </tr>
                         <tr>
                             <td>#4 Robert Kim</td>
-                            <td>compliment</td>
+                            <td>feedback_praise</td>
                             <td><input type="text" placeholder="..."></td>
                             <td>low</td>
                             <td><input type="text" placeholder="..."></td>
@@ -1180,7 +1180,7 @@ Respond with a JSON object:
                         </tr>
                         <tr>
                             <td>#5 Thomas Wright</td>
-                            <td>escalation</td>
+                            <td>complaint</td>
                             <td><input type="text" placeholder="..."></td>
                             <td>high</td>
                             <td><input type="text" placeholder="..."></td>
@@ -1213,7 +1213,7 @@ Respond with a JSON object:
 
                 <div class="reflection-area">
                     <label>Iteration log: What went wrong? What did you change? Did it fix it?</label>
-                    <textarea placeholder="Example: Email #1 was classified as 'return' instead of 'complaint.' I added a rule: 'If the customer expresses frustration about product quality but does NOT explicitly ask to return the item, classify as complaint, not return.' Re-testing email #1 now correctly classifies as complaint."></textarea>
+                    <textarea placeholder="Example: Email #1 was classified as 'return_exchange' instead of 'complaint.' I added a rule: 'If the customer expresses frustration about product quality but does NOT explicitly ask to return the item, classify as complaint, not return_exchange.' Re-testing email #1 now correctly classifies as complaint."></textarea>
                 </div>
 
                 <div class="compare-box">

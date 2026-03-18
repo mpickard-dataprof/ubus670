@@ -12,6 +12,19 @@
 *   [ ] The Final System Prompt (Task 10) documented in the report.
 *   [ ] Confirmation of progress: Minimum 80% of steps checked in the interactive guide.
 
+## ⚠️ Grading Note: Category Name Accommodation (Early Submissions)
+
+The lab was updated mid-semester to align email badges and Task 2 expected values with the system prompt template categories. Students who submitted **before the fix** may have seen the old labels:
+
+| Old Label (pre-fix) | Current Label (system prompt) |
+| :--- | :--- |
+| `return` | `return_exchange` |
+| `inquiry` | `product_question` or `billing` (depends on email) |
+| `compliment` | `feedback_praise` |
+| `escalation` | `complaint` (with high urgency) |
+
+**Grading guidance:** Accept either naming convention as correct for early submissions. Do NOT mark students down for using the old label names. Students who noticed the original mismatch and discussed it in their iteration notes (Task 3) should be credited for strong analytical thinking.
+
 ## ⚖️ Grading Criteria
 
 | Criterion | Exceeds Expectations (100%) | Meets Expectations (85%) | Needs Improvement (70%) |
