@@ -712,17 +712,13 @@ INFO:     Uvicorn running on http://127.0.0.1:8000</div>
                     <strong>Don&rsquo;t close the terminal!</strong> The <code>adk web</code> command must keep running in the background. If you close the terminal or press Ctrl+C, the Visual Builder will stop working. Leave it running throughout the lab.
                 </div>
 
-                <h3>Step G: Initialize Your Workspace</h3>
+                <h3>Step G: Verify the Visual Builder is Ready</h3>
 
-                <p>The Visual Builder needs an initial workspace before you can use the visual canvas. We&rsquo;ll create a project called <code>beacon_app</code> that will serve as the container for all your agents.</p>
+                <p>You should see the ADK Visual Builder with a <strong>"+"</strong> button in the top-left corner. You&rsquo;ll use this button in Part 1 to create your first agent. For now, just confirm the interface loaded successfully.</p>
 
                 <div class="step">
                     <input type="checkbox" id="step0-15">
-                    <label for="step0-15">Click the <strong>"+"</strong> button (top-left corner) to create a new agent (the dialog will say "Create an app"). Name it <code>beacon_app</code> and click <strong>Create</strong>. This initializes your workspace.</label>
-                </div>
-
-                <div class="tip-box">
-                    <strong>Why this step?</strong> The Visual Builder uses this first agent to set up its workspace directory structure. Think of <code>beacon_app</code> as the "project folder" that will contain all your agents. You&rsquo;ll build your actual Triage Agent and Quality Checker inside this workspace in the next steps.
+                    <label for="step0-15">Confirm you can see the <strong>"+"</strong> button in the top-left corner of the Visual Builder. You&rsquo;re ready to start building agents!</label>
                 </div>
 
                 <div class="tip-box">
@@ -753,15 +749,11 @@ INFO:     Uvicorn running on http://127.0.0.1:8000</div>
 
                 <div class="step">
                     <input type="checkbox" id="step1-1">
-                    <label for="step1-1">Click the <strong>"+"</strong> button again to create a new agent.</label>
+                    <label for="step1-1">Click the <strong>"+"</strong> button (top-left corner) to create a new app. Name it <code>triage_agent</code> and click <strong>Create</strong>.</label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step1-2">
-                    <label for="step1-2">Name it <code>triage_agent</code> and click <strong>Create</strong>.</label>
-                </div>
-                <div class="step">
-                    <input type="checkbox" id="step1-3">
-                    <label for="step1-3">Click the <strong>pencil icon</strong> next to <code>triage_agent</code> to open the Visual Builder canvas. You should now see the three-panel interface:
+                    <label for="step1-2">The Visual Builder canvas opens automatically with a root agent named <code>triage_agent</code>. You should see a three-panel interface:
                         <ul style="margin-top: 5px;">
                             <li><strong>Left panel</strong> &mdash; Agent configuration (name, model, instructions)</li>
                             <li><strong>Center area</strong> &mdash; The visual canvas showing your agent structure</li>
@@ -824,7 +816,7 @@ Rules:
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step2-0b">
-                    <label for="step2-0b">In the <strong>agent dropdown</strong> at the top of the chat panel, select <code>triage_agent</code>. (This dropdown lists all agents in your workspace &mdash; you should see <code>beacon_app</code> and <code>triage_agent</code>.)</label>
+                    <label for="step2-0b">In the <strong>agent dropdown</strong> at the top of the chat panel, select <code>triage_agent</code>.</label>
                 </div>
 
                 <p>Send the following 3 emails one at a time. For each, copy the email text, paste it into the chat input, and press <strong>Enter</strong> (or click Send). Record the agent's classification in the table below.</p>
@@ -947,15 +939,15 @@ Rules:
 
                 <div class="step">
                     <input type="checkbox" id="step3-1">
-                    <label for="step3-1">Click the <strong>"+"</strong> button again to create a second agent.</label>
+                    <label for="step3-1">Click the <strong>"+"</strong> button (top-left corner) to create a new app. Name it <code>quality_checker</code> and click <strong>Create</strong>.</label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step3-2">
-                    <label for="step3-2">Name it: <code>quality_checker</code> and click <strong>Create</strong>.</label>
+                    <label for="step3-2">The builder canvas opens with a root agent named <code>quality_checker</code>.</label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step3-3">
-                    <label for="step3-3">Set the model to <code>gemini-2.5-flash</code> (same model as the Triage Agent).</label>
+                    <label for="step3-3">Set the <strong>model</strong> to <code>gemini-2.5-flash</code> (same model as the Triage Agent).</label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step3-4">
@@ -1069,27 +1061,28 @@ Triage Agent Classification:
 
                 <div class="step">
                     <input type="checkbox" id="step5-1">
-                    <label for="step5-1">In the Visual Builder, click the <strong>"+"</strong> button to create a new agent.</label>
+                    <label for="step5-1">Click the <strong>"+"</strong> button (top-left corner) to create a new app. Name it <code>triage_pipeline</code> and click <strong>Create</strong>.</label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step5-2">
-                    <label for="step5-2">Name it <code>triage_pipeline</code> and click <strong>Create</strong>.</label>
+                    <label for="step5-2">The builder canvas opens with a root agent named <code>triage_pipeline</code>. In the <strong>"Sub Agents"</strong> section, click the <strong>"+"</strong> button and add a <strong>Sequential Agent</strong>. Name it <code>pipeline</code>.</label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step5-3">
-                    <label for="step5-3">Look for the <strong>"Sub Agents"</strong> section in the agent configuration. Click the <strong>"+"</strong> next to it and select <strong>"Sequential Agent"</strong> as the agent type. This tells ADK that this agent&rsquo;s sub-agents should run in sequence (one after another), not in parallel.</label>
+                    <label for="step5-3">Inside the Sequential Agent, add two sub-agents in order:
+                        <ol style="margin-top: 5px;">
+                            <li>Add a sub-agent named <code>triage_agent</code>. Set its model to <code>gemini-2.5-flash</code> and paste the same triage instructions you used in Part 1.</li>
+                            <li>Add a sub-agent named <code>quality_checker</code>. Set its model to <code>gemini-2.5-flash</code> and paste the same quality checker instructions you used in Part 2.</li>
+                        </ol>
+                    </label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step5-4">
-                    <label for="step5-4">Add <code>triage_agent</code> as the <strong>first sub-agent</strong> in the sequence.</label>
+                    <label for="step5-4">Click <strong>"Save"</strong>.</label>
                 </div>
-                <div class="step">
-                    <input type="checkbox" id="step5-5">
-                    <label for="step5-5">Add <code>quality_checker</code> as the <strong>second sub-agent</strong> in the sequence.</label>
-                </div>
-                <div class="step">
-                    <input type="checkbox" id="step5-6">
-                    <label for="step5-6">Click <strong>"Save"</strong>.</label>
+
+                <div class="tip-box">
+                    <strong>Why re-enter the instructions?</strong> Each app in ADK is self-contained. The <code>triage_agent</code> and <code>quality_checker</code> apps you built earlier were for standalone testing. Now you&rsquo;re assembling them into a pipeline where they work together. Copy-paste the instructions from Parts 1 and 2.
                 </div>
 
                 <div class="tip-box">
@@ -1099,10 +1092,6 @@ Triage Agent Classification:
                         <li><strong>Quality Checker</strong> receives the context from step 1 (including the original email and the Triage Agent&rsquo;s classification) &rarr; verifies it &rarr; produces AGREE/DISAGREE</li>
                     </ol>
                     ADK handles the handoff automatically &mdash; you don&rsquo;t need to manually pass data between agents.
-                </div>
-
-                <div class="warning-box">
-                    <strong>If you don't see "Sequential Agent":</strong> The Visual Builder interface may vary by version. Look for options like "Workflow," "Pipeline," or "Agent Type" in the configuration panel. The key is to set the sub-agents to run <em>in order</em> (sequential), not simultaneously (parallel).
                 </div>
             </div>
 
