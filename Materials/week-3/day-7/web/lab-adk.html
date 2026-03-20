@@ -1116,21 +1116,23 @@ Triage Agent Classification:
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step5-2">
-                    <label for="step5-2">The builder canvas opens with a root agent named <code>triage_pipeline</code>. In the <strong>"Sub Agents"</strong> section, click the <strong>"+"</strong> button and add a <strong>Sequential Agent</strong>. Name it <code>pipeline</code>.</label>
+                    <label for="step5-2">The builder canvas opens with a root agent named <code>triage_pipeline</code>. In the left panel, expand the <strong>"Sub Agents"</strong> section and click its <strong>"+"</strong> button. From the dropdown, select <strong>Sequential Agent</strong>.</label>
                 </div>
+                <p>The canvas now shows a <code>sequential_agent</code> node under the root, with one auto-created sub-agent (e.g., <code>sub_agent_1</code>) and an <strong>"add sub agent"</strong> button inside it.</p>
+
                 <div class="warning-box">
-                    <strong>Do NOT click "Save" until both sub-agents are added!</strong> If you save after adding only the first sub-agent, you may not be able to add the second one. If this happens, delete the <code>triage_pipeline</code> app and start Part 3 over.
+                    <strong>Do NOT click "Save" until both sub-agents are added and configured!</strong> If you save after adding only the first sub-agent, you may not be able to add the second one. If this happens, delete the <code>triage_pipeline</code> app (click the trash icon next to it in the app list) and start Part 3 over.
                 </div>
 
                 <div class="step">
-                    <input type="checkbox" id="step5-3">
-                    <label for="step5-3">Inside the Sequential Agent, add two sub-agents in order:
-                        <ol style="margin-top: 5px;">
-                            <li>Add a sub-agent named <code>triage_agent</code>. Set its model to <code>gemini-2.5-flash</code> and paste the same triage instructions you used in Part 1.</li>
-                            <li>Add a sub-agent named <code>quality_checker</code>. Set its model to <code>gemini-2.5-flash</code> and paste the same quality checker instructions you used in Part 2.</li>
-                        </ol>
-                    </label>
+                    <input type="checkbox" id="step5-3a">
+                    <label for="step5-3a"><strong>First sub-agent (Triage):</strong> Click on the auto-created sub-agent inside the Sequential Agent (e.g., <code>sub_agent_1</code>). In the left panel, rename it to <code>triage_agent</code>, set the model to <code>gemini-2.5-flash</code>, and paste the same triage instructions you used in Part 1.</label>
                 </div>
+                <div class="step">
+                    <input type="checkbox" id="step5-3b">
+                    <label for="step5-3b"><strong>Second sub-agent (Quality Checker):</strong> Click the <strong>"+"</strong> button inside the Sequential Agent on the canvas to add another sub-agent. Select <strong>LLM Agent</strong>. Click on the new sub-agent, rename it to <code>quality_checker</code>, set the model to <code>gemini-2.5-flash</code>, and paste the same quality checker instructions you used in Part 2.</label>
+                </div>
+                <p>Your canvas should now show: <code>triage_pipeline</code> &rarr; <code>sequential_agent</code> &rarr; <code>triage_agent</code> + <code>quality_checker</code> (side by side inside the Sequential Agent box).</p>
                 <div class="step">
                     <input type="checkbox" id="step5-4">
                     <label for="step5-4">Now that both sub-agents are configured, click <strong>"Save"</strong>.</label>
@@ -1203,15 +1205,15 @@ Triage Agent Classification:
 
                 <div class="step">
                     <input type="checkbox" id="step6-1">
-                    <label for="step6-1">Send <strong>Email #1</strong> (complaint) through the full pipeline.</label>
+                    <label for="step6-1">Send <strong>Email #1</strong> (complaint &mdash; marcus.johnson) through the full pipeline. <em>Scroll up to Task 2 to copy it.</em></label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step6-2">
-                    <label for="step6-2">Send <strong>Email #2</strong> (inquiry) through the full pipeline.</label>
+                    <label for="step6-2">Send <strong>Email #2</strong> (inquiry &mdash; sarah.chen) through the full pipeline. <em>Scroll up to Task 2 to copy it.</em></label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step6-3">
-                    <label for="step6-3">Send <strong>Email #3</strong> (compliment) through the full pipeline.</label>
+                    <label for="step6-3">Send <strong>Email #3</strong> (compliment &mdash; david.park) through the full pipeline. <em>Scroll up to Task 2 to copy it.</em></label>
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step6-4">
