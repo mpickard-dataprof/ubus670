@@ -541,7 +541,7 @@
             <h2>What is Google ADK?</h2>
             <p>Google's <strong>Agent Development Kit (ADK)</strong> is an open-source framework for building AI agents &mdash; AI systems that can perceive inputs, reason about them, and take actions. Think of it as a toolkit that lets you create specialized AI "employees" and organize them into teams.</p>
             <p>ADK includes a <strong>Visual Builder</strong> &mdash; a browser-based interface where you can create, configure, and test agents using a drag-and-drop canvas, <em>without writing code</em>. That&rsquo;s what we&rsquo;ll use today.</p>
-            <p>Under the hood, ADK connects to Google&rsquo;s <strong>Gemini</strong> AI models (similar to how ChatGPT connects to OpenAI&rsquo;s models). You&rsquo;ll get a free API key to power your agents.</p>
+            <p>Under the hood, ADK connects to Google&rsquo;s <strong>Gemini</strong> AI models (similar to how ChatGPT connects to OpenAI&rsquo;s models) via <strong>Vertex AI</strong>, powered by your course cloud credits.</p>
 
             <div class="tip-box">
                 <strong>Why ADK for this lab?</strong> ADK is one of the few tools that lets you visually build multi-agent pipelines &mdash; sequential, parallel, and loop &mdash; matching the orchestration patterns from today&rsquo;s lecture. You'll see these concepts come to life on the canvas.
@@ -618,7 +618,7 @@
                     <label for="step0-6">Run the following command:</label>
                 </div>
 
-                <div class="prompt-box" id="prompt-install">pip install google-adk<button class="copy-prompt-btn" onclick="copyPrompt('prompt-install', this)">Copy</button></div>
+                <div class="prompt-box" id="prompt-install">pip install google-adk==1.25.1<button class="copy-prompt-btn" onclick="copyPrompt('prompt-install', this)">Copy</button></div>
 
                 <p>This will take about 30&ndash;60 seconds. You&rsquo;ll see progress bars as packages download. Wait until you see the terminal prompt return.</p>
 
@@ -629,52 +629,59 @@
 
                 <div class="prompt-box" id="prompt-verify">adk --version<button class="copy-prompt-btn" onclick="copyPrompt('prompt-verify', this)">Copy</button></div>
 
-                <p>You should see a version number (e.g., <code>adk 1.x.x</code>). If you get <strong>"command not found"</strong>, run this fix to add ADK to your system path:</p>
+                <p>You should see <code>adk 1.25.1</code>. If you get <strong>"command not found"</strong>, run this fix to add ADK to your system path:</p>
 
                 <div class="prompt-box" id="prompt-path">export PATH="$HOME/.local/bin:$PATH"<button class="copy-prompt-btn" onclick="copyPrompt('prompt-path', this)">Copy</button></div>
 
                 <p>Then try <code>adk --version</code> again.</p>
 
-                <h3>Step D: Get Your Google AI API Key</h3>
+                <h3>Step D: Enable Vertex AI</h3>
 
-                <p>ADK needs an <strong>API key</strong> to communicate with Google&rsquo;s Gemini AI models. An API key is like a password that identifies your account &mdash; it tells Google "this request is from me." We&rsquo;ll get a free one from Google AI Studio.</p>
+                <p>ADK needs access to Google&rsquo;s <strong>Gemini</strong> AI models. We&rsquo;ll use <strong>Vertex AI</strong>, Google Cloud&rsquo;s AI platform, which is covered by your course cloud credits. Cloud Shell already knows who you are, so no API key is needed &mdash; we just need to turn on the Vertex AI service.</p>
 
                 <div class="step">
                     <input type="checkbox" id="step0-8">
-                    <label for="step0-8">Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><strong>aistudio.google.com/apikey</strong></a> in a new browser tab.</label>
-                </div>
-                <div class="step">
-                    <input type="checkbox" id="step0-9">
-                    <label for="step0-9">Click <strong>"Create API Key"</strong>. If prompted to select a Google Cloud project, choose any available project (or create a new one).</label>
-                </div>
-                <div class="step">
-                    <input type="checkbox" id="step0-10">
-                    <label for="step0-10">Copy your API key (a long string starting with <code>AIza...</code>). <strong>Keep this tab open</strong> &mdash; you&rsquo;ll need the key in the next step.</label>
+                    <label for="step0-8">Run the following command in your Cloud Shell terminal to enable the Vertex AI API:</label>
                 </div>
 
-                <div class="warning-box">
-                    <strong>Keep your API key private.</strong> Treat it like a password. Don&rsquo;t share it, post it online, or include it in screenshots. The free tier gives you generous usage limits &mdash; more than enough for this lab.
+                <div class="prompt-box" id="prompt-enable-vertex">gcloud services enable aiplatform.googleapis.com<button class="copy-prompt-btn" onclick="copyPrompt('prompt-enable-vertex', this)">Copy</button></div>
+
+                <p>This may take 10&ndash;20 seconds. You&rsquo;ll see <code>Operation finished successfully</code> when it&rsquo;s done.</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step0-9">
+                    <label for="step0-9">Note your project ID &mdash; you&rsquo;ll need it in the next step. Run:</label>
+                </div>
+
+                <div class="prompt-box" id="prompt-project-id">gcloud config get-value project<button class="copy-prompt-btn" onclick="copyPrompt('prompt-project-id', this)">Copy</button></div>
+
+                <p>This prints your Google Cloud project ID (something like <code>my-project-12345</code>). Copy it &mdash; you&rsquo;ll paste it in the next step.</p>
+
+                <div class="tip-box">
+                    <strong>Why Vertex AI instead of an API key?</strong> Vertex AI uses your Google Cloud billing account (where your course credits live). A standalone API key from Google AI Studio would hit free-tier rate limits and wouldn&rsquo;t use your credits. Since you&rsquo;re already in Cloud Shell, authentication is automatic &mdash; no passwords or keys to manage.
                 </div>
 
                 <h3>Step E: Configure Your Environment</h3>
 
-                <p>Now we&rsquo;ll create a configuration file that tells ADK which AI model to use and how to authenticate. This file is called <code>.env</code> (short for "environment").</p>
+                <p>Now we&rsquo;ll create a configuration file that tells ADK to use Vertex AI and where to find your project. This file is called <code>.env</code> (short for "environment").</p>
 
                 <div class="step">
                     <input type="checkbox" id="step0-11">
-                    <label for="step0-11">Run the following command, <strong>replacing <code>PASTE_YOUR_KEY_HERE</code></strong> with the API key you copied:</label>
+                    <label for="step0-11">Run the following command, <strong>replacing <code>YOUR_PROJECT_ID</code></strong> with the project ID you copied in Step D:</label>
                 </div>
 
                 <div class="prompt-box" id="prompt-env">cat > .env << 'EOF'
-GOOGLE_GENAI_USE_VERTEXAI=FALSE
-GOOGLE_API_KEY=PASTE_YOUR_KEY_HERE
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID
+GOOGLE_CLOUD_LOCATION=us-central1
 EOF<button class="copy-prompt-btn" onclick="copyPrompt('prompt-env', this)">Copy</button></div>
 
                 <div class="tip-box">
                     <strong>What does this file do?</strong>
                     <ul style="margin: 8px 0 0; font-size: 0.9em;">
-                        <li><code>GOOGLE_GENAI_USE_VERTEXAI=FALSE</code> &mdash; Tells ADK to use Google AI Studio (simple, free) instead of Vertex AI (enterprise, requires billing)</li>
-                        <li><code>GOOGLE_API_KEY=...</code> &mdash; Your authentication credential so Gemini knows who&rsquo;s making requests</li>
+                        <li><code>GOOGLE_GENAI_USE_VERTEXAI=TRUE</code> &mdash; Tells ADK to use Vertex AI, which is covered by your course cloud credits</li>
+                        <li><code>GOOGLE_CLOUD_PROJECT=...</code> &mdash; Your Google Cloud project ID so ADK knows which project to bill</li>
+                        <li><code>GOOGLE_CLOUD_LOCATION=us-central1</code> &mdash; The data center region to use (Iowa &mdash; closest and most reliable)</li>
                     </ul>
                 </div>
 
@@ -711,7 +718,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000</div>
 
                 <div class="step">
                     <input type="checkbox" id="step0-15">
-                    <label for="step0-15">Click the <strong>"+"</strong> button (top-left corner) to create a new agent. Name it <code>beacon_app</code> and click <strong>Create</strong>. This initializes your workspace.</label>
+                    <label for="step0-15">Click the <strong>"+"</strong> button (top-left corner) to create a new agent (the dialog will say "Create an app"). Name it <code>beacon_app</code> and click <strong>Create</strong>. This initializes your workspace.</label>
                 </div>
 
                 <div class="tip-box">
@@ -723,7 +730,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000</div>
                     <ul style="margin: 8px 0 0; font-size: 0.9em;">
                         <li><strong>"Address already in use"</strong> &mdash; Try a different port: <code>adk web --port 8080</code>, then click the new link</li>
                         <li><strong>Blank page</strong> &mdash; Wait 10 seconds and refresh. The server may still be starting up.</li>
-                        <li><strong>API errors</strong> &mdash; Check your <code>.env</code> file. The API key should be on one line with no extra spaces.</li>
+                        <li><strong>API errors (429 / RESOURCE_EXHAUSTED)</strong> &mdash; Check your <code>.env</code> file. Make sure <code>GOOGLE_GENAI_USE_VERTEXAI=TRUE</code> and your project ID is correct. Run <code>gcloud services list --enabled | grep aiplatform</code> to confirm Vertex AI is enabled.</li>
                     </ul>
                 </div>
             </div>
