@@ -488,6 +488,35 @@
                 border: 1px solid #ddd;
                 page-break-inside: avoid;
             }
+            /* Ensure result table inputs are visible in PDF */
+            .result-table input[type="text"] {
+                border: 1px solid #999 !important;
+                background: #fff !important;
+                padding: 4px 6px !important;
+                font-size: 11pt !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .result-table select {
+                border: 1px solid #999 !important;
+                background: #fff !important;
+                padding: 4px 6px !important;
+                font-size: 11pt !important;
+                -webkit-appearance: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .result-table {
+                page-break-inside: avoid;
+            }
+            .reflection-area textarea {
+                border: 1px solid #999 !important;
+                background: #fff !important;
+                font-size: 11pt !important;
+                min-height: 60px !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
         }
     </style>
 </head>
@@ -635,13 +664,31 @@
 
                 <p>Then try <code>adk --version</code> again.</p>
 
-                <h3>Step D: Enable Vertex AI</h3>
+                <h3>Step D: Configure Your Google Cloud Project &amp; Enable Vertex AI</h3>
 
-                <p>ADK needs access to Google&rsquo;s <strong>Gemini</strong> AI models. We&rsquo;ll use <strong>Vertex AI</strong>, Google Cloud&rsquo;s AI platform, which is covered by your course cloud credits. Cloud Shell already knows who you are, so no API key is needed &mdash; we just need to turn on the Vertex AI service.</p>
+                <p>ADK needs access to Google&rsquo;s <strong>Gemini</strong> AI models. We&rsquo;ll use <strong>Vertex AI</strong>, Google Cloud&rsquo;s AI platform, which is covered by your course cloud credits. Cloud Shell already knows who you are, so no API key is needed &mdash; we just need to set up the project and turn on the Vertex AI service.</p>
 
                 <div class="step">
-                    <input type="checkbox" id="step0-8">
-                    <label for="step0-8">Run the following command in your Cloud Shell terminal to enable the Vertex AI API:</label>
+                    <input type="checkbox" id="step0-8a">
+                    <label for="step0-8a">First, find your Google Cloud project ID. Run:</label>
+                </div>
+
+                <div class="prompt-box" id="prompt-list-projects">gcloud projects list<button class="copy-prompt-btn" onclick="copyPrompt('prompt-list-projects', this)">Copy</button></div>
+
+                <p>This lists all projects linked to your account. Look for the project connected to your billing account with course credits. Copy the <strong>PROJECT_ID</strong> value (something like <code>gen-lang-client-0689905467</code>).</p>
+
+                <div class="step">
+                    <input type="checkbox" id="step0-8b">
+                    <label for="step0-8b">Set your project as the active project, <strong>replacing <code>YOUR_PROJECT_ID</code></strong> with the ID you just copied:</label>
+                </div>
+
+                <div class="prompt-box" id="prompt-set-project">gcloud config set project YOUR_PROJECT_ID<button class="copy-prompt-btn" onclick="copyPrompt('prompt-set-project', this)">Copy</button></div>
+
+                <p>You should see <code>Updated property [core/project].</code></p>
+
+                <div class="step">
+                    <input type="checkbox" id="step0-8c">
+                    <label for="step0-8c">Now enable the Vertex AI API for this project:</label>
                 </div>
 
                 <div class="prompt-box" id="prompt-enable-vertex">gcloud services enable aiplatform.googleapis.com<button class="copy-prompt-btn" onclick="copyPrompt('prompt-enable-vertex', this)">Copy</button></div>
@@ -650,15 +697,19 @@
 
                 <div class="step">
                     <input type="checkbox" id="step0-9">
-                    <label for="step0-9">Note your project ID &mdash; you&rsquo;ll need it in the next step. Run:</label>
+                    <label for="step0-9">Verify your project is set correctly:</label>
                 </div>
 
                 <div class="prompt-box" id="prompt-project-id">gcloud config get-value project<button class="copy-prompt-btn" onclick="copyPrompt('prompt-project-id', this)">Copy</button></div>
 
-                <p>This prints your Google Cloud project ID (something like <code>my-project-12345</code>). Copy it &mdash; you&rsquo;ll paste it in the next step.</p>
+                <p>This should print your project ID. Copy it &mdash; you&rsquo;ll paste it in the next step.</p>
 
                 <div class="tip-box">
                     <strong>Why Vertex AI instead of an API key?</strong> Vertex AI uses your Google Cloud billing account (where your course credits live). A standalone API key from Google AI Studio would hit free-tier rate limits and wouldn&rsquo;t use your credits. Since you&rsquo;re already in Cloud Shell, authentication is automatic &mdash; no passwords or keys to manage.
+                </div>
+
+                <div class="warning-box">
+                    <strong>Troubleshooting:</strong> If <code>gcloud services enable</code> returns an error, make sure you set the project first (<code>gcloud config set project</code>). The Vertex AI API must be enabled on the correct project &mdash; the one with your billing credits attached.
                 </div>
 
                 <h3>Step E: Configure Your Environment</h3>
@@ -1067,6 +1118,10 @@ Triage Agent Classification:
                     <input type="checkbox" id="step5-2">
                     <label for="step5-2">The builder canvas opens with a root agent named <code>triage_pipeline</code>. In the <strong>"Sub Agents"</strong> section, click the <strong>"+"</strong> button and add a <strong>Sequential Agent</strong>. Name it <code>pipeline</code>.</label>
                 </div>
+                <div class="warning-box">
+                    <strong>Do NOT click "Save" until both sub-agents are added!</strong> If you save after adding only the first sub-agent, you may not be able to add the second one. If this happens, delete the <code>triage_pipeline</code> app and start Part 3 over.
+                </div>
+
                 <div class="step">
                     <input type="checkbox" id="step5-3">
                     <label for="step5-3">Inside the Sequential Agent, add two sub-agents in order:
@@ -1078,7 +1133,7 @@ Triage Agent Classification:
                 </div>
                 <div class="step">
                     <input type="checkbox" id="step5-4">
-                    <label for="step5-4">Click <strong>"Save"</strong>.</label>
+                    <label for="step5-4">Now that both sub-agents are configured, click <strong>"Save"</strong>.</label>
                 </div>
 
                 <div class="tip-box">
@@ -1101,11 +1156,15 @@ Triage Agent Classification:
                     <span class="task-number">6</span>
                     <h3 class="task-title">End-to-End Testing</h3>
                 </div>
-                <p>Now test the complete pipeline with all 5 emails &mdash; the 3 from Part 1 plus 2 new challenge emails. Make sure <code>triage_pipeline</code> is selected in the agent dropdown so both agents run in sequence.</p>
+                <p>Now test the complete pipeline with <strong>all 5 emails</strong>. You&rsquo;ll re-send the 3 emails from Part 1 (scroll up to the email cards in Task 2 to copy them) plus 2 new challenge emails below.</p>
 
                 <div class="step">
                     <input type="checkbox" id="step6-0">
                     <label for="step6-0">In the <strong>agent dropdown</strong>, select <code>triage_pipeline</code> (not the individual agents). This runs the full sequential pipeline.</label>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Emails #1&ndash;#3:</strong> These are the same emails you tested in Part 1 (Task 2). Scroll up to copy them, or find them in the email cards above: <strong>#1</strong> Damaged product (marcus.johnson), <strong>#2</strong> Store hours (sarah.chen), <strong>#3</strong> Great service (david.park).
                 </div>
 
                 <!-- Email 4 — Adversarial trap -->
