@@ -345,6 +345,24 @@ async function loadLabState() {
       }
     }
 
+    // Restore result table text inputs
+    if (data.inputs) {
+      const inputs = document.querySelectorAll('.result-table input[type="text"]');
+      for (const [idx, value] of Object.entries(data.inputs)) {
+        const i = parseInt(idx, 10);
+        if (inputs[i]) inputs[i].value = value;
+      }
+    }
+
+    // Restore result table selects
+    if (data.selects) {
+      const selects = document.querySelectorAll('.result-table select');
+      for (const [idx, value] of Object.entries(data.selects)) {
+        const i = parseInt(idx, 10);
+        if (selects[i]) selects[i].value = value;
+      }
+    }
+
     // Update progress bar
     if (typeof window.updateProgress === 'function') {
       window.updateProgress();
@@ -386,6 +404,14 @@ function attachAutoSaveListeners() {
   document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', scheduleSave);
   });
+
+  document.querySelectorAll('.result-table input[type="text"]').forEach(input => {
+    input.addEventListener('input', scheduleSave);
+  });
+
+  document.querySelectorAll('.result-table select').forEach(sel => {
+    sel.addEventListener('change', scheduleSave);
+  });
 }
 
 function scheduleSave() {
@@ -406,14 +432,24 @@ function gatherState() {
     textareas[String(i)] = ta.value;
   });
 
-  return { checkboxes, textareas };
+  const inputs = {};
+  document.querySelectorAll('.result-table input[type="text"]').forEach((input, i) => {
+    inputs[String(i)] = input.value;
+  });
+
+  const selects = {};
+  document.querySelectorAll('.result-table select').forEach((sel, i) => {
+    selects[String(i)] = sel.value;
+  });
+
+  return { checkboxes, textareas, inputs, selects };
 }
 
 async function saveLabState() {
   const ref = getDocRef();
   if (!ref || isSubmitted) return;
 
-  const { checkboxes, textareas } = gatherState();
+  const { checkboxes, textareas, inputs, selects } = gatherState();
 
   try {
     await ref.set({
@@ -423,7 +459,9 @@ async function saveLabState() {
       status: 'in-progress',
       lastSaved: firebase.firestore.FieldValue.serverTimestamp(),
       checkboxes: checkboxes,
-      textareas: textareas
+      textareas: textareas,
+      inputs: inputs,
+      selects: selects
     }, { merge: true });
 
     showSaveStatus('Saved');
@@ -443,6 +481,16 @@ function unlockLab() {
     ta.readOnly = false;
     ta.style.opacity = '';
     ta.style.backgroundColor = '';
+  });
+  document.querySelectorAll('.result-table input[type="text"]').forEach(input => {
+    input.readOnly = false;
+    input.style.opacity = '';
+    input.style.backgroundColor = '';
+  });
+  document.querySelectorAll('.result-table select').forEach(sel => {
+    sel.disabled = false;
+    sel.style.opacity = '';
+    sel.style.backgroundColor = '';
   });
 
   // Remove submitted banner if present
@@ -474,6 +522,16 @@ function lockLab(submittedAt) {
     ta.readOnly = true;
     ta.style.opacity = '0.7';
     ta.style.backgroundColor = '#f5f5f5';
+  });
+  document.querySelectorAll('.result-table input[type="text"]').forEach(input => {
+    input.readOnly = true;
+    input.style.opacity = '0.7';
+    input.style.backgroundColor = '#f5f5f5';
+  });
+  document.querySelectorAll('.result-table select').forEach(sel => {
+    sel.disabled = true;
+    sel.style.opacity = '0.7';
+    sel.style.backgroundColor = '#f5f5f5';
   });
 
   // Show submitted banner
@@ -607,6 +665,49 @@ function generateLabPDF() {
     y += 10;
   });
 
+  // ── Result Tables ──
+  const resultTables = document.querySelectorAll('.result-table');
+  resultTables.forEach((table, tableIdx) => {
+    // Find the task title for this table
+    const task = table.closest('.task');
+    const taskTitle = task ? task.querySelector('.task-title') : null;
+    const tableLabel = taskTitle ? taskTitle.textContent.trim() : `Results Table ${tableIdx + 1}`;
+
+    if (y > 240) { doc.addPage(); y = 20; }
+
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(29, 66, 138);
+    doc.setFontSize(11);
+    doc.text(tableLabel, margin, y);
+    y += 7;
+
+    // Get headers
+    const headers = [...table.querySelectorAll('th')].map(th => th.textContent.trim());
+    const rows = table.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      if (y > 270) { doc.addPage(); y = 20; }
+
+      const cells = row.querySelectorAll('td');
+      const rowData = [...cells].map(cell => {
+        const input = cell.querySelector('input[type="text"]');
+        const select = cell.querySelector('select');
+        if (input) return input.value || '—';
+        if (select) return select.options[select.selectedIndex]?.text || '—';
+        return cell.textContent.trim();
+      });
+
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(50);
+      doc.setFontSize(9);
+      const rowText = rowData.map((val, i) => `${headers[i] || ''}: ${val}`).join('  |  ');
+      const rowLines = doc.splitTextToSize(rowText, maxWidth);
+      doc.text(rowLines, margin, y);
+      y += rowLines.length * 4 + 2;
+    });
+    y += 6;
+  });
+
   // ── Footer divider ──
   if (y > 270) { doc.addPage(); y = 20; }
   doc.setDrawColor(200);
@@ -675,7 +776,7 @@ async function markAsSubmitted() {
   const ref = getDocRef();
   if (!ref) return;
 
-  const { checkboxes, textareas } = gatherState();
+  const { checkboxes, textareas, inputs, selects } = gatherState();
   const submittedNow = new Date();
 
   try {
@@ -687,7 +788,9 @@ async function markAsSubmitted() {
       submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
       lastSaved: firebase.firestore.FieldValue.serverTimestamp(),
       checkboxes: checkboxes,
-      textareas: textareas
+      textareas: textareas,
+      inputs: inputs,
+      selects: selects
     });
 
     showSaveStatus('Lab submitted!');
