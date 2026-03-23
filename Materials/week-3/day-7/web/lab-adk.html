@@ -705,11 +705,24 @@
                 <p>This should print your project ID. Copy it &mdash; you&rsquo;ll paste it in the next step.</p>
 
                 <div class="tip-box">
-                    <strong>Why Vertex AI instead of an API key?</strong> Vertex AI uses your Google Cloud billing account (where your course credits live). A standalone API key from Google AI Studio would hit free-tier rate limits and wouldn&rsquo;t use your credits. Since you&rsquo;re already in Cloud Shell, authentication is automatic &mdash; no passwords or keys to manage.
+                    <strong>Why Vertex AI instead of an API key?</strong> Vertex AI uses your Google Cloud billing account (where your course credits live). A standalone API key from Google AI Studio would hit free-tier rate limits and wouldn&rsquo;t use your credits. Since you&rsquo;re already in Cloud Shell, setup is simple &mdash; just one sign-in step (next) and you&rsquo;re ready to go.
                 </div>
 
                 <div class="warning-box">
                     <strong>Troubleshooting:</strong> If <code>gcloud services enable</code> returns an error, make sure you set the project first (<code>gcloud config set project</code>). The Vertex AI API must be enabled on the correct project &mdash; the one with your billing credits attached.
+                </div>
+
+                <div class="step">
+                    <input type="checkbox" id="step0-9b">
+                    <label for="step0-9b">Set up Application Default Credentials so ADK can authenticate with Vertex AI:</label>
+                </div>
+
+                <div class="prompt-box" id="prompt-adc">gcloud auth application-default login<button class="copy-prompt-btn" onclick="copyPrompt('prompt-adc', this)">Copy</button></div>
+
+                <p>A browser tab will open asking you to sign in with your Google account. Click <strong>Allow</strong> to grant access. Once complete, you&rsquo;ll see <code>Credentials saved to file</code> in the terminal.</p>
+
+                <div class="tip-box">
+                    <strong>Why is this needed?</strong> Cloud Shell authenticates <em>you</em> for <code>gcloud</code> commands, but Python libraries like ADK need their own credentials file. This command creates that file so ADK can call Vertex AI on your behalf.
                 </div>
 
                 <h3>Step E: Configure Your Environment</h3>
@@ -761,6 +774,18 @@ INFO:     Uvicorn running on http://127.0.0.1:8000</div>
 
                 <div class="warning-box">
                     <strong>Don&rsquo;t close the terminal!</strong> The <code>adk web</code> command must keep running in the background. If you close the terminal or press Ctrl+C, the Visual Builder will stop working. Leave it running throughout the lab.
+                </div>
+
+                <div class="tip-box">
+                    <strong>Coming back later?</strong> If Cloud Shell times out or you close your browser, your files are still saved. To pick up where you left off:
+                    <ol style="margin: 8px 0 0; font-size: 0.9em;">
+                        <li>Open Cloud Shell again from the Google Cloud Console</li>
+                        <li>Re-activate your virtual environment: <code>cd ~/beacon_agents && source .venv/bin/activate</code></li>
+                        <li>Refresh your credentials: <code>gcloud auth application-default login</code></li>
+                        <li>Restart the Visual Builder: <code>adk web</code></li>
+                        <li>Click the <code>http://127.0.0.1:8000</code> link to reopen the UI</li>
+                    </ol>
+                    Your agents and YAML files will still be there &mdash; you just need to restart the server.
                 </div>
 
                 <h3>Step G: Verify the Visual Builder is Ready</h3>
