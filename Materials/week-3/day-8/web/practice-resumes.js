@@ -1041,3 +1041,47 @@ const PRACTICE_ANSWER_KEY = [
     signals: "4+ yrs progressive retail experience, promoted to senior associate, multiple POS systems (NCR Silver, Square), trains new hires, inventory management, bilingual English/Spanish, Employee of the Month, full-time availability incl all shifts/holidays, own car — resume is overly verbose essay-style but qualifications are genuinely strong underneath"
   }
 ];
+
+// ---------------------------------------------------------------------------
+// Practice Check Figures — students compare their pipeline output against these
+// ---------------------------------------------------------------------------
+const PRACTICE_CHECK_FIGURES = {
+  top_5: [
+    { rank: 1, id: "P-01", name: "Linda Warren", score_range: "90-95", reasons: "3+ yrs retail with promotion to assistant manager, Employee of the Quarter, POS proficient, full availability all shifts/holidays, reliable vehicle" },
+    { rank: 2, id: "P-02", name: "Michael Torres", score_range: "85-90", reasons: "3 yrs retail, senior sales associate, trains seasonal hires, bilingual English/Spanish, full availability, own car" },
+    { rank: 3, id: "P-20", name: "Rebecca Torres", score_range: "83-88", reasons: "4+ yrs progressive retail, senior associate, multiple POS systems, bilingual, Employee of the Month, full availability — verbose resume but strong qualifications" },
+    { rank: 4, id: "P-03", name: "Hannah Kim", score_range: "80-86", reasons: "2.5 yrs retail with shift lead, POS proficient, scheduling and inventory duties, ServSafe certified, full availability" },
+    { rank: 5, id: "P-04", name: "Derek Johnson", score_range: "74-80", reasons: "2+ yrs retail across two stores, volunteer coaching shows leadership, First Aid/CPR, full availability, own vehicle" }
+  ],
+
+  bottom_5: [
+    { rank: 16, id: "P-13", name: "Tyler Brooks", score_range: "15-22", reasons: "~3 months part-time (12 hrs/week), high school senior, no POS proficiency, vague availability" },
+    { rank: 17, id: "P-14", name: "Destiny Robinson", score_range: "15-22", reasons: "No paid work experience, no POS or cash handling, bicycle-only transportation — but full availability and strong character" },
+    { rank: 18, id: "P-09", name: "Aaliyah Washington", score_range: "12-20", reasons: "~7 months grocery cashier, very thin resume, no availability or transportation details provided" },
+    { rank: 19, id: "P-19", name: "Sam Park", score_range: "8-14", reasons: "Bare-minimum resume — no education, no skills section, no dates, vague availability, impossible to evaluate" },
+    { rank: 20, id: "P-16", name: "Chelsea Wright", score_range: "5-10", reasons: "No retail experience, only brief tutoring, Saturdays-only availability, high school student, extremely thin resume" }
+  ],
+
+  flags: [
+    {
+      id: "P-17",
+      name: "Jason Blake",
+      flag_type: "Fake institution",
+      severity: "Disqualifying",
+      detail: "Claims degree from 'Midwest Technical Career Institute' — this institution does not exist and cannot be verified"
+    },
+    {
+      id: "P-18",
+      name: "Amber Collins",
+      flag_type: "Contradictory dates",
+      severity: "Disqualifying",
+      detail: "Lists two concurrent full-time positions: Trends Boutique (Apr 2025–Present, Full-Time) and Morning Grind Coffee (Jan 2025–Present, Full-Time) — both listed as current full-time roles"
+    }
+  ],
+
+  notes: {
+    bias_pairs: "The practice set does not contain bias pairs. This dimension appears only in the competition set.",
+    patterns: "The practice set does not contain hidden cross-resume patterns. This dimension appears only in the competition set.",
+    scoring: "Score ranges are approximate. Your team's rubric may weight dimensions differently — what matters is that your relative ordering is similar, not that your exact scores match."
+  }
+};

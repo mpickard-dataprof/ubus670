@@ -532,6 +532,84 @@ The job posting for reference:
             </div>
         </div>
 
+        <!-- Check Figures -->
+        <div class="lab-section">
+            <div class="collapsible-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+                Check Figures &mdash; Compare Your Pipeline Output (expand after testing)
+            </div>
+            <div class="collapsible-content">
+                <p style="font-size:0.9rem;color:#555;margin:0 0 20px;">
+                    Use these figures to calibrate your pipeline. Your exact scores will differ based on your rubric &mdash;
+                    what matters is that your <strong>relative ranking</strong> is similar. If your pipeline puts a Bottom&nbsp;5
+                    candidate in the Top&nbsp;5, something needs adjustment.
+                </p>
+
+                <!-- Top 5 -->
+                <div class="answer-key" style="background:#E8F5E9;border-color:#66BB6A;">
+                    <h4 style="color:#2E7D32;">Expected Top 5</h4>
+                    <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                        <thead>
+                            <tr style="background:#2E7D32;color:white;">
+                                <th style="padding:8px;width:50px;">Rank</th>
+                                <th style="padding:8px;width:55px;">ID</th>
+                                <th style="padding:8px;width:140px;">Name</th>
+                                <th style="padding:8px;width:80px;">Score Range</th>
+                                <th style="padding:8px;">Why They're Top 5</th>
+                            </tr>
+                        </thead>
+                        <tbody id="check-top5">
+                            <!-- Rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bottom 5 -->
+                <div class="answer-key" style="background:#FFEBEE;border-color:#EF9A9A;">
+                    <h4 style="color:#C62828;">Expected Bottom 5</h4>
+                    <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                        <thead>
+                            <tr style="background:#C62828;color:white;">
+                                <th style="padding:8px;width:50px;">Rank</th>
+                                <th style="padding:8px;width:55px;">ID</th>
+                                <th style="padding:8px;width:140px;">Name</th>
+                                <th style="padding:8px;width:80px;">Score Range</th>
+                                <th style="padding:8px;">Why They're Bottom 5</th>
+                            </tr>
+                        </thead>
+                        <tbody id="check-bottom5">
+                            <!-- Rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Red Flags -->
+                <div class="answer-key" style="background:#FFF3E0;border-color:#FFB74D;">
+                    <h4 style="color:#E65100;">Red Flags Your Pipeline Should Catch (2 total)</h4>
+                    <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                        <thead>
+                            <tr style="background:#E65100;color:white;">
+                                <th style="padding:8px;width:55px;">ID</th>
+                                <th style="padding:8px;width:130px;">Name</th>
+                                <th style="padding:8px;width:140px;">Flag Type</th>
+                                <th style="padding:8px;width:100px;">Severity</th>
+                                <th style="padding:8px;">What to Find</th>
+                            </tr>
+                        </thead>
+                        <tbody id="check-flags">
+                            <!-- Rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bias Pairs / Patterns note -->
+                <div class="hint-box" style="margin-top:20px;">
+                    <strong>Note:</strong> The practice set does <em>not</em> contain bias pairs or hidden cross-resume patterns.
+                    Those dimensions appear only in the competition set on Day&nbsp;9. Focus your practice calibration on
+                    ranking accuracy and red-flag detection.
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <footer>
@@ -613,6 +691,62 @@ The job posting for reference:
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        // Render check figures
+        if (typeof PRACTICE_CHECK_FIGURES !== 'undefined') {
+            const cf = PRACTICE_CHECK_FIGURES;
+
+            // Top 5
+            const top5 = document.getElementById('check-top5');
+            if (top5) {
+                cf.top_5.forEach(c => {
+                    const tr = document.createElement('tr');
+                    tr.style.borderBottom = '1px solid #C8E6C9';
+                    tr.innerHTML = `
+                        <td style="padding:8px;font-weight:700;text-align:center;">#${c.rank}</td>
+                        <td style="padding:8px;font-weight:600;">${c.id}</td>
+                        <td style="padding:8px;">${c.name}</td>
+                        <td style="padding:8px;font-weight:600;text-align:center;">${c.score_range}</td>
+                        <td style="padding:8px;font-size:0.85rem;color:#555;">${c.reasons}</td>
+                    `;
+                    top5.appendChild(tr);
+                });
+            }
+
+            // Bottom 5
+            const bot5 = document.getElementById('check-bottom5');
+            if (bot5) {
+                cf.bottom_5.forEach(c => {
+                    const tr = document.createElement('tr');
+                    tr.style.borderBottom = '1px solid #FFCDD2';
+                    tr.innerHTML = `
+                        <td style="padding:8px;font-weight:700;text-align:center;">#${c.rank}</td>
+                        <td style="padding:8px;font-weight:600;">${c.id}</td>
+                        <td style="padding:8px;">${c.name}</td>
+                        <td style="padding:8px;font-weight:600;text-align:center;">${c.score_range}</td>
+                        <td style="padding:8px;font-size:0.85rem;color:#555;">${c.reasons}</td>
+                    `;
+                    bot5.appendChild(tr);
+                });
+            }
+
+            // Flags
+            const flags = document.getElementById('check-flags');
+            if (flags) {
+                cf.flags.forEach(f => {
+                    const tr = document.createElement('tr');
+                    tr.style.borderBottom = '1px solid #FFE0B2';
+                    tr.innerHTML = `
+                        <td style="padding:8px;font-weight:600;">${f.id}</td>
+                        <td style="padding:8px;">${f.name}</td>
+                        <td style="padding:8px;font-weight:600;">${f.flag_type}</td>
+                        <td style="padding:8px;font-weight:700;color:#C62828;">${f.severity}</td>
+                        <td style="padding:8px;font-size:0.85rem;color:#555;">${f.detail}</td>
+                    `;
+                    flags.appendChild(tr);
+                });
+            }
         }
 
         function escHtml(str) {
