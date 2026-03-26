@@ -5,6 +5,7 @@ const COMP_RESUMES = [
   {
     id: "C-01",
     name: "Aisha Patel",
+    batch: 1,
     text: `[C-01] Aisha Patel
 
 Schaumburg, IL | aisha.patel@email.com | (224) 555-0637
@@ -50,6 +51,7 @@ Ms. Diane Worthy, Store Lead, Trends & Co. Apparel — (224) 555-0180`
   {
     id: "C-02",
     name: "Terrence Williams",
+    batch: 3,
     text: `[C-02] Terrence Williams
 Chicago, IL | terrence.williams@email.com | (312) 555-0492
 
@@ -91,6 +93,7 @@ Sandra Williams, family friend — (312) 555-0229`
   {
     id: "C-03",
     name: "Sophie Roberts",
+    batch: 1,
     text: `[C-03] Sophie Roberts
 Naperville, IL  |  sophie.roberts@email.com  |  (630) 555-0517
 
@@ -152,6 +155,7 @@ References available upon request.`
   {
     id: "C-04",
     name: "Marcus Henderson",
+    batch: 2,
     text: `[C-04] Marcus Henderson
 
 Evanston, IL  |  marcus.henderson@email.com  |  (847) 555-0362
@@ -206,6 +210,7 @@ Jerome McCann, Store Manager, QuikMart Convenience — (847) 555-0181`
   {
     id: "C-05",
     name: "Carlos Mendez",
+    batch: 1,
     text: `[C-05] Carlos Mendez
 Joliet, IL  |  carlos.mendez@email.com  |  (815) 555-0049
 
@@ -248,6 +253,7 @@ References: My current supervisor at Woodridge Grocery Outlet and my former supe
   {
     id: "C-06",
     name: "Rachel Torres",
+    batch: 3,
     text: `[C-06] Rachel Torres
 Naperville, IL  |  rachel.torres@email.com  |  (630) 555-0391
 
@@ -329,6 +335,7 @@ References available on request.
   {
     id: "C-07",
     name: "Derek Lawton",
+    batch: 1,
     text: `[C-07] Derek Lawton
 Elgin, IL | derek.lawton@email.com | (847) 555-0736
 
@@ -367,6 +374,7 @@ Will provide on request.`
   {
     id: "C-08",
     name: "Emma Lawson",
+    batch: 2,
     text: `[C-08] Emma Lawson
 Rockford, IL  |  emma.lawson@email.com  |  (815) 555-0712
 
@@ -452,6 +460,7 @@ REFERENCES
   {
     id: "C-09",
     name: "Alex Chen",
+    batch: 2,
     text: `[C-09] Alex Chen
 Bloomington, IL  |  alex.chen@email.com  |  (309) 555-0856
 
@@ -515,6 +524,7 @@ References: Store manager and department lead at DICK'S available upon request.`
   {
     id: "C-10",
     name: "Tyler Graham",
+    batch: 1,
     text: `[C-10] Tyler Graham
 DeKalb, IL | tyler.graham@email.com | (815) 555-0274
 
@@ -556,6 +566,7 @@ Available upon request`
   {
     id: "C-11",
     name: "Ryan O'Brien",
+    batch: 3,
     text: `[C-11] Ryan O'Brien
 
 Palatine, IL
@@ -625,6 +636,7 @@ Carla Fontaine, Manager, Palatine Hardware & Home — (847) 555-0312`
   {
     id: "C-12",
     name: "Maria Chen",
+    batch: 1,
     text: `[C-12] Maria Chen
 Chicago, IL  |  maria.chen@email.com  |  (312) 555-0184
 
@@ -686,6 +698,7 @@ to work performance and leadership.`
   {
     id: "C-13",
     name: "Jasmine Taylor",
+    batch: 3,
     text: `[C-13] Jasmine Taylor
 Portland, OR | jasmine.taylor@email.com | (503) 555-0194
 
@@ -718,6 +731,7 @@ References: Instructor from Pacific Northwest Business Institute, contact info a
   {
     id: "C-14",
     name: "Samantha Brooks",
+    batch: 1,
     text: `[C-14] Samantha Brooks
 
 Gurnee, IL  |  samantha.brooks@email.com  |  (847) 555-0449
@@ -771,6 +785,7 @@ Available upon request.`
   {
     id: "C-15",
     name: "Jordan Hayes",
+    batch: 2,
     text: `[C-15] Jordan Hayes
 Rockford, IL | jordan.hayes@email.com | (779) 555-0381
 
@@ -811,6 +826,7 @@ References available upon request`
   {
     id: "C-16",
     name: "Alexandra Chen",
+    batch: 2,
     text: `[C-16] Alexandra Chen
 Bloomington, IL  |  alexandra.chen@email.com  |  (309) 555-0901
 
@@ -876,6 +892,7 @@ References available upon request — home décor store manager and a PATH shelt
   {
     id: "C-17",
     name: "Ashley Patterson",
+    batch: 1,
     text: `[C-17] Ashley Patterson
 
 Schaumburg, IL | ashley.patterson@email.com | (224) 555-0793
@@ -922,6 +939,7 @@ Mr. Thomas Reyes, Department Lead, Lakewood Home Goods — (224) 555-0405`
   {
     id: "C-18",
     name: "Sofia Rodriguez",
+    batch: 1,
     text: `[C-18] Sofia Rodriguez
 Aurora, IL  |  sofia.rodriguez@email.com  |  (331) 555-0472
 
@@ -981,6 +999,7 @@ References: Supervisor at Convergys and boutique owner available upon request.`
   {
     id: "C-19",
     name: "Nathan Rivera",
+    batch: 2,
     text: `[C-19] Nathan Rivera
 
 Northfield, IL  |  nathan.rivera@email.com  |  (847) 555-0083
@@ -1065,6 +1084,7 @@ Maria Gonzalez, Shift Supervisor, Second Sunrise Thrift Store
   {
     id: "C-20",
     name: "Priya Sharma",
+    batch: 2,
     text: `[C-20] Priya Sharma
 
 Chicago, IL  |  priya.sharma@email.com  |  (773) 555-0214
@@ -1122,6 +1142,7 @@ Available upon request.`
   {
     id: "C-21",
     name: "James Park",
+    batch: 3,
     text: `[C-21] James Park
 Evanston, IL  |  james.park@email.com  |  (847) 555-0263
 
@@ -1196,6 +1217,7 @@ References: Manager and district supervisor at SportZone — contact info on req
   {
     id: "C-22",
     name: "Marcus Johnson",
+    batch: 2,
     text: `[C-22] Marcus Johnson
 
 Evanston, IL  |  marcus.johnson@email.com  |  (847) 555-0517
@@ -1250,6 +1272,7 @@ Dana Holloway, Store Manager, Sunrise Drug Store — (847) 555-0294`
   {
     id: "C-23",
     name: "Megan Foster",
+    batch: 2,
     text: `[C-23] Megan Foster
 Naperville, IL | megan.foster@email.com | (630) 555-0847
 
@@ -1289,6 +1312,7 @@ References available upon request.`
   {
     id: "C-24",
     name: "David Kim",
+    batch: 3,
     text: `[C-24] David Kim
 Schaumburg, IL  |  david.kim@email.com  |  (847) 555-0638
 
@@ -1350,6 +1374,7 @@ References: Best Buy floor supervisor and store manager (contact on request).
   {
     id: "C-25",
     name: "Kenji Tanaka",
+    batch: 2,
     text: `[C-25] Kenji Tanaka
 
 Aurora, IL | kenji.tanaka@email.com | (630) 555-0158
@@ -1398,6 +1423,7 @@ Available upon request.`
   {
     id: "C-26",
     name: "Trevor Williams",
+    batch: 3,
     text: `[C-26] Trevor Williams
 Chicago, IL | trevor.williams@email.com | (312) 555-0587
 
@@ -1432,6 +1458,7 @@ Patricia Monroe, family friend — (312) 555-0445`
   {
     id: "C-27",
     name: "Brittany Moss",
+    batch: 3,
     text: `[C-27] Brittany Moss
 Aurora, IL  |  brittany.moss@email.com  |  (331) 555-0163
 
@@ -1479,6 +1506,7 @@ Prepared by Career Services, Northfield Community College
   {
     id: "C-28",
     name: "Lisa Nguyen",
+    batch: 3,
     text: `[C-28] Lisa Nguyen
 
 Naperville, IL | lisa.nguyen@email.com | (630) 555-0821
@@ -1544,6 +1572,7 @@ Will provide upon request. One supervisor reference and one academic reference a
   {
     id: "C-29",
     name: "Brandon Wells",
+    batch: 1,
     text: `[C-29] Brandon Wells
 Columbus, OH  |  brandon.wells@email.com  |  (614) 555-0952
 
@@ -1588,6 +1617,7 @@ Available upon request.`
   {
     id: "C-30",
     name: "Kyle Mitchell",
+    batch: 3,
     text: `[C-30] Kyle Mitchell
 Tampa, FL  |  kyle.mitchell@email.com  |  (907) 555-0261
 

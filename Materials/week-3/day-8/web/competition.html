@@ -166,6 +166,40 @@
             font-family: 'Montserrat', sans-serif; font-weight: 600;
         }
 
+        /* Round Stepper */
+        .round-stepper {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 20px; font-family: 'Montserrat', sans-serif;
+        }
+        .round-stepper .round-btn {
+            padding: 10px 22px; border: 2px solid #1D428A; border-radius: 8px;
+            background: white; color: #1D428A; font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; transition: all 0.2s;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .round-stepper .round-btn.active {
+            background: #1D428A; color: white;
+        }
+        .round-stepper .round-btn.locked {
+            background: #e9e9e9; color: #aaa; border-color: #ddd; cursor: not-allowed;
+        }
+        .round-stepper .round-status {
+            font-size: 0.85rem; color: #666; margin-left: 12px;
+        }
+        .copy-all-btn {
+            display: inline-block; padding: 10px 20px; border: 2px solid #C8102E;
+            border-radius: 8px; background: #C8102E; color: white;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            font-family: 'Montserrat', sans-serif; transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+        .copy-all-btn:hover { background: #a00d24; border-color: #a00d24; }
+        .round-info-box {
+            background: #EBF0F7; border-left: 4px solid #1D428A;
+            padding: 12px 16px; margin-bottom: 16px; border-radius: 0 8px 8px 0;
+            font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: #333;
+        }
+
         footer {
             text-align: center; padding: 40px 20px; color: #888;
             font-size: 0.9rem; border-top: 1px solid #e0e0e0; background: white;
@@ -223,14 +257,23 @@
                 <div id="cf-leaderboard"></div>
             </div>
 
-            <!-- Competition Resumes -->
+            <!-- Competition Resumes (Round-Based) -->
             <div id="cf-competition-resumes" style="display:none;">
-                <h2 class="section-title">Competition Resumes (30 Candidates)</h2>
-                <p style="color:#666;margin-bottom:15px;">
-                    Use the <strong>Copy</strong> button to copy a resume for pasting into your pipeline.
-                    Each resume begins with a <code>[C-XX]</code> ID tag &mdash; make sure your
-                    Parser carries this ID through the pipeline.
-                </p>
+                <h2 class="section-title">Competition Resumes</h2>
+
+                <div class="round-info-box" id="cf-round-info">
+                    <strong>Round 1 of 3</strong> &mdash; 10 resumes. Feed them into your pipeline, then submit your Ranker output below.
+                </div>
+
+                <div class="round-stepper">
+                    <button class="round-btn active" id="cf-round-btn-1" onclick="cfSwitchRound(1)">Round 1</button>
+                    <button class="round-btn locked" id="cf-round-btn-2" onclick="cfSwitchRound(2)">Round 2</button>
+                    <button class="round-btn locked" id="cf-round-btn-3" onclick="cfSwitchRound(3)">Round 3</button>
+                    <span class="round-status" id="cf-round-status">10 of 30 resumes</span>
+                </div>
+
+                <button class="copy-all-btn" onclick="cfCopyBatch()">&#128203; Copy All 10 Resumes in This Round</button>
+
                 <div id="cf-resume-grid" class="resume-grid">
                     <!-- Resume cards rendered by JS -->
                 </div>
@@ -283,13 +326,22 @@
     <script src="competition-resumes.js"></script>
     <script src="../../../_shared/capstone-firebase.js"></script>
 
-    <!-- Render resume cards from data -->
+    <!-- Round-based resume rendering -->
     <script>
-    (function renderResumeCards() {
+    // Tracks which rounds the instructor has unlocked (1 is always unlocked)
+    var cfUnlockedRounds = [1];
+
+    function escHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function cfRenderRound(round) {
         const grid = document.getElementById('cf-resume-grid');
         if (!grid || typeof COMP_RESUMES === 'undefined') return;
+        grid.innerHTML = '';
 
-        COMP_RESUMES.forEach(resume => {
+        const batch = COMP_RESUMES.filter(r => r.batch === round);
+        batch.forEach(resume => {
             const card = document.createElement('div');
             card.className = 'resume-card';
             card.innerHTML = `
@@ -303,11 +355,57 @@
             `;
             grid.appendChild(card);
         });
+    }
 
-        function escHtml(str) {
-            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    function cfSwitchRound(round) {
+        if (!cfUnlockedRounds.includes(round)) return;
+        cfCurrentRound = round;
+
+        // Update stepper buttons
+        for (let r = 1; r <= 3; r++) {
+            const btn = document.getElementById('cf-round-btn-' + r);
+            if (!btn) continue;
+            btn.classList.remove('active', 'locked');
+            if (r === round) btn.classList.add('active');
+            else if (!cfUnlockedRounds.includes(r)) btn.classList.add('locked');
         }
-    })();
+
+        // Update info box
+        const cumulativeCount = round * 10;
+        const info = document.getElementById('cf-round-info');
+        if (info) {
+            const roundMsg = round < 3
+                ? `10 new resumes. Feed them into your pipeline (your Ranker will accumulate all ${cumulativeCount} candidates seen so far), then submit below.`
+                : `Final round &mdash; 10 new resumes. Your Ranker should now rank all 30 candidates. Exact counts required: top 10 + bottom 5.`;
+            info.innerHTML = `<strong>Round ${round} of 3</strong> &mdash; ${roundMsg}`;
+        }
+
+        // Update status
+        const status = document.getElementById('cf-round-status');
+        if (status) status.textContent = `${cumulativeCount} of 30 resumes`;
+
+        // Update team UI to show current round
+        if (typeof cfShowTeamUI === 'function') cfShowTeamUI();
+
+        cfRenderRound(round);
+    }
+
+    function cfCopyBatch() {
+        if (typeof COMP_RESUMES === 'undefined') return;
+        const batch = COMP_RESUMES.filter(r => r.batch === cfCurrentRound);
+        const allText = batch.map(r => r.text).join('\n\n---\n\n');
+        navigator.clipboard.writeText(allText).then(() => {
+            const btn = document.querySelector('.copy-all-btn');
+            if (btn) {
+                const orig = btn.textContent;
+                btn.textContent = 'Copied all ' + batch.length + '!';
+                setTimeout(() => { btn.innerHTML = '&#128203; Copy All 10 Resumes in This Round'; }, 2000);
+            }
+        });
+    }
+
+    // Initial render of round 1
+    cfRenderRound(1);
     </script>
 
 </body>

@@ -24,7 +24,8 @@ const CF_CONFIG = {
 const CF_ALLOWED_DOMAINS = ['niu.edu', 'students.niu.edu'];
 const CF_ALLOWED_EMAILS = ['matthew.david.pickard@gmail.com', '1999aparnaiyer@gmail.com', 'z2049004students.niu.edu@gmail.com', 'nickcanady2025@gmail.com'];
 const CF_INSTRUCTOR_EMAILS = ['mpickard@niu.edu', 'matthew.david.pickard@gmail.com'];
-const CF_MAX_ATTEMPTS = 3;
+const CF_MAX_ATTEMPTS = 6;       // 2 per round × 3 rounds
+let cfCurrentRound = 1;          // updated by competition page round stepper
 const CF_MAX_TEAM_SIZE = 3;
 const CF_COLLECTION = 'capstone_teams';
 const CF_SETTINGS_DOC = 'capstone_settings';
@@ -259,7 +260,7 @@ function cfShowTeamUI() {
   el.innerHTML = `
     <span style="font-family:Montserrat,sans-serif;font-weight:700;color:#1D428A;">${cfEsc(cfTeamData.teamName)}</span>
     <span style="color:#666;font-size:0.85rem;margin-left:8px;">
-      Attempts: ${cfTeamData.attemptsUsed || 0}/${CF_MAX_ATTEMPTS}
+      Round ${cfCurrentRound}/3 | Attempts: ${cfTeamData.attemptsUsed || 0}/${CF_MAX_ATTEMPTS}
       ${cfTeamData.bestScore != null ? ` | Best: ${cfTeamData.bestScore.toFixed(1)} pts` : ''}
     </span>
   `;
@@ -440,7 +441,9 @@ function cfHasKeywordMatch(text, keywords) {
 }
 
 // ─── Submission Validation ──────────────────────────────────────────────────
-function cfValidateSubmission(jsonStr) {
+function cfValidateSubmission(jsonStr, round) {
+  round = round || 3; // default to strict (final round) for backwards compat
+
   // Stage 1: Parse
   let data;
   try {
@@ -458,8 +461,19 @@ function cfValidateSubmission(jsonStr) {
   const errors = [];
   const idPattern = /^C-\d{2}$/i;
 
-  if (!Array.isArray(data.top_10_hire) || data.top_10_hire.length !== 10) {
-    errors.push('top_10_hire must be an array of exactly 10 entries');
+  // Round-aware constraints: rounds 1-2 are relaxed, round 3 is strict
+  const isFinalRound = round >= 3;
+  const maxTop = 10;
+  const minTop = isFinalRound ? 10 : 1;
+  const maxBot = 5;
+  const minBot = isFinalRound ? 5 : 0;
+
+  if (!Array.isArray(data.top_10_hire)) {
+    errors.push('top_10_hire must be an array');
+  } else if (isFinalRound && data.top_10_hire.length !== 10) {
+    errors.push('top_10_hire must be an array of exactly 10 entries (final round)');
+  } else if (data.top_10_hire.length < minTop || data.top_10_hire.length > maxTop) {
+    errors.push(`top_10_hire must have ${minTop}-${maxTop} entries (round ${round})`);
   } else {
     const t10Seen = new Set();
     data.top_10_hire.forEach((entry, i) => {
@@ -471,8 +485,12 @@ function cfValidateSubmission(jsonStr) {
     });
   }
 
-  if (!Array.isArray(data.bottom_5) || data.bottom_5.length !== 5) {
-    errors.push('bottom_5 must be an array of exactly 5 entries');
+  if (!Array.isArray(data.bottom_5)) {
+    errors.push('bottom_5 must be an array');
+  } else if (isFinalRound && data.bottom_5.length !== 5) {
+    errors.push('bottom_5 must be an array of exactly 5 entries (final round)');
+  } else if (data.bottom_5.length < minBot || data.bottom_5.length > maxBot) {
+    errors.push(`bottom_5 must have ${minBot}-${maxBot} entries (round ${round})`);
   } else {
     const b5Seen = new Set();
     data.bottom_5.forEach((entry, i) => {
@@ -538,7 +556,7 @@ function cfValidateAndPreview() {
   const submitBtn = document.getElementById('cf-submit-btn');
   if (!textarea || !previewEl) return;
 
-  const result = cfValidateSubmission(textarea.value);
+  const result = cfValidateSubmission(textarea.value, cfCurrentRound);
   if (!result.valid) {
     previewEl.innerHTML = `<div style="color:#C8102E;font-weight:600;white-space:pre-wrap;">${cfEsc(result.error)}</div>`;
     if (submitBtn) submitBtn.disabled = true;
@@ -547,15 +565,15 @@ function cfValidateAndPreview() {
 
   const d = result.data;
   let html = '<div style="font-family:Montserrat,sans-serif;">';
-  html += '<h4 style="color:#1D428A;margin:0 0 10px;">Submission Preview</h4>';
+  html += `<h4 style="color:#1D428A;margin:0 0 10px;">Round ${cfCurrentRound} Submission Preview</h4>`;
 
-  html += '<p><strong>Top 10:</strong></p><ol>';
+  html += `<p><strong>Top Candidates:</strong> ${d.top_10_hire.length} ranked</p><ol>`;
   d.top_10_hire.sort((a, b) => a.rank - b.rank).forEach(e => {
     html += `<li><strong>${cfEsc(e.id)}</strong> — ${cfEsc(e.reason)}</li>`;
   });
   html += '</ol>';
 
-  html += '<p><strong>Bottom 5:</strong></p><ul>';
+  html += `<p><strong>Bottom Candidates:</strong> ${d.bottom_5.length} identified</p><ul>`;
   d.bottom_5.forEach(e => {
     html += `<li><strong>${cfEsc(e.id)}</strong> — ${cfEsc(e.reason)}</li>`;
   });
@@ -603,6 +621,7 @@ async function cfSubmitResults() {
 
       const attempt = {
         attempt: attemptNum,
+        round: cfCurrentRound,
         submission,
         scores: {
           top10: scores.top10.points,
@@ -691,7 +710,7 @@ function cfShowScoreBreakdown(scores, attemptNum) {
       </tr>
     </table>
     <p style="color:#666;font-size:0.85rem;margin-top:12px;">
-      Attempts used: ${cfTeamData.attemptsUsed}/${CF_MAX_ATTEMPTS}
+      Round ${cfCurrentRound}/3 | Attempts used: ${cfTeamData.attemptsUsed}/${CF_MAX_ATTEMPTS}
       ${cfTeamData.attemptsUsed < CF_MAX_ATTEMPTS ? ' — you can submit again to improve your score.' : ' — no more attempts remaining.'}
     </p>
   `;
@@ -761,7 +780,7 @@ function cfShowAdminPanel() {
 
   el.innerHTML = `
     <h3 style="font-family:Montserrat,sans-serif;color:#C8102E;margin:0 0 15px;">Instructor Controls</h3>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
       <button onclick="cfToggleCompetitionSet()" id="cf-toggle-comp-btn" style="
         padding:10px 20px;border:none;border-radius:6px;
         background:#1D428A;color:white;font-weight:600;cursor:pointer;
@@ -780,6 +799,22 @@ function cfShowAdminPanel() {
         font-family:Montserrat,sans-serif;font-size:0.9rem;">
         Freeze Competition
       </button>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+      <span style="font-family:Montserrat,sans-serif;font-weight:700;color:#333;font-size:0.9rem;">Rounds:</span>
+      <button onclick="cfAdvanceRound(2)" id="cf-unlock-r2-btn" style="
+        padding:10px 20px;border:none;border-radius:6px;
+        background:#2E7D32;color:white;font-weight:600;cursor:pointer;
+        font-family:Montserrat,sans-serif;font-size:0.9rem;">
+        Unlock Round 2
+      </button>
+      <button onclick="cfAdvanceRound(3)" id="cf-unlock-r3-btn" style="
+        padding:10px 20px;border:none;border-radius:6px;
+        background:#2E7D32;color:white;font-weight:600;cursor:pointer;
+        font-family:Montserrat,sans-serif;font-size:0.9rem;">
+        Unlock Round 3
+      </button>
+      <span id="cf-round-admin-status" style="font-family:Montserrat,sans-serif;font-size:0.85rem;color:#666;"></span>
     </div>
     <div id="cf-admin-output" style="margin-top:15px;"></div>
   `;
@@ -811,6 +846,21 @@ async function cfToggleFreeze() {
   }
 }
 
+async function cfAdvanceRound(round) {
+  try {
+    const ref = cfDb.collection('settings').doc(CF_SETTINGS_DOC);
+    const snap = await ref.get();
+    const settings = snap.exists ? snap.data() : {};
+    const current = settings.unlockedRounds || [1];
+    if (!current.includes(round)) current.push(round);
+    current.sort();
+    await ref.set({ unlockedRounds: current }, { merge: true });
+    cfCheckCompetitionVisibility();
+  } catch (err) {
+    console.error('[capstone] Advance round failed:', err);
+  }
+}
+
 async function cfCheckCompetitionVisibility() {
   try {
     const ref = cfDb.collection('settings').doc(CF_SETTINGS_DOC);
@@ -818,6 +868,12 @@ async function cfCheckCompetitionVisibility() {
     const settings = snap.exists ? snap.data() : {};
     const visible = settings.competitionVisible || false;
     const frozen = settings.competitionFrozen || false;
+    const unlocked = settings.unlockedRounds || [1];
+
+    // Sync unlocked rounds to global state (used by competition page)
+    if (typeof cfUnlockedRounds !== 'undefined') {
+      cfUnlockedRounds = unlocked;
+    }
 
     const resumeSection = document.getElementById('cf-competition-resumes');
     if (resumeSection) resumeSection.style.display = visible ? '' : 'none';
@@ -829,6 +885,38 @@ async function cfCheckCompetitionVisibility() {
     if (freezeBtn) {
       freezeBtn.textContent = frozen ? 'Unfreeze Competition' : 'Freeze Competition';
       freezeBtn.style.background = frozen ? '#28a745' : '#C8102E';
+    }
+
+    // Update round stepper buttons to reflect unlocked state
+    for (let r = 1; r <= 3; r++) {
+      const btn = document.getElementById('cf-round-btn-' + r);
+      if (!btn) continue;
+      btn.classList.remove('locked');
+      if (!unlocked.includes(r) && r !== cfCurrentRound) btn.classList.add('locked');
+    }
+
+    // Auto-switch to the highest unlocked round if it just became available
+    const maxUnlocked = Math.max(...unlocked);
+    if (maxUnlocked > cfCurrentRound && typeof cfSwitchRound === 'function') {
+      cfSwitchRound(maxUnlocked);
+    }
+
+    // Admin round status
+    const roundStatus = document.getElementById('cf-round-admin-status');
+    if (roundStatus) {
+      roundStatus.textContent = `Rounds unlocked: ${unlocked.join(', ')}`;
+    }
+    const r2Btn = document.getElementById('cf-unlock-r2-btn');
+    if (r2Btn) {
+      r2Btn.disabled = unlocked.includes(2);
+      r2Btn.textContent = unlocked.includes(2) ? 'Round 2 Unlocked' : 'Unlock Round 2';
+      if (unlocked.includes(2)) r2Btn.style.background = '#999';
+    }
+    const r3Btn = document.getElementById('cf-unlock-r3-btn');
+    if (r3Btn) {
+      r3Btn.disabled = unlocked.includes(3);
+      r3Btn.textContent = unlocked.includes(3) ? 'Round 3 Unlocked' : 'Unlock Round 3';
+      if (unlocked.includes(3)) r3Btn.style.background = '#999';
     }
   } catch (err) {
     console.error('[capstone] Visibility check failed:', err);
@@ -885,10 +973,18 @@ function cfStartTimer(endTimeISO) {
 }
 
 // ─── UI Helpers ─────────────────────────────────────────────────────────────
+var cfSettingsUnsub = null;
+
 function cfShowCompetitionContent() {
   const el = document.getElementById('cf-competition-content');
   if (el) el.style.display = '';
   cfCheckCompetitionVisibility();
+
+  // Live-listen for settings changes (round unlocks, freeze, visibility)
+  if (!cfSettingsUnsub) {
+    cfSettingsUnsub = cfDb.collection('settings').doc(CF_SETTINGS_DOC)
+      .onSnapshot(() => { cfCheckCompetitionVisibility(); });
+  }
 }
 
 function cfHideCompetitionContent() {

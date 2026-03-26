@@ -202,7 +202,17 @@
         <!-- ==================== COMPETITION ==================== -->
         <h2 class="section-header">Part 1: Competition Score (100 points)</h2>
 
-        <p>Your team's best submission (out of 3 attempts) is auto-scored against the ground truth answer key.</p>
+        <p>Your team's best submission (out of 6 attempts across 3 rounds) is auto-scored against the ground truth answer key.</p>
+
+        <div class="note" style="margin-bottom:20px;">
+            <strong>Round-Based Competition:</strong> The 30 resumes are released in 3 rounds of 10.
+            After each round, submit your Ranker's output &mdash; your score updates on the leaderboard immediately.
+            <ul style="margin:8px 0 0;padding-left:20px;">
+                <li><strong>Rounds 1 &amp; 2:</strong> Relaxed validation &mdash; fewer than 10 in <code>top_10_hire</code> and fewer than 5 in <code>bottom_5</code> is OK (your Ranker has only seen 10-20 candidates).</li>
+                <li><strong>Round 3 (final):</strong> Strict validation &mdash; exactly 10 top candidates and exactly 5 bottom candidates required.</li>
+                <li>Each submission replaces your previous score. Scores should <em>improve</em> as your Ranker accumulates more candidates.</li>
+            </ul>
+        </div>
 
         <table class="rubric-table">
             <thead>
@@ -266,7 +276,7 @@
         </table>
 
         <div class="note">
-            <strong>Attempts:</strong> Each team gets 3 submission attempts. Only your highest score counts. Use early attempts to identify gaps, then refine your pipeline and resubmit.
+            <strong>Attempts:</strong> Each team gets 6 submission attempts across 3 rounds (roughly 2 per round). Only your highest score counts. The instructor controls when each round opens. Use early rounds to calibrate your pipeline, then refine and resubmit as more candidates are revealed.
         </div>
 
         <!-- ==================== VIDEO ==================== -->
