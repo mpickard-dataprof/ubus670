@@ -590,11 +590,15 @@ function cfValidateAndPreview() {
   previewEl.dataset.validJson = JSON.stringify(d);
 }
 
+let cfSubmissionInFlight = false;
+
 async function cfSubmitResults() {
+  if (cfSubmissionInFlight) return;
   const previewEl = document.getElementById('cf-submission-preview');
   const submitBtn = document.getElementById('cf-submit-btn');
   if (!previewEl || !previewEl.dataset.validJson || !cfTeamId) return;
 
+  cfSubmissionInFlight = true;
   if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Submitting...'; }
   const submission = JSON.parse(previewEl.dataset.validJson);
 
@@ -613,7 +617,7 @@ async function cfSubmitResults() {
       const data = snap.data();
 
       if ((data.attemptsUsed || 0) >= CF_MAX_ATTEMPTS) {
-        throw new Error('Maximum attempts reached (3/3). No more submissions allowed.');
+        throw new Error(`Maximum attempts reached (${CF_MAX_ATTEMPTS}/${CF_MAX_ATTEMPTS}). No more submissions allowed.`);
       }
 
       const scores = cfScoreSubmission(submission);
@@ -659,6 +663,8 @@ async function cfSubmitResults() {
   } catch (err) {
     alert(err.message || 'Submission failed. Please try again.');
     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit (uses 1 attempt)'; }
+  } finally {
+    cfSubmissionInFlight = false;
   }
 }
 
@@ -713,6 +719,9 @@ function cfShowScoreBreakdown(scores, attemptNum) {
       Round ${cfCurrentRound}/3 | Attempts used: ${cfTeamData.attemptsUsed}/${CF_MAX_ATTEMPTS}
       ${cfTeamData.attemptsUsed < CF_MAX_ATTEMPTS ? ' — you can submit again to improve your score.' : ' — no more attempts remaining.'}
     </p>
+    <p style="color:#1D428A;font-size:0.9rem;font-weight:600;margin-top:8px;">
+      Your best score across all attempts: ${(cfTeamData.bestScore || 0).toFixed(1)} pts — the leaderboard always shows your best.
+    </p>
   `;
 }
 
@@ -728,7 +737,8 @@ function cfStartLeaderboard() {
           teams.push({ id: doc.id, name: d.teamName, score: d.bestScore, attempts: d.attemptsUsed || 0 });
         }
       });
-      teams.sort((a, b) => b.score - a.score);
+      // Sort: highest score first; ties broken by fewer attempts, then team name
+      teams.sort((a, b) => b.score - a.score || a.attempts - b.attempts || a.name.localeCompare(b.name));
       cfRenderLeaderboard(teams);
     }, err => {
       console.error('[capstone] Leaderboard error:', err);
@@ -793,6 +803,12 @@ function cfShowAdminPanel() {
         font-family:Montserrat,sans-serif;font-size:0.9rem;">
         View All Submissions
       </button>
+      <button onclick="cfExportCSV()" style="
+        padding:10px 20px;border:none;border-radius:6px;
+        background:#555;color:white;font-weight:600;cursor:pointer;
+        font-family:Montserrat,sans-serif;font-size:0.9rem;">
+        Export CSV
+      </button>
       <button onclick="cfToggleFreeze()" id="cf-freeze-btn" style="
         padding:10px 20px;border:none;border-radius:6px;
         background:#C8102E;color:white;font-weight:600;cursor:pointer;
@@ -815,6 +831,33 @@ function cfShowAdminPanel() {
         Unlock Round 3
       </button>
       <span id="cf-round-admin-status" style="font-family:Montserrat,sans-serif;font-size:0.85rem;color:#666;"></span>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:12px;">
+      <span style="font-family:Montserrat,sans-serif;font-weight:700;color:#333;font-size:0.9rem;">Timer:</span>
+      <button onclick="cfAdminStartTimer(10)" style="
+        padding:8px 16px;border:none;border-radius:6px;
+        background:#1D428A;color:white;font-weight:600;cursor:pointer;
+        font-family:Montserrat,sans-serif;font-size:0.85rem;">
+        10 min
+      </button>
+      <button onclick="cfAdminStartTimer(15)" style="
+        padding:8px 16px;border:none;border-radius:6px;
+        background:#1D428A;color:white;font-weight:600;cursor:pointer;
+        font-family:Montserrat,sans-serif;font-size:0.85rem;">
+        15 min
+      </button>
+      <button onclick="cfAdminStartTimer(20)" style="
+        padding:8px 16px;border:none;border-radius:6px;
+        background:#1D428A;color:white;font-weight:600;cursor:pointer;
+        font-family:Montserrat,sans-serif;font-size:0.85rem;">
+        20 min
+      </button>
+      <button onclick="cfAdminStartTimer(0)" style="
+        padding:8px 16px;border:none;border-radius:6px;
+        background:#999;color:white;font-weight:600;cursor:pointer;
+        font-family:Montserrat,sans-serif;font-size:0.85rem;">
+        Clear Timer
+      </button>
     </div>
     <div id="cf-admin-output" style="margin-top:15px;"></div>
   `;
@@ -877,6 +920,14 @@ async function cfCheckCompetitionVisibility() {
     const visible = settings.competitionVisible || false;
     const frozen = settings.competitionFrozen || false;
     const unlocked = settings.unlockedRounds || [1];
+    const timerEnd = settings.timerEnd || null;
+
+    // Sync timer to all clients
+    if (timerEnd) {
+      cfStartTimer(timerEnd);
+    } else if (typeof cfTimerInterval !== 'undefined') {
+      cfStartTimer(null); // clear timer
+    }
 
     // Sync unlocked rounds to global state (used by competition page)
     if (typeof cfUnlockedRounds !== 'undefined') {
@@ -945,15 +996,28 @@ async function cfViewAllSubmissions() {
   try {
     const snap = await cfDb.collection(CF_COLLECTION).get();
     let html = '<table style="width:100%;border-collapse:collapse;font-size:0.85rem;">';
-    html += '<tr style="background:#333;color:white;"><th style="padding:8px;">Team</th><th>Attempts</th><th>Best</th><th>Members</th></tr>';
+    html += '<tr style="background:#333;color:white;"><th style="padding:8px;">Team</th><th>Attempts</th><th>Best</th><th>Round History</th><th>Members</th><th>Actions</th></tr>';
 
     snap.forEach(doc => {
       const d = doc.data();
+      const attempts = d.attempts || [];
+      // Build round history: which rounds submitted and their scores
+      const roundSummary = attempts.map(a =>
+        `R${a.round || '?'}:${(a.scores.total || 0).toFixed(1)}`
+      ).join(', ') || 'none';
+
       html += `<tr style="border-bottom:1px solid #eee;">
         <td style="padding:8px;font-weight:600;">${cfEsc(d.teamName)}</td>
-        <td style="text-align:center;">${d.attemptsUsed || 0}</td>
+        <td style="text-align:center;">${d.attemptsUsed || 0}/${CF_MAX_ATTEMPTS}</td>
         <td style="text-align:center;font-weight:700;color:#C8102E;">${(d.bestScore || 0).toFixed(1)}</td>
+        <td style="padding:8px;font-size:0.8rem;color:#555;">${cfEsc(roundSummary)}</td>
         <td style="font-size:0.8rem;color:#666;">${cfEsc((d.members || []).join(', '))}</td>
+        <td style="text-align:center;">
+          <button onclick="cfResetAttempts('${doc.id}')" style="
+            padding:4px 10px;border:1px solid #C8102E;border-radius:4px;
+            background:white;color:#C8102E;font-size:0.75rem;cursor:pointer;
+            font-family:Montserrat,sans-serif;font-weight:600;">Reset</button>
+        </td>
       </tr>`;
     });
     html += '</table>';
@@ -963,26 +1027,92 @@ async function cfViewAllSubmissions() {
   }
 }
 
+async function cfResetAttempts(teamId) {
+  if (!confirm('Reset this team\'s attempt counter? (Submission history is preserved, but they can submit again.)')) return;
+  try {
+    await cfDb.collection(CF_COLLECTION).doc(teamId).update({ attemptsUsed: 0 });
+    cfViewAllSubmissions(); // refresh the table
+    // Toggle twice to force re-render (clear then show)
+    const output = document.getElementById('cf-admin-output');
+    if (output) output.innerHTML = '';
+    cfViewAllSubmissions();
+  } catch (err) {
+    alert('Reset failed: ' + err.message);
+  }
+}
+
+async function cfExportCSV() {
+  try {
+    const snap = await cfDb.collection(CF_COLLECTION).get();
+    const rows = [['Team', 'Best Score', 'Attempts Used', 'Last Round', 'Members']];
+    snap.forEach(doc => {
+      const d = doc.data();
+      const attempts = d.attempts || [];
+      const lastRound = attempts.length > 0 ? attempts[attempts.length - 1].round || '' : '';
+      rows.push([
+        d.teamName || '',
+        (d.bestScore || 0).toFixed(1),
+        String(d.attemptsUsed || 0),
+        String(lastRound),
+        (d.members || []).join('; ')
+      ]);
+    });
+    const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+    navigator.clipboard.writeText(csv).then(() => {
+      alert('CSV copied to clipboard! Paste into Excel or Google Sheets.');
+    }).catch(() => {
+      // Fallback: show in a textarea
+      const output = document.getElementById('cf-admin-output');
+      if (output) output.innerHTML = '<textarea style="width:100%;height:200px;font-family:monospace;font-size:0.8rem;">' + cfEsc(csv) + '</textarea>';
+    });
+  } catch (err) {
+    alert('Export failed: ' + err.message);
+  }
+}
+
 // ─── Competition Timer ──────────────────────────────────────────────────────
+var cfTimerInterval = null;
+
 function cfStartTimer(endTimeISO) {
   const el = document.getElementById('cf-timer');
   if (!el) return;
+  if (cfTimerInterval) clearInterval(cfTimerInterval);
+
+  if (!endTimeISO) {
+    el.textContent = '';
+    return;
+  }
 
   const end = new Date(endTimeISO).getTime();
-  const interval = setInterval(() => {
+  cfTimerInterval = setInterval(() => {
     const now = Date.now();
     const diff = end - now;
     if (diff <= 0) {
-      el.textContent = 'Competition Ended';
+      el.textContent = 'Time\'s up! Submit now.';
       el.style.color = '#C8102E';
-      clearInterval(interval);
+      clearInterval(cfTimerInterval);
+      cfTimerInterval = null;
       return;
     }
-    const hrs = Math.floor(diff / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
+    const mins = Math.floor(diff / 60000);
     const secs = Math.floor((diff % 60000) / 1000);
-    el.textContent = `${hrs}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s remaining`;
+    el.textContent = `${mins}m ${String(secs).padStart(2,'0')}s remaining`;
+    el.style.color = mins < 2 ? '#C8102E' : '#1D428A';
   }, 1000);
+}
+
+async function cfAdminStartTimer(minutes) {
+  try {
+    const ref = cfDb.collection('settings').doc(CF_SETTINGS_DOC);
+    if (minutes <= 0) {
+      await ref.set({ timerEnd: null }, { merge: true });
+    } else {
+      const end = new Date(Date.now() + minutes * 60000).toISOString();
+      await ref.set({ timerEnd: end }, { merge: true });
+    }
+  } catch (err) {
+    console.error('[capstone] Timer set failed:', err);
+  }
 }
 
 // ─── UI Helpers ─────────────────────────────────────────────────────────────
