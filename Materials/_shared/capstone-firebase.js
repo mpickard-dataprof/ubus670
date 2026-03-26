@@ -852,9 +852,17 @@ async function cfAdvanceRound(round) {
     const snap = await ref.get();
     const settings = snap.exists ? snap.data() : {};
     const current = settings.unlockedRounds || [1];
-    if (!current.includes(round)) current.push(round);
-    current.sort();
-    await ref.set({ unlockedRounds: current }, { merge: true });
+    if (current.includes(round)) {
+      // Toggle off: lock the round (round 1 can never be locked)
+      if (round === 1) return;
+      const updated = current.filter(r => r !== round);
+      await ref.set({ unlockedRounds: updated }, { merge: true });
+    } else {
+      // Toggle on: unlock the round
+      current.push(round);
+      current.sort();
+      await ref.set({ unlockedRounds: current }, { merge: true });
+    }
     cfCheckCompetitionVisibility();
   } catch (err) {
     console.error('[capstone] Advance round failed:', err);
@@ -895,10 +903,15 @@ async function cfCheckCompetitionVisibility() {
       if (!unlocked.includes(r) && r !== cfCurrentRound) btn.classList.add('locked');
     }
 
-    // Auto-switch to the highest unlocked round if it just became available
+    // Auto-switch: go to highest unlocked round if a new one opened,
+    // or fall back if the current round was just locked
     const maxUnlocked = Math.max(...unlocked);
-    if (maxUnlocked > cfCurrentRound && typeof cfSwitchRound === 'function') {
-      cfSwitchRound(maxUnlocked);
+    if (typeof cfSwitchRound === 'function') {
+      if (maxUnlocked > cfCurrentRound) {
+        cfSwitchRound(maxUnlocked);
+      } else if (!unlocked.includes(cfCurrentRound)) {
+        cfSwitchRound(maxUnlocked);
+      }
     }
 
     // Admin round status
@@ -908,15 +921,15 @@ async function cfCheckCompetitionVisibility() {
     }
     const r2Btn = document.getElementById('cf-unlock-r2-btn');
     if (r2Btn) {
-      r2Btn.disabled = unlocked.includes(2);
-      r2Btn.textContent = unlocked.includes(2) ? 'Round 2 Unlocked' : 'Unlock Round 2';
-      if (unlocked.includes(2)) r2Btn.style.background = '#999';
+      const r2Open = unlocked.includes(2);
+      r2Btn.textContent = r2Open ? 'Lock Round 2' : 'Unlock Round 2';
+      r2Btn.style.background = r2Open ? '#C8102E' : '#2E7D32';
     }
     const r3Btn = document.getElementById('cf-unlock-r3-btn');
     if (r3Btn) {
-      r3Btn.disabled = unlocked.includes(3);
-      r3Btn.textContent = unlocked.includes(3) ? 'Round 3 Unlocked' : 'Unlock Round 3';
-      if (unlocked.includes(3)) r3Btn.style.background = '#999';
+      const r3Open = unlocked.includes(3);
+      r3Btn.textContent = r3Open ? 'Lock Round 3' : 'Unlock Round 3';
+      r3Btn.style.background = r3Open ? '#C8102E' : '#2E7D32';
     }
   } catch (err) {
     console.error('[capstone] Visibility check failed:', err);
