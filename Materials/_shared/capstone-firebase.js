@@ -668,44 +668,115 @@ async function cfSubmitResults() {
   }
 }
 
+// Compute the theoretical max score for a given round (cumulative batches 1..round)
+function cfComputeRoundCeiling(round) {
+  const gt = cfDecodeGT();
+  if (!gt || typeof COMP_RESUMES === 'undefined') return null;
+
+  // Candidates seen so far (batches 1 through round)
+  const seen = new Set(
+    COMP_RESUMES.filter(r => r.batch <= round).map(r => r.id.toUpperCase())
+  );
+
+  // Top 10
+  const t10inRound = gt.t10.filter(id => seen.has(id.toUpperCase()));
+  const t10pts = t10inRound.length * 2.5;
+  const t3inRound = [1,2,3].filter(r => seen.has(gt.t3[String(r)].toUpperCase()));
+  const t3bonus = t3inRound.length >= 3 ? 5 : t3inRound.length === 2 ? 2 : t3inRound.length === 1 ? 1 : 0;
+
+  // Bottom 5
+  const b5strict = gt.b5.filter(id => seen.has(id.toUpperCase())).length;
+  const b8partial = gt.b8.filter(id => seen.has(id.toUpperCase())).length;
+  const b5pts = Math.min(10, b5strict * 2 + (b8partial - b5strict) * 1);
+
+  // Flags
+  const flagsInRound = gt.fl.filter(f => seen.has(f.id.toUpperCase()));
+  const flagPts = Math.min(30, flagsInRound.length * (30 / 14));
+
+  // Bias pairs (both IDs must be seen)
+  const bpInRound = gt.bp.filter(p => p.ids.every(id => seen.has(id.toUpperCase())));
+  const bpPts = Math.min(15, bpInRound.length * 3);
+
+  // Patterns (2+ IDs must be seen)
+  const ptInRound = gt.pt.filter(p => p.ids.filter(id => seen.has(id.toUpperCase())).length >= 2);
+  const ptPts = Math.min(15, ptInRound.length * 5);
+
+  return {
+    top10: { max: t10pts + t3bonus, count: t10inRound.length, t3count: t3inRound.length },
+    bottom5: { max: b5pts, strictCount: b5strict, partialCount: b8partial - b5strict },
+    flags: { max: flagPts, count: flagsInRound.length },
+    biasPairs: { max: bpPts, count: bpInRound.length },
+    patterns: { max: ptPts, count: ptInRound.length },
+    total: Math.min(100, (t10pts + t3bonus) + b5pts + flagPts + bpPts + ptPts)
+  };
+}
+
 function cfShowScoreBreakdown(scores, attemptNum) {
   const el = document.getElementById('cf-score-breakdown');
   if (!el) return;
   el.style.display = '';
 
+  const ceil = cfComputeRoundCeiling(cfCurrentRound);
+  const rd = cfCurrentRound;
+
+  // Helper: format "X / Y possible (Z max)" with a hint
+  function fmtRow(pts, ceilMax, fullMax, hint) {
+    if (!ceil) return pts.toFixed(1) + ' / ' + fullMax;
+    const pct = ceilMax > 0 ? Math.round(pts / ceilMax * 100) : 0;
+    return pts.toFixed(1) + ' / ' + ceilMax.toFixed(1) + ' possible' +
+      (rd < 3 ? ' <span style="color:#999;font-size:0.8rem;">(' + fullMax + ' max)</span>' : '') +
+      (hint ? '<br><span style="color:#666;font-size:0.8rem;">' + hint + '</span>' : '');
+  }
+
+  // Build hints showing counts
+  const t10hint = ceil ? ceil.top10.count + ' of the true top 10 were in this batch' : '';
+  const b5hint = ceil ? ceil.bottom5.strictCount + ' strong + ' + ceil.bottom5.partialCount + ' partial bottom candidates in this batch' : '';
+  const flHint = ceil ? ceil.flags.count + ' flags detectable in this batch' : '';
+  const bpHint = ceil ? ceil.biasPairs.count + ' bias pair' + (ceil.biasPairs.count !== 1 ? 's' : '') + ' fully detectable' : '';
+  const ptHint = ceil ? ceil.patterns.count + ' pattern' + (ceil.patterns.count !== 1 ? 's' : '') + ' detectable' : '';
+
+  const roundPct = ceil && ceil.total > 0 ? Math.round(scores.total / ceil.total * 100) : null;
+  const roundScore = roundPct !== null
+    ? '<div style="background:#EBF0F7;border-left:4px solid #1D428A;padding:12px 16px;margin-bottom:16px;border-radius:0 8px 8px 0;font-family:Montserrat,sans-serif;">' +
+      '<strong>Round ' + rd + ' Score: ' + scores.total.toFixed(1) + ' / ' + ceil.total.toFixed(1) + ' possible (' + roundPct + '%)</strong>' +
+      (rd < 3 ? '<br><span style="font-size:0.85rem;color:#555;">More points become available in later rounds as new resumes arrive.</span>' : '') +
+      '</div>'
+    : '';
+
   el.innerHTML = `
     <h3 style="font-family:Montserrat,sans-serif;color:#1D428A;margin:0 0 15px;">
       Attempt ${attemptNum} Results
     </h3>
+    ${roundScore}
     <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
       <tr style="background:#f8f8f8;">
         <td style="padding:10px 14px;font-weight:600;">Top 10 Ranking</td>
         <td style="padding:10px 14px;text-align:right;font-weight:700;color:#C8102E;">
-          ${scores.top10.points.toFixed(1)} / 30
+          ${fmtRow(scores.top10.points, ceil ? ceil.top10.max : 30, 30, t10hint)}
         </td>
       </tr>
       <tr>
         <td style="padding:10px 14px;font-weight:600;">Bottom 5 Identification</td>
         <td style="padding:10px 14px;text-align:right;font-weight:700;color:#C8102E;">
-          ${scores.bottom5.points.toFixed(1)} / 10
+          ${fmtRow(scores.bottom5.points, ceil ? ceil.bottom5.max : 10, 10, b5hint)}
         </td>
       </tr>
       <tr style="background:#f8f8f8;">
         <td style="padding:10px 14px;font-weight:600;">Red Flags + Severity</td>
         <td style="padding:10px 14px;text-align:right;font-weight:700;color:#C8102E;">
-          ${scores.flags.points.toFixed(1)} / 30
+          ${fmtRow(scores.flags.points, ceil ? ceil.flags.max : 30, 30, flHint)}
         </td>
       </tr>
       <tr>
         <td style="padding:10px 14px;font-weight:600;">Bias Pair Detection</td>
         <td style="padding:10px 14px;text-align:right;font-weight:700;color:#C8102E;">
-          ${scores.biasPairs.points.toFixed(1)} / 15
+          ${fmtRow(scores.biasPairs.points, ceil ? ceil.biasPairs.max : 15, 15, bpHint)}
         </td>
       </tr>
       <tr style="background:#f8f8f8;">
         <td style="padding:10px 14px;font-weight:600;">Pattern Discovery</td>
         <td style="padding:10px 14px;text-align:right;font-weight:700;color:#C8102E;">
-          ${scores.patterns.points.toFixed(1)} / 15
+          ${fmtRow(scores.patterns.points, ceil ? ceil.patterns.max : 15, 15, ptHint)}
         </td>
       </tr>
       <tr style="border-top:3px solid #1D428A;">
