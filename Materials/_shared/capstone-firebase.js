@@ -1372,33 +1372,39 @@ async function cfExportGradingPackage() {
           }
         });
 
-        report += 'SUBMISSION HISTORY\n';
-        attempts.forEach(a => {
-          const s = a.scores;
-          report += '  Attempt ' + a.attempt + ' (Round ' + (a.round || '?') + ', ' + (a.submittedAt || '?') + ')\n';
-          report += '    Top 10: ' + (s.top10 || 0).toFixed(1) + '/30  |  ' +
-            'Bottom 5: ' + (s.bottom5 || 0).toFixed(1) + '/10  |  ' +
-            'Flags: ' + (s.flags || 0).toFixed(1) + '/30  |  ' +
-            'Bias: ' + (s.biasPairs || 0).toFixed(1) + '/15  |  ' +
-            'Patterns: ' + (s.patterns || 0).toFixed(1) + '/15\n';
-          report += '    TOTAL: ' + (s.total || 0).toFixed(1) + ' / 100\n';
-        });
-
-        report += '\n  BEST PER ROUND\n';
+        // Scorecard per round (best attempt only)
         [1, 2, 3].forEach(r => {
+          report += '  Round ' + r;
           if (byRound[r]) {
             const s = byRound[r].scores;
-            report += '    Round ' + r + ': ' + (s.total || 0).toFixed(1) + ' / 100' +
-              '  (Top10:' + (s.top10 || 0).toFixed(1) +
-              ' Bot5:' + (s.bottom5 || 0).toFixed(1) +
-              ' Flags:' + (s.flags || 0).toFixed(1) +
-              ' Bias:' + (s.biasPairs || 0).toFixed(1) +
-              ' Pats:' + (s.patterns || 0).toFixed(1) + ')\n';
+            report += ' (Attempt ' + byRound[r].attempt + ')\n';
+            report += '    Top 10 Ranking          ' + (s.top10 || 0).toFixed(1).padStart(5) + ' / 30\n';
+            report += '    Bottom 5 Identification ' + (s.bottom5 || 0).toFixed(1).padStart(5) + ' / 10\n';
+            report += '    Red Flags + Severity    ' + (s.flags || 0).toFixed(1).padStart(5) + ' / 30\n';
+            report += '    Bias Pair Detection     ' + (s.biasPairs || 0).toFixed(1).padStart(5) + ' / 15\n';
+            report += '    Pattern Discovery       ' + (s.patterns || 0).toFixed(1).padStart(5) + ' / 15\n';
+            report += '    ' + '-'.repeat(36) + '\n';
+            report += '    TOTAL                   ' + (s.total || 0).toFixed(1).padStart(5) + ' / 100\n';
           } else {
-            report += '    Round ' + r + ': no submission\n';
+            report += ': no submission\n';
           }
+          report += '\n';
         });
-        report += '\n';
+
+        // If multiple attempts per round, note them
+        const multiAttemptRounds = [1, 2, 3].filter(r =>
+          attempts.filter(a => a.round === r).length > 1
+        );
+        if (multiAttemptRounds.length > 0) {
+          report += '  Additional attempts (not best):\n';
+          attempts.forEach(a => {
+            if (byRound[a.round] && byRound[a.round].attempt !== a.attempt) {
+              report += '    Attempt ' + a.attempt + ' (Round ' + (a.round || '?') + '): ' +
+                (a.scores.total || 0).toFixed(1) + ' / 100\n';
+            }
+          });
+          report += '\n';
+        }
       } else {
         report += 'SUBMISSIONS: none\n\n';
       }
