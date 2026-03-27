@@ -200,6 +200,45 @@
             font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: #333;
         }
 
+        /* Pipeline Report Agent Cards */
+        .pipeline-agent-card {
+            background: #f8f8f8; padding: 20px; border-radius: 8px;
+            border: 1px solid #e0e0e0; margin-bottom: 12px;
+        }
+        .pipeline-agent-card .agent-number {
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 0.85rem; color: #1D428A;
+            background: #EBF0F7; padding: 3px 10px; border-radius: 4px;
+            display: inline-block; margin-bottom: 10px;
+        }
+        .pipeline-agent-card input[type="text"] {
+            width: 100%; padding: 10px 12px; border: 2px solid #e0e0e0;
+            border-radius: 6px; font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem; margin-bottom: 10px; box-sizing: border-box;
+        }
+        .pipeline-agent-card input[type="text"]:focus,
+        .pipeline-agent-card textarea:focus {
+            border-color: #1D428A; outline: none;
+        }
+        .pipeline-agent-card textarea {
+            width: 100%; min-height: 120px; padding: 12px;
+            font-family: 'Courier New', monospace; font-size: 0.85rem;
+            border: 2px solid #e0e0e0; border-radius: 6px;
+            resize: vertical; line-height: 1.5; box-sizing: border-box;
+        }
+        .pipeline-card-controls {
+            display: flex; gap: 8px; margin-top: 10px; align-items: center;
+        }
+        .pipeline-card-controls button {
+            padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px;
+            background: white; cursor: pointer; font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; font-weight: 600; transition: all 0.2s;
+        }
+        .pipeline-card-controls .move-btn:hover { background: #EBF0F7; border-color: #1D428A; color: #1D428A; }
+        .pipeline-card-controls .remove-btn { color: #C8102E; border-color: #C8102E; }
+        .pipeline-card-controls .remove-btn:hover { background: #C8102E; color: white; }
+        .pipeline-card-controls button:disabled { opacity: 0.3; cursor: not-allowed; }
+
         footer {
             text-align: center; padding: 40px 20px; color: #888;
             font-size: 0.9rem; border-top: 1px solid #e0e0e0; background: white;
@@ -322,6 +361,26 @@
             <!-- Score Breakdown -->
             <div id="cf-score-breakdown" class="score-breakdown" style="display:none;"></div>
 
+            <!-- Pipeline Report -->
+            <div id="cf-pipeline-section" style="display:none;">
+                <h2 class="section-title">Pipeline Report</h2>
+                <div class="submission-area">
+                    <p style="margin:0 0 12px;color:#666;">
+                        Document your ADK pipeline by adding each agent below, in pipeline order.
+                        Include the agent name and its full system prompt.
+                        This is required for grading &mdash; it helps us evaluate your prompt engineering and pipeline design.
+                    </p>
+                    <div id="cf-pipeline-agents">
+                        <!-- Agent cards rendered by JS -->
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-primary" onclick="cfAddAgentCard()">+ Add Agent</button>
+                        <button id="cf-save-pipeline-btn" class="btn-primary btn-submit" onclick="cfSavePipelineReport()">Save Pipeline Report</button>
+                    </div>
+                    <div id="cf-pipeline-status" style="margin-top:12px;font-family:Montserrat,sans-serif;font-size:0.85rem;"></div>
+                </div>
+            </div>
+
         </div><!-- end cf-competition-content -->
 
     </main>
@@ -420,6 +479,95 @@
 
     // Initial render of round 1
     cfRenderRound(1);
+
+    // ─── Pipeline Report UI ─────────────────────────────────────────
+    var cfPipelineAgents = []; // In-memory array of {name, systemPrompt}
+
+    function cfSyncPipelineFromDOM() {
+        var cards = document.querySelectorAll('.pipeline-agent-card');
+        cards.forEach(function(card, i) {
+            if (cfPipelineAgents[i]) {
+                var nameInput = card.querySelector('input[type="text"]');
+                var promptTextarea = card.querySelector('textarea');
+                if (nameInput) cfPipelineAgents[i].name = nameInput.value;
+                if (promptTextarea) cfPipelineAgents[i].systemPrompt = promptTextarea.value;
+            }
+        });
+    }
+
+    function cfRenderPipelineCards() {
+        var container = document.getElementById('cf-pipeline-agents');
+        if (!container) return;
+        container.innerHTML = '';
+
+        cfPipelineAgents.forEach(function(agent, i) {
+            var card = document.createElement('div');
+            card.className = 'pipeline-agent-card';
+            card.innerHTML =
+                '<span class="agent-number">Agent ' + (i + 1) + '</span>' +
+                '<input type="text" placeholder="Agent name (e.g., Parser, Evaluator, Ranker)"' +
+                '  value="' + escHtml(agent.name) + '"' +
+                '  oninput="cfPipelineAgents[' + i + '].name=this.value">' +
+                '<textarea placeholder="Paste the full system prompt for this agent..."' +
+                '  oninput="cfPipelineAgents[' + i + '].systemPrompt=this.value">' + escHtml(agent.systemPrompt) + '</textarea>' +
+                '<div class="pipeline-card-controls">' +
+                '  <button class="move-btn" onclick="cfMoveAgent(' + i + ',-1)"' + (i === 0 ? ' disabled' : '') + '>&#9650; Up</button>' +
+                '  <button class="move-btn" onclick="cfMoveAgent(' + i + ',1)"' + (i === cfPipelineAgents.length - 1 ? ' disabled' : '') + '>&#9660; Down</button>' +
+                '  <button class="remove-btn" onclick="cfRemoveAgent(' + i + ')">Remove</button>' +
+                '</div>';
+            container.appendChild(card);
+        });
+    }
+
+    function cfAddAgentCard() {
+        cfSyncPipelineFromDOM();
+        cfPipelineAgents.push({ name: '', systemPrompt: '' });
+        cfRenderPipelineCards();
+        var container = document.getElementById('cf-pipeline-agents');
+        if (container && container.lastElementChild) {
+            container.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            var nameInput = container.lastElementChild.querySelector('input[type="text"]');
+            if (nameInput) setTimeout(function() { nameInput.focus(); }, 300);
+        }
+    }
+
+    function cfRemoveAgent(index) {
+        if (cfPipelineAgents.length <= 1) {
+            alert('You need at least one agent in your pipeline.');
+            return;
+        }
+        cfSyncPipelineFromDOM();
+        cfPipelineAgents.splice(index, 1);
+        cfRenderPipelineCards();
+    }
+
+    function cfMoveAgent(index, direction) {
+        var newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= cfPipelineAgents.length) return;
+        cfSyncPipelineFromDOM();
+        var temp = cfPipelineAgents[index];
+        cfPipelineAgents[index] = cfPipelineAgents[newIndex];
+        cfPipelineAgents[newIndex] = temp;
+        cfRenderPipelineCards();
+    }
+
+    function cfInitPipelineFromData() {
+        if (cfTeamData && cfTeamData.pipelineReport && cfTeamData.pipelineReport.agents) {
+            cfPipelineAgents = cfTeamData.pipelineReport.agents.map(function(a) {
+                return { name: a.name || '', systemPrompt: a.systemPrompt || '' };
+            });
+        } else {
+            cfPipelineAgents = [];
+        }
+        cfRenderPipelineCards();
+
+        var statusEl = document.getElementById('cf-pipeline-status');
+        if (statusEl && cfTeamData && cfTeamData.pipelineReport && cfTeamData.pipelineReport.lastSavedAt) {
+            var savedDate = new Date(cfTeamData.pipelineReport.lastSavedAt);
+            statusEl.innerHTML = '<span style="color:#2E7D32;">Last saved: ' + savedDate.toLocaleString() +
+                ' by ' + escHtml(cfTeamData.pipelineReport.lastSavedBy || 'unknown') + '</span>';
+        }
+    }
     </script>
 
 </body>

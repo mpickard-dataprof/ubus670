@@ -815,6 +815,12 @@ function cfShowAdminPanel() {
         font-family:Montserrat,sans-serif;font-size:0.9rem;">
         Freeze Competition
       </button>
+      <button onclick="cfExportGradingPackage()" style="
+        padding:10px 20px;border:none;border-radius:6px;
+        background:#2E7D32;color:white;font-weight:600;cursor:pointer;
+        font-family:Montserrat,sans-serif;font-size:0.9rem;">
+        Export Grading Package
+      </button>
     </div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
       <span style="font-family:Montserrat,sans-serif;font-weight:700;color:#333;font-size:0.9rem;">Rounds:</span>
@@ -1122,6 +1128,7 @@ function cfShowCompetitionContent() {
   const el = document.getElementById('cf-competition-content');
   if (el) el.style.display = '';
   cfCheckCompetitionVisibility();
+  cfShowPipelineSection();
 
   // Live-listen for settings changes (round unlocks, freeze, visibility)
   if (!cfSettingsUnsub) {
@@ -1166,4 +1173,140 @@ function cfCopyResume(id) {
   }).catch(() => {
     alert('Copy failed — please select the resume text manually and use Ctrl+C.');
   });
+}
+
+// ─── Pipeline Report ────────────────────────────────────────────────────────
+async function cfSavePipelineReport() {
+  if (!cfTeamId || !cfUser) {
+    alert('You must be signed in and on a team to save.');
+    return;
+  }
+
+  const agents = (typeof cfPipelineAgents !== 'undefined') ? cfPipelineAgents : [];
+  if (agents.length === 0) {
+    alert('Add at least one agent to your pipeline before saving.');
+    return;
+  }
+
+  // Sync DOM values before reading the array
+  if (typeof cfSyncPipelineFromDOM === 'function') cfSyncPipelineFromDOM();
+
+  const emptyNames = agents.filter(a => !a.name.trim());
+  if (emptyNames.length > 0) {
+    alert('Every agent must have a name. Please fill in all agent name fields.');
+    return;
+  }
+
+  const saveBtn = document.getElementById('cf-save-pipeline-btn');
+  const statusEl = document.getElementById('cf-pipeline-status');
+
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
+
+  try {
+    const pipelineReport = {
+      agents: agents.map(a => ({
+        name: a.name.trim(),
+        systemPrompt: a.systemPrompt.trim()
+      })),
+      lastSavedAt: new Date().toISOString(),
+      lastSavedBy: cfUser.email
+    };
+
+    await cfDb.collection(CF_COLLECTION).doc(cfTeamId).update({
+      pipelineReport: pipelineReport
+    });
+
+    cfTeamData.pipelineReport = pipelineReport;
+
+    if (saveBtn) { saveBtn.textContent = 'Saved!'; }
+    if (statusEl) {
+      statusEl.innerHTML = '<span style="color:#2E7D32;font-weight:600;">Pipeline report saved! (' +
+        new Date().toLocaleTimeString() + ')</span>';
+    }
+    setTimeout(() => {
+      if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Pipeline Report'; }
+    }, 2000);
+
+  } catch (err) {
+    console.error('[capstone] Pipeline save failed:', err);
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Pipeline Report'; }
+    if (statusEl) {
+      statusEl.innerHTML = '<span style="color:#C8102E;font-weight:600;">Save failed: ' + cfEsc(err.message) + '</span>';
+    }
+  }
+}
+
+function cfShowPipelineSection() {
+  const el = document.getElementById('cf-pipeline-section');
+  if (el && cfTeamId) {
+    el.style.display = '';
+    if (typeof cfInitPipelineFromData === 'function') cfInitPipelineFromData();
+  }
+}
+
+async function cfExportGradingPackage() {
+  const output = document.getElementById('cf-admin-output');
+  if (!output) return;
+  output.innerHTML = '<p>Loading grading package...</p>';
+
+  try {
+    const snap = await cfDb.collection(CF_COLLECTION).get();
+    let report = '';
+    let teamCount = 0;
+    let teamsWithPipeline = 0;
+
+    snap.forEach(doc => {
+      const d = doc.data();
+      teamCount++;
+      report += '='.repeat(60) + '\n';
+      report += 'Team: ' + (d.teamName || doc.id) + '\n';
+      report += 'Members: ' + (d.members || []).join(', ') + '\n';
+      report += 'Best Score: ' + (d.bestScore || 0).toFixed(1) + ' / 100\n';
+      report += 'Attempts Used: ' + (d.attemptsUsed || 0) + ' / ' + CF_MAX_ATTEMPTS + '\n';
+
+      // Include per-attempt scores
+      const attempts = d.attempts || [];
+      if (attempts.length > 0) {
+        report += 'Round History: ' + attempts.map(a =>
+          'R' + (a.round || '?') + ':' + (a.scores.total || 0).toFixed(1)
+        ).join(', ') + '\n';
+      }
+
+      if (d.pipelineReport && d.pipelineReport.agents && d.pipelineReport.agents.length > 0) {
+        teamsWithPipeline++;
+        report += 'Pipeline Agents: ' + d.pipelineReport.agents.length + '\n';
+        report += 'Pipeline Saved: ' + (d.pipelineReport.lastSavedAt || 'unknown') +
+          ' by ' + (d.pipelineReport.lastSavedBy || 'unknown') + '\n\n';
+
+        d.pipelineReport.agents.forEach((agent, i) => {
+          report += '  Agent ' + (i + 1) + ': ' + agent.name + '\n';
+          report += '  System Prompt:\n';
+          report += '  ' + '\u2500'.repeat(40) + '\n';
+          (agent.systemPrompt || '(empty)').split('\n').forEach(line => {
+            report += '  ' + line + '\n';
+          });
+          report += '  ' + '\u2500'.repeat(40) + '\n\n';
+        });
+      } else {
+        report += 'Pipeline: NOT SUBMITTED\n\n';
+      }
+    });
+
+    report = 'UBUS 670 Capstone - Grading Package\n' +
+      'Exported: ' + new Date().toLocaleString() + '\n' +
+      'Teams: ' + teamCount + ' total, ' + teamsWithPipeline + ' with pipeline reports\n\n' + report;
+
+    navigator.clipboard.writeText(report).then(() => {
+      output.innerHTML = '<p style="color:#2E7D32;font-weight:600;">Grading package copied to clipboard! (' +
+        teamCount + ' teams, ' + teamsWithPipeline + ' with pipelines)</p>' +
+        '<textarea style="width:100%;height:300px;font-family:\'Courier New\',monospace;font-size:0.8rem;white-space:pre;">' +
+        cfEsc(report) + '</textarea>';
+    }).catch(() => {
+      output.innerHTML = '<textarea style="width:100%;height:400px;font-family:\'Courier New\',monospace;font-size:0.8rem;white-space:pre;">' +
+        cfEsc(report) + '</textarea>' +
+        '<p style="color:#666;font-size:0.85rem;">Select all and copy manually (Ctrl+A, Ctrl+C).</p>';
+    });
+  } catch (err) {
+    output.innerHTML = '<p style="color:#C8102E;">Export failed: ' + cfEsc(err.message) + '</p>';
+  }
 }
