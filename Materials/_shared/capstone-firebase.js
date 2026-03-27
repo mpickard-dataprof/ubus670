@@ -458,6 +458,38 @@ function cfValidateSubmission(jsonStr, round) {
     return { valid: false, error: 'Invalid JSON: expected an object, got ' + (data === null ? 'null' : Array.isArray(data) ? 'array' : typeof data) };
   }
 
+  // Stage 1.5: Normalize common field name variants before validation
+  // LLMs may use candidate_id instead of id, or vice versa, or synonyms for reason/flag
+  function normalizeId(entry) {
+    if (!entry.id && entry.candidate_id) entry.id = entry.candidate_id;
+    return entry;
+  }
+  function normalizeFlagEntry(entry) {
+    if (!entry.candidate_id && entry.id) entry.candidate_id = entry.id;
+    if (!entry.flag && entry.description) entry.flag = entry.description;
+    if (!entry.flag && entry.flag_description) entry.flag = entry.flag_description;
+    return entry;
+  }
+  function normalizeReason(entry) {
+    if (!entry.reason && entry.description) entry.reason = entry.description;
+    if (!entry.reason && entry.explanation) entry.reason = entry.explanation;
+    if (!entry.reason && entry.rationale) entry.reason = entry.rationale;
+    return entry;
+  }
+  function normalizeBiasPair(entry) {
+    if (!entry.observation && entry.description) entry.observation = entry.description;
+    if (!entry.observation && entry.reason) entry.observation = entry.reason;
+    if (!entry.observation && entry.explanation) entry.observation = entry.explanation;
+    // Accept "pair" or "ids" as alternate key for candidate_ids
+    if (!entry.candidate_ids && entry.ids) entry.candidate_ids = entry.ids;
+    if (!entry.candidate_ids && entry.pair) entry.candidate_ids = entry.pair;
+    return entry;
+  }
+  if (Array.isArray(data.top_10_hire)) data.top_10_hire.forEach(e => { normalizeId(e); normalizeReason(e); });
+  if (Array.isArray(data.bottom_5)) data.bottom_5.forEach(e => { normalizeId(e); normalizeReason(e); });
+  if (Array.isArray(data.flags)) data.flags.forEach(e => normalizeFlagEntry(e));
+  if (Array.isArray(data.bias_pairs)) data.bias_pairs.forEach(e => normalizeBiasPair(e));
+
   // Stage 2: Schema validation
   const errors = [];
   const idPattern = /^C-\d{2}$/i;
