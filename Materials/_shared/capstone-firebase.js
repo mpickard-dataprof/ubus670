@@ -172,6 +172,7 @@ async function cfOnAuthChanged(user) {
     cfTeamId = null;
     cfTeamData = null;
     cfIsInstructor = false;
+    cfPipelineInitialized = false;
     if (cfLeaderboardUnsub) { cfLeaderboardUnsub(); cfLeaderboardUnsub = null; }
     cfHideCompetitionContent();
     const gate = document.getElementById('cf-sign-in-gate');
@@ -1019,10 +1020,10 @@ async function cfCheckCompetitionVisibility() {
       const showPipeline = frozen || cfIsInstructor;
       const wasHidden = pipelineSection.style.display === 'none';
       pipelineSection.style.display = showPipeline ? '' : 'none';
-      // Only init from Firestore when first revealing — not on every settings change,
-      // which would wipe unsaved edits
-      if (showPipeline && wasHidden && typeof cfInitPipelineFromData === 'function') {
+      // Only init from Firestore once — never overwrite unsaved edits
+      if (showPipeline && wasHidden && !cfPipelineInitialized && typeof cfInitPipelineFromData === 'function') {
         cfInitPipelineFromData();
+        cfPipelineInitialized = true;
       }
     }
 
@@ -1319,11 +1320,14 @@ async function cfSavePipelineReport() {
   }
 }
 
+var cfPipelineInitialized = false;
+
 function cfShowPipelineSection() {
   // Visibility is controlled by cfCheckCompetitionVisibility() via settings listener.
-  // On initial load, just init the data — the listener will handle display.
-  if (cfTeamId && typeof cfInitPipelineFromData === 'function') {
+  // Only init from Firestore once per session — never overwrite unsaved edits.
+  if (cfTeamId && !cfPipelineInitialized && typeof cfInitPipelineFromData === 'function') {
     cfInitPipelineFromData();
+    cfPipelineInitialized = true;
   }
 }
 
