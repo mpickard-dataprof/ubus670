@@ -470,7 +470,7 @@ function cfValidateSubmission(jsonStr, round) {
   const flagAlts = ['flag', 'description', 'flag_description', 'issue', 'concern', 'finding', 'red_flag', 'detail', 'details', 'note', 'notes', 'reason', 'explanation', 'warning'];
   const severityAlts = ['severity', 'level', 'risk_level', 'risk', 'type', 'category'];
   const candidateIdsAlts = ['candidate_ids', 'ids', 'pair', 'candidates', 'pair_ids', 'members', 'candidate_pair'];
-  const observationAlts = ['observation', 'description', 'reason', 'explanation', 'notes', 'finding', 'analysis', 'note', 'detail', 'summary'];
+  const observationAlts = ['observation', 'description', 'reason', 'explanation', 'notes', 'finding', 'analysis', 'note', 'detail', 'summary', 'discrepancy', 'comparison'];
 
   if (Array.isArray(data.top_10_hire)) data.top_10_hire.forEach(e => {
     pickFirst(e, 'id', idAlts);
@@ -487,6 +487,10 @@ function cfValidateSubmission(jsonStr, round) {
     pickFirst(e, 'severity', severityAlts);
   });
   if (Array.isArray(data.bias_pairs)) data.bias_pairs.forEach(e => {
+    // Handle candidate_a/candidate_b pattern → build candidate_ids array
+    if (!e.candidate_ids && e.candidate_a && e.candidate_b) {
+      e.candidate_ids = [e.candidate_a, e.candidate_b];
+    }
     pickFirst(e, 'candidate_ids', candidateIdsAlts);
     pickFirst(e, 'observation', observationAlts);
   });
