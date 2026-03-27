@@ -458,37 +458,38 @@ function cfValidateSubmission(jsonStr, round) {
     return { valid: false, error: 'Invalid JSON: expected an object, got ' + (data === null ? 'null' : Array.isArray(data) ? 'array' : typeof data) };
   }
 
-  // Stage 1.5: Normalize common field name variants before validation
-  // LLMs may use candidate_id instead of id, or vice versa, or synonyms for reason/flag
-  function normalizeId(entry) {
-    if (!entry.id && entry.candidate_id) entry.id = entry.candidate_id;
-    return entry;
+  // Stage 1.5: Normalize field name variants — LLMs use wildly different key names
+  function pickFirst(entry, canonical, alts) {
+    if (entry[canonical]) return;
+    for (const alt of alts) {
+      if (entry[alt] != null) { entry[canonical] = entry[alt]; return; }
+    }
   }
-  function normalizeFlagEntry(entry) {
-    if (!entry.candidate_id && entry.id) entry.candidate_id = entry.id;
-    if (!entry.flag && entry.description) entry.flag = entry.description;
-    if (!entry.flag && entry.flag_description) entry.flag = entry.flag_description;
-    return entry;
-  }
-  function normalizeReason(entry) {
-    if (!entry.reason && entry.description) entry.reason = entry.description;
-    if (!entry.reason && entry.explanation) entry.reason = entry.explanation;
-    if (!entry.reason && entry.rationale) entry.reason = entry.rationale;
-    return entry;
-  }
-  function normalizeBiasPair(entry) {
-    if (!entry.observation && entry.description) entry.observation = entry.description;
-    if (!entry.observation && entry.reason) entry.observation = entry.reason;
-    if (!entry.observation && entry.explanation) entry.observation = entry.explanation;
-    // Accept "pair" or "ids" as alternate key for candidate_ids
-    if (!entry.candidate_ids && entry.ids) entry.candidate_ids = entry.ids;
-    if (!entry.candidate_ids && entry.pair) entry.candidate_ids = entry.pair;
-    return entry;
-  }
-  if (Array.isArray(data.top_10_hire)) data.top_10_hire.forEach(e => { normalizeId(e); normalizeReason(e); });
-  if (Array.isArray(data.bottom_5)) data.bottom_5.forEach(e => { normalizeId(e); normalizeReason(e); });
-  if (Array.isArray(data.flags)) data.flags.forEach(e => normalizeFlagEntry(e));
-  if (Array.isArray(data.bias_pairs)) data.bias_pairs.forEach(e => normalizeBiasPair(e));
+  const idAlts = ['candidate_id', 'candidate', 'applicant_id', 'applicant', 'name', 'candidate_name'];
+  const reasonAlts = ['reason', 'description', 'explanation', 'rationale', 'justification', 'summary', 'reasoning', 'notes', 'note', 'detail'];
+  const flagAlts = ['flag', 'description', 'flag_description', 'issue', 'concern', 'finding', 'red_flag', 'detail', 'details', 'note', 'notes', 'reason', 'explanation', 'warning'];
+  const severityAlts = ['severity', 'level', 'risk_level', 'risk', 'type', 'category'];
+  const candidateIdsAlts = ['candidate_ids', 'ids', 'pair', 'candidates', 'pair_ids', 'members', 'candidate_pair'];
+  const observationAlts = ['observation', 'description', 'reason', 'explanation', 'notes', 'finding', 'analysis', 'note', 'detail', 'summary'];
+
+  if (Array.isArray(data.top_10_hire)) data.top_10_hire.forEach(e => {
+    pickFirst(e, 'id', idAlts);
+    pickFirst(e, 'reason', reasonAlts);
+    pickFirst(e, 'rank', ['ranking', 'position', 'order']);
+  });
+  if (Array.isArray(data.bottom_5)) data.bottom_5.forEach(e => {
+    pickFirst(e, 'id', idAlts);
+    pickFirst(e, 'reason', reasonAlts);
+  });
+  if (Array.isArray(data.flags)) data.flags.forEach(e => {
+    pickFirst(e, 'candidate_id', ['id', 'candidate', 'applicant_id', 'applicant', 'name', 'candidate_name']);
+    pickFirst(e, 'flag', flagAlts);
+    pickFirst(e, 'severity', severityAlts);
+  });
+  if (Array.isArray(data.bias_pairs)) data.bias_pairs.forEach(e => {
+    pickFirst(e, 'candidate_ids', candidateIdsAlts);
+    pickFirst(e, 'observation', observationAlts);
+  });
 
   // Stage 2: Schema validation
   const errors = [];
@@ -576,7 +577,18 @@ function cfValidateSubmission(jsonStr, round) {
   }
 
   if (errors.length > 0) {
-    return { valid: false, error: 'Validation errors:\n' + errors.join('\n') };
+    // Add diagnostic: show actual keys of first failing entry to help debug
+    let diag = '';
+    if (Array.isArray(data.top_10_hire) && data.top_10_hire[0]) {
+      diag += '\n\nDiagnostic — your top_10_hire[0] keys: ' + Object.keys(data.top_10_hire[0]).join(', ');
+    }
+    if (Array.isArray(data.flags) && data.flags[0]) {
+      diag += '\nDiagnostic — your flags[0] keys: ' + Object.keys(data.flags[0]).join(', ');
+    }
+    if (Array.isArray(data.bias_pairs) && data.bias_pairs[0]) {
+      diag += '\nDiagnostic — your bias_pairs[0] keys: ' + Object.keys(data.bias_pairs[0]).join(', ');
+    }
+    return { valid: false, error: 'Validation errors:\n' + errors.join('\n') + diag };
   }
 
   return { valid: true, data };
