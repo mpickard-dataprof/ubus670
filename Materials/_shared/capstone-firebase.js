@@ -1012,7 +1012,7 @@ async function cfCheckCompetitionVisibility() {
     }
 
     const resumeSection = document.getElementById('cf-competition-resumes');
-    if (resumeSection) resumeSection.style.display = visible ? '' : 'none';
+    if (resumeSection) resumeSection.style.display = (visible || cfIsInstructor) ? '' : 'none';
 
     const toggleBtn = document.getElementById('cf-toggle-comp-btn');
     if (toggleBtn) toggleBtn.textContent = visible ? 'Hide Competition Set' : 'Show Competition Set';
