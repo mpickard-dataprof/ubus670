@@ -458,7 +458,57 @@ function cfValidateSubmission(jsonStr, round) {
     return { valid: false, error: 'Invalid JSON: expected an object, got ' + (data === null ? 'null' : Array.isArray(data) ? 'array' : typeof data) };
   }
 
-  // Stage 1.5: Normalize field name variants — LLMs use wildly different key names
+  // Stage 1.25: Normalize top-level key names
+  // LLMs produce wildly different structures — map them to canonical keys
+  if (!data.top_10_hire) {
+    data.top_10_hire = data.top_10_hires || data.top10_hire || data.top10 || data.ranking || data.rankings ||
+      data.ranked_candidates || data.hire_list || data.top_candidates || null;
+  }
+  if (!data.bottom_5) {
+    data.bottom_5 = data.bottom_5_candidates || data.bottom5 || data.bottom_candidates ||
+      data.reject_list || data.rejected || data.bottom || null;
+  }
+  if (!data.flags) {
+    // Handle nested: red_flag_review.candidate_red_flags or red_flags
+    data.flags = data.red_flags || data.red_flag_list ||
+      (data.red_flag_review && data.red_flag_review.candidate_red_flags) ||
+      (data.red_flag_review && data.red_flag_review.flags) || null;
+  }
+  if (!data.bias_pairs) {
+    // Handle nested: fairness_review.bias_pairs
+    data.bias_pairs = (data.fairness_review && data.fairness_review.bias_pairs) ||
+      data.fairness_pairs || data.bias_pair_review || null;
+  }
+  if (!data.patterns) {
+    // Handle patterns as object with sub-arrays
+    if (data.patterns && typeof data.patterns === 'object' && !Array.isArray(data.patterns)) {
+      // Flatten all string arrays in the patterns object
+      const flat = [];
+      Object.values(data.patterns).forEach(v => {
+        if (Array.isArray(v)) v.forEach(s => { if (typeof s === 'string') flat.push(s); });
+        else if (typeof v === 'string') flat.push(v);
+      });
+      data.patterns = flat;
+    }
+    if (!data.patterns) {
+      data.patterns = data.pattern_list || data.observations || [];
+    }
+  }
+  // If patterns is still an object (not array), flatten it
+  if (data.patterns && typeof data.patterns === 'object' && !Array.isArray(data.patterns)) {
+    const flat = [];
+    Object.values(data.patterns).forEach(v => {
+      if (Array.isArray(v)) v.forEach(s => { if (typeof s === 'string') flat.push(s); });
+      else if (typeof v === 'string') flat.push(v);
+    });
+    data.patterns = flat;
+  }
+  // Default missing arrays to empty (flags, bias_pairs, patterns are optional-ish in early rounds)
+  if (!data.flags) data.flags = [];
+  if (!data.bias_pairs) data.bias_pairs = [];
+  if (!data.patterns) data.patterns = [];
+
+  // Stage 1.5: Normalize field name variants within entries
   function pickFirst(entry, canonical, alts) {
     if (entry[canonical]) return;
     for (const alt of alts) {
@@ -466,11 +516,11 @@ function cfValidateSubmission(jsonStr, round) {
     }
   }
   const idAlts = ['candidate_id', 'candidate', 'applicant_id', 'applicant', 'name', 'candidate_name'];
-  const reasonAlts = ['reason', 'description', 'explanation', 'rationale', 'justification', 'summary', 'reasoning', 'notes', 'note', 'detail'];
+  const reasonAlts = ['reason', 'description', 'explanation', 'rationale', 'justification', 'summary', 'reasoning', 'notes', 'note', 'detail', 'hire_summary', 'bottom_summary', 'decision_summary'];
   const flagAlts = ['flag', 'description', 'flag_description', 'issue', 'concern', 'finding', 'red_flag', 'detail', 'details', 'note', 'notes', 'reason', 'explanation', 'warning'];
   const severityAlts = ['severity', 'level', 'risk_level', 'risk', 'type', 'category'];
   const candidateIdsAlts = ['candidate_ids', 'ids', 'pair', 'candidates', 'pair_ids', 'members', 'candidate_pair'];
-  const observationAlts = ['observation', 'description', 'reason', 'explanation', 'notes', 'finding', 'analysis', 'note', 'detail', 'summary', 'discrepancy', 'comparison'];
+  const observationAlts = ['observation', 'description', 'reason', 'explanation', 'notes', 'finding', 'analysis', 'note', 'detail', 'summary', 'discrepancy', 'comparison', 'comparison_reason'];
 
   if (Array.isArray(data.top_10_hire)) data.top_10_hire.forEach(e => {
     pickFirst(e, 'id', idAlts);
@@ -490,6 +540,9 @@ function cfValidateSubmission(jsonStr, round) {
     // Handle candidate_a/candidate_b pattern → build candidate_ids array
     if (!e.candidate_ids && e.candidate_a && e.candidate_b) {
       e.candidate_ids = [e.candidate_a, e.candidate_b];
+    }
+    if (!e.candidate_ids && e.candidate_a_id && e.candidate_b_id) {
+      e.candidate_ids = [e.candidate_a_id, e.candidate_b_id];
     }
     pickFirst(e, 'candidate_ids', candidateIdsAlts);
     pickFirst(e, 'observation', observationAlts);
