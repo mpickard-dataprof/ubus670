@@ -1326,28 +1326,88 @@ async function cfExportGradingPackage() {
     let teamCount = 0;
     let teamsWithPipeline = 0;
 
+    // Build leaderboard first (sorted by best score)
+    const teams = [];
     snap.forEach(doc => {
-      const d = doc.data();
+      teams.push({ id: doc.id, data: doc.data() });
+    });
+    teams.sort((a, b) => (b.data.bestScore || 0) - (a.data.bestScore || 0) ||
+      (a.data.attemptsUsed || 0) - (b.data.attemptsUsed || 0) ||
+      (a.data.teamName || '').localeCompare(b.data.teamName || ''));
+
+    // Leaderboard summary
+    report += 'LEADERBOARD\n';
+    report += '-'.repeat(60) + '\n';
+    report += 'Rank  Team                          Best Score  Attempts\n';
+    report += '-'.repeat(60) + '\n';
+    teams.forEach((t, i) => {
+      const d = t.data;
+      const name = (d.teamName || t.id).padEnd(30);
+      const score = ((d.bestScore || 0).toFixed(1) + ' / 100').padStart(12);
+      const att = ((d.attemptsUsed || 0) + '/' + CF_MAX_ATTEMPTS).padStart(6);
+      report += '#' + String(i + 1).padEnd(4) + ' ' + name + score + '  ' + att + '\n';
+    });
+    report += '-'.repeat(60) + '\n\n';
+
+    // Per-team details (in leaderboard order)
+    teams.forEach((t, rank) => {
+      const d = t.data;
       teamCount++;
       report += '='.repeat(60) + '\n';
-      report += 'Team: ' + (d.teamName || doc.id) + '\n';
+      report += '#' + (rank + 1) + ' — ' + (d.teamName || t.id) + '\n';
+      report += '='.repeat(60) + '\n';
       report += 'Members: ' + (d.members || []).join(', ') + '\n';
       report += 'Best Score: ' + (d.bestScore || 0).toFixed(1) + ' / 100\n';
-      report += 'Attempts Used: ' + (d.attemptsUsed || 0) + ' / ' + CF_MAX_ATTEMPTS + '\n';
+      report += 'Attempts Used: ' + (d.attemptsUsed || 0) + ' / ' + CF_MAX_ATTEMPTS + '\n\n';
 
-      // Include per-attempt scores
+      // Per-round submission details
       const attempts = d.attempts || [];
       if (attempts.length > 0) {
-        report += 'Round History: ' + attempts.map(a =>
-          'R' + (a.round || '?') + ':' + (a.scores.total || 0).toFixed(1)
-        ).join(', ') + '\n';
+        // Group best attempt per round
+        const byRound = {};
+        attempts.forEach(a => {
+          const r = a.round || '?';
+          if (!byRound[r] || a.scores.total > byRound[r].scores.total) {
+            byRound[r] = a;
+          }
+        });
+
+        report += 'SUBMISSION HISTORY\n';
+        attempts.forEach(a => {
+          const s = a.scores;
+          report += '  Attempt ' + a.attempt + ' (Round ' + (a.round || '?') + ', ' + (a.submittedAt || '?') + ')\n';
+          report += '    Top 10: ' + (s.top10 || 0).toFixed(1) + '/30  |  ' +
+            'Bottom 5: ' + (s.bottom5 || 0).toFixed(1) + '/10  |  ' +
+            'Flags: ' + (s.flags || 0).toFixed(1) + '/30  |  ' +
+            'Bias: ' + (s.biasPairs || 0).toFixed(1) + '/15  |  ' +
+            'Patterns: ' + (s.patterns || 0).toFixed(1) + '/15\n';
+          report += '    TOTAL: ' + (s.total || 0).toFixed(1) + ' / 100\n';
+        });
+
+        report += '\n  BEST PER ROUND\n';
+        [1, 2, 3].forEach(r => {
+          if (byRound[r]) {
+            const s = byRound[r].scores;
+            report += '    Round ' + r + ': ' + (s.total || 0).toFixed(1) + ' / 100' +
+              '  (Top10:' + (s.top10 || 0).toFixed(1) +
+              ' Bot5:' + (s.bottom5 || 0).toFixed(1) +
+              ' Flags:' + (s.flags || 0).toFixed(1) +
+              ' Bias:' + (s.biasPairs || 0).toFixed(1) +
+              ' Pats:' + (s.patterns || 0).toFixed(1) + ')\n';
+          } else {
+            report += '    Round ' + r + ': no submission\n';
+          }
+        });
+        report += '\n';
+      } else {
+        report += 'SUBMISSIONS: none\n\n';
       }
 
+      // Pipeline report
       if (d.pipelineReport && d.pipelineReport.agents && d.pipelineReport.agents.length > 0) {
         teamsWithPipeline++;
-        report += 'Pipeline Agents: ' + d.pipelineReport.agents.length + '\n';
-        report += 'Pipeline Saved: ' + (d.pipelineReport.lastSavedAt || 'unknown') +
-          ' by ' + (d.pipelineReport.lastSavedBy || 'unknown') + '\n\n';
+        report += 'PIPELINE (' + d.pipelineReport.agents.length + ' agents, saved ' +
+          (d.pipelineReport.lastSavedAt || '?') + ' by ' + (d.pipelineReport.lastSavedBy || '?') + ')\n';
 
         d.pipelineReport.agents.forEach((agent, i) => {
           report += '  Agent ' + (i + 1) + ': ' + agent.name + '\n';
@@ -1359,7 +1419,7 @@ async function cfExportGradingPackage() {
           report += '  ' + '\u2500'.repeat(40) + '\n\n';
         });
       } else {
-        report += 'Pipeline: NOT SUBMITTED\n\n';
+        report += 'PIPELINE: NOT SUBMITTED\n\n';
       }
     });
 
