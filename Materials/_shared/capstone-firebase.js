@@ -1014,6 +1014,13 @@ async function cfCheckCompetitionVisibility() {
     const resumeSection = document.getElementById('cf-competition-resumes');
     if (resumeSection) resumeSection.style.display = (visible || cfIsInstructor) ? '' : 'none';
 
+    // Pipeline report: only visible after competition is frozen (or to instructor)
+    const pipelineSection = document.getElementById('cf-pipeline-section');
+    if (pipelineSection && cfTeamId) {
+      pipelineSection.style.display = (frozen || cfIsInstructor) ? '' : 'none';
+      if ((frozen || cfIsInstructor) && typeof cfInitPipelineFromData === 'function') cfInitPipelineFromData();
+    }
+
     const toggleBtn = document.getElementById('cf-toggle-comp-btn');
     if (toggleBtn) toggleBtn.textContent = visible ? 'Hide Competition Set' : 'Show Competition Set';
 
@@ -1308,10 +1315,10 @@ async function cfSavePipelineReport() {
 }
 
 function cfShowPipelineSection() {
-  const el = document.getElementById('cf-pipeline-section');
-  if (el && cfTeamId) {
-    el.style.display = '';
-    if (typeof cfInitPipelineFromData === 'function') cfInitPipelineFromData();
+  // Visibility is controlled by cfCheckCompetitionVisibility() via settings listener.
+  // On initial load, just init the data — the listener will handle display.
+  if (cfTeamId && typeof cfInitPipelineFromData === 'function') {
+    cfInitPipelineFromData();
   }
 }
 
