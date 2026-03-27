@@ -722,7 +722,6 @@ function cfShowScoreBreakdown(scores, attemptNum) {
   // Helper: format "X / Y possible (Z max)" with a hint
   function fmtRow(pts, ceilMax, fullMax, hint) {
     if (!ceil) return pts.toFixed(1) + ' / ' + fullMax;
-    const pct = ceilMax > 0 ? Math.round(pts / ceilMax * 100) : 0;
     return pts.toFixed(1) + ' / ' + ceilMax.toFixed(1) + ' possible' +
       (rd < 3 ? ' <span style="color:#999;font-size:0.8rem;">(' + fullMax + ' max)</span>' : '') +
       (hint ? '<br><span style="color:#666;font-size:0.8rem;">' + hint + '</span>' : '');
@@ -1017,8 +1016,14 @@ async function cfCheckCompetitionVisibility() {
     // Pipeline report: only visible after competition is frozen (or to instructor)
     const pipelineSection = document.getElementById('cf-pipeline-section');
     if (pipelineSection && cfTeamId) {
-      pipelineSection.style.display = (frozen || cfIsInstructor) ? '' : 'none';
-      if ((frozen || cfIsInstructor) && typeof cfInitPipelineFromData === 'function') cfInitPipelineFromData();
+      const showPipeline = frozen || cfIsInstructor;
+      const wasHidden = pipelineSection.style.display === 'none';
+      pipelineSection.style.display = showPipeline ? '' : 'none';
+      // Only init from Firestore when first revealing — not on every settings change,
+      // which would wipe unsaved edits
+      if (showPipeline && wasHidden && typeof cfInitPipelineFromData === 'function') {
+        cfInitPipelineFromData();
+      }
     }
 
     const toggleBtn = document.getElementById('cf-toggle-comp-btn');
