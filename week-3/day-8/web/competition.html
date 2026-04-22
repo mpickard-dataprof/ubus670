@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UBUS 670: Capstone Competition</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../../../_shared/styles.css">
+
+    <style>
+        body { font-family: Georgia, 'Times New Roman', serif; background: #f5f5f5; margin: 0; }
+
+        /* Navigation */
+        .global-nav {
+            position: sticky; top: 0; z-index: 100;
+            background: white; border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px; display: flex;
+            justify-content: space-between; align-items: center;
+            font-family: 'Montserrat', sans-serif; font-size: 14px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #666; }
+        .breadcrumb a { color: #1D428A; text-decoration: none; font-weight: 500; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+        .nav-pills { display: flex; gap: 8px; }
+        .nav-pill {
+            padding: 8px 16px; border-radius: 6px; text-decoration: none;
+            font-weight: 600; font-size: 13px; transition: all 0.2s;
+        }
+        .nav-pill.active { background: #C8102E; color: white; }
+        .nav-pill:not(.active) { background: #f0f0f0; color: #333; }
+        .nav-pill:not(.active):hover { background: #e0e0e0; }
+
+        /* Main Content */
+        .main-content { max-width: 1100px; margin: 0 auto; padding: 30px; }
+
+        /* Sign-in Gate */
+        .sign-in-gate {
+            background: white; padding: 60px 40px; border-radius: 12px;
+            text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin: 40px auto; max-width: 500px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .sign-in-gate h2 { color: #1D428A; margin: 0 0 15px; }
+        .sign-in-gate p { color: #666; margin: 0 0 25px; }
+        .sign-in-gate button {
+            padding: 12px 30px; border-radius: 8px; border: none;
+            background: #1D428A; color: white; font-weight: 600; font-size: 15px;
+            cursor: pointer; font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Section Headers */
+        .section-title {
+            font-family: 'Montserrat', sans-serif; font-size: 1.3rem;
+            font-weight: 700; color: #1D428A;
+            border-bottom: 3px solid #1D428A; padding-bottom: 10px;
+            margin: 40px 0 20px;
+        }
+
+        /* Team Info Bar */
+        .team-bar {
+            background: white; padding: 15px 20px; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Resume Cards */
+        .resume-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px; margin-bottom: 30px; align-items: start;
+        }
+        .resume-card {
+            background: white; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden;
+        }
+        .resume-header {
+            padding: 12px 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .resume-id {
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 0.85rem; color: #1D428A;
+            background: #EBF0F7; padding: 3px 8px; border-radius: 4px;
+        }
+        .resume-name {
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 0.9rem; color: #333; flex-grow: 1;
+        }
+        .copy-btn {
+            padding: 4px 12px; border: 1px solid #ddd; border-radius: 4px;
+            background: white; color: #666; font-size: 0.75rem;
+            cursor: pointer; font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: #1D428A; color: white; border-color: #1D428A; }
+        .resume-text {
+            display: none; padding: 16px; margin: 0;
+            font-family: 'Courier New', monospace; font-size: 0.8rem;
+            line-height: 1.5; background: #FAFAFA; color: #333; white-space: pre-wrap;
+            max-height: 500px; overflow-y: auto;
+        }
+
+        /* Submission Area */
+        .submission-area {
+            background: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 30px;
+        }
+        .json-textarea {
+            width: 100%; min-height: 200px; padding: 16px;
+            font-family: 'Courier New', monospace; font-size: 0.85rem;
+            border: 2px solid #e0e0e0; border-radius: 8px;
+            resize: vertical; line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .json-textarea:focus { border-color: #1D428A; outline: none; }
+
+        .btn-row { display: flex; gap: 12px; margin-top: 15px; }
+        .btn-primary {
+            padding: 12px 24px; border: none; border-radius: 6px;
+            background: #1D428A; color: white; font-weight: 600;
+            cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.9rem;
+        }
+        .btn-primary:hover { background: #163570; }
+        .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-submit {
+            background: #C8102E;
+        }
+        .btn-submit:hover:not(:disabled) { background: #a00d24; }
+
+        /* Score Breakdown */
+        .score-breakdown {
+            background: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 30px;
+        }
+
+        /* Leaderboard */
+        .leaderboard-section {
+            background: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 30px;
+        }
+        .timer {
+            font-family: 'Montserrat', sans-serif; font-size: 1.1rem;
+            font-weight: 700; color: #C8102E; text-align: center;
+            padding: 10px; margin-bottom: 15px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: #FFF3CD; padding: 25px; border-radius: 12px;
+            border: 2px solid #FFE083; margin-bottom: 30px;
+        }
+
+        /* Team Picker */
+        .team-picker {
+            background: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin: 30px 0;
+        }
+
+        /* Error */
+        .error-msg {
+            background: #f8d7da; color: #721c24; padding: 15px 20px;
+            border-radius: 8px; margin: 20px 0; display: none;
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+        }
+
+        /* Round Stepper */
+        .round-stepper {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 20px; font-family: 'Montserrat', sans-serif;
+        }
+        .round-stepper .round-btn {
+            padding: 10px 22px; border: 2px solid #1D428A; border-radius: 8px;
+            background: white; color: #1D428A; font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; transition: all 0.2s;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .round-stepper .round-btn.active {
+            background: #1D428A; color: white;
+        }
+        .round-stepper .round-btn.locked {
+            background: #e9e9e9; color: #aaa; border-color: #ddd; cursor: not-allowed;
+        }
+        .round-stepper .round-status {
+            font-size: 0.85rem; color: #666; margin-left: 12px;
+        }
+        .copy-all-btn {
+            display: inline-block; padding: 10px 20px; border: 2px solid #C8102E;
+            border-radius: 8px; background: #C8102E; color: white;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            font-family: 'Montserrat', sans-serif; transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+        .copy-all-btn:hover { background: #a00d24; border-color: #a00d24; }
+        .round-info-box {
+            background: #EBF0F7; border-left: 4px solid #1D428A;
+            padding: 12px 16px; margin-bottom: 16px; border-radius: 0 8px 8px 0;
+            font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: #333;
+        }
+
+        /* Pipeline Report Agent Cards */
+        .pipeline-agent-card {
+            background: #f8f8f8; padding: 20px; border-radius: 8px;
+            border: 1px solid #e0e0e0; margin-bottom: 12px;
+        }
+        .pipeline-agent-card .agent-number {
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 0.85rem; color: #1D428A;
+            background: #EBF0F7; padding: 3px 10px; border-radius: 4px;
+            display: inline-block; margin-bottom: 10px;
+        }
+        .pipeline-agent-card input[type="text"] {
+            width: 100%; padding: 10px 12px; border: 2px solid #e0e0e0;
+            border-radius: 6px; font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem; margin-bottom: 10px; box-sizing: border-box;
+        }
+        .pipeline-agent-card input[type="text"]:focus,
+        .pipeline-agent-card textarea:focus {
+            border-color: #1D428A; outline: none;
+        }
+        .pipeline-agent-card textarea {
+            width: 100%; min-height: 120px; padding: 12px;
+            font-family: 'Courier New', monospace; font-size: 0.85rem;
+            border: 2px solid #e0e0e0; border-radius: 6px;
+            resize: vertical; line-height: 1.5; box-sizing: border-box;
+        }
+        .pipeline-card-controls {
+            display: flex; gap: 8px; margin-top: 10px; align-items: center;
+        }
+        .pipeline-card-controls button {
+            padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px;
+            background: white; cursor: pointer; font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; font-weight: 600; transition: all 0.2s;
+        }
+        .pipeline-card-controls .move-btn:hover { background: #EBF0F7; border-color: #1D428A; color: #1D428A; }
+        .pipeline-card-controls .remove-btn { color: #C8102E; border-color: #C8102E; }
+        .pipeline-card-controls .remove-btn:hover { background: #C8102E; color: white; }
+        .pipeline-card-controls button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        footer {
+            text-align: center; padding: 40px 20px; color: #888;
+            font-size: 0.9rem; border-top: 1px solid #e0e0e0; background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="index.html">Day 8 &ndash; Capstone</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Competition</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="competition.html" class="nav-pill active">Competition</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+
+        <!-- Error Message -->
+        <div id="cf-error-msg" class="error-msg"></div>
+
+        <!-- Sign-in Gate -->
+        <div id="cf-sign-in-gate" class="sign-in-gate">
+            <div style="font-size:48px;margin-bottom:20px;">&#x1F3C6;</div>
+            <h2>Capstone Competition</h2>
+            <p>Sign in with your NIU email to access the competition, submit results, and see the leaderboard.</p>
+            <button onclick="cfSignIn()">Sign In with Google</button>
+        </div>
+
+        <!-- Team Picker (shown if signed in but not on a team) -->
+        <div id="cf-team-picker" class="team-picker" style="display:none;"></div>
+
+        <!-- Team Info Bar -->
+        <div id="cf-team-info" class="team-bar" style="display:none;"></div>
+
+        <!-- Main Competition Content (hidden until signed in + on team) -->
+        <div id="cf-competition-content" style="display:none;">
+
+            <!-- Admin Panel (instructor only) -->
+            <div id="cf-admin-panel" class="admin-panel" style="display:none;"></div>
+
+            <!-- Leaderboard -->
+            <h2 class="section-title">Leaderboard</h2>
+            <div class="leaderboard-section">
+                <div id="cf-timer" class="timer"></div>
+                <div id="cf-leaderboard"></div>
+            </div>
+
+            <!-- Competition Resumes (Round-Based) -->
+            <div id="cf-competition-resumes" style="display:none;">
+                <h2 class="section-title">Competition Resumes</h2>
+
+                <div class="round-info-box" id="cf-round-info">
+                    <strong>Round 1 of 3</strong> &mdash; 10 resumes. Feed them into your pipeline, then submit your Ranker output below.
+                </div>
+
+                <div class="round-stepper">
+                    <button class="round-btn active" id="cf-round-btn-1" onclick="cfSwitchRound(1)">Round 1</button>
+                    <button class="round-btn locked" id="cf-round-btn-2" onclick="cfSwitchRound(2)">Round 2</button>
+                    <button class="round-btn locked" id="cf-round-btn-3" onclick="cfSwitchRound(3)">Round 3</button>
+                    <span class="round-status" id="cf-round-status">10 of 30 resumes</span>
+                </div>
+
+                <button class="copy-all-btn" onclick="cfCopyBatch()">&#128203; Copy All 10 Resumes in This Round</button>
+
+                <div id="cf-resume-grid" class="resume-grid">
+                    <!-- Resume cards rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Submission -->
+            <h2 class="section-title">Submit Results</h2>
+            <div class="submission-area">
+                <p style="margin:0 0 12px;color:#666;">
+                    Paste your pipeline's JSON output below. Your Ranker agent should produce this JSON structure.
+                    See the <a href="rubric.html" style="color:#1D428A;">rubric</a> for scoring details.
+                </p>
+                <div style="background:#EBF0F7;border:1px solid #B8C9E0;border-radius:8px;padding:10px 16px;margin-bottom:14px;font-family:Montserrat,sans-serif;font-size:0.82rem;color:#333;">
+                    <strong>Note:</strong> Any team member can submit, but every submission uses one of your team's 6 shared attempts.
+                    Coordinate with your teammates so you don't accidentally use attempts on duplicate submissions.
+                </div>
+                <div style="background:#FFF3CD;border:1px solid #FFE083;border-radius:8px;padding:12px 16px;margin-bottom:14px;font-family:Montserrat,sans-serif;font-size:0.82rem;">
+                    <strong>Exact key names required:</strong>
+                    <code>top_10_hire</code> (each: <code>rank</code>, <code>id</code>, <code>reason</code>) &bull;
+                    <code>bottom_5</code> (each: <code>id</code>, <code>reason</code>) &bull;
+                    <code>flags</code> (each: <code>candidate_id</code>, <code>flag</code>, <code>severity</code>: <code>"minor"</code> or <code>"disqualifying"</code>) &bull;
+                    <code>bias_pairs</code> (each: <code>candidate_ids</code> array, <code>observation</code>) &bull;
+                    <code>patterns</code> (array of strings)
+                </div>
+                <textarea id="cf-json-input" class="json-textarea" placeholder='{
+  "top_10_hire": [
+    {"rank": 1, "id": "C-XX", "reason": "..."},
+    {"rank": 2, "id": "C-XX", "reason": "..."}
+  ],
+  "bottom_5": [
+    {"id": "C-XX", "reason": "..."}
+  ],
+  "flags": [
+    {"candidate_id": "C-XX", "flag": "...", "severity": "minor"}
+  ],
+  "bias_pairs": [
+    {"candidate_ids": ["C-XX", "C-XX"], "observation": "..."}
+  ],
+  "patterns": [
+    "C-XX, C-XX, and C-XX share..."
+  ]
+}'></textarea>
+                <div class="btn-row">
+                    <button class="btn-primary" onclick="cfValidateAndPreview()">Validate &amp; Preview</button>
+                    <button id="cf-submit-btn" class="btn-primary btn-submit" onclick="cfSubmitResults()" disabled>Submit (uses 1 attempt)</button>
+                </div>
+                <div id="cf-submission-preview" style="margin-top:20px;"></div>
+            </div>
+
+            <!-- Score Breakdown -->
+            <div id="cf-score-breakdown" class="score-breakdown" style="display:none;"></div>
+
+            <!-- Pipeline Report -->
+            <div id="cf-pipeline-section" style="display:none;">
+                <h2 class="section-title">Pipeline Report</h2>
+                <div class="submission-area">
+                    <p style="margin:0 0 12px;color:#666;">
+                        Document your ADK pipeline by adding each agent below, in pipeline order.
+                        Include the agent name and its full system prompt.
+                        This is required for grading &mdash; it helps us evaluate your prompt engineering and pipeline design.
+                    </p>
+                    <div id="cf-pipeline-agents">
+                        <!-- Agent cards rendered by JS -->
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-primary" onclick="cfAddAgentCard()">+ Add Agent</button>
+                        <button id="cf-save-pipeline-btn" class="btn-primary btn-submit" onclick="cfSavePipelineReport()">Save Pipeline Report</button>
+                    </div>
+                    <div id="cf-pipeline-status" style="margin-top:12px;font-family:Montserrat,sans-serif;font-size:0.85rem;"></div>
+                </div>
+            </div>
+
+        </div><!-- end cf-competition-content -->
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Northern Illinois University &mdash; UBUS 670: AI for Business Leaders</p>
+    </footer>
+
+    <!-- Resume Data + Firebase Engine -->
+    <script src="competition-resumes.js"></script>
+    <script src="../../../_shared/capstone-firebase.js"></script>
+
+    <!-- Round-based resume rendering -->
+    <script>
+    // Tracks which rounds the instructor has unlocked (1 is always unlocked)
+    var cfUnlockedRounds = [1];
+
+    function escHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function cfRenderRound(round) {
+        const grid = document.getElementById('cf-resume-grid');
+        if (!grid || typeof COMP_RESUMES === 'undefined') return;
+        grid.innerHTML = '';
+
+        const batch = COMP_RESUMES.filter(r => r.batch === round);
+        batch.forEach(resume => {
+            const card = document.createElement('div');
+            card.className = 'resume-card';
+            card.innerHTML = `
+                <div class="resume-header" style="cursor:pointer;"
+                    onclick="var p=this.nextElementSibling;p.style.display=p.style.display==='block'?'none':'block';">
+                    <span class="resume-id">${resume.id}</span>
+                    <span class="resume-name">${resume.name}</span>
+                    <span style="font-size:0.7rem;color:#999;">click to preview</span>
+                    <button class="copy-btn" data-copy-id="${resume.id}"
+                        onclick="event.stopPropagation();cfCopyResume('${resume.id}')">Copy</button>
+                </div>
+                <pre class="resume-text" id="resume-${resume.id}" style="display:none">${escHtml(resume.text)}</pre>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function cfSwitchRound(round) {
+        if (!cfUnlockedRounds.includes(round)) return;
+        cfCurrentRound = round;
+
+        // Update stepper buttons
+        for (let r = 1; r <= 3; r++) {
+            const btn = document.getElementById('cf-round-btn-' + r);
+            if (!btn) continue;
+            btn.classList.remove('active', 'locked');
+            if (r === round) btn.classList.add('active');
+            else if (!cfUnlockedRounds.includes(r)) btn.classList.add('locked');
+        }
+
+        // Update info box with prominent instructions
+        const cumulativeCount = round * 10;
+        const info = document.getElementById('cf-round-info');
+        if (info) {
+            const roundMsg = round < 3
+                ? `<span style="color:#C8102E;font-weight:700;">NEW RESUMES!</span> Feed these 10 into your pipeline. Your Ranker will accumulate all ${cumulativeCount} candidates seen so far. <strong>You must re-submit your updated rankings below.</strong>`
+                : `<span style="color:#C8102E;font-weight:700;">FINAL ROUND!</span> 10 new resumes. Your Ranker should now rank all 30 candidates. <strong>Exact counts required: top 10 + bottom 5.</strong>`;
+            info.innerHTML = `<strong>Round ${round} of 3</strong> &mdash; ${roundMsg}`;
+            // Flash the info box to draw attention
+            info.style.background = '#FFEB3B';
+            setTimeout(() => { info.style.background = '#EBF0F7'; }, 3000);
+        }
+
+        // Update status
+        const status = document.getElementById('cf-round-status');
+        if (status) status.textContent = `${cumulativeCount} of 30 resumes`;
+
+        // Update team UI to show current round
+        if (typeof cfShowTeamUI === 'function') cfShowTeamUI();
+
+        cfRenderRound(round);
+    }
+
+    function cfCopyBatch() {
+        if (typeof COMP_RESUMES === 'undefined') return;
+        const batch = COMP_RESUMES.filter(r => r.batch === cfCurrentRound);
+        const allText = batch.map(r => r.text).join('\n\n---\n\n');
+        navigator.clipboard.writeText(allText).then(() => {
+            const btn = document.querySelector('.copy-all-btn');
+            if (btn) {
+                btn.textContent = 'Copied all ' + batch.length + '!';
+                setTimeout(() => { btn.innerHTML = '&#128203; Copy All 10 Resumes in This Round'; }, 2000);
+            }
+        }).catch(() => {
+            alert('Copy failed — your browser may require HTTPS for clipboard access. Try copying resumes individually.');
+        });
+    }
+
+    // Initial render of round 1
+    cfRenderRound(1);
+
+    // ─── Pipeline Report UI ─────────────────────────────────────────
+    var cfPipelineAgents = []; // In-memory array of {name, systemPrompt}
+
+    function cfSyncPipelineFromDOM() {
+        var cards = document.querySelectorAll('.pipeline-agent-card');
+        cards.forEach(function(card, i) {
+            if (cfPipelineAgents[i]) {
+                var nameInput = card.querySelector('input[type="text"]');
+                var promptTextarea = card.querySelector('textarea');
+                if (nameInput) cfPipelineAgents[i].name = nameInput.value;
+                if (promptTextarea) cfPipelineAgents[i].systemPrompt = promptTextarea.value;
+            }
+        });
+    }
+
+    function cfRenderPipelineCards() {
+        var container = document.getElementById('cf-pipeline-agents');
+        if (!container) return;
+        container.innerHTML = '';
+
+        cfPipelineAgents.forEach(function(agent, i) {
+            var card = document.createElement('div');
+            card.className = 'pipeline-agent-card';
+            card.innerHTML =
+                '<span class="agent-number">Agent ' + (i + 1) + '</span>' +
+                '<input type="text" placeholder="Agent name (e.g., Parser, Evaluator, Ranker)"' +
+                '  value="' + escHtml(agent.name) + '"' +
+                '  oninput="cfPipelineAgents[' + i + '].name=this.value">' +
+                '<textarea placeholder="Paste the full system prompt for this agent..."' +
+                '  oninput="cfPipelineAgents[' + i + '].systemPrompt=this.value">' + escHtml(agent.systemPrompt) + '</textarea>' +
+                '<div class="pipeline-card-controls">' +
+                '  <button class="move-btn" onclick="cfMoveAgent(' + i + ',-1)"' + (i === 0 ? ' disabled' : '') + '>&#9650; Up</button>' +
+                '  <button class="move-btn" onclick="cfMoveAgent(' + i + ',1)"' + (i === cfPipelineAgents.length - 1 ? ' disabled' : '') + '>&#9660; Down</button>' +
+                '  <button class="remove-btn" onclick="cfRemoveAgent(' + i + ')">Remove</button>' +
+                '</div>';
+            container.appendChild(card);
+        });
+    }
+
+    function cfAddAgentCard() {
+        cfSyncPipelineFromDOM();
+        cfPipelineAgents.push({ name: '', systemPrompt: '' });
+        cfRenderPipelineCards();
+        var container = document.getElementById('cf-pipeline-agents');
+        if (container && container.lastElementChild) {
+            container.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            var nameInput = container.lastElementChild.querySelector('input[type="text"]');
+            if (nameInput) setTimeout(function() { nameInput.focus(); }, 300);
+        }
+    }
+
+    function cfRemoveAgent(index) {
+        if (cfPipelineAgents.length <= 1) {
+            alert('You need at least one agent in your pipeline.');
+            return;
+        }
+        cfSyncPipelineFromDOM();
+        cfPipelineAgents.splice(index, 1);
+        cfRenderPipelineCards();
+    }
+
+    function cfMoveAgent(index, direction) {
+        var newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= cfPipelineAgents.length) return;
+        cfSyncPipelineFromDOM();
+        var temp = cfPipelineAgents[index];
+        cfPipelineAgents[index] = cfPipelineAgents[newIndex];
+        cfPipelineAgents[newIndex] = temp;
+        cfRenderPipelineCards();
+    }
+
+    function cfInitPipelineFromData() {
+        if (cfTeamData && cfTeamData.pipelineReport && cfTeamData.pipelineReport.agents) {
+            cfPipelineAgents = cfTeamData.pipelineReport.agents.map(function(a) {
+                return { name: a.name || '', systemPrompt: a.systemPrompt || '' };
+            });
+        } else {
+            cfPipelineAgents = [];
+        }
+        cfRenderPipelineCards();
+
+        var statusEl = document.getElementById('cf-pipeline-status');
+        if (statusEl && cfTeamData && cfTeamData.pipelineReport && cfTeamData.pipelineReport.lastSavedAt) {
+            var savedDate = new Date(cfTeamData.pipelineReport.lastSavedAt);
+            statusEl.innerHTML = '<span style="color:#2E7D32;">Last saved: ' + savedDate.toLocaleString() +
+                ' by ' + escHtml(cfTeamData.pipelineReport.lastSavedBy || 'unknown') + '</span>';
+        }
+    }
+    </script>
+
+</body>
+</html>

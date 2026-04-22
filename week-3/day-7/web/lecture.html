@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UBUS 670: Day 7 - Introduction to Agentic AI</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Reveal.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- NIU Theme -->
+    <link rel="stylesheet" href="../../_shared/reveal-theme-niu.css">
+
+    <style>
+        /* ============================================
+           PERSISTENT NAVIGATION & BREADCRUMB
+           ============================================ */
+        .global-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.98);
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-links a {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-links a.primary {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-links a.primary:hover { background: #a00d24; }
+        .nav-links a.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-links a.secondary:hover { background: #e0e0e0; }
+
+        /* Adjust slides to account for fixed nav */
+        .reveal .slides { margin-top: 30px; }
+
+        /* Shrink background images for breathing room.
+           border-box makes padding shrink the content area inward.
+           contain then calculates within the smaller content-box.
+           3% vertical clears nav bar (~45px on 1920w) + bottom margin.
+           Scales proportionally on any screen size.
+           Background-color is unaffected by background-origin. */
+        .reveal .slide-background-content {
+            box-sizing: border-box;
+            padding: 3% 2%;
+            background-origin: content-box;
+        }
+
+        /* ============================================
+           INTERACTIVE CHECKPOINT QUIZ (light style)
+           ============================================ */
+        .quiz-container {
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: left;
+            color: #333;
+        }
+        .quiz-container h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #1D428A;
+        }
+        .quiz-container .quiz-question {
+            font-size: 1.05em;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .quiz-option {
+            padding: 18px 22px;
+            background: #ffffff;
+            border: 2px solid #d0d5dd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            color: #333;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .quiz-option:hover {
+            border-color: #1D428A;
+            background: #f0f4fa;
+        }
+        .quiz-option.correct {
+            border-color: #43B02A;
+            background: rgba(67, 176, 42, 0.12);
+            color: #2d7a1e;
+        }
+        .quiz-option.incorrect {
+            border-color: #C8102E;
+            background: rgba(200, 16, 46, 0.12);
+            color: #a00d24;
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct-fb {
+            background: rgba(67, 176, 42, 0.1);
+            color: #2d7a1e;
+            border: 1px solid rgba(67, 176, 42, 0.3);
+        }
+        .quiz-feedback.incorrect-fb {
+            background: rgba(200, 16, 46, 0.1);
+            color: #a00d24;
+            border: 1px solid rgba(200, 16, 46, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Persistent Navigation -->
+    <div class="global-nav">
+        <div class="breadcrumb">
+            <a href="index.html">Day 7</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Lecture</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="secondary">Dashboard</a>
+            <a href="lab-adk.html" class="secondary">Lab (ADK)</a>
+            <a href="lab-mindstudio.html" class="secondary">Lab (MS)</a>
+            <a href="quiz.html" class="secondary">Quiz</a>
+            <a href="day7-lecture.pdf" class="primary" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ============================================
+                 SECTION 1: FROM SINGLE AI TO AI TEAMS
+                 ============================================ -->
+
+            <!-- Slide 1: Title — Introduction to Agentic AI -->
+            <section data-background-image="images/slide-01.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Welcome to Day 7 and the start of Week 3. Over the past two weeks, you've built AI systems, tested them, and hardened them. Today we take a fundamentally different step: instead of making one AI better, we're going to make multiple AIs work together. This is agentic AI — and it's how the most powerful business AI systems actually work.
+                </aside>
+            </section>
+
+            <!-- Slide 2: Learning Objectives -->
+            <section data-background-image="images/slide-02.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Four objectives today. First two are conceptual — understanding what agents are and how they work internally. Third is about patterns — the blueprints for organizing multiple agents. Fourth is hands-on — you'll actually build a two-agent system in the lab. By the end of today, you'll have built your first multi-agent AI system.
+                </aside>
+            </section>
+
+            <!-- Slide 3: From Red Teaming to Automated Verification (Day 6 → 7 Bridge) -->
+            <section data-background-image="images/slide-03.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Remember how Day 6 ended? We previewed today: "What if one AI could check another?" That's exactly what we're building. On Day 6, YOU were the red team — humans testing AI. Today, we're going to make AI test AI. Agent 1 classifies emails. Agent 2 double-checks the classification. Disagreements get flagged for human review. This is the verification pattern, and it's one of the most practical multi-agent architectures in business.
+                </aside>
+            </section>
+
+            <!-- Slide 4: The Limits of a Single AI -->
+            <section data-background-image="images/slide-04.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Think about what we built on Day 5. A single AI reading emails and classifying them. It works well most of the time, but it has no way to know when it's wrong. No self-correction, no verification, no persistent memory, no tool access. It's like having one employee do every job — triage, quality check, escalation — with no oversight. In any real business, you'd never let one person handle everything without review.
+                </aside>
+            </section>
+
+            <!-- Slide 5: The Vision — AI Teams -->
+            <section data-background-image="images/slide-05.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    This is the core insight of agentic AI: instead of asking one AI to do everything, you build a team of specialized AIs — each with a clear role, clear inputs and outputs, and clear handoffs. Just like a well-organized business unit. Agent 1 is your triage specialist. Agent 2 is your quality reviewer. Each one does one thing well, and together they create a system that's more reliable than any single AI could be.
+                </aside>
+            </section>
+
+            <!-- ============================================
+                 SECTION 2: WHAT MAKES AN AGENT?
+                 ============================================ -->
+
+            <!-- Slide 6: Agent vs. LLM Call -->
+            <section data-background-image="images/slide-06.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Here's the key distinction. An LLM call is like asking a stranger on the street a question — anonymous, amnesic, text-only. An agent is like hiring an employee — named role, context-aware, tool-equipped. Your Day 5 system was closer to an LLM call. Today we're turning it into an agent with a role, tools, and the ability to collaborate with a second agent.
+                </aside>
+            </section>
+
+            <!-- Slide 7: Agent Anatomy — Perception, Reasoning, Action -->
+            <section data-background-image="images/slide-07.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Every agent follows this cycle: perceive the world, reason about what to do, then act. Your Triage Agent perceives the email, reasons about its classification, and acts by producing structured output. Your Quality Checker perceives the original email plus the classification, reasons about whether the classification is correct, and acts by either agreeing or flagging a disagreement. This framework applies to every agent you'll ever build.
+                </aside>
+            </section>
+
+            <!-- Slide 8: Agent Instructions — System Prompts, Evolved -->
+            <section data-background-image="images/slide-08.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Agent instructions are an evolution of the system prompts you wrote on Day 5 and hardened on Day 6. They include everything a system prompt has — role, output format, behavioral rules — plus collaboration rules, tool access, and awareness of other agents. Your Day 5 Beacon system prompt is about to become Agent 1's instructions, with one key addition: "After classifying, pass your output to the Quality Checker."
+                </aside>
+            </section>
+
+            <!-- Slide 9: Business Agents in the Wild -->
+            <section data-background-image="images/slide-09.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Agents aren't just for email triage. Look at these business examples — each one follows the same perception-reasoning-action pattern. Expense processing reads receipts and checks policy. Compliance review reads documents and flags violations. Resume screening — a preview of your Days 8-9 capstone — reads resumes and ranks candidates. The pattern is universal. Once you understand it, you can design agents for almost any structured business process.
+                </aside>
+            </section>
+
+            <!-- Slide 10: Agent Governance -->
+            <section data-background-image="images/slide-10.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Agents need oversight just like employees do. Trust boundaries define what each agent is allowed to do. Human-in-the-loop defines when agents should stop and ask a human. Monitoring lets you track what agents are doing in real time. And the audit trail lets you go back and understand why the system made a particular decision. Your Quality Checker is actually creating this audit trail automatically: for every email, you have Agent 1's classification AND Agent 2's verification.
+                </aside>
+            </section>
+
+            <!-- ============================================
+                 CHECKPOINT QUIZ 1: AGENT CONCEPTS
+                 (Interactive — replaces NotebookLM slide 11)
+                 ============================================ -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz1">
+                    <h3>Checkpoint: Agent Concepts</h3>
+                    <p class="quiz-question">What is the most accurate distinction between an AI agent and a simple LLM call?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">A) An agent uses a newer, more powerful model</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', true)">B) An agent has a role, memory, tools, and can collaborate with other agents</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">C) An agent always produces better output than an LLM call</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz1', false)">D) An agent requires specialized hardware to run</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback-correct">Correct! An agent has a defined role, persistent memory, tool access, and the ability to collaborate — making it fundamentally different from a one-shot LLM call.</div>
+                    <div class="quiz-feedback" id="quiz1-feedback-incorrect">Not quite. The key distinction is that an agent has a defined role, persistent memory, tool access, and the ability to collaborate with other agents — not just model power or output quality.</div>
+                </div>
+                <aside class="notes">
+                    Quick check. This tests whether students grasp the core distinction. The answer is B — agents have a role, memory, tools, and collaboration ability. It's not about model power, output quality, or hardware.
+                </aside>
+            </section>
+
+            <!-- ============================================
+                 SECTION 3: ORCHESTRATION PATTERNS
+                 ============================================ -->
+
+            <!-- Slide 12: Section Divider — Orchestration Patterns -->
+            <section data-background-image="images/slide-12.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Now that we understand what agents are, let's talk about how they work together. There are three fundamental patterns for organizing multiple agents: sequential, parallel, and loop. Each pattern fits different business scenarios, and knowing which to use is a crucial architectural skill.
+                </aside>
+            </section>
+
+            <!-- Slide 13: Sequential Pattern -->
+            <section data-background-image="images/slide-13.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    The sequential pattern is like an assembly line. Work flows from Agent A to Agent B, each one adding value. This is what you'll build today: the email goes to the Triage Agent, which classifies it, then the classification goes to the Quality Checker, which verifies it. Each agent's output becomes the next agent's input. Sequential is best when there are natural dependencies — Agent B can't start until Agent A is done.
+                </aside>
+            </section>
+
+            <!-- Slide 14: Parallel Pattern -->
+            <section data-background-image="images/slide-14.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    The parallel pattern is like having five analysts working on different reports at the same time. Instead of processing 100 emails one by one, you spin up 5 triage agents that each handle 20 emails simultaneously. Dramatically faster, but the agents don't share context. This is fine when tasks are independent — each email can be classified on its own.
+                </aside>
+            </section>
+
+            <!-- Slide 15: Loop Pattern -->
+            <section data-background-image="images/slide-15.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    The loop pattern is iterative refinement. An agent produces output, a reviewer checks it, and if it's not good enough, try again. In Beacon, the Triage Agent classifies, the Quality Checker disagrees, so the Triage Agent reclassifies. Higher quality but more expensive — each loop costs another round of API calls. Use loops when quality matters more than speed, like compliance review or legal documents.
+                </aside>
+            </section>
+
+            <!-- Slide 16: Decision Matrix — Which Pattern? -->
+            <section data-background-image="images/slide-16.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Here's your decision matrix. Sequential for dependencies. Parallel for independent tasks. Loop when quality matters most. Today's lab uses sequential because the dependency is obvious — the Quality Checker can't check a classification that doesn't exist yet. In the capstone, you might combine patterns: parallel to parse multiple resumes, then sequential to evaluate and rank.
+                </aside>
+            </section>
+
+            <!-- ============================================
+                 CHECKPOINT QUIZ 2: PATTERN SELECTION
+                 (Interactive — replaces NotebookLM slide 17)
+                 ============================================ -->
+            <section data-background-color="#f5f7fa">
+                <div class="quiz-container" id="quiz2">
+                    <h3>Checkpoint: Pattern Selection</h3>
+                    <p class="quiz-question">Beacon needs to process 500 emails overnight. Each email can be classified independently. Which pattern is most appropriate?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">A) Sequential — process each email one after another</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', true)">B) Parallel — multiple agents process emails simultaneously</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">C) Loop — keep reclassifying each email until perfect</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, 'quiz2', false)">D) No pattern needed — one agent can handle 500 emails</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz2-feedback-correct">Correct! Since each email can be classified independently, the parallel pattern is ideal — multiple agents working simultaneously for maximum throughput.</div>
+                    <div class="quiz-feedback" id="quiz2-feedback-incorrect">Not quite. Since the emails are independent — no email's classification depends on another — the parallel pattern is the best fit. Multiple agents process emails simultaneously for speed.</div>
+                </div>
+                <aside class="notes">
+                    Tests pattern selection. The key phrase is "each email can be classified independently" — no dependencies, which points to parallel. The answer is B.
+                </aside>
+            </section>
+
+            <!-- ============================================
+                 SECTION 4: TOOL PREVIEW & WRAP-UP
+                 ============================================ -->
+
+            <!-- Slide 18: Today's Lab — Building a Multi-Agent System -->
+            <section data-background-image="images/slide-18.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Here's what you'll build in the lab. Five parts, 100 minutes total. Setup, then build Agent 1 (your Day 5 system prompt as an agent), then Agent 2 (the Quality Checker), then connect them into a sequential pipeline and test with 5 emails including an adversarial trap from Day 6. Part 4 is documentation and your CTO pitch.
+                </aside>
+            </section>
+
+            <!-- Slide 19: Key Takeaways -->
+            <section data-background-image="images/slide-19.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Four takeaways. First, agents are more capable than LLM calls for real business tasks. Second, every agent follows perception-reasoning-action. Third, sequential, parallel, and loop are your architectural toolkit. Fourth, the verification pattern — one agent checking another — is the most practical starting point for any business deploying AI.
+                </aside>
+            </section>
+
+            <!-- Slide 20: Days 8-9 Preview — Resume Screening Capstone -->
+            <section data-background-image="images/slide-20.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    On Days 8-9, we scale up. You'll build a resume screening system with three or more agents: Parser, Evaluator, Ranker. Same sequential pattern, bigger scale. Today's lab gives you the foundation you need for the capstone.
+                </aside>
+            </section>
+
+            <!-- Slide 21: Questions -->
+            <section data-background-image="images/slide-21.png" data-background-size="contain" data-background-color="#ffffff">
+                <aside class="notes">
+                    Open the floor for questions before the lab. Common questions: "Is this how ChatGPT works?" (Partially — ChatGPT uses agents internally for tool use.) "How much does a multi-agent system cost?" (More than single-agent, but the verification pattern catches errors that are far more expensive.) "Will we build the capstone from scratch?" (You'll build on today's foundations.)
+                </aside>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/notes/notes.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            progress: true,
+            controls: true,
+            controlsTutorial: false,
+            transition: 'slide',
+            plugins: [ RevealNotes ]
+        });
+
+        // Interactive checkpoint quiz handler
+        function checkQuiz(element, quizId, isCorrect) {
+            var container = document.getElementById(quizId);
+            var options = container.querySelectorAll('.quiz-option');
+            var feedbackCorrect = document.getElementById(quizId + '-feedback-correct');
+            var feedbackIncorrect = document.getElementById(quizId + '-feedback-incorrect');
+
+            // Reset all options
+            options.forEach(function(opt) {
+                opt.classList.remove('correct', 'incorrect');
+            });
+
+            // Hide both feedbacks
+            feedbackCorrect.style.display = 'none';
+            feedbackCorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+            feedbackIncorrect.style.display = 'none';
+            feedbackIncorrect.classList.remove('correct-fb', 'incorrect-fb', 'show');
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedbackCorrect.style.display = 'block';
+                feedbackCorrect.classList.add('correct-fb', 'show');
+            } else {
+                element.classList.add('incorrect');
+                feedbackIncorrect.style.display = 'block';
+                feedbackIncorrect.classList.add('incorrect-fb', 'show');
+            }
+        }
+    </script>
+</body>
+</html>

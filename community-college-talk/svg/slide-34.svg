@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <linearGradient id="bgQA" x1="0" y1="0" x2="0" y2="1">
+ <stop offset="0%" stop-color="#1D428A"/>
+ <stop offset="100%" stop-color="#122A5B"/>
+ </linearGradient>
+ </defs>
+
+ <rect width="1920" height="1080" fill="url(#bgQA)"/>
+
+ <!-- subtle background shapes -->
+ <g fill="#FFFFFF" opacity="0.05">
+ <circle cx="200"  cy="220" r="120"/>
+ <circle cx="1720" cy="240" r="100"/>
+ <circle cx="1640" cy="860" r="160"/>
+ <circle cx="180"  cy="880" r="90"/>
+ </g>
+
+ <!-- Thank You -->
+ <text x="960" y="430" text-anchor="middle" font-size="90" font-weight="600" fill="#FFD76A" letter-spacing="8">THANK YOU</text>
+
+ <!-- Questions? -->
+ <text x="960" y="680" text-anchor="middle" font-size="220" font-weight="800" fill="#FFFFFF">Questions?</text>
+</svg>

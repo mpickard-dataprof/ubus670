@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>{{COURSE_CODE}}: Lecture</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/theme/white.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/highlight/github.min.css">
+        <style>
+            .reveal { font-family: 'Inter', sans-serif; }
+            .reveal h1, .reveal h2, .reveal h3 { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: none; letter-spacing: -1px; }
+            .reveal h1 { color: #C8102E; }
+            .reveal section img { background:none; border:none; box-shadow:none; }
+            .global-nav { position: fixed; top: 20px; right: 20px; z-index: 1000; font-family: 'Inter', sans-serif; font-size: 14px; background: rgba(255,255,255,0.8); padding: 5px 10px; border-radius: 5px; backdrop-filter: blur(5px); }
+            .global-nav a { text-decoration: none; color: #333; margin-left: 10px; font-weight: 600; }
+            .global-nav a:hover { color: #C8102E; }
+        </style>
+	</head>
+	<body>
+        <div class="global-nav">
+            <a href="index.html">Dashboard</a>
+            <a href="lab.html">Lab</a>
+            <a href="quiz.html">Quiz</a>
+        </div>
+		<div class="reveal">
+			<div class="slides">
+                <section data-markdown>
+                    <textarea data-template>
+{{MARKDOWN_CONTENT}}
+                    </textarea>
+                </section>
+			</div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/notes/notes.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/markdown/markdown.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/plugin/highlight/highlight.min.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>

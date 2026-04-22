@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{COURSE_CODE}}: {{DAY_TITLE}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #C8102E; --dark: #111; --light: #f4f4f4; --text: #333; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); margin: 0; color: var(--text); }
+        .navbar { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .navbar .brand { font-weight: 800; color: var(--primary); font-size: 1.2rem; text-decoration: none; }
+        .nav-links a { color: var(--dark); text-decoration: none; margin-left: 20px; font-weight: 500; font-size: 0.9rem; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--primary); }
+        .hero { background: white; padding: 4rem 2rem; text-align: center; border-bottom: 1px solid #eee; }
+        .hero h1 { margin: 0; font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; }
+        .hero p { color: #666; margin-top: 10px; font-size: 1.1rem; }
+        .date { display: inline-block; background: #eee; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin-top: 15px; font-weight: 600; }
+        .objectives { max-width: 800px; margin: -30px auto 40px; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); }
+        .objectives h3 { margin-top: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #999; }
+        .grid { max-width: 1000px; margin: 0 auto 4rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 0 20px; }
+        .card { background: white; border-radius: 12px; padding: 2rem; text-decoration: none; color: inherit; transition: all 0.3s ease; border: 1px solid transparent; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: #eee; }
+        .card .icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
+        .card h2 { font-size: 1.2rem; margin: 0 0 0.5rem; }
+        .card p { font-size: 0.9rem; color: #666; line-height: 1.5; margin: 0; }
+        .card .cta { margin-top: 15px; display: inline-block; font-size: 0.8rem; font-weight: 600; color: var(--primary); }
+        footer { text-align: center; padding: 2rem; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="brand">{{COURSE_CODE}}</a>
+        <div class="nav-links">
+            <a href="index.html" style="color: var(--primary);">Dashboard</a>
+            <a href="lecture.html">Lecture</a>
+            <a href="lab.html">Lab</a>
+            <a href="quiz.html">Quiz</a>
+        </div>
+    </nav>
+    <div class="hero">
+        <h1>{{DAY_TITLE}}</h1>
+        <p>{{DAY_SUBTITLE}}</p>
+        <span class="date">{{DATE}}</span>
+    </div>
+    <div class="objectives">
+        <h3>Today's Learning Objectives</h3>
+        <ul>
+            <!-- {{OBJECTIVES_LIST_ITEMS}} -->
+        </ul>
+    </div>
+    <div class="grid">
+        <a href="lecture.html" class="card">
+            <span class="icon">🎤</span>
+            <h2>Lecture Slides</h2>
+            <p>Interactive presentation.</p>
+            <span class="cta">Start Lecture &rarr;</span>
+        </a>
+        <a href="lab.html" class="card">
+            <span class="icon">🧪</span>
+            <h2>Lab</h2>
+            <p>Hands-on exercise.</p>
+            <span class="cta">Start Lab &rarr;</span>
+        </a>
+        <a href="quiz.html" class="card">
+            <span class="icon">⚡</span>
+            <h2>Knowledge Check</h2>
+            <p>Test your understanding.</p>
+            <span class="cta">Take Quiz &rarr;</span>
+        </a>
+    </div>
+    <footer>&copy; 2026 Northern Illinois University - {{COURSE_CODE}}</footer>
+</body>
+</html>

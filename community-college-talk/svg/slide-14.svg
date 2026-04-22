@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ <marker id="arrowDown" markerWidth="12" markerHeight="10" refX="12" refY="5" orient="auto">
+ <polygon points="0 0, 12 5, 0 10" fill="#43B02A"/>
+ </marker>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">The Good News: Models Are Getting Better</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">But better is NOT solved. Don't mistake "less frequent" for "safe to trust blindly."</text>
+
+ <!-- ============== LEFT: Bar chart of hallucination rates over time ============== -->
+ <g transform="translate(100, 210)">
+ <rect x="0" y="0" width="1000" height="620" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+
+ <text x="30" y="48" font-size="28" font-weight="800" fill="#1A1A1A">Hallucination rate on factual questions</text>
+ <text x="30" y="76" font-size="24" fill="#888">Flagship model by release year &#8212; lower is better</text>
+
+ <!-- chart area: x 120..960, y 120..500 -->
+ <!-- y-axis -->
+ <line x1="120" y1="120" x2="120" y2="500" stroke="#CCCCCC" stroke-width="1.5"/>
+ <!-- x-axis -->
+ <line x1="120" y1="500" x2="960" y2="500" stroke="#CCCCCC" stroke-width="1.5"/>
+
+ <!-- y-axis labels -->
+ <g font-size="21" fill="#888" text-anchor="end">
+ <text x="110" y="128">60%</text>
+ <text x="110" y="200">45%</text>
+ <text x="110" y="272">30%</text>
+ <text x="110" y="344">20%</text>
+ <text x="110" y="416">10%</text>
+ <text x="110" y="504">0%</text>
+ </g>
+ <!-- gridlines -->
+ <g stroke="#F0F0F0">
+ <line x1="120" y1="124" x2="960" y2="124"/>
+ <line x1="120" y1="196" x2="960" y2="196"/>
+ <line x1="120" y1="268" x2="960" y2="268"/>
+ <line x1="120" y1="340" x2="960" y2="340"/>
+ <line x1="120" y1="412" x2="960" y2="412"/>
+ </g>
+
+ <!-- bars : y=500 baseline. Heights (approximate, illustrative):
+ 2022 (GPT-3.5): 50% -> h=290
+ 2023 (GPT-4): 32% -> h=185
+ 2024 (GPT-4o): 20% -> h=116
+ 2026 (Opus 4.7 / Gemini 3.1 / GPT-5): 6% -> h=35 -->
+ <g>
+ <rect x="180" y="210" width="130" height="290" rx="6" fill="#C8102E"/>
+ <text x="245" y="540" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">2022</text>
+ <text x="245" y="564" text-anchor="middle" font-size="21" fill="#666">GPT-3.5 era</text>
+ <text x="245" y="198" text-anchor="middle" font-size="24" font-weight="800" fill="#C8102E">~50%</text>
+
+ <rect x="370" y="315" width="130" height="185" rx="6" fill="#E35205"/>
+ <text x="435" y="540" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">2023</text>
+ <text x="435" y="564" text-anchor="middle" font-size="21" fill="#666">GPT-4 era</text>
+ <text x="435" y="303" text-anchor="middle" font-size="24" font-weight="800" fill="#E35205">~32%</text>
+
+ <rect x="560" y="384" width="130" height="116" rx="6" fill="#FEDB00"/>
+ <text x="625" y="540" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">2024</text>
+ <text x="625" y="564" text-anchor="middle" font-size="21" fill="#666">GPT-4o era</text>
+ <text x="625" y="372" text-anchor="middle" font-size="24" font-weight="800" fill="#B18C00">~20%</text>
+
+ <rect x="750" y="465" width="130" height="35" rx="6" fill="#43B02A"/>
+ <text x="815" y="540" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">2026</text>
+ <text x="815" y="564" text-anchor="middle" font-size="21" fill="#666">Opus 4.7, Gemini 3.1, GPT-5</text>
+ <text x="815" y="453" text-anchor="middle" font-size="24" font-weight="800" fill="#2D7A1E">~6%</text>
+ </g>
+
+ <!-- trend arrow across the bars -->
+ <path d="M 180 190 Q 500 240 880 450" stroke="#43B02A" stroke-width="3" fill="none" stroke-dasharray="7,5"/>
+ <polygon points="0,0 -18,-8 -18,8" fill="#43B02A" transform="translate(880,450) rotate(28.9)"/>
+
+ <!-- footnote -->
+ <text x="30" y="604" font-size="21" font-style="italic" fill="#999">Illustrative rates from public benchmarks (SimpleQA-style recall &amp; factuality evaluations).</text>
+ </g>
+
+ <!-- ============== RIGHT: What improved + warning ============== -->
+ <g transform="translate(1140, 210)">
+ <!-- what got better -->
+ <rect x="0" y="0" width="688" height="290" rx="14" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="8" height="290" rx="4" fill="#43B02A"/>
+
+ <text x="32" y="48" font-size="28" font-weight="800" fill="#1A1A1A">What actually improved</text>
+
+ <g transform="translate(32, 76)" font-size="25" fill="#333">
+ <text y="24"><tspan font-weight="700" fill="#2D7A1E">&#8226;</tspan> Models say <tspan font-weight="700">"I don't know"</tspan> more often</text>
+ <text y="62"><tspan font-weight="700" fill="#2D7A1E">&#8226;</tspan> Fewer fabricated citations, names, and form numbers</text>
+ <text y="100"><tspan font-weight="700" fill="#2D7A1E">&#8226;</tspan> Better at refusing when evidence is missing</text>
+ <text y="138"><tspan font-weight="700" fill="#2D7A1E">&#8226;</tspan> When they cite, the citations are more checkable</text>
+ <text y="176"><tspan font-weight="700" fill="#2D7A1E">&#8226;</tspan> Multi-step reasoning is meaningfully stronger</text>
+ </g>
+
+ <!-- warning card -->
+ <g transform="translate(0, 320)">
+ <rect x="0" y="0" width="688" height="290" rx="14" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="8" height="290" rx="4" fill="#C8102E"/>
+
+ <text x="32" y="48" font-size="28" font-weight="800" fill="#1A1A1A">But &#8212; and this is the part that matters</text>
+
+ <g transform="translate(32, 76)" font-size="25" fill="#333">
+ <text y="24"><tspan font-weight="700" fill="#A00D24">!</tspan> <tspan font-weight="700">Better is NOT solved.</tspan> Even 6% is a lot at scale.</text>
+ <text y="62"><tspan font-weight="700" fill="#A00D24">!</tspan> Professional liability still lives with <tspan font-weight="700">you</tspan>, not the AI.</text>
+ <text y="100"><tspan font-weight="700" fill="#A00D24">!</tspan> Modern AI sounds <tspan font-weight="700">more</tspan> confident &#8212; easier to believe.</text>
+ <text y="138"><tspan font-weight="700" fill="#A00D24">!</tspan> State boards and the IRS don't care which model you used.</text>
+ <text y="176"><tspan font-weight="700" fill="#A00D24">!</tspan> Verify every number, every name, every citation. Always.</text>
+ </g>
+ </g>
+ </g>
+
+ <!-- ============== Bottom bar ============== -->
+ <g transform="translate(960, 860)">
+ <rect x="-850" y="0" width="1700" height="140" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <circle cx="-810" cy="70" r="28" fill="#1D428A"/>
+ <text x="-810" y="79" text-anchor="middle" font-size="32" font-weight="800" fill="#FFFFFF">i</text>
+ <text x="-770" y="48" font-size="28" font-weight="700" fill="#1A1A1A">Two things can be true at once.</text>
+ <text x="-770" y="80" font-size="24" fill="#444"><tspan font-weight="700">Then (2022):</tspan> AI made things up half the time. Treat with deep skepticism.</text>
+ <text x="-770" y="108" font-size="24" fill="#444"><tspan font-weight="700">Now (2026):</tspan> AI is useful enough to reshape your workflow &#8212; and still lies just often enough to end a career if you don't check.</text>
+ </g>
+</svg>

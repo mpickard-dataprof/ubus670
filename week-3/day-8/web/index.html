@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UBUS 670: Day 8 - Capstone: AI Resume Screening</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../../_shared/styles.css">
+
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #f5f5f5;
+            margin: 0;
+        }
+
+        /* ============================================
+           NAVIGATION WITH BREADCRUMB
+           ============================================ */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #1D428A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-pill {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active {
+            background: #C8102E;
+            color: white;
+        }
+        .nav-pill:not(.active) {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .nav-pill:not(.active):hover {
+            background: #e0e0e0;
+        }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
+            color: white;
+            padding: 70px 40px;
+        }
+        .hero-content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 0 15px;
+            letter-spacing: -1px;
+        }
+        .hero .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin: 0 0 20px;
+        }
+        .hero .meta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .hero .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .main-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* ============================================
+           OBJECTIVES BOX
+           ============================================ */
+        .objectives {
+            background: white;
+            padding: 35px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-left: 6px solid #1D428A;
+            margin: -40px 0 40px;
+            position: relative;
+        }
+        .objectives h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin: 0 0 20px;
+        }
+        .objectives ul {
+            margin: 0;
+            padding-left: 25px;
+        }
+        .objectives li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .objectives li strong {
+            color: #C8102E;
+        }
+
+        /* ============================================
+           CASE STUDY BANNER
+           ============================================ */
+        .case-study {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white;
+            padding: 35px 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .case-study .icon {
+            font-size: 3.5rem;
+            flex-shrink: 0;
+        }
+        .case-study h3 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 8px;
+            font-size: 1.4rem;
+        }
+        .case-study p {
+            margin: 0;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           MODULE CARDS
+           ============================================ */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+        @media (max-width: 900px) {
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+        .module-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            border-color: #e0e0e0;
+        }
+
+        .module-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .module-card .time {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #666;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 12px;
+        }
+
+        .module-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            margin: 0 0 10px;
+            color: #222;
+        }
+
+        .module-card p {
+            color: #666;
+            line-height: 1.6;
+            margin: 0 0 20px;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .module-card .cta {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #C8102E;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .module-card .cta::after {
+            content: '\2192';
+            transition: transform 0.2s;
+        }
+        .module-card:hover .cta::after {
+            transform: translateX(5px);
+        }
+
+        /* Capstone badge */
+        .capstone-badge {
+            display: inline-block;
+            background: #C8102E;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <a href="../../../index.html">UBUS 670</a>
+            <span class="separator">&rsaquo;</span>
+            <a href="../../../index.html">Week 3</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Day 8 &ndash; Capstone</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill active">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+            <a href="lab.html" class="nav-pill">Lab</a>
+            <a href="competition.html" class="nav-pill">Competition</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Capstone: AI Resume Screening</h1>
+            <p class="subtitle">Days 8 &amp; 9: Design, Build, and Compete</p>
+            <div class="meta">
+                <span class="meta-item">&#x1F4C5; Day 8: Wed, March 25 &mdash; Day 9: Fri, March 27</span>
+                <span class="meta-item">&#x23F1;&#xFE0F; 2 &times; 4 hours</span>
+                <span class="meta-item">&#x1F3C6; 20% of course grade</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <!-- Learning Objectives -->
+        <section class="objectives">
+            <h2>Capstone Learning Objectives</h2>
+            <ul>
+                <li><strong>Design</strong> a multi-agent AI pipeline with defined data contracts between agents</li>
+                <li><strong>Build</strong> a 3-agent resume screening system (Parser, Evaluator, Ranker) using AI Studio and ADK</li>
+                <li><strong>Evaluate</strong> real-world hiring decisions by detecting red flags, bias, and cross-resume patterns</li>
+                <li><strong>Compete</strong> against classmates in a live, scored resume screening competition</li>
+                <li><strong>Present</strong> your architecture, results, and lessons learned in a team video</li>
+            </ul>
+        </section>
+
+        <!-- Case Study Banner -->
+        <section class="case-study">
+            <span class="icon">&#x1F4CB;</span>
+            <div>
+                <h3>Beacon Retail Group: Seasonal Hiring</h3>
+                <p>Beacon's HR team has received dozens of resumes for summer seasonal positions across 12 stores. Your team will build an AI-powered screening pipeline that parses, evaluates, and ranks every candidate &mdash; then defend your hiring recommendations in a live competition.</p>
+            </div>
+        </section>
+
+        <!-- Module Cards -->
+        <section class="module-grid">
+
+            <a href="lecture.html" class="module-card">
+                <span class="icon">&#x1F680;</span>
+                <span class="time">~30-40 minutes</span>
+                <h3>Launch Pad</h3>
+                <p>Architecture blueprint, pipeline data contracts, two-phase tool workflow (AI Studio for prototyping, ADK for deployment), and competition rules. Everything you need to start building.</p>
+                <span class="cta">View Launch Pad</span>
+            </a>
+
+            <a href="lab.html" class="module-card">
+                <span class="icon">&#x1F9EA;</span>
+                <span class="capstone-badge">Day 8: Build Day</span>
+                <span class="time">~150 minutes</span>
+                <h3>Build Your Pipeline</h3>
+                <p>6-part guided lab: form teams, design your Parser, build your Evaluator, create your Ranker, wire the pipeline in ADK, and test with 20 practice resumes.</p>
+                <span class="cta">Start Building</span>
+            </a>
+
+            <a href="competition.html" class="module-card">
+                <span class="icon">&#x1F3C6;</span>
+                <span class="capstone-badge">Day 9: Competition Day</span>
+                <span class="time">~120-150 minutes</span>
+                <h3>Competition &amp; Leaderboard</h3>
+                <p>30 fresh resumes, 3 submission attempts, real-time leaderboard. Run your pipeline on the competition set, submit your rankings, and discover hidden patterns for bonus points.</p>
+                <span class="cta">Enter Competition</span>
+            </a>
+
+            <a href="rubric.html" class="module-card">
+                <span class="icon">&#x1F4DD;</span>
+                <span class="time">Reference</span>
+                <h3>Grading Rubric</h3>
+                <p>Complete scoring breakdown: competition ranking (30 pts), flag detection (30 pts), bias pairs (15 pts), pattern discovery (15 pts), bottom 5 identification (10 pts). Plus video presentation criteria.</p>
+                <span class="cta">View Rubric</span>
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Northern Illinois University &mdash; UBUS 670: AI for Business Leaders</p>
+    </footer>
+
+</body>
+</html>
