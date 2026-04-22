@@ -72,12 +72,11 @@
  </g>
 
  <!-- trend arrow across the bars -->
- <path d="M 180 190 Q 500 240 880 450"
- stroke="#43B02A" stroke-width="3" fill="none" stroke-dasharray="7,5"
- marker-end="url(#arrowDown)"/>
+ <path d="M 180 190 Q 500 240 880 450" stroke="#43B02A" stroke-width="3" fill="none" stroke-dasharray="7,5"/>
+ <polygon points="0,0 -18,-8 -18,8" fill="#43B02A" transform="translate(880,450) rotate(28.9)"/>
 
  <!-- footnote -->
- <text x="30" y="604" font-size="21" font-style="italic" fill="#999">Illustrative rates from public benchmarks (SimpleQA-style recall &amp; factuality evaluations). Exact numbers vary by dataset.</text>
+ <text x="30" y="604" font-size="21" font-style="italic" fill="#999">Illustrative rates from public benchmarks (SimpleQA-style recall &amp; factuality evaluations).</text>
  </g>
 
  <!-- ============== RIGHT: What improved + warning ============== -->

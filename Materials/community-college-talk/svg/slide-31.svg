@@ -21,8 +21,8 @@
  <text x="50" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">1</text>
  <text x="92" y="52" font-size="28" font-weight="800" fill="#FFFFFF">CITATIONS &#8212; you can defend the answer</text>
 
- <text x="30" y="128" font-size="24" fill="#333">Every answer ties back to a specific page or paragraph in the document.</text>
- <text x="30" y="156" font-size="24" fill="#333">When a partner, client, or state board asks <tspan font-style="italic">"where did you get this?"</tspan> you have a real answer.</text>
+ <text x="30" y="128" font-size="24" fill="#333">Every answer ties back to a specific page or paragraph.</text>
+ <text x="30" y="156" font-size="24" fill="#333">When anyone asks <tspan font-style="italic">"where did you get this?"</tspan> you have a real answer.</text>
 
  <!-- mini example -->
  <g transform="translate(30, 186)">
@@ -41,8 +41,8 @@
  <text x="50" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">2</text>
  <text x="92" y="52" font-size="28" font-weight="800" fill="#FFFFFF">ALWAYS CURRENT &#8212; no knowledge cutoff</text>
 
- <text x="30" y="128" font-size="24" fill="#333">The AI's training data stops at a point in time. Your documents do not.</text>
- <text x="30" y="156" font-size="24" fill="#333">Update the policy, re-upload the PDF &#8212; the AI "knows" the new version instantly.</text>
+ <text x="30" y="128" font-size="24" fill="#333">The AI's training stops at a point in time. Your documents do not.</text>
+ <text x="30" y="156" font-size="24" fill="#333">Update the policy, re-upload the PDF &#8212; the AI "knows" the new version.</text>
 
  <g transform="translate(30, 186)">
  <rect x="0" y="0" width="760" height="100" rx="10" fill="#F0F5FC"/>
@@ -60,14 +60,14 @@
  <text x="50" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">3</text>
  <text x="92" y="52" font-size="28" font-weight="800" fill="#FFFFFF">PRIVATE DATA &#8212; your clients, your policies</text>
 
- <text x="30" y="128" font-size="24" fill="#333">The AI reads documents you give it. It is not trained on your clients' books.</text>
- <text x="30" y="156" font-size="24" fill="#333">This is how AI can help with proprietary data without the data becoming public.</text>
+ <text x="30" y="128" font-size="24" fill="#333">The AI only reads what you give it. Your clients' books stay private.</text>
+ <text x="30" y="156" font-size="24" fill="#333">This is how AI helps with proprietary data without leaking it.</text>
 
  <g transform="translate(30, 186)">
  <rect x="0" y="0" width="760" height="100" rx="10" fill="#E6F4F3"/>
  <text x="20" y="30" font-size="21" font-weight="700" fill="#006F6A" letter-spacing="2">EXAMPLE</text>
  <text x="20" y="58" font-size="24" fill="#333"><tspan font-weight="700">Without RAG:</tspan> AI can't know anything about your client &#8212; nothing to work with.</text>
- <text x="20" y="84" font-size="24" fill="#333"><tspan font-weight="700">With RAG:</tspan> AI reads your client's trial balance and drafts analytics on THEIR numbers.</text>
+ <text x="20" y="84" font-size="24" fill="#333"><tspan font-weight="700">With RAG:</tspan> AI reads your client's trial balance and works on THEIR numbers.</text>
  </g>
  </g>
 
@@ -79,14 +79,14 @@
  <text x="50" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">4</text>
  <text x="92" y="52" font-size="28" font-weight="800" fill="#FFFFFF">AUDIT TRAIL &#8212; traceable decisions</text>
 
- <text x="30" y="128" font-size="24" fill="#333">Every answer can be traced back to a source document and a specific passage.</text>
- <text x="30" y="156" font-size="24" fill="#333">Critical for professional liability, peer review, and explaining AI use to partners.</text>
+ <text x="30" y="128" font-size="24" fill="#333">Every answer can be traced to a source and a specific passage.</text>
+ <text x="30" y="156" font-size="24" fill="#333">Critical for professional liability and peer review.</text>
 
  <g transform="translate(30, 186)">
  <rect x="0" y="0" width="760" height="100" rx="10" fill="#FDF2EA"/>
  <text x="20" y="30" font-size="21" font-weight="700" fill="#A53B02" letter-spacing="2">EXAMPLE</text>
  <text x="20" y="58" font-size="24" fill="#333"><tspan font-weight="700">Without RAG:</tspan> "The AI said so" &#8212; zero evidence, zero defense.</text>
- <text x="20" y="84" font-size="24" fill="#333"><tspan font-weight="700">With RAG:</tspan> Workpaper shows the AI's answer + the exact source passage used.</text>
+ <text x="20" y="84" font-size="24" fill="#333"><tspan font-weight="700">With RAG:</tspan> Workpaper shows the AI's answer + the exact source passage.</text>
  </g>
  </g>
 

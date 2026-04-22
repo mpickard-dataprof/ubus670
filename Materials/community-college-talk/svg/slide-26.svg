@@ -112,7 +112,7 @@
  </g>
 
  <!-- ============ Bottom insight ============ -->
- <g transform="translate(960, 830)">
+ <g transform="translate(960, 930)">
  <rect x="-850" y="0" width="1700" height="150" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
  <circle cx="-810" cy="75" r="28" fill="#C8102E"/>
  <text x="-810" y="84" text-anchor="middle" font-size="32" font-weight="800" fill="#FFFFFF">!</text>
