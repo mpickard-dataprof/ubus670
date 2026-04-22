@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+ <feGaussianBlur stdDeviation="4" result="b"/>
+ <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+ </filter>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <!-- Title -->
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">Why This Matters for YOU</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">Search by MEANING, not by exact words — the real superpower for transaction review</text>
+
+ <!-- ============ LEFT: Keyword search (old way) ============ -->
+ <g transform="translate(90, 200)">
+ <!-- header -->
+ <rect x="0" y="0" width="820" height="56" rx="10" fill="#8B8B8B"/>
+ <text x="24" y="38" font-size="25" font-weight="700" fill="#FFFFFF"> OLD WAY: KEYWORD SEARCH (Ctrl+F)</text>
+
+ <!-- search bar -->
+ <g transform="translate(0, 80)">
+ <rect x="0" y="0" width="820" height="60" rx="8" fill="#FFFFFF" stroke="#DDDDDD"/>
+ <text x="20" y="38" font-size="24" fill="#666"></text>
+ <text x="60" y="40" font-size="28" font-weight="700" fill="#222">refund</text>
+ <text x="790" y="40" text-anchor="end" font-size="24" font-style="italic" fill="#888">exact-match only</text>
+ </g>
+
+ <!-- results list -->
+ <g transform="translate(0, 160)">
+ <!-- row headers -->
+ <rect x="0" y="0" width="820" height="38" rx="6" fill="#F0F0F0"/>
+ <text x="22" y="25" font-size="21" font-weight="700" fill="#666" letter-spacing="1">DATE</text>
+ <text x="120" y="25" font-size="21" font-weight="700" fill="#666" letter-spacing="1">DESCRIPTION</text>
+ <text x="640" y="25" font-size="21" font-weight="700" fill="#666" letter-spacing="1">AMOUNT</text>
+ <text x="780" y="25" font-size="21" font-weight="700" fill="#666" text-anchor="end" letter-spacing="1">MATCH?</text>
+
+ <!-- rows with only exact "refund" matches -->
+ <g font-family="Montserrat, Arial, sans-serif">
+ <!-- row template -->
+ <g transform="translate(0, 48)"><rect width="820" height="36" fill="#FFFFFF" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/02</text>
+ <text x="120" y="24" font-size="24" fill="#333">Customer refund - order #4821</text>
+ <text x="640" y="24" font-size="24" fill="#333">$142.00</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ <g transform="translate(0, 88)"><rect width="820" height="36" fill="#FAFAFA" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/05</text>
+ <text x="120" y="24" font-size="24" fill="#999">Money back - damaged item</text>
+ <text x="640" y="24" font-size="24" fill="#999">$88.00</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#FDECEE"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#A00D24">MISSED</text>
+ </g>
+ <g transform="translate(0, 128)"><rect width="820" height="36" fill="#FFFFFF" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/08</text>
+ <text x="120" y="24" font-size="24" fill="#999">Credit issued - returned item</text>
+ <text x="640" y="24" font-size="24" fill="#999">$212.50</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#FDECEE"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#A00D24">MISSED</text>
+ </g>
+ <g transform="translate(0, 168)"><rect width="820" height="36" fill="#FAFAFA" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/11</text>
+ <text x="120" y="24" font-size="24" fill="#333">Refund issued to customer</text>
+ <text x="640" y="24" font-size="24" fill="#333">$49.90</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ <g transform="translate(0, 208)"><rect width="820" height="36" fill="#FFFFFF" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/14</text>
+ <text x="120" y="24" font-size="24" fill="#999">Reversal - cc dispute</text>
+ <text x="640" y="24" font-size="24" fill="#999">$310.00</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#FDECEE"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#A00D24">MISSED</text>
+ </g>
+ <g transform="translate(0, 248)"><rect width="820" height="36" fill="#FAFAFA" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/16</text>
+ <text x="120" y="24" font-size="24" fill="#999">Chargeback - merchant error</text>
+ <text x="640" y="24" font-size="24" fill="#999">$175.00</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#FDECEE"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#A00D24">MISSED</text>
+ </g>
+ <g transform="translate(0, 288)"><rect width="820" height="36" fill="#FFFFFF" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/21</text>
+ <text x="120" y="24" font-size="24" fill="#333">Refund to vendor - overpaid</text>
+ <text x="640" y="24" font-size="24" fill="#333">$92.40</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ </g>
+
+ <!-- footer stats -->
+ <g transform="translate(0, 346)">
+ <rect x="0" y="0" width="820" height="52" rx="8" fill="#F7F7F7"/>
+ <text x="24" y="33" font-size="24" fill="#444"><tspan font-weight="700" fill="#C8102E">3 found</tspan>, 4 missed &#8212; <tspan font-style="italic">real money you would miss in a review</tspan></text>
+ </g>
+ </g>
+ </g>
+
+ <!-- ============ RIGHT: Semantic search (AI way) ============ -->
+ <g transform="translate(1010, 200)">
+ <!-- header -->
+ <rect x="0" y="0" width="820" height="56" rx="10" fill="#C8102E"/>
+ <text x="24" y="38" font-size="25" font-weight="700" fill="#FFFFFF"> NEW WAY: SEMANTIC SEARCH (AI)</text>
+
+ <!-- search bar with AI icon -->
+ <g transform="translate(0, 80)">
+ <rect x="0" y="0" width="820" height="60" rx="8" fill="#FFFFFF" stroke="#C8102E" stroke-width="2"/>
+ <circle cx="30" cy="30" r="16" fill="#C8102E"/>
+ <text x="30" y="37" text-anchor="middle" font-size="21" font-weight="800" fill="#FFFFFF">AI</text>
+ <text x="60" y="40" font-size="28" font-weight="700" fill="#222">Find transactions that mean "refund"</text>
+ <text x="790" y="40" text-anchor="end" font-size="24" font-style="italic" fill="#C8102E">meaning-based</text>
+ </g>
+
+ <!-- results list - ALL 7 found -->
+ <g transform="translate(0, 160)">
+ <rect x="0" y="0" width="820" height="38" rx="6" fill="#F0F0F0"/>
+ <text x="22" y="25" font-size="21" font-weight="700" fill="#666" letter-spacing="1">DATE</text>
+ <text x="120" y="25" font-size="21" font-weight="700" fill="#666" letter-spacing="1">DESCRIPTION</text>
+ <text x="640" y="25" font-size="21" font-weight="700" fill="#666" letter-spacing="1">AMOUNT</text>
+ <text x="780" y="25" font-size="21" font-weight="700" fill="#666" text-anchor="end" letter-spacing="1">MATCH?</text>
+
+ <g font-family="Montserrat, Arial, sans-serif">
+ <g transform="translate(0, 48)"><rect width="820" height="36" fill="#FFFFFF" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/02</text>
+ <text x="120" y="24" font-size="24" fill="#333">Customer refund - order #4821</text>
+ <text x="640" y="24" font-size="24" fill="#333">$142.00</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ <g transform="translate(0, 88)"><rect width="820" height="36" fill="#FAFAFA" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/05</text>
+ <text x="120" y="24" font-size="24" fill="#333"><tspan font-weight="700" fill="#C8102E">Money back</tspan> - damaged item</text>
+ <text x="640" y="24" font-size="24" fill="#333">$88.00</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ <g transform="translate(0, 128)"><rect width="820" height="36" fill="#FFFFFF" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/08</text>
+ <text x="120" y="24" font-size="24" fill="#333"><tspan font-weight="700" fill="#C8102E">Credit issued</tspan> - returned item</text>
+ <text x="640" y="24" font-size="24" fill="#333">$212.50</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ <g transform="translate(0, 168)"><rect width="820" height="36" fill="#FAFAFA" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/11</text>
+ <text x="120" y="24" font-size="24" fill="#333">Refund issued to customer</text>
+ <text x="640" y="24" font-size="24" fill="#333">$49.90</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ <g transform="translate(0, 208)"><rect width="820" height="36" fill="#FFFFFF" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/14</text>
+ <text x="120" y="24" font-size="24" fill="#333"><tspan font-weight="700" fill="#C8102E">Reversal</tspan> - cc dispute</text>
+ <text x="640" y="24" font-size="24" fill="#333">$310.00</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ <g transform="translate(0, 248)"><rect width="820" height="36" fill="#FAFAFA" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/16</text>
+ <text x="120" y="24" font-size="24" fill="#333"><tspan font-weight="700" fill="#C8102E">Chargeback</tspan> - merchant error</text>
+ <text x="640" y="24" font-size="24" fill="#333">$175.00</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ <g transform="translate(0, 288)"><rect width="820" height="36" fill="#FFFFFF" stroke="#EEE"/>
+ <text x="22" y="24" font-size="24" fill="#333">3/21</text>
+ <text x="120" y="24" font-size="24" fill="#333">Refund to vendor - overpaid</text>
+ <text x="640" y="24" font-size="24" fill="#333">$92.40</text>
+ <rect x="722" y="10" width="80" height="20" rx="10" fill="#E8F6E3"/>
+ <text x="762" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="#2D7A1E">FOUND</text>
+ </g>
+ </g>
+
+ <!-- footer stats -->
+ <g transform="translate(0, 346)">
+ <rect x="0" y="0" width="820" height="52" rx="8" fill="#E8F6E3"/>
+ <text x="24" y="33" font-size="24" fill="#444"><tspan font-weight="700" fill="#2D7A1E">7 found</tspan>, 0 missed &#8212; AI matched by <tspan font-style="italic">meaning</tspan>, not letters</text>
+ </g>
+ </g>
+ </g>
+
+ <!-- Bottom insight -->
+ <g transform="translate(960, 820)">
+ <rect x="-700" y="0" width="1400" height="140" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <circle cx="-660" cy="70" r="28" fill="#C8102E"/>
+ <text x="-660" y="79" text-anchor="middle" font-size="32" font-weight="800" fill="#FFFFFF"></text>
+ <text x="-616" y="52" font-size="28" font-weight="700" fill="#1A1A1A">Audit, AP, AR, fraud detection &#8212; all built on "find records that MEAN the same thing."</text>
+ <text x="-616" y="86" font-size="24" fill="#444">Traditional software only finds exact words. AI finds concepts. That's a 10&#215; improvement in coverage</text>
+ <text x="-616" y="112" font-size="24" fill="#444">for anyone who reviews transaction descriptions, journal entry memos, or vendor notes.</text>
+ </g>
+</svg>

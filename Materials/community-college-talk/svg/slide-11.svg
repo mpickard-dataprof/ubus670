@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">Anatomy of a Hallucination</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">AI predicts what "sounds right" — which isn't the same as what IS right.</text>
+
+ <!-- ============= LEFT: Confident AI response ============= -->
+ <g transform="translate(80, 210)">
+ <text x="0" y="-14" font-size="24" font-weight="700" fill="#888" letter-spacing="2">WHAT THE AI SAID</text>
+
+ <!-- user prompt bubble -->
+ <g transform="translate(0, 0)">
+ <rect x="0" y="0" width="860" height="86" rx="12" fill="#1D428A"/>
+ <text x="24" y="34" font-size="21" font-weight="700" fill="#FFFFFF" opacity="0.75" letter-spacing="2">YOU</text>
+ <text x="24" y="68" font-size="25" fill="#FFFFFF">Summarize the 2024 updates to the research credit under IRC section 41.</text>
+ </g>
+
+ <!-- AI response bubble — confident-looking -->
+ <g transform="translate(0, 112)">
+ <rect x="0" y="0" width="860" height="540" rx="12" fill="#FFFFFF" stroke="#E2E2E2" stroke-width="1.5"/>
+ <rect x="0" y="0" width="860" height="50" rx="12" fill="#F5F5F5"/>
+ <text x="24" y="33" font-size="21" font-weight="700" fill="#666" letter-spacing="2">AI ASSISTANT</text>
+
+ <!-- content -->
+ <text x="24" y="86" font-size="26" fill="#222">The 2024 updates to IRC &#167; 41 expanded the research credit as follows:</text>
+
+ <!-- fake citation 1 -->
+ <g transform="translate(24, 112)">
+ <circle cx="10" cy="18" r="8" fill="#C8102E"/>
+ <text x="10" y="22" text-anchor="middle" font-size="19" font-weight="800" fill="#FFFFFF">1</text>
+ <text x="36" y="24" font-size="25" fill="#333">Per <tspan font-weight="700" fill="#C8102E">Rev. Proc. 2024-37</tspan>, qualifying small businesses may now offset</text>
+ <text x="36" y="46" font-size="25" fill="#333">up to <tspan font-weight="700">$750,000</tspan> of payroll tax liability (previously $500,000).</text>
+ </g>
+
+ <!-- fake citation 2 -->
+ <g transform="translate(24, 188)">
+ <circle cx="10" cy="18" r="8" fill="#C8102E"/>
+ <text x="10" y="22" text-anchor="middle" font-size="19" font-weight="800" fill="#FFFFFF">2</text>
+ <text x="36" y="24" font-size="25" fill="#333">Notice <tspan font-weight="700" fill="#C8102E">2024-82</tspan> clarifies that <tspan font-style="italic">cloud computing rental costs</tspan></text>
+ <text x="36" y="46" font-size="25" fill="#333">are now explicitly QREs under &#167; 41(b)(2)(A)(iii).</text>
+ </g>
+
+ <!-- fake citation 3 -->
+ <g transform="translate(24, 264)">
+ <circle cx="10" cy="18" r="8" fill="#C8102E"/>
+ <text x="10" y="22" text-anchor="middle" font-size="19" font-weight="800" fill="#FFFFFF">3</text>
+ <text x="36" y="24" font-size="25" fill="#333">The IRS reissued Form <tspan font-weight="700" fill="#C8102E">Form 6765-R</tspan> in March 2024 to capture</text>
+ <text x="36" y="46" font-size="25" fill="#333">the additional documentation requirements.</text>
+ </g>
+
+ <!-- AI confident closer -->
+ <g transform="translate(24, 356)">
+ <rect x="0" y="0" width="800" height="130" rx="10" fill="#F7F7F7"/>
+ <text x="20" y="32" font-size="25" font-weight="700" fill="#333">Summary:</text>
+ <text x="20" y="60" font-size="25" fill="#444">The research credit has become more accessible for small businesses and startups.</text>
+ <text x="20" y="86" font-size="25" fill="#444">Confidence: <tspan font-weight="700" fill="#2D7A1E">high</tspan>. All citations are from official IRS guidance.</text>
+ <text x="20" y="112" font-size="24" font-style="italic" fill="#888">This is how the AI ends its answer &#8212; self-assured, tidy, authoritative.</text>
+ </g>
+ </g>
+ </g>
+
+ <!-- ============= RIGHT: The reality check ============= -->
+ <g transform="translate(980, 210)">
+ <text x="0" y="-14" font-size="24" font-weight="700" fill="#888" letter-spacing="2">WHAT'S ACTUALLY TRUE</text>
+
+ <g transform="translate(0, 0)">
+ <rect x="0" y="0" width="860" height="86" rx="12" fill="#C8102E"/>
+ <text x="24" y="34" font-size="21" font-weight="700" fill="#FFFFFF" opacity="0.85" letter-spacing="2">FACT CHECK (DONE BY A HUMAN)</text>
+ <text x="24" y="68" font-size="25" fill="#FFFFFF">Three citations. Three problems.</text>
+ </g>
+
+ <g transform="translate(0, 112)">
+ <rect x="0" y="0" width="860" height="540" rx="12" fill="#FFFFFF" stroke="#C8102E" stroke-width="2"/>
+
+ <!-- Fake 1 -->
+ <g transform="translate(24, 24)">
+ <rect x="0" y="0" width="812" height="150" rx="10" fill="#FDECEE"/>
+ <rect x="0" y="0" width="6" height="150" rx="3" fill="#C8102E"/>
+ <text x="22" y="32" font-size="24" font-weight="800" fill="#A00D24">x "Rev. Proc. 2024-37"</text>
+ <text x="22" y="62" font-size="24" fill="#333">The 2024 Rev. Proc. numbers actually go up to <tspan font-weight="700">2024-36</tspan>.</text>
+ <text x="22" y="88" font-size="24" fill="#333">There is no "2024-37" &#8212; the AI invented a number in the right format.</text>
+ <text x="22" y="124" font-size="24" font-style="italic" fill="#777">Sounds real. Isn't.</text>
+ </g>
+
+ <!-- Fake 2 -->
+ <g transform="translate(24, 190)">
+ <rect x="0" y="0" width="812" height="140" rx="10" fill="#FDECEE"/>
+ <rect x="0" y="0" width="6" height="140" rx="3" fill="#C8102E"/>
+ <text x="22" y="32" font-size="24" font-weight="800" fill="#A00D24">x "Notice 2024-82"</text>
+ <text x="22" y="62" font-size="24" fill="#333">IRS Notice numbering reflects real guidance. Notice 2024-82 does not exist.</text>
+ <text x="22" y="88" font-size="24" fill="#333">The AI guessed a plausible-looking number plus a plausible-sounding topic.</text>
+ <text x="22" y="118" font-size="24" font-style="italic" fill="#777">If you'd cited this in a memo, you'd be the one caught out.</text>
+ </g>
+
+ <!-- Fake 3 -->
+ <g transform="translate(24, 346)">
+ <rect x="0" y="0" width="812" height="130" rx="10" fill="#FDECEE"/>
+ <rect x="0" y="0" width="6" height="130" rx="3" fill="#C8102E"/>
+ <text x="22" y="32" font-size="24" font-weight="800" fill="#A00D24">x "Form 6765-R"</text>
+ <text x="22" y="62" font-size="24" fill="#333">The research-credit form is Form 6765. There is no "6765-R" variant.</text>
+ <text x="22" y="90" font-size="24" font-style="italic" fill="#777">A form that "sounds right" because R = research.</text>
+ </g>
+ </g>
+ </g>
+
+ <!-- ============= Bottom insight bar ============= -->
+ <g transform="translate(960, 890)">
+ <rect x="-850" y="0" width="1700" height="130" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <circle cx="-810" cy="66" r="26" fill="#C8102E"/>
+ <text x="-810" y="77" text-anchor="middle" font-size="30" font-weight="800" fill="#FFFFFF">!</text>
+ <text x="-770" y="50" font-size="26" font-weight="700" fill="#1A1A1A">Confidence is not accuracy.</text>
+ <text x="-770" y="80" font-size="25" fill="#444">The AI doesn't lie on purpose &#8212; it predicts text that fits the pattern of a "correct answer."</text>
+ <text x="-770" y="104" font-size="25" fill="#444">Everything above <tspan font-weight="700">sounds</tspan> like a tax memo. That's the problem. Verify every citation before you act on it.</text>
+ </g>
+</svg>

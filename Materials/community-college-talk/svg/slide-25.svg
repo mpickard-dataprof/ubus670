@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">Prompt Engineering vs. Context Engineering</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">Two different skills. You need both. Neither one is enough by itself.</text>
+
+ <!-- ============== 2 columns ============== -->
+
+ <!-- LEFT: Prompt Engineering -->
+ <g transform="translate(80, 210)">
+ <rect x="0" y="0" width="810" height="580" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="810" height="90" rx="16" fill="#1D428A"/>
+ <text x="40" y="58" font-size="32" font-weight="800" fill="#FFFFFF">Prompt Engineering</text>
+ <text x="40" y="82" font-size="24" font-weight="500" fill="#FFFFFF" opacity="0.85">Better INSTRUCTIONS</text>
+
+ <!-- visual: speech bubble flowing into brain -->
+ <g transform="translate(60, 122)">
+ <rect x="0" y="0" width="260" height="100" rx="12" fill="#F3F6FC"/>
+ <text x="14" y="30" font-size="21" font-weight="700" fill="#1D428A" letter-spacing="2">YOUR PROMPT</text>
+ <text x="14" y="58" font-size="24" font-style="italic" fill="#333">"Act as CFO. Given our</text>
+ <text x="14" y="78" font-size="24" font-style="italic" fill="#333">Q3 trends, summarize..."</text>
+ </g>
+ <!-- arrow to brain -->
+ <path d="M 334 172 L 404 172" stroke="#1D428A" stroke-width="3" marker-end="url(#arrowBlue)"/>
+ <defs>
+ <marker id="arrowBlue" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
+ <polygon points="0 0, 10 4, 0 8" fill="#1D428A"/>
+ </marker>
+ </defs>
+ <g transform="translate(420, 132)">
+ <circle cx="60" cy="40" r="46" fill="#1D428A"/>
+ <text x="60" y="48" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">AI</text>
+ </g>
+
+ <!-- answers -->
+ <g transform="translate(40, 260)">
+ <text x="0" y="0" font-size="24" font-weight="800" fill="#1A1A1A">Answers these questions:</text>
+ </g>
+ <g transform="translate(40, 290)" font-size="24" fill="#333">
+ <text y="22">&#8226; How should the AI behave?</text>
+ <text y="52">&#8226; What role or expertise to take on?</text>
+ <text y="82">&#8226; How should the output be formatted?</text>
+ <text y="112">&#8226; What constraints or tone to use?</text>
+ </g>
+
+ <!-- limitation box -->
+ <g transform="translate(40, 440)">
+ <rect x="0" y="0" width="730" height="110" rx="10" fill="#FDECEE"/>
+ <rect x="0" y="0" width="6" height="110" rx="3" fill="#C8102E"/>
+ <text x="24" y="32" font-size="24" font-weight="800" fill="#A00D24">Its limitation</text>
+ <text x="24" y="60" font-size="24" fill="#444">Great prompt + zero context = the AI still cannot tell you</text>
+ <text x="24" y="80" font-size="24" fill="#444"><tspan font-style="italic">your firm's</tspan> vacation policy, <tspan font-style="italic">your client's</tspan> Q3 numbers, or</text>
+ <text x="24" y="100" font-size="24" fill="#444"><tspan font-style="italic">your</tspan> accounting policies. It doesn't know any of that.</text>
+ </g>
+ </g>
+
+ <!-- Plus sign between -->
+ <g transform="translate(960, 480)">
+ <circle cx="0" cy="0" r="46" fill="#1A1A1A"/>
+ <text x="0" y="14" text-anchor="middle" font-size="50" font-weight="800" fill="#FFFFFF">+</text>
+ </g>
+
+ <!-- RIGHT: Context Engineering -->
+ <g transform="translate(1030, 210)">
+ <rect x="0" y="0" width="810" height="580" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="810" height="90" rx="16" fill="#C8102E"/>
+ <text x="40" y="58" font-size="32" font-weight="800" fill="#FFFFFF">Context Engineering</text>
+ <text x="40" y="82" font-size="24" font-weight="500" fill="#FFFFFF" opacity="0.85">Better INFORMATION</text>
+
+ <!-- visual: documents flowing into brain -->
+ <g transform="translate(60, 122)">
+ <!-- doc 1 -->
+ <g transform="translate(0, 0)">
+ <rect x="0" y="0" width="60" height="76" rx="6" fill="#FDF0F2" stroke="#E8B0B8"/>
+ <line x1="12" y1="18" x2="48" y2="18" stroke="#C8102E" stroke-width="1.5"/>
+ <line x1="12" y1="30" x2="44" y2="30" stroke="#CCC" stroke-width="1"/>
+ <line x1="12" y1="40" x2="48" y2="40" stroke="#CCC" stroke-width="1"/>
+ <line x1="12" y1="50" x2="40" y2="50" stroke="#CCC" stroke-width="1"/>
+ <line x1="12" y1="60" x2="46" y2="60" stroke="#CCC" stroke-width="1"/>
+ </g>
+ <!-- doc 2 -->
+ <g transform="translate(80, 12)">
+ <rect x="0" y="0" width="60" height="76" rx="6" fill="#FDF0F2" stroke="#E8B0B8"/>
+ <line x1="12" y1="18" x2="48" y2="18" stroke="#C8102E" stroke-width="1.5"/>
+ <line x1="12" y1="30" x2="44" y2="30" stroke="#CCC" stroke-width="1"/>
+ <line x1="12" y1="40" x2="48" y2="40" stroke="#CCC" stroke-width="1"/>
+ <line x1="12" y1="50" x2="40" y2="50" stroke="#CCC" stroke-width="1"/>
+ </g>
+ <!-- doc 3 -->
+ <g transform="translate(160, 0)">
+ <rect x="0" y="0" width="60" height="76" rx="6" fill="#FDF0F2" stroke="#E8B0B8"/>
+ <line x1="12" y1="18" x2="48" y2="18" stroke="#C8102E" stroke-width="1.5"/>
+ <line x1="12" y1="30" x2="44" y2="30" stroke="#CCC" stroke-width="1"/>
+ <line x1="12" y1="40" x2="48" y2="40" stroke="#CCC" stroke-width="1"/>
+ <line x1="12" y1="50" x2="40" y2="50" stroke="#CCC" stroke-width="1"/>
+ <line x1="12" y1="60" x2="46" y2="60" stroke="#CCC" stroke-width="1"/>
+ </g>
+ <text x="0" y="108" font-size="24" font-weight="700" fill="#C8102E">Policies, reports, client data, templates</text>
+ </g>
+ <!-- arrow to brain -->
+ <path d="M 334 172 L 404 172" stroke="#C8102E" stroke-width="3" marker-end="url(#arrowRed)"/>
+ <defs>
+ <marker id="arrowRed" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
+ <polygon points="0 0, 10 4, 0 8" fill="#C8102E"/>
+ </marker>
+ </defs>
+ <g transform="translate(420, 132)">
+ <circle cx="60" cy="40" r="46" fill="#C8102E"/>
+ <text x="60" y="48" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">AI</text>
+ </g>
+
+ <!-- answers -->
+ <g transform="translate(40, 260)">
+ <text x="0" y="0" font-size="24" font-weight="800" fill="#1A1A1A">Answers these questions:</text>
+ </g>
+ <g transform="translate(40, 290)" font-size="24" fill="#333">
+ <text y="22">&#8226; What documents should the AI read first?</text>
+ <text y="52">&#8226; Which of YOUR policies or numbers should it use?</text>
+ <text y="82">&#8226; How do we stop it from guessing?</text>
+ <text y="112">&#8226; How do we make answers traceable to a source?</text>
+ </g>
+
+ <!-- limitation box -->
+ <g transform="translate(40, 440)">
+ <rect x="0" y="0" width="730" height="110" rx="10" fill="#F3F6FC"/>
+ <rect x="0" y="0" width="6" height="110" rx="3" fill="#1D428A"/>
+ <text x="24" y="32" font-size="24" font-weight="800" fill="#14306A">Its limitation</text>
+ <text x="24" y="60" font-size="24" fill="#444">Great context + weak prompt = messy, unfocused answers.</text>
+ <text x="24" y="80" font-size="24" fill="#444">You uploaded the right files but forgot to say what you want.</text>
+ <text x="24" y="100" font-size="24" fill="#444">The AI has the raw material but no direction.</text>
+ </g>
+ </g>
+
+ <!-- ============== Bottom insight bar ============== -->
+ <g transform="translate(960, 820)">
+ <rect x="-850" y="0" width="1700" height="180" rx="16" fill="#1A1A1A" filter="url(#shadow)"/>
+
+ <text x="-810" y="56" font-size="25" font-weight="700" fill="#FFD76A" letter-spacing="2">THE PUNCHLINE</text>
+
+ <g transform="translate(-810, 90)">
+ <rect x="0" y="0" width="1620" height="68" rx="12" fill="rgba(255,255,255,0.08)"/>
+ <text x="30" y="32" font-size="25" font-weight="700" fill="#FFFFFF">Prompt Engineering (Section 3) was <tspan fill="#FFD76A">the first half</tspan>.</text>
+ <text x="30" y="58" font-size="24" fill="#FFFFFF" opacity="0.9">Context Engineering (this section) is <tspan font-weight="700" fill="#FFD76A">the second half</tspan> &#8212; and where real business value starts.</text>
+ </g>
+ </g>
+</svg>

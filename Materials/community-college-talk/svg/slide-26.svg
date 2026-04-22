@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">Same Question. Two Different Answers.</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">The only thing that changed on the right: a PDF attached before the question was asked.</text>
+
+ <!-- ============ LEFT: Cold (no context) ============ -->
+ <g transform="translate(80, 200)">
+ <!-- header -->
+ <rect x="0" y="0" width="860" height="70" rx="12" fill="#8B8B8B"/>
+ <text x="24" y="44" font-size="28" font-weight="700" fill="#FFFFFF"> COLD &#8212; no documents attached</text>
+
+ <!-- chat container -->
+ <g transform="translate(0, 90)">
+ <rect x="0" y="0" width="860" height="620" rx="12" fill="#FFFFFF" stroke="#E5E5E5" stroke-width="1.5"/>
+
+ <!-- user bubble -->
+ <g transform="translate(24, 24)">
+ <rect x="100" y="0" width="712" height="96" rx="12" fill="#F0F5FC"/>
+ <text x="120" y="30" font-size="21" font-weight="700" fill="#1D428A" letter-spacing="2">YOU</text>
+ <text x="120" y="58" font-size="25" fill="#222">What's the travel reimbursement policy</text>
+ <text x="120" y="80" font-size="25" fill="#222">at Riverside Accounting for client meals?</text>
+ </g>
+
+ <!-- AI bubble -->
+ <g transform="translate(24, 148)">
+ <rect x="0" y="0" width="812" height="420" rx="12" fill="#F8F8F8"/>
+ <text x="20" y="30" font-size="21" font-weight="700" fill="#666" letter-spacing="2">AI ASSISTANT</text>
+
+ <text x="20" y="66" font-size="25" fill="#333">I don't have access to Riverside Accounting's specific</text>
+ <text x="20" y="88" font-size="25" fill="#333">internal policies. However, typical client-meal</text>
+ <text x="20" y="110" font-size="25" fill="#333">reimbursement policies at small accounting firms</text>
+ <text x="20" y="132" font-size="25" fill="#333">usually include the following general features...</text>
+
+ <text x="20" y="172" font-size="24" fill="#555">&#8226; Per-person caps, often $50&#8211;$100 for client meals</text>
+ <text x="20" y="198" font-size="24" fill="#555">&#8226; Requirements for itemized receipts</text>
+ <text x="20" y="224" font-size="24" fill="#555">&#8226; Documentation of the client and business purpose</text>
+ <text x="20" y="250" font-size="24" fill="#555">&#8226; Alcohol rules (often restricted)</text>
+
+ <text x="20" y="292" font-size="25" fill="#333">To get the exact policy, you should check with HR</text>
+ <text x="20" y="314" font-size="25" fill="#333">or your firm's employee handbook.</text>
+
+ <!-- verdict -->
+ <g transform="translate(20, 350)">
+ <rect x="0" y="0" width="180" height="38" rx="19" fill="#FDECEE" stroke="#C8102E"/>
+ <text x="90" y="25" text-anchor="middle" font-size="21" font-weight="700" fill="#A00D24">Generic</text>
+ <rect x="195" y="0" width="215" height="38" rx="19" fill="#FDECEE" stroke="#C8102E"/>
+ <text x="302" y="25" text-anchor="middle" font-size="21" font-weight="700" fill="#A00D24">Vague</text>
+ <rect x="425" y="0" width="200" height="38" rx="19" fill="#FDECEE" stroke="#C8102E"/>
+ <text x="525" y="25" text-anchor="middle" font-size="21" font-weight="700" fill="#A00D24">Unusable</text>
+ </g>
+ </g>
+ </g>
+ </g>
+
+ <!-- ============ RIGHT: With PDF attached ============ -->
+ <g transform="translate(980, 200)">
+ <rect x="0" y="0" width="860" height="70" rx="12" fill="#43B02A"/>
+ <text x="24" y="44" font-size="28" font-weight="700" fill="#FFFFFF"> WITH PDF ATTACHED &#8212; same exact question</text>
+
+ <g transform="translate(0, 90)">
+ <rect x="0" y="0" width="860" height="620" rx="12" fill="#FFFFFF" stroke="#E5E5E5" stroke-width="1.5"/>
+
+ <!-- attachment indicator -->
+ <g transform="translate(24, 24)">
+ <rect x="0" y="0" width="120" height="38" rx="19" fill="#EEF8EA" stroke="#43B02A"/>
+ <text x="14" y="24" font-size="24"></text>
+ <text x="36" y="24" font-size="21" font-weight="700" fill="#2D7A1E">policy.pdf (12 pp)</text>
+ </g>
+
+ <!-- user bubble -->
+ <g transform="translate(24, 78)">
+ <rect x="100" y="0" width="712" height="96" rx="12" fill="#F0F5FC"/>
+ <text x="120" y="30" font-size="21" font-weight="700" fill="#1D428A" letter-spacing="2">YOU</text>
+ <text x="120" y="58" font-size="25" fill="#222">What's the travel reimbursement policy</text>
+ <text x="120" y="80" font-size="25" fill="#222">at Riverside Accounting for client meals?</text>
+ </g>
+
+ <!-- AI bubble -->
+ <g transform="translate(24, 200)">
+ <rect x="0" y="0" width="812" height="370" rx="12" fill="#EEF8EA"/>
+ <text x="20" y="30" font-size="21" font-weight="700" fill="#43B02A" letter-spacing="2">AI ASSISTANT</text>
+
+ <text x="20" y="66" font-size="25" fill="#333">Per <tspan font-weight="700" fill="#2D7A1E">Section "Client Meals"</tspan> of policy.pdf (p. 3):</text>
+
+ <text x="20" y="104" font-size="24" fill="#333">&#8226; Cap: <tspan font-weight="700">$100 per person per meal</tspan></text>
+ <text x="20" y="132" font-size="24" fill="#333">&#8226; Required: receipt, business purpose, attendee list, client name</text>
+ <text x="20" y="160" font-size="24" fill="#333">&#8226; Alcohol: up to 25% of meal total, capped at <tspan font-weight="700">$50</tspan></text>
+ <text x="20" y="188" font-size="24" fill="#333">&#8226; Submit via Concur within <tspan font-weight="700">30 days</tspan></text>
+
+ <text x="20" y="228" font-size="25" fill="#333"><tspan font-style="italic" fill="#2D7A1E">Exact quote from p. 3:</tspan></text>
+ <text x="20" y="252" font-size="24" font-style="italic" fill="#444">"Client Meals (a client is present AND business is discussed)</text>
+ <text x="20" y="272" font-size="24" font-style="italic" fill="#444">are reimbursable at actual cost up to $100 per person per meal."</text>
+
+ <!-- verdict -->
+ <g transform="translate(20, 300)">
+ <rect x="0" y="0" width="180" height="38" rx="19" fill="#E8F6E3" stroke="#43B02A"/>
+ <text x="90" y="25" text-anchor="middle" font-size="21" font-weight="700" fill="#2D7A1E">&#8226; Specific</text>
+ <rect x="195" y="0" width="180" height="38" rx="19" fill="#E8F6E3" stroke="#43B02A"/>
+ <text x="285" y="25" text-anchor="middle" font-size="21" font-weight="700" fill="#2D7A1E">&#8226; Page cited</text>
+ <rect x="390" y="0" width="195" height="38" rx="19" fill="#E8F6E3" stroke="#43B02A"/>
+ <text x="487" y="25" text-anchor="middle" font-size="21" font-weight="700" fill="#2D7A1E">&#8226; Ready to apply</text>
+ </g>
+ </g>
+ </g>
+ </g>
+
+ <!-- ============ Bottom insight ============ -->
+ <g transform="translate(960, 830)">
+ <rect x="-850" y="0" width="1700" height="150" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <circle cx="-810" cy="75" r="28" fill="#C8102E"/>
+ <text x="-810" y="84" text-anchor="middle" font-size="32" font-weight="800" fill="#FFFFFF">!</text>
+ <text x="-770" y="52" font-size="28" font-weight="700" fill="#1A1A1A">Same AI. Same model. Same question. Just context.</text>
+ <text x="-770" y="86" font-size="24" fill="#444">Left = cold AI using memorized training data (it's guessing based on "typical" firms).</text>
+ <text x="-770" y="114" font-size="24" fill="#444">Right = AI reading <tspan font-weight="700">your</tspan> document &#8212; citing <tspan font-weight="700">your</tspan> numbers &#8212; on page 3. That's RAG in action.</text>
+ </g>
+</svg>

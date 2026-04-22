@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI for the Next Generation of Accountants</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../_shared/styles.css">
+
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #f5f5f5;
+            margin: 0;
+        }
+
+        .global-nav {
+            position: sticky; top: 0; z-index: 100;
+            background: white; border-bottom: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Montserrat', sans-serif; font-size: 14px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #666; }
+        .breadcrumb a { color: #1D428A; text-decoration: none; font-weight: 500; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .separator { color: #ccc; }
+        .breadcrumb .current { color: #333; font-weight: 600; }
+        .nav-pills { display: flex; gap: 8px; }
+        .nav-pill {
+            padding: 8px 16px; border-radius: 6px;
+            text-decoration: none; font-weight: 600; font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-pill.active { background: #C8102E; color: white; }
+        .nav-pill:not(.active) { background: #f0f0f0; color: #333; }
+        .nav-pill:not(.active):hover { background: #e0e0e0; }
+
+        .hero {
+            background: linear-gradient(135deg, #C8102E 0%, #a00d24 100%);
+            color: white; padding: 70px 40px;
+        }
+        .hero-content { max-width: 1100px; margin: 0 auto; }
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem; font-weight: 700; margin: 0 0 15px; letter-spacing: -1px;
+        }
+        .hero .subtitle { font-size: 1.3rem; opacity: 0.95; margin: 0 0 20px; }
+        .hero .meta { display: flex; gap: 20px; align-items: center; font-size: 0.9rem; opacity: 0.9; flex-wrap: wrap; }
+        .hero .meta-item { display: flex; align-items: center; gap: 8px; }
+
+        .main-content { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
+
+        .objectives {
+            background: white; padding: 35px 40px; border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-left: 6px solid #1D428A;
+            margin: -40px 0 40px; position: relative;
+        }
+        .objectives h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px;
+            color: #888; margin: 0 0 20px;
+        }
+        .objectives ul { margin: 0; padding-left: 25px; }
+        .objectives li { margin-bottom: 12px; line-height: 1.6; }
+        .objectives li strong { color: #C8102E; }
+
+        .agenda-banner {
+            background: linear-gradient(135deg, #1D428A 0%, #00A9E0 100%);
+            color: white; padding: 35px 40px; border-radius: 12px;
+            margin-bottom: 40px;
+        }
+        .agenda-banner h3 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 16px; font-size: 1.4rem;
+        }
+        .agenda-banner ol { margin: 0; padding-left: 22px; line-height: 1.8; }
+        .agenda-banner li { margin-bottom: 4px; }
+        .agenda-banner li strong { font-weight: 700; }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px; margin-bottom: 60px;
+        }
+        @media (max-width: 900px) { .module-grid { grid-template-columns: 1fr; } }
+
+        .module-card {
+            background: white; border-radius: 12px; padding: 30px;
+            text-decoration: none; color: inherit;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            display: flex; flex-direction: column;
+        }
+        .module-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            border-color: #e0e0e0;
+        }
+        .module-card .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .module-card .time {
+            display: inline-block; background: #f0f0f0;
+            padding: 5px 12px; border-radius: 4px;
+            font-size: 0.75rem; color: #666;
+            font-family: 'Montserrat', sans-serif; margin-bottom: 12px;
+        }
+        .module-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem; margin: 0 0 10px; color: #222;
+        }
+        .module-card p {
+            color: #666; line-height: 1.6; margin: 0 0 20px;
+            flex-grow: 1; font-size: 0.95rem;
+        }
+        .module-card .cta {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600; font-size: 0.9rem; color: #C8102E;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .module-card .cta::after {
+            content: '→'; transition: transform 0.2s;
+        }
+        .module-card:hover .cta::after { transform: translateX(5px); }
+
+        footer {
+            text-align: center; padding: 40px 20px;
+            color: #888; font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0; background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="global-nav">
+        <div class="breadcrumb">
+            <span class="current">AI for the Next Generation of Accountants</span>
+        </div>
+        <div class="nav-pills">
+            <a href="index.html" class="nav-pill active">Dashboard</a>
+            <a href="lecture.html" class="nav-pill">Lecture</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>AI for the Next Generation of Accountants</h1>
+            <p class="subtitle">A 60-minute hands-on tour of how AI actually works &mdash; and how to use it well</p>
+            <div class="meta">
+                <span class="meta-item">&#128197; Community College Guest Lecture</span>
+                <span class="meta-item">&#9201;&#65039; 60 minutes</span>
+                <span class="meta-item">&#128295; Gemini &middot; ChatGPT &middot; Claude</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <section class="objectives">
+            <h2>What You'll Walk Out Knowing</h2>
+            <ul>
+                <li><strong>How</strong> AI actually works under the hood &mdash; tokens, embeddings, attention, temperature</li>
+                <li><strong>Why</strong> AI hallucinates, and six tactics to stop it from burning you</li>
+                <li><strong>RCTFC</strong> &mdash; one prompt framework that covers 80% of what you'll ever need</li>
+                <li><strong>Context engineering</strong> &mdash; how to get AI to use YOUR documents, not a generic textbook answer</li>
+            </ul>
+        </section>
+
+        <section class="agenda-banner">
+            <h3>Agenda at a Glance</h3>
+            <ol>
+                <li><strong>Section 1 (12 min):</strong> What's actually happening inside the box</li>
+                <li><strong>Section 2 (8 min):</strong> The hallucination problem &mdash; and how to shut it down</li>
+                <li><strong>Section 3 (18 min):</strong> Prompt engineering with RCTFC + structured formats</li>
+                <li><strong>Section 4 (12 min):</strong> Context engineering &amp; RAG &mdash; AI meets YOUR documents</li>
+                <li><strong>Wrap-up + Q&amp;A (10 min)</strong></li>
+            </ol>
+        </section>
+
+        <section class="module-grid">
+
+            <a href="lecture.html" class="module-card">
+                <span class="icon">&#127908;</span>
+                <span class="time">~60 minutes &middot; 34 slides &middot; 4 exercises</span>
+                <h3>Lecture: The Full Presentation</h3>
+                <p>Interactive slides covering embeddings, attention, hallucination mitigation, RCTFC prompting, structured formats, and context engineering &mdash; with four live hands-on exercises.</p>
+                <span class="cta">Start Lecture</span>
+            </a>
+
+            <a href="assets/exercise-3-structured-policy.md" class="module-card">
+                <span class="icon">&#128221;</span>
+                <span class="time">Exercise 3 handout</span>
+                <h3>Structure Changes Everything</h3>
+                <p>The expense policy used in Exercise 3. Compare the <a href="assets/exercise-3-messy-policy.md">messy version</a> with the Markdown-structured version and see how structure changes the answer AI gives you.</p>
+                <span class="cta">View Handout</span>
+            </a>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Adapted from UBUS 670 &mdash; Northern Illinois University &middot; Based on Days 1&ndash;3 of the course</p>
+    </footer>
+
+</body>
+</html>

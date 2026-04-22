@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <!-- Title -->
+ <text x="960" y="92" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">Same AI. Same Task. Very Different Answers.</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">Both accountants asked AI to explain a travel expense variance. One prepped the question. One didn't.</text>
+
+ <!-- =========== LEFT COLUMN (lazy) =========== -->
+ <g transform="translate(80, 190)">
+ <!-- header -->
+ <rect x="0" y="0" width="860" height="64" rx="12" fill="#8B8B8B"/>
+ <text x="28" y="42" font-size="28" font-weight="700" fill="#FFFFFF"> LAZY PROMPT</text>
+ <text x="834" y="42" text-anchor="end" font-size="24" fill="#FFFFFF" opacity="0.85">16 words</text>
+
+ <!-- prompt card -->
+ <g transform="translate(0, 84)">
+ <rect x="0" y="0" width="860" height="200" rx="12" fill="#FFFFFF" stroke="#E2E2E2" stroke-width="1.5"/>
+ <text x="24" y="36" font-size="21" font-weight="700" fill="#999" letter-spacing="2">PROMPT</text>
+ <text x="24" y="86" font-size="28" font-weight="500" fill="#222">Why is travel expense up this month?</text>
+ <text x="24" y="142" font-size="24" font-style="italic" fill="#888">No role. No context. No format. No numbers. No constraints.</text>
+ </g>
+
+ <!-- output card -->
+ <g transform="translate(0, 310)">
+ <rect x="0" y="0" width="860" height="470" rx="12" fill="#F3F3F3" stroke="#DDDDDD" stroke-width="1"/>
+ <text x="24" y="36" font-size="21" font-weight="700" fill="#999" letter-spacing="2">AI OUTPUT</text>
+ <text x="24" y="76" font-size="24" fill="#333">Travel expenses can increase for many reasons. Common causes include:</text>
+ <text x="24" y="114" font-size="25" fill="#555">&#8226; Higher airfare due to seasonality or fuel prices</text>
+ <text x="24" y="142" font-size="25" fill="#555">&#8226; More employees traveling for business</text>
+ <text x="24" y="170" font-size="25" fill="#555">&#8226; Increased hotel rates or longer stays</text>
+ <text x="24" y="198" font-size="25" fill="#555">&#8226; Rising mileage reimbursements</text>
+ <text x="24" y="226" font-size="25" fill="#555">&#8226; Additional meal or incidental costs</text>
+ <text x="24" y="266" font-size="24" fill="#333">To better understand the increase, review vendor statements and compare</text>
+ <text x="24" y="292" font-size="24" fill="#333">to prior periods.</text>
+
+ </g>
+ </g>
+
+ <!-- =========== RIGHT COLUMN (engineered) =========== -->
+ <g transform="translate(980, 190)">
+ <!-- header -->
+ <rect x="0" y="0" width="860" height="64" rx="12" fill="#43B02A"/>
+ <text x="28" y="42" font-size="28" font-weight="700" fill="#FFFFFF"> ENGINEERED PROMPT</text>
+ <text x="834" y="42" text-anchor="end" font-size="24" fill="#FFFFFF" opacity="0.9">72 words &#183; uses R-C-T-F-C</text>
+
+ <!-- prompt card -->
+ <g transform="translate(0, 84)">
+ <rect x="0" y="0" width="860" height="200" rx="12" fill="#FFFFFF" stroke="#E2E2E2" stroke-width="1.5"/>
+ <text x="24" y="36" font-size="21" font-weight="700" fill="#999" letter-spacing="2">PROMPT</text>
+ <text x="24" y="68" font-size="24" fill="#222"><tspan font-weight="700" fill="#1D428A">Role: </tspan>You are a senior staff accountant at a small CPA firm.</text>
+ <text x="24" y="92" font-size="24" fill="#222"><tspan font-weight="700" fill="#1D428A">Context: </tspan>March travel was $18,400 vs. $13,100 avg (+40%). Two partners</text>
+ <text x="24" y="112" font-size="24" fill="#222">attended a 3-day client visit in Dallas; airfare + hotel dominate.</text>
+ <text x="24" y="136" font-size="24" fill="#222"><tspan font-weight="700" fill="#1D428A">Task: </tspan>Draft the variance explanation for the monthly P&amp;L package.</text>
+ <text x="24" y="160" font-size="24" fill="#222"><tspan font-weight="700" fill="#1D428A">Format: </tspan>3 bullets, each with dollar amount and driver.</text>
+ <text x="24" y="184" font-size="24" fill="#222"><tspan font-weight="700" fill="#1D428A">Constraints: </tspan>Under 80 words. Neutral tone. Flag anything unusual.</text>
+ </g>
+
+ <!-- output card -->
+ <g transform="translate(0, 310)">
+ <rect x="0" y="0" width="860" height="470" rx="12" fill="#EEF8EA" stroke="#CBE5BD" stroke-width="1"/>
+ <text x="24" y="36" font-size="21" font-weight="700" fill="#43B02A" letter-spacing="2">AI OUTPUT</text>
+ <text x="24" y="80" font-size="24" font-weight="700" fill="#222">March Travel Variance &#8212; +$5,300 over prior-month average</text>
+
+ <text x="24" y="124" font-size="25" fill="#333">&#8226; <tspan font-weight="700">Airfare +$2,800</tspan> &#8212; two round-trip tickets to Dallas for partner</text>
+ <text x="44" y="148" font-size="25" fill="#333">client engagement.</text>
+
+ <text x="24" y="188" font-size="25" fill="#333">&#8226; <tspan font-weight="700">Lodging +$2,100</tspan> &#8212; 3 nights &#215; 2 partners at the client-adjacent</text>
+ <text x="44" y="212" font-size="25" fill="#333">hotel (rate in line with policy cap).</text>
+
+ <text x="24" y="252" font-size="25" fill="#333">&#8226; <tspan font-weight="700">Meals +$400</tspan> &#8212; within policy; one receipt missing, follow-up</text>
+ <text x="44" y="276" font-size="25" fill="#333">with Partner Chen requested.</text>
+
+ </g>
+ </g>
+
+ <!-- ====== Bottom takeaway ====== -->
+ <g transform="translate(960, 820)">
+ <rect x="-700" y="0" width="1400" height="140" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <circle cx="-660" cy="70" r="28" fill="#C8102E"/>
+ <text x="-660" y="79" text-anchor="middle" font-size="32" font-weight="800" fill="#FFFFFF">!</text>
+ <text x="-616" y="52" font-size="28" font-weight="700" fill="#1A1A1A">Same model. Same 10 seconds. The gap is the prompt.</text>
+ <text x="-616" y="86" font-size="24" fill="#444">The whole reason prompt engineering is a real skill: five extra sentences of setup</text>
+ <text x="-616" y="112" font-size="24" fill="#444">turn "generic textbook" into "ready to paste into the report." That's today's payoff.</text>
+ </g>
+</svg>

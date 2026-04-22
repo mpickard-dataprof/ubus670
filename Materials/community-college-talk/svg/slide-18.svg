@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="3" dy="6" stdDeviation="10" flood-opacity="0.18"/>
+ </filter>
+ <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="1" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+ </filter>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#F5F5F3"/>
+
+ <!-- subtle diagonal paper texture -->
+ <g stroke="#E8E8E5" stroke-width="1" opacity="0.5">
+ <line x1="0" y1="80" x2="1920" y2="80"/>
+ <line x1="0" y1="160" x2="1920" y2="160"/>
+ <line x1="0" y1="240" x2="1920" y2="240"/>
+ <line x1="0" y1="320" x2="1920" y2="320"/>
+ <line x1="0" y1="400" x2="1920" y2="400"/>
+ <line x1="0" y1="480" x2="1920" y2="480"/>
+ <line x1="0" y1="560" x2="1920" y2="560"/>
+ <line x1="0" y1="640" x2="1920" y2="640"/>
+ <line x1="0" y1="720" x2="1920" y2="720"/>
+ <line x1="0" y1="800" x2="1920" y2="800"/>
+ <line x1="0" y1="880" x2="1920" y2="880"/>
+ <line x1="0" y1="960" x2="1920" y2="960"/>
+ </g>
+
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">Photograph This Slide.</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">Five letters. Five seconds to memorize. 80% of the prompting battle.</text>
+
+ <!-- ========== Sticky note stack ========== -->
+ <!-- cards at slight angles, overlapping, each a different color -->
+
+ <!-- R -->
+ <g transform="translate(200, 300) rotate(-6)">
+ <rect x="0" y="0" width="280" height="340" rx="10" fill="#FDE8EC" stroke="#F0C4CC" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="280" height="60" fill="#C8102E"/>
+ <text x="140" y="44" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">R &#8212; ROLE</text>
+ <text x="140" y="118" text-anchor="middle" font-size="72" font-weight="800" fill="#C8102E">R</text>
+ <line x1="40" y1="148" x2="240" y2="148" stroke="#F0C4CC" stroke-width="2"/>
+ <text x="140" y="188" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">Who should</text>
+ <text x="140" y="210" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">the AI be?</text>
+
+ <g transform="translate(20, 240)">
+ <rect x="0" y="0" width="240" height="80" rx="8" fill="rgba(255,255,255,0.7)"/>
+ <text x="120" y="26" text-anchor="middle" font-size="21" font-weight="700" fill="#A00D24" letter-spacing="1">EXAMPLE</text>
+ <text x="120" y="54" text-anchor="middle" font-size="24" font-style="italic" fill="#444">"You are a senior</text>
+ <text x="120" y="72" text-anchor="middle" font-size="24" font-style="italic" fill="#444">staff accountant."</text>
+ </g>
+ </g>
+
+ <!-- C (Context) -->
+ <g transform="translate(510, 280) rotate(-2)">
+ <rect x="0" y="0" width="280" height="340" rx="10" fill="#E0E9F6" stroke="#B8C9E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="280" height="60" fill="#1D428A"/>
+ <text x="140" y="44" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">C &#8212; CONTEXT</text>
+ <text x="140" y="118" text-anchor="middle" font-size="72" font-weight="800" fill="#1D428A">C</text>
+ <line x1="40" y1="148" x2="240" y2="148" stroke="#B8C9E5" stroke-width="2"/>
+ <text x="140" y="188" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">What background</text>
+ <text x="140" y="210" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">info does it need?</text>
+
+ <g transform="translate(20, 240)">
+ <rect x="0" y="0" width="240" height="80" rx="8" fill="rgba(255,255,255,0.7)"/>
+ <text x="120" y="26" text-anchor="middle" font-size="21" font-weight="700" fill="#14306A" letter-spacing="1">EXAMPLE</text>
+ <text x="120" y="54" text-anchor="middle" font-size="24" font-style="italic" fill="#444">"March cash rec</text>
+ <text x="120" y="72" text-anchor="middle" font-size="24" font-style="italic" fill="#444">shows $340 gap."</text>
+ </g>
+ </g>
+
+ <!-- T (Task) -->
+ <g transform="translate(820, 290) rotate(3)">
+ <rect x="0" y="0" width="280" height="340" rx="10" fill="#D6EEEB" stroke="#AADBD6" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="280" height="60" fill="#00968F"/>
+ <text x="140" y="44" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">T &#8212; TASK</text>
+ <text x="140" y="118" text-anchor="middle" font-size="72" font-weight="800" fill="#00968F">T</text>
+ <line x1="40" y1="148" x2="240" y2="148" stroke="#AADBD6" stroke-width="2"/>
+ <text x="140" y="188" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">What do you</text>
+ <text x="140" y="210" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">actually want?</text>
+
+ <g transform="translate(20, 240)">
+ <rect x="0" y="0" width="240" height="80" rx="8" fill="rgba(255,255,255,0.7)"/>
+ <text x="120" y="26" text-anchor="middle" font-size="21" font-weight="700" fill="#006F6A" letter-spacing="1">EXAMPLE</text>
+ <text x="120" y="54" text-anchor="middle" font-size="24" font-style="italic" fill="#444">"Draft 3 follow-up</text>
+ <text x="120" y="72" text-anchor="middle" font-size="24" font-style="italic" fill="#444">questions to email."</text>
+ </g>
+ </g>
+
+ <!-- F (Format) -->
+ <g transform="translate(1130, 280) rotate(-2)">
+ <rect x="0" y="0" width="280" height="340" rx="10" fill="#FCE7D4" stroke="#F1C291" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="280" height="60" fill="#E35205"/>
+ <text x="140" y="44" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">F &#8212; FORMAT</text>
+ <text x="140" y="118" text-anchor="middle" font-size="72" font-weight="800" fill="#E35205">F</text>
+ <line x1="40" y1="148" x2="240" y2="148" stroke="#F1C291" stroke-width="2"/>
+ <text x="140" y="188" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">How should the</text>
+ <text x="140" y="210" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">output look?</text>
+
+ <g transform="translate(20, 240)">
+ <rect x="0" y="0" width="240" height="80" rx="8" fill="rgba(255,255,255,0.7)"/>
+ <text x="120" y="26" text-anchor="middle" font-size="21" font-weight="700" fill="#A53B02" letter-spacing="1">EXAMPLE</text>
+ <text x="120" y="54" text-anchor="middle" font-size="24" font-style="italic" fill="#444">"Numbered list</text>
+ <text x="120" y="72" text-anchor="middle" font-size="24" font-style="italic" fill="#444">with one reason each."</text>
+ </g>
+ </g>
+
+ <!-- C (Constraints) -->
+ <g transform="translate(1440, 300) rotate(5)">
+ <rect x="0" y="0" width="280" height="340" rx="10" fill="#E9E1F0" stroke="#C7B7D9" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="280" height="60" fill="#7B52AB"/>
+ <text x="140" y="44" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">C &#8212; CONSTRAINTS</text>
+ <text x="140" y="118" text-anchor="middle" font-size="72" font-weight="800" fill="#7B52AB">C</text>
+ <line x1="40" y1="148" x2="240" y2="148" stroke="#C7B7D9" stroke-width="2"/>
+ <text x="140" y="188" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">Length, tone,</text>
+ <text x="140" y="210" text-anchor="middle" font-size="25" font-weight="700" fill="#1A1A1A">rules, boundaries.</text>
+
+ <g transform="translate(20, 240)">
+ <rect x="0" y="0" width="240" height="80" rx="8" fill="rgba(255,255,255,0.7)"/>
+ <text x="120" y="26" text-anchor="middle" font-size="21" font-weight="700" fill="#5C3A82" letter-spacing="1">EXAMPLE</text>
+ <text x="120" y="54" text-anchor="middle" font-size="24" font-style="italic" fill="#444">"Under 100 words.</text>
+ <text x="120" y="72" text-anchor="middle" font-size="24" font-style="italic" fill="#444">Polite. Professional."</text>
+ </g>
+ </g>
+
+ <!-- ========== Camera icon + "take a photo" hint ========== -->
+ <g transform="translate(960, 720)">
+ <rect x="-340" y="0" width="680" height="80" rx="40" fill="#1A1A1A"/>
+ <g transform="translate(-300, 20)" fill="#FFFFFF">
+ <!-- camera icon -->
+ <rect x="0" y="6" width="44" height="28" rx="5"/>
+ <rect x="12" y="2" width="20" height="6" rx="2"/>
+ <circle cx="22" cy="20" r="8" fill="#1A1A1A"/>
+ <circle cx="22" cy="20" r="5" fill="#FFFFFF"/>
+ </g>
+ <text x="-236" y="52" font-size="28" font-weight="700" fill="#FFFFFF">Take a picture of this slide right now.</text>
+ </g>
+
+ <!-- ========== Bottom insight ========== -->
+ <g transform="translate(960, 860)">
+ <rect x="-850" y="0" width="1700" height="140" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <circle cx="-810" cy="70" r="28" fill="#C8102E"/>
+ <text x="-810" y="79" text-anchor="middle" font-size="32" font-weight="800" fill="#FFFFFF">!</text>
+ <text x="-770" y="50" font-size="28" font-weight="700" fill="#1A1A1A">Five letters. One mental checklist. Every prompt you ever write.</text>
+ <text x="-770" y="84" font-size="24" fill="#444">When you're about to ask AI anything, whisper "R - C - T - F - C" and fill in the blanks.</text>
+ <text x="-770" y="110" font-size="24" fill="#444">If any of the five feels too hard &#8212; that's usually the piece that's missing from your prompt.</text>
+ </g>
+</svg>

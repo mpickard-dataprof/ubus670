@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ <marker id="arrowRight" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
+ <polygon points="0 0, 10 4, 0 8" fill="#AAAAAA"/>
+ </marker>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">RCTFC in Action: A Real Accounting Prompt</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">Bank reconciliation shows a $340 unexplained difference. Let's walk through all 5 pieces.</text>
+
+ <!-- ============== Top row: 5 RCTFC cards ============== -->
+ <!-- each card 330 x 310, gap 20, start x=100, y=210 -->
+
+ <!-- R -->
+ <g transform="translate(100, 210)">
+ <rect x="0" y="0" width="330" height="310" rx="14" fill="#C8102E" filter="url(#shadow)"/>
+ <circle cx="68" cy="54" r="28" fill="rgba(255,255,255,0.22)"/>
+ <text x="68" y="64" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">R</text>
+ <text x="108" y="66" font-size="28" font-weight="800" fill="#FFFFFF">Role</text>
+ <text x="24" y="108" font-size="21" font-weight="700" fill="#FFFFFF" opacity="0.85" letter-spacing="2">WHO THE AI PRETENDS TO BE</text>
+
+ <line x1="24" y1="124" x2="306" y2="124" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+
+ <text x="24" y="160" font-size="24" fill="#FFFFFF" opacity="0.95">You are a <tspan font-weight="700">senior</tspan></text>
+ <text x="24" y="184" font-size="24" fill="#FFFFFF" opacity="0.95"><tspan font-weight="700">bookkeeper</tspan> at a small</text>
+ <text x="24" y="208" font-size="24" fill="#FFFFFF" opacity="0.95">CPA firm.</text>
+
+ <g transform="translate(24, 232)">
+ <rect x="0" y="0" width="282" height="80" rx="8" fill="rgba(255,255,255,0.15)"/>
+ <text x="14" y="22" font-size="16" font-weight="700" fill="#FFFFFF" opacity="0.8" letter-spacing="1">WHY IT MATTERS</text>
+ <text x="14" y="46" font-size="17" fill="#FFFFFF" opacity="0.95">Tone &amp; vocabulary for</text>
+ <text x="14" y="66" font-size="17" fill="#FFFFFF" opacity="0.95">a professional audience.</text>
+ </g>
+ </g>
+
+ <!-- arrow R->C -->
+ <path d="M 430 365 L 450 365" stroke="#AAAAAA" stroke-width="3" marker-end="url(#arrowRight)"/>
+
+ <!-- C (Context) -->
+ <g transform="translate(450, 210)">
+ <rect x="0" y="0" width="330" height="310" rx="14" fill="#1D428A" filter="url(#shadow)"/>
+ <circle cx="68" cy="54" r="28" fill="rgba(255,255,255,0.22)"/>
+ <text x="68" y="64" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">C</text>
+ <text x="108" y="66" font-size="28" font-weight="800" fill="#FFFFFF">Context</text>
+ <text x="24" y="108" font-size="21" font-weight="700" fill="#FFFFFF" opacity="0.85" letter-spacing="2">THE BACKGROUND FACTS</text>
+
+ <line x1="24" y1="124" x2="306" y2="124" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+
+ <text x="24" y="156" font-size="24" fill="#FFFFFF" opacity="0.95">Monthly bank rec shows a</text>
+ <text x="24" y="178" font-size="24" fill="#FFFFFF" opacity="0.95"><tspan font-weight="700">$340 unexplained</tspan> gap</text>
+ <text x="24" y="200" font-size="24" fill="#FFFFFF" opacity="0.95">between bank statement</text>
+ <text x="24" y="222" font-size="24" fill="#FFFFFF" opacity="0.95">and cash ledger.</text>
+
+ <g transform="translate(24, 240)">
+ <rect x="0" y="0" width="282" height="80" rx="8" fill="rgba(255,255,255,0.15)"/>
+ <text x="14" y="22" font-size="16" font-weight="700" fill="#FFFFFF" opacity="0.8" letter-spacing="1">WHY IT MATTERS</text>
+ <text x="14" y="46" font-size="17" fill="#FFFFFF" opacity="0.95">Stops AI from guessing</text>
+ <text x="14" y="66" font-size="17" fill="#FFFFFF" opacity="0.95">numbers or brand names.</text>
+ </g>
+ </g>
+
+ <!-- arrow C->T -->
+ <path d="M 780 365 L 800 365" stroke="#AAAAAA" stroke-width="3" marker-end="url(#arrowRight)"/>
+
+ <!-- T (Task) -->
+ <g transform="translate(800, 210)">
+ <rect x="0" y="0" width="330" height="310" rx="14" fill="#00968F" filter="url(#shadow)"/>
+ <circle cx="68" cy="54" r="28" fill="rgba(255,255,255,0.22)"/>
+ <text x="68" y="64" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">T</text>
+ <text x="108" y="66" font-size="28" font-weight="800" fill="#FFFFFF">Task</text>
+ <text x="24" y="108" font-size="21" font-weight="700" fill="#FFFFFF" opacity="0.85" letter-spacing="2">THE ACTUAL REQUEST</text>
+
+ <line x1="24" y1="124" x2="306" y2="124" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+
+ <text x="24" y="156" font-size="24" fill="#FFFFFF" opacity="0.95">Draft <tspan font-weight="700">3 follow-up</tspan></text>
+ <text x="24" y="178" font-size="24" fill="#FFFFFF" opacity="0.95"><tspan font-weight="700">questions</tspan> I can email</text>
+ <text x="24" y="200" font-size="24" fill="#FFFFFF" opacity="0.95">to the office manager to</text>
+ <text x="24" y="222" font-size="24" fill="#FFFFFF" opacity="0.95">track down the $340 gap.</text>
+
+ <g transform="translate(24, 240)">
+ <rect x="0" y="0" width="282" height="80" rx="8" fill="rgba(255,255,255,0.15)"/>
+ <text x="14" y="22" font-size="16" font-weight="700" fill="#FFFFFF" opacity="0.8" letter-spacing="1">WHY IT MATTERS</text>
+ <text x="14" y="46" font-size="17" fill="#FFFFFF" opacity="0.95">Specific verbs give you</text>
+ <text x="14" y="66" font-size="17" fill="#FFFFFF" opacity="0.95">specific output.</text>
+ </g>
+ </g>
+
+ <!-- arrow T->F -->
+ <path d="M 1130 365 L 1150 365" stroke="#AAAAAA" stroke-width="3" marker-end="url(#arrowRight)"/>
+
+ <!-- F (Format) -->
+ <g transform="translate(1150, 210)">
+ <rect x="0" y="0" width="330" height="310" rx="14" fill="#E35205" filter="url(#shadow)"/>
+ <circle cx="68" cy="54" r="28" fill="rgba(255,255,255,0.22)"/>
+ <text x="68" y="64" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">F</text>
+ <text x="108" y="66" font-size="28" font-weight="800" fill="#FFFFFF">Format</text>
+ <text x="24" y="108" font-size="21" font-weight="700" fill="#FFFFFF" opacity="0.85" letter-spacing="2">HOW TO PRESENT IT</text>
+
+ <line x1="24" y1="124" x2="306" y2="124" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+
+ <text x="24" y="156" font-size="24" fill="#FFFFFF" opacity="0.95"><tspan font-weight="700">Numbered list.</tspan> Each</text>
+ <text x="24" y="178" font-size="24" fill="#FFFFFF" opacity="0.95">question on one line, with</text>
+ <text x="24" y="200" font-size="24" fill="#FFFFFF" opacity="0.95">a <tspan font-style="italic">one-line</tspan> explanation</text>
+ <text x="24" y="222" font-size="24" fill="#FFFFFF" opacity="0.95">of why you're asking it.</text>
+
+ <g transform="translate(24, 240)">
+ <rect x="0" y="0" width="282" height="80" rx="8" fill="rgba(255,255,255,0.15)"/>
+ <text x="14" y="22" font-size="16" font-weight="700" fill="#FFFFFF" opacity="0.8" letter-spacing="1">WHY IT MATTERS</text>
+ <text x="14" y="46" font-size="17" fill="#FFFFFF" opacity="0.95">Ready to paste straight</text>
+ <text x="14" y="66" font-size="17" fill="#FFFFFF" opacity="0.95">into an email.</text>
+ </g>
+ </g>
+
+ <!-- arrow F->C2 -->
+ <path d="M 1480 365 L 1500 365" stroke="#AAAAAA" stroke-width="3" marker-end="url(#arrowRight)"/>
+
+ <!-- C (Constraints) -->
+ <g transform="translate(1500, 210)">
+ <rect x="0" y="0" width="330" height="310" rx="14" fill="#7B52AB" filter="url(#shadow)"/>
+ <circle cx="68" cy="54" r="28" fill="rgba(255,255,255,0.22)"/>
+ <text x="68" y="64" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">C</text>
+ <text x="108" y="66" font-size="28" font-weight="800" fill="#FFFFFF">Constraints</text>
+ <text x="24" y="108" font-size="21" font-weight="700" fill="#FFFFFF" opacity="0.85" letter-spacing="2">THE BOUNDARIES</text>
+
+ <line x1="24" y1="124" x2="306" y2="124" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+
+ <text x="24" y="156" font-size="24" fill="#FFFFFF" opacity="0.95"><tspan font-weight="700">Under 100 words</tspan>,</text>
+ <text x="24" y="178" font-size="24" fill="#FFFFFF" opacity="0.95">polite and professional,</text>
+ <text x="24" y="200" font-size="24" fill="#FFFFFF" opacity="0.95">no accusatory tone.</text>
+
+ <g transform="translate(24, 240)">
+ <rect x="0" y="0" width="282" height="80" rx="8" fill="rgba(255,255,255,0.15)"/>
+ <text x="14" y="22" font-size="16" font-weight="700" fill="#FFFFFF" opacity="0.8" letter-spacing="1">WHY IT MATTERS</text>
+ <text x="14" y="46" font-size="17" fill="#FFFFFF" opacity="0.95">Length, tone, and</text>
+ <text x="14" y="66" font-size="17" fill="#FFFFFF" opacity="0.95">the guardrails.</text>
+ </g>
+ </g>
+
+ <!-- ============== Bottom: The resulting AI output ============== -->
+ <g transform="translate(100, 600)">
+ <text x="0" y="-14" font-size="24" font-weight="700" fill="#888" letter-spacing="2">WHAT AI PRODUCES WITH THIS RCTFC PROMPT</text>
+
+ <rect x="0" y="0" width="1720" height="250" rx="14" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="8" height="250" rx="4" fill="#43B02A"/>
+
+ <text x="30" y="42" font-size="24" font-weight="700" fill="#2D7A1E" letter-spacing="2">DRAFT EMAIL TO OFFICE MANAGER</text>
+ <text x="30" y="72" font-size="25" fill="#333">Hi Jamie &#8212; reconciling March cash showed a $340 gap between the bank statement and our ledger. Three quick questions:</text>
+
+ <text x="60" y="116" font-size="25" fill="#333"><tspan font-weight="700" fill="#1D428A">1.</tspan> Were any checks voided or re-issued after 3/28? <tspan font-style="italic" fill="#888">&#8212; timing differences are the most common cause.</tspan></text>
+ <text x="60" y="148" font-size="25" fill="#333"><tspan font-weight="700" fill="#1D428A">2.</tspan> Did you make a deposit the bank may have posted in April? <tspan font-style="italic" fill="#888">&#8212; rules out an outstanding deposit.</tspan></text>
+ <text x="60" y="180" font-size="25" fill="#333"><tspan font-weight="700" fill="#1D428A">3.</tspan> Are there bank fees or service charges posted in March not yet booked? <tspan font-style="italic" fill="#888">&#8212; rules out an unbooked bank item.</tspan></text>
+
+ <text x="30" y="224" font-size="25" fill="#333">Once we hear back, I can close reconciliation today. Thanks for the quick look &#8212; Pat</text>
+
+ <!-- word count -->
+ <text x="1690" y="254" text-anchor="end" font-size="21" font-style="italic" fill="#2D7A1E">&#8226; 94 words &#183; polite tone &#183; ready to send</text>
+ </g>
+
+ <!-- ============== Bottom insight bar ============== -->
+ <g transform="translate(960, 880)">
+ <rect x="-850" y="0" width="1700" height="120" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <circle cx="-810" cy="60" r="26" fill="#C8102E"/>
+ <text x="-810" y="71" text-anchor="middle" font-size="30" font-weight="800" fill="#FFFFFF">!</text>
+ <text x="-770" y="42" font-size="28" font-weight="700" fill="#1A1A1A">Notice what we DIDN'T have to do.</text>
+ <text x="-770" y="74" font-size="24" fill="#444">No re-prompting. No editing. No "make it shorter." Five sentences up front replaced five rounds of back-and-forth.</text>
+ <text x="-770" y="100" font-size="24" fill="#444">That's the whole point: <tspan font-weight="700">front-load the setup, save the rework</tspan>.</text>
+ </g>
+</svg>

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">Why RAG Matters for Accounting Specifically</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">Four reasons that matter more to accountants than to almost anyone else.</text>
+
+ <!-- ====== 2x2 grid of benefit tiles ====== -->
+ <!-- each tile 820 x 310, gap 40, origin 100/210 -->
+
+ <!-- TILE 1: CITATIONS -->
+ <g transform="translate(100, 210)">
+ <rect x="0" y="0" width="820" height="310" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="820" height="80" rx="16" fill="#C8102E"/>
+ <circle cx="50" cy="40" r="26" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">1</text>
+ <text x="92" y="52" font-size="28" font-weight="800" fill="#FFFFFF">CITATIONS &#8212; you can defend the answer</text>
+
+ <text x="30" y="128" font-size="24" fill="#333">Every answer ties back to a specific page or paragraph in the document.</text>
+ <text x="30" y="156" font-size="24" fill="#333">When a partner, client, or state board asks <tspan font-style="italic">"where did you get this?"</tspan> you have a real answer.</text>
+
+ <!-- mini example -->
+ <g transform="translate(30, 186)">
+ <rect x="0" y="0" width="760" height="100" rx="10" fill="#FDECEE"/>
+ <text x="20" y="30" font-size="21" font-weight="700" fill="#A00D24" letter-spacing="2">EXAMPLE</text>
+ <text x="20" y="58" font-size="24" fill="#333"><tspan font-weight="700">Without RAG:</tspan> "Per IRS guidelines..." &#8212; vague, unverifiable.</text>
+ <text x="20" y="84" font-size="24" fill="#333"><tspan font-weight="700">With RAG:</tspan> "Per Publication 535, p. 14 &#8212; 'business meals with clients...'"</text>
+ </g>
+ </g>
+
+ <!-- TILE 2: ALWAYS CURRENT -->
+ <g transform="translate(960, 210)">
+ <rect x="0" y="0" width="820" height="310" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="820" height="80" rx="16" fill="#1D428A"/>
+ <circle cx="50" cy="40" r="26" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">2</text>
+ <text x="92" y="52" font-size="28" font-weight="800" fill="#FFFFFF">ALWAYS CURRENT &#8212; no knowledge cutoff</text>
+
+ <text x="30" y="128" font-size="24" fill="#333">The AI's training data stops at a point in time. Your documents do not.</text>
+ <text x="30" y="156" font-size="24" fill="#333">Update the policy, re-upload the PDF &#8212; the AI "knows" the new version instantly.</text>
+
+ <g transform="translate(30, 186)">
+ <rect x="0" y="0" width="760" height="100" rx="10" fill="#F0F5FC"/>
+ <text x="20" y="30" font-size="21" font-weight="700" fill="#14306A" letter-spacing="2">EXAMPLE</text>
+ <text x="20" y="58" font-size="24" fill="#333"><tspan font-weight="700">Without RAG:</tspan> AI cites last year's travel cap of $65 &#8212; cap changed in January.</text>
+ <text x="20" y="84" font-size="24" fill="#333"><tspan font-weight="700">With RAG:</tspan> AI reads the current policy.pdf and cites the new $75 cap.</text>
+ </g>
+ </g>
+
+ <!-- TILE 3: PRIVATE DATA -->
+ <g transform="translate(100, 550)">
+ <rect x="0" y="0" width="820" height="310" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="820" height="80" rx="16" fill="#00968F"/>
+ <circle cx="50" cy="40" r="26" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">3</text>
+ <text x="92" y="52" font-size="28" font-weight="800" fill="#FFFFFF">PRIVATE DATA &#8212; your clients, your policies</text>
+
+ <text x="30" y="128" font-size="24" fill="#333">The AI reads documents you give it. It is not trained on your clients' books.</text>
+ <text x="30" y="156" font-size="24" fill="#333">This is how AI can help with proprietary data without the data becoming public.</text>
+
+ <g transform="translate(30, 186)">
+ <rect x="0" y="0" width="760" height="100" rx="10" fill="#E6F4F3"/>
+ <text x="20" y="30" font-size="21" font-weight="700" fill="#006F6A" letter-spacing="2">EXAMPLE</text>
+ <text x="20" y="58" font-size="24" fill="#333"><tspan font-weight="700">Without RAG:</tspan> AI can't know anything about your client &#8212; nothing to work with.</text>
+ <text x="20" y="84" font-size="24" fill="#333"><tspan font-weight="700">With RAG:</tspan> AI reads your client's trial balance and drafts analytics on THEIR numbers.</text>
+ </g>
+ </g>
+
+ <!-- TILE 4: AUDIT TRAIL -->
+ <g transform="translate(960, 550)">
+ <rect x="0" y="0" width="820" height="310" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="820" height="80" rx="16" fill="#E35205"/>
+ <circle cx="50" cy="40" r="26" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">4</text>
+ <text x="92" y="52" font-size="28" font-weight="800" fill="#FFFFFF">AUDIT TRAIL &#8212; traceable decisions</text>
+
+ <text x="30" y="128" font-size="24" fill="#333">Every answer can be traced back to a source document and a specific passage.</text>
+ <text x="30" y="156" font-size="24" fill="#333">Critical for professional liability, peer review, and explaining AI use to partners.</text>
+
+ <g transform="translate(30, 186)">
+ <rect x="0" y="0" width="760" height="100" rx="10" fill="#FDF2EA"/>
+ <text x="20" y="30" font-size="21" font-weight="700" fill="#A53B02" letter-spacing="2">EXAMPLE</text>
+ <text x="20" y="58" font-size="24" fill="#333"><tspan font-weight="700">Without RAG:</tspan> "The AI said so" &#8212; zero evidence, zero defense.</text>
+ <text x="20" y="84" font-size="24" fill="#333"><tspan font-weight="700">With RAG:</tspan> Workpaper shows the AI's answer + the exact source passage used.</text>
+ </g>
+ </g>
+
+ <!-- ====== Bottom bar ====== -->
+ <g transform="translate(960, 890)">
+ <rect x="-850" y="0" width="1700" height="140" rx="16" fill="#1A1A1A" filter="url(#shadow)"/>
+ <text x="-810" y="46" font-size="24" font-weight="700" fill="#FFD76A" letter-spacing="2">THE BIG IDEA</text>
+ <text x="-810" y="86" font-size="28" font-weight="700" fill="#FFFFFF">Accountants sign their names to answers. RAG is how you make AI-assisted answers defensible.</text>
+ <text x="-810" y="118" font-size="24" fill="#FFFFFF" opacity="0.85">"Sounds smart" is not good enough in our field. "Cite the source" has always been the job &#8212; RAG just makes the AI play by the same rule.</text>
+ </g>
+</svg>

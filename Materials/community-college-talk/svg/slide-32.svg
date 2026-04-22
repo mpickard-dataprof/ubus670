@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">Three Things to Remember</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">If you only walk out of this hour with three ideas, make them these.</text>
+
+ <!-- ===== 3 big tiles ===== -->
+
+ <!-- TILE 1 -->
+ <g transform="translate(90, 220)">
+ <rect x="0" y="0" width="560" height="660" rx="20" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+
+ <!-- big number -->
+ <circle cx="90" cy="100" r="60" fill="#C8102E"/>
+ <text x="90" y="120" text-anchor="middle" font-size="58" font-weight="800" fill="#FFFFFF">1</text>
+
+ <text x="170" y="94" font-size="32" font-weight="800" fill="#1A1A1A">AI predicts.</text>
+ <text x="170" y="134" font-size="32" font-weight="800" fill="#1A1A1A">It doesn't know.</text>
+
+ <line x1="40" y1="200" x2="520" y2="200" stroke="#F0F0F0" stroke-width="2"/>
+
+ <text x="40" y="240" font-size="24" fill="#444">Every number, every name, every citation,</text>
+ <text x="40" y="266" font-size="24" fill="#444">every form name &#8212; verify it.</text>
+
+ <text x="40" y="312" font-size="24" fill="#444">Especially when the answer sounds perfect.</text>
+ <text x="40" y="338" font-size="24" fill="#444"><tspan font-weight="700" fill="#C8102E">Perfect-sounding is NOT correct.</tspan></text>
+
+ <!-- illustrative checkbox list -->
+ <g transform="translate(40, 380)">
+ <rect x="0" y="0" width="480" height="220" rx="12" fill="#FDECEE"/>
+ <text x="20" y="34" font-size="21" font-weight="700" fill="#A00D24" letter-spacing="2">THE VERIFY CHECKLIST</text>
+ <text x="20" y="64" font-size="24" fill="#333">[ ] Did I check every dollar amount?</text>
+ <text x="20" y="94" font-size="24" fill="#333">[ ] Did I confirm every proper noun?</text>
+ <text x="20" y="124" font-size="24" fill="#333">[ ] Did I open the cited source?</text>
+ <text x="20" y="154" font-size="24" fill="#333">[ ] Would I sign my name to this?</text>
+ <text x="20" y="190" font-size="21" font-style="italic" fill="#777">If "no" to any &#8212; don't send it yet.</text>
+ </g>
+ </g>
+
+ <!-- TILE 2 -->
+ <g transform="translate(680, 220)">
+ <rect x="0" y="0" width="560" height="660" rx="20" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+
+ <circle cx="90" cy="100" r="60" fill="#1D428A"/>
+ <text x="90" y="120" text-anchor="middle" font-size="58" font-weight="800" fill="#FFFFFF">2</text>
+
+ <text x="170" y="94" font-size="32" font-weight="800" fill="#1A1A1A">RCTFC plus</text>
+ <text x="170" y="134" font-size="32" font-weight="800" fill="#1A1A1A">low temperature.</text>
+
+ <line x1="40" y1="200" x2="520" y2="200" stroke="#F0F0F0" stroke-width="2"/>
+
+ <text x="40" y="240" font-size="24" fill="#444">Five-letter framework. One temperature dial.</text>
+ <text x="40" y="266" font-size="24" fill="#444">Thirty extra seconds of setup per prompt.</text>
+
+ <text x="40" y="312" font-size="24" fill="#444">Cuts hallucinations by well over half.</text>
+ <text x="40" y="338" font-size="24" fill="#444"><tspan font-weight="700" fill="#1D428A">Nearly zero extra effort.</tspan></text>
+
+ <!-- illustrative RCTFC chips -->
+ <g transform="translate(40, 380)">
+ <rect x="0" y="0" width="480" height="220" rx="12" fill="#F0F5FC"/>
+ <text x="20" y="34" font-size="21" font-weight="700" fill="#14306A" letter-spacing="2">YOUR DEFAULT SETUP</text>
+ <g transform="translate(20, 60)">
+ <rect x="0" y="0" width="60" height="36" rx="18" fill="#C8102E"/><text x="30" y="24" text-anchor="middle" font-size="24" font-weight="800" fill="#FFFFFF">R</text>
+ <rect x="72" y="0" width="60" height="36" rx="18" fill="#1D428A"/><text x="102" y="24" text-anchor="middle" font-size="24" font-weight="800" fill="#FFFFFF">C</text>
+ <rect x="144" y="0" width="60" height="36" rx="18" fill="#00968F"/><text x="174" y="24" text-anchor="middle" font-size="24" font-weight="800" fill="#FFFFFF">T</text>
+ <rect x="216" y="0" width="60" height="36" rx="18" fill="#E35205"/><text x="246" y="24" text-anchor="middle" font-size="24" font-weight="800" fill="#FFFFFF">F</text>
+ <rect x="288" y="0" width="60" height="36" rx="18" fill="#7B52AB"/><text x="318" y="24" text-anchor="middle" font-size="24" font-weight="800" fill="#FFFFFF">C</text>
+ </g>
+ <text x="20" y="130" font-size="24" fill="#333">+ "Be factual. Cite your source."</text>
+ <text x="20" y="160" font-size="24" fill="#333">+ Temperature on the low side.</text>
+ <text x="20" y="196" font-size="21" font-style="italic" fill="#777">That's the stack. Memorize it.</text>
+ </g>
+ </g>
+
+ <!-- TILE 3 -->
+ <g transform="translate(1270, 220)">
+ <rect x="0" y="0" width="560" height="660" rx="20" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+
+ <circle cx="90" cy="100" r="60" fill="#00968F"/>
+ <text x="90" y="120" text-anchor="middle" font-size="58" font-weight="800" fill="#FFFFFF">3</text>
+
+ <text x="170" y="94" font-size="32" font-weight="800" fill="#1A1A1A">Context beats</text>
+ <text x="170" y="134" font-size="32" font-weight="800" fill="#1A1A1A">cleverness.</text>
+
+ <line x1="40" y1="200" x2="520" y2="200" stroke="#F0F0F0" stroke-width="2"/>
+
+ <text x="40" y="240" font-size="24" fill="#444">The best prompt in the world can't</text>
+ <text x="40" y="266" font-size="24" fill="#444">compete with the actual source document.</text>
+
+ <text x="40" y="312" font-size="24" fill="#444">Upload the policy. Upload the client's</text>
+ <text x="40" y="338" font-size="24" fill="#444">trial balance. <tspan font-weight="700" fill="#00968F">Don't make AI guess.</tspan></text>
+
+ <g transform="translate(40, 380)">
+ <rect x="0" y="0" width="480" height="220" rx="12" fill="#E6F4F3"/>
+ <text x="20" y="34" font-size="21" font-weight="700" fill="#006F6A" letter-spacing="2">THE HABIT TO BUILD</text>
+ <text x="20" y="72" font-size="24" fill="#333">Before typing the question,</text>
+ <text x="20" y="98" font-size="24" fill="#333">ask yourself: <tspan font-style="italic">"Did I give the AI</tspan></text>
+ <text x="20" y="124" font-size="24" fill="#333"><tspan font-style="italic">what it needs to be right?"</tspan></text>
+
+ <text x="20" y="172" font-size="24" fill="#333">If the answer is "no" &#8212; find the file,</text>
+ <text x="20" y="198" font-size="24" fill="#333">attach it, then ask.</text>
+ </g>
+ </g>
+
+ <!-- ===== Bottom bar ===== -->
+ <g transform="translate(960, 920)">
+ <rect x="-850" y="0" width="1700" height="110" rx="16" fill="#1A1A1A" filter="url(#shadow)"/>
+ <text x="-810" y="48" font-size="24" font-weight="700" fill="#FFD76A" letter-spacing="2">THREE RULES. ONE SENTENCE EACH.</text>
+ <text x="-810" y="86" font-size="28" fill="#FFFFFF"><tspan font-weight="700" fill="#FFD76A">Verify.</tspan> <tspan font-weight="700" fill="#FFD76A">Use RCTFC.</tspan> <tspan font-weight="700" fill="#FFD76A">Upload the document.</tspan> If you do nothing else from today &#8212; do these three.</text>
+ </g>
+</svg>

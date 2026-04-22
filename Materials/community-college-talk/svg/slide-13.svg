@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Montserrat, Arial, sans-serif">
+ <defs>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="2" dy="4" stdDeviation="6" flood-opacity="0.14"/>
+ </filter>
+ </defs>
+
+ <rect width="1920" height="1080" fill="#FAFAFA"/>
+
+ <text x="960" y="88" text-anchor="middle" font-size="54" font-weight="800" fill="#1A1A1A">The Hallucination Mitigation Playbook</text>
+ <text x="960" y="140" text-anchor="middle" font-size="28" font-weight="500" fill="#666666">Six tactics you can use starting today. Stack them for high-stakes work.</text>
+
+ <!-- ===== 6 tiles in a 3x2 grid ===== -->
+ <!-- grid: start x=100, y=200, each tile 555 x 300, gap 30 -->
+
+ <!-- TILE 1: Ground it -->
+ <g transform="translate(100, 200)">
+ <rect x="0" y="0" width="555" height="300" rx="14" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="555" height="70" rx="14" fill="#C8102E"/>
+ <circle cx="50" cy="36" r="22" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="44" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">1</text>
+ <text x="86" y="46" font-size="28" font-weight="800" fill="#FFFFFF">GROUND IT</text>
+
+ <text x="24" y="110" font-size="24" fill="#333"><tspan font-weight="700">Upload the actual document</tspan> instead of</text>
+ <text x="24" y="134" font-size="24" fill="#333">asking AI to recall from training.</text>
+
+ <!-- example card -->
+ <g transform="translate(24, 160)">
+ <rect x="0" y="0" width="507" height="114" rx="8" fill="#F7F7F7"/>
+ <text x="16" y="26" font-size="21" font-weight="700" fill="#888" letter-spacing="2">SAY THIS:</text>
+ <text x="16" y="56" font-size="24" font-style="italic" fill="#222">"Based only on the attached</text>
+ <text x="16" y="80" font-size="24" font-style="italic" fill="#222">policy.pdf, can I expense this meal?</text>
+ <text x="16" y="102" font-size="24" font-style="italic" fill="#222">Do not use outside knowledge."</text>
+ </g>
+ </g>
+
+ <!-- TILE 2: Lower temperature -->
+ <g transform="translate(685, 200)">
+ <rect x="0" y="0" width="555" height="300" rx="14" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="555" height="70" rx="14" fill="#1D428A"/>
+ <circle cx="50" cy="36" r="22" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="44" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">2</text>
+ <text x="86" y="46" font-size="28" font-weight="800" fill="#FFFFFF">LOWER TEMPERATURE</text>
+
+ <text x="24" y="110" font-size="24" fill="#333"><tspan font-weight="700">Picks safer, more common words.</tspan></text>
+ <text x="24" y="134" font-size="24" fill="#333">Ask AI to "be factual and concise."</text>
+
+ <!-- mini dial -->
+ <g transform="translate(24, 172)">
+ <!-- gradient track -->
+ <defs>
+ <linearGradient id="tempGrad" x1="0" x2="1">
+ <stop offset="0" stop-color="#1D428A"/>
+ <stop offset="1" stop-color="#C8102E"/>
+ </linearGradient>
+ </defs>
+ <rect x="0" y="14" width="507" height="16" rx="8" fill="url(#tempGrad)"/>
+ <!-- marker at low -->
+ <circle cx="70" cy="22" r="14" fill="#FFFFFF" stroke="#1D428A" stroke-width="3"/>
+ <text x="0" y="62" font-size="21" font-weight="700" fill="#1D428A">FACTUAL 0.1</text>
+ <text x="507" y="62" text-anchor="end" font-size="21" font-weight="700" fill="#C8102E">CREATIVE 0.9</text>
+ <text x="70" y="88" text-anchor="middle" font-size="21" font-style="italic" fill="#444">&#8593; use this for accounting work</text>
+ </g>
+ </g>
+
+ <!-- TILE 3: Demand citations -->
+ <g transform="translate(1270, 200)">
+ <rect x="0" y="0" width="555" height="300" rx="14" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="555" height="70" rx="14" fill="#00968F"/>
+ <circle cx="50" cy="36" r="22" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="44" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">3</text>
+ <text x="86" y="46" font-size="28" font-weight="800" fill="#FFFFFF">DEMAND CITATIONS</text>
+
+ <text x="24" y="110" font-size="24" fill="#333"><tspan font-weight="700">Force it to show its work</tspan> with</text>
+ <text x="24" y="134" font-size="24" fill="#333">page numbers or exact quotes.</text>
+
+ <g transform="translate(24, 160)">
+ <rect x="0" y="0" width="507" height="114" rx="8" fill="#F7F7F7"/>
+ <text x="16" y="26" font-size="21" font-weight="700" fill="#888" letter-spacing="2">SAY THIS:</text>
+ <text x="16" y="56" font-size="24" font-style="italic" fill="#222">"Quote the exact sentence you</text>
+ <text x="16" y="80" font-size="24" font-style="italic" fill="#222">used. Include the page number.</text>
+ <text x="16" y="102" font-size="24" font-style="italic" fill="#222">If you can't, say 'not found.'"</text>
+ </g>
+ </g>
+
+ <!-- TILE 4: "What would make you wrong?" -->
+ <g transform="translate(100, 520)">
+ <rect x="0" y="0" width="555" height="300" rx="14" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="555" height="70" rx="14" fill="#E35205"/>
+ <circle cx="50" cy="36" r="22" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="44" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">4</text>
+ <text x="86" y="46" font-size="28" font-weight="800" fill="#FFFFFF">THE "WRONG-MAKER" PROMPT</text>
+
+ <text x="24" y="110" font-size="24" fill="#333">Force the AI to <tspan font-weight="700">flag its own uncertainty</tspan>.</text>
+ <text x="24" y="134" font-size="24" fill="#333">Invites it to admit doubt instead of bluffing.</text>
+
+ <g transform="translate(24, 160)">
+ <rect x="0" y="0" width="507" height="114" rx="8" fill="#F7F7F7"/>
+ <text x="16" y="26" font-size="21" font-weight="700" fill="#888" letter-spacing="2">SAY THIS:</text>
+ <text x="16" y="56" font-size="24" font-style="italic" fill="#222">"Before answering, tell me what</text>
+ <text x="16" y="80" font-size="24" font-style="italic" fill="#222">would make your answer wrong.</text>
+ <text x="16" y="102" font-size="24" font-style="italic" fill="#222">List the assumptions you're making."</text>
+ </g>
+ </g>
+
+ <!-- TILE 5: Two-model check -->
+ <g transform="translate(685, 520)">
+ <rect x="0" y="0" width="555" height="300" rx="14" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="555" height="70" rx="14" fill="#7B52AB"/>
+ <circle cx="50" cy="36" r="22" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="44" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">5</text>
+ <text x="86" y="46" font-size="28" font-weight="800" fill="#FFFFFF">TWO-MODEL CHECK</text>
+
+ <text x="24" y="110" font-size="24" fill="#333">Ask the same question to <tspan font-weight="700">two different AIs</tspan>.</text>
+ <text x="24" y="134" font-size="24" fill="#333">If they disagree, you just caught a hallucination.</text>
+
+ <!-- two chat bubbles agreeing/disagreeing -->
+ <g transform="translate(24, 168)">
+ <rect x="0" y="0" width="240" height="100" rx="10" fill="#F0F5FF" stroke="#1D428A" stroke-width="1"/>
+ <text x="16" y="28" font-size="21" font-weight="700" fill="#1D428A">GEMINI</text>
+ <text x="16" y="54" font-size="24" fill="#333">"The cap is $75."</text>
+ <text x="16" y="80" font-size="21" fill="#2D7A1E">&#8226; matches</text>
+
+ <rect x="267" y="0" width="240" height="100" rx="10" fill="#FDF7F0" stroke="#E35205" stroke-width="1"/>
+ <text x="283" y="28" font-size="21" font-weight="700" fill="#E35205">CLAUDE</text>
+ <text x="283" y="54" font-size="24" fill="#333">"The cap is $100."</text>
+ <text x="283" y="80" font-size="21" fill="#A00D24">x conflicts &#8594; dig in</text>
+ </g>
+ </g>
+
+ <!-- TILE 6: Human verifies (Golden Rule) -->
+ <g transform="translate(1270, 520)">
+ <rect x="0" y="0" width="555" height="300" rx="14" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <rect x="0" y="0" width="555" height="70" rx="14" fill="#1A1A1A"/>
+ <circle cx="50" cy="36" r="22" fill="rgba(255,255,255,0.22)"/>
+ <text x="50" y="44" text-anchor="middle" font-size="28" font-weight="800" fill="#FFFFFF">6</text>
+ <text x="86" y="46" font-size="28" font-weight="800" fill="#FFFFFF">THE GOLDEN RULE</text>
+
+ <text x="24" y="110" font-size="24" fill="#333"><tspan font-weight="700">A human verifies before anything</tspan></text>
+ <text x="24" y="134" font-size="24" fill="#333">is signed, filed, sent, or posted.</text>
+
+ <g transform="translate(24, 160)">
+ <rect x="0" y="0" width="507" height="114" rx="8" fill="#FDECEE"/>
+ <text x="16" y="32" font-size="24" font-weight="700" fill="#A00D24">Professional liability is yours.</text>
+ <text x="16" y="58" font-size="24" fill="#444">Not the AI's. Not the vendor's.</text>
+ <text x="16" y="82" font-size="24" fill="#444">Yours. "I trusted the AI" is not</text>
+ <text x="16" y="104" font-size="24" fill="#444">a defense the state board accepts.</text>
+ </g>
+ </g>
+
+ <!-- ===== Bottom insight bar ===== -->
+ <g transform="translate(960, 870)">
+ <rect x="-850" y="0" width="1700" height="140" rx="16" fill="#FFFFFF" stroke="#E5E5E5" filter="url(#shadow)"/>
+ <circle cx="-810" cy="70" r="28" fill="#43B02A"/>
+ <text x="-810" y="82" text-anchor="middle" font-size="35" font-weight="800" fill="#FFFFFF">&#8226;</text>
+ <text x="-770" y="50" font-size="28" font-weight="700" fill="#1A1A1A">Pick 2 or 3 of these &#8212; not all 6 &#8212; and use them every time.</text>
+ <text x="-770" y="84" font-size="24" fill="#444"><tspan font-weight="700">My default stack:</tspan> Ground it (upload the doc) + Lower temperature + Demand citations.</text>
+ <text x="-770" y="110" font-size="24" fill="#444">That one combo cuts hallucinations by well over half &#8212; zero extra cost, ~30 seconds of setup per chat.</text>
+ </g>
+</svg>
